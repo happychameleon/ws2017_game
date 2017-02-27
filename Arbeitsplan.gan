@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2017-02-26" view-index="0" gantt-divider-location="474" resource-divider-location="300" version="2.8.2" locale="en_US">
+    <description/>
+    <view zooming-state="default:7" id="gantt-chart">
+        <field id="tpd3" name="Name" width="239" order="0"/>
+        <field id="tpd4" name="Begin date" width="115" order="1"/>
+        <field id="tpd5" name="End date" width="114" order="2"/>
+        <timeline><![CDATA[5]]></timeline>
+        <option id="color.recent"><![CDATA[#00cc00 #0099ff #ff3333 #33ccff]]></option>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Name" width="209" order="0"/>
+        <field id="1" name="Default role" width="85" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="0" name="Entscheidung für GameKonzept" color="#8cb6ce" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
+            <depend id="5" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="8" name="Blog erstellen" color="#00cc00" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
+            <depend id="5" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="2" name="PowerPoint erstellen" color="#8cb6ce" meeting="false" start="2017-02-27" duration="4" complete="0" expand="true">
+            <notes><![CDATA[-Client Server Schnittstellen
+-Anforderung
+-Gantt Erstellen]]></notes>
+            <depend id="5" type="2" difference="0" hardness="Strong"/>
+            <task id="14" name="Client Server Schnittstellen" color="#0099ff" meeting="false" start="2017-02-27" duration="3" complete="0" expand="true"/>
+            <task id="16" name="Anforderungen" color="#ff3333" meeting="false" start="2017-02-27" duration="3" complete="0" expand="true"/>
+            <task id="17" name="Gantt Erstellen" color="#00cc00" meeting="false" start="2017-02-27" duration="3" complete="0" expand="true"/>
+            <task id="82" name="Game vorstellen" color="#00cc00" meeting="false" start="2017-03-02" duration="1" complete="0" expand="true"/>
+        </task>
+        <task id="5" name="Meilenstein 1" color="#8cb6ce" meeting="true" start="2017-03-03" duration="0" complete="0" expand="true"/>
+        <task id="31" name="Dokumentation Code kontrollieren" color="#8cb6ce" meeting="false" start="2017-03-24" duration="2" complete="0" expand="true">
+            <depend id="9" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="33" name="Client Server Protokoll" meeting="false" start="2017-02-27" duration="1" complete="0" expand="false">
+            <task id="43" name="Nickname wechselbar" meeting="false" start="2017-02-27" duration="1" complete="0" expand="false">
+                <task id="56" name="Nicknames werden vorgeschlagen" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
+                    <depend id="9" type="2" difference="0" hardness="Strong"/>
+                </task>
+            </task>
+            <task id="46" name="Login &amp; Logout" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
+                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="48" name="Ping &amp; Pong" color="#8cb6ce" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
+                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="44" name="Client-Client Chat funktioniert" color="#8cb6ce" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
+                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="52" name="Protokollcode Lesbar" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
+                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="53" name="Protokoll dokument" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
+                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="54" name="Protokoll validator" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
+                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            </task>
+        </task>
+        <task id="55" name="Software Quality Concept erstellen" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
+            <depend id="9" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="57" name="PowerPoint 2 erstellen" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
+            <depend id="9" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="9" name="Meilenstein 2" color="#8cb6ce" meeting="true" start="2017-03-28" duration="0" complete="0" expand="true"/>
+        <task id="71" name="Presentation vorbereiten" color="#000000" meeting="false" start="2017-02-01" duration="1" complete="0" expand="false">
+            <task id="72" name="Progress Report" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
+            <task id="73" name="Networking Übersicht" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
+            <task id="61" name="Game genauer vorstellen" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
+            <task id="81" name="How things are going" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
+        </task>
+        <task id="75" name="Produkt erstellen" color="#000000" meeting="false" start="2017-02-01" duration="1" complete="0" expand="false">
+            <task id="76" name="Player List" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
+            <task id="69" name="High Score" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
+            <task id="68" name="Game State auf Server" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
+            <task id="70" name="Handbuch zum Game erstellen" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
+            <task id="67" name="Game Logic erstellen" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
+            <task id="66" name="Game List erstellen" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
+            <task id="65" name="Chat als GUI" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
+            <task id="64" name="Command Line parameters funktionieren" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
+            <task id="63" name="Build Script erstellen" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
+            <task id="62" name="Broadcast" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
+        </task>
+        <task id="59" name="Meilenstein 3" color="#8cb6ce" meeting="true" start="2017-04-19" duration="0" complete="0" expand="true"/>
+        <task id="36" name="Blog aktuell halten" color="#33ccff" meeting="false" start="2017-02-27" duration="61" complete="0" expand="true"/>
+    </tasks>
+    <resources>
+        <resource id="0" name="Julischka" function="Default:0" contacts="julischka.saravia@stud.unibas.ch" phone=""/>
+        <resource id="1" name="Max" function="Default:0" contacts="m.hackinger@stud.unibas.ch" phone=""/>
+        <resource id="2" name="Flavia" function="Default:0" contacts="flavia.brogle@unibas.ch" phone=""/>
+        <resource id="3" name="Patrick" function="Default:0" contacts="patrick.brehm@stud.unibas.ch" phone=""/>
+    </resources>
+    <allocations>
+        <allocation task-id="36" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="0" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="0" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="0" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="82" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="0" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="16" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
+    </allocations>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+    <roles roleset-name="SoftwareDevelopment"/>
+</project>
