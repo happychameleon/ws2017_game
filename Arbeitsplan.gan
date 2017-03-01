@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2017-02-26" view-index="0" gantt-divider-location="474" resource-divider-location="300" version="2.8.2" locale="en_US">
+<?xml version="1.0" encoding="UTF-8"?><project name="Programmierprojekt Gruppe 4" company="" webLink="http://" view-date="2017-02-19" view-index="0" gantt-divider-location="464" resource-divider-location="300" version="2.8.2" locale="en_US">
     <description/>
     <view zooming-state="default:7" id="gantt-chart">
-        <field id="tpd3" name="Name" width="239" order="0"/>
-        <field id="tpd4" name="Begin date" width="115" order="1"/>
-        <field id="tpd5" name="End date" width="114" order="2"/>
+        <field id="tpd3" name="Name" width="225" order="0"/>
+        <field id="tpd4" name="Begin date" width="109" order="1"/>
+        <field id="tpd5" name="End date" width="109" order="2"/>
         <timeline><![CDATA[5]]></timeline>
         <option id="color.recent"><![CDATA[#00cc00 #0099ff #ff3333 #33ccff]]></option>
     </view>
@@ -17,7 +17,7 @@
             <day-type id="0"/>
             <day-type id="1"/>
             <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
-            <only-show-weekends value="false"/>
+            <only-show-weekends value="true"/>
             <overriden-day-types/>
             <days/>
         </day-types>
@@ -41,7 +41,7 @@
         <task id="8" name="Blog erstellen" color="#00cc00" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
             <depend id="5" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="2" name="PowerPoint erstellen" color="#8cb6ce" meeting="false" start="2017-02-27" duration="4" complete="0" expand="true">
+        <task id="2" name="Präsentation vorbereiten" color="#8cb6ce" meeting="false" start="2017-02-27" duration="4" complete="0" expand="true">
             <notes><![CDATA[-Client Server Schnittstellen
 -Anforderung
 -Gantt Erstellen]]></notes>
@@ -52,61 +52,155 @@
             <task id="82" name="Game vorstellen" color="#00cc00" meeting="false" start="2017-03-02" duration="1" complete="0" expand="true"/>
         </task>
         <task id="5" name="Meilenstein 1" color="#8cb6ce" meeting="true" start="2017-03-03" duration="0" complete="0" expand="true"/>
-        <task id="31" name="Dokumentation Code kontrollieren" color="#8cb6ce" meeting="false" start="2017-03-24" duration="2" complete="0" expand="true">
+        <task id="33" name="Client Server Protokoll" meeting="false" start="2017-03-04" duration="20" complete="0" expand="true">
+            <depend id="9" type="2" difference="0" hardness="Strong"/>
+            <task id="85" name="Erstellen" meeting="false" start="2017-03-04" duration="7" complete="0" expand="true">
+                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="46" name="Login &amp; Logout" meeting="false" start="2017-03-11" duration="13" complete="0" expand="true">
+                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="48" name="Ping &amp; Pong" color="#8cb6ce" meeting="false" start="2017-03-11" duration="13" complete="0" expand="true">
+                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="44" name="Client-Client Chat" color="#8cb6ce" meeting="false" start="2017-03-11" duration="13" complete="0" expand="true">
+                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="43" name="Nicknames" color="#8cb6ce" meeting="false" start="2017-03-11" duration="13" complete="0" expand="true">
+                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            </task>
+        </task>
+        <task id="55" name="Software Quality Concept erstellen" meeting="false" start="2017-03-04" duration="20" complete="0" expand="true">
             <depend id="9" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="33" name="Client Server Protokoll" meeting="false" start="2017-02-27" duration="1" complete="0" expand="false">
-            <task id="43" name="Nickname wechselbar" meeting="false" start="2017-02-27" duration="1" complete="0" expand="false">
-                <task id="56" name="Nicknames werden vorgeschlagen" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
-                    <depend id="9" type="2" difference="0" hardness="Strong"/>
-                </task>
-            </task>
-            <task id="46" name="Login &amp; Logout" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
-                <depend id="9" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="48" name="Ping &amp; Pong" color="#8cb6ce" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
-                <depend id="9" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="44" name="Client-Client Chat funktioniert" color="#8cb6ce" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
-                <depend id="9" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="52" name="Protokollcode Lesbar" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
-                <depend id="9" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="53" name="Protokoll dokument" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
-                <depend id="9" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="54" name="Protokoll validator" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
-                <depend id="9" type="2" difference="0" hardness="Strong"/>
-            </task>
-        </task>
-        <task id="55" name="Software Quality Concept erstellen" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
+        <task id="105" name="Präsentation 2 Vorbereiten" meeting="false" start="2017-03-23" duration="4" complete="0" expand="true">
             <depend id="9" type="2" difference="0" hardness="Strong"/>
+            <task id="57" name="PowerPoint erstellen" color="#8cb6ce" meeting="false" start="2017-03-23" duration="4" complete="0" expand="true">
+                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="107" name="Meilensteine kontrollieren" meeting="false" start="2017-03-23" duration="4" complete="0" expand="true"/>
         </task>
-        <task id="57" name="PowerPoint 2 erstellen" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
-            <depend id="9" type="2" difference="0" hardness="Strong"/>
+        <task id="9" name="Meilenstein 2" color="#8cb6ce" meeting="true" start="2017-03-27" duration="0" complete="0" expand="true"/>
+        <task id="75" name="Produkt erstellen" color="#000000" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
+            <depend id="59" type="2" difference="0" hardness="Strong"/>
+            <task id="76" name="Player List" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
+                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="69" name="High Score" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
+                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="68" name="Game State auf Server" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
+                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="66" name="Game List erstellen" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
+                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="65" name="Chat als GUI" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
+                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="64" name="Command Line parameters funktionieren" color="#8cb6ce" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
+                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="63" name="Build Script erstellen" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
+                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="62" name="Broadcast" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
+                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="67" name="Game Logic erstellen" meeting="false" start="2017-03-27" duration="19" complete="0" expand="true">
+                <depend id="59" type="2" difference="0" hardness="Strong"/>
+                <depend id="70" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="70" name="Handbuch zum Game erstellen" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true">
+                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            </task>
         </task>
-        <task id="9" name="Meilenstein 2" color="#8cb6ce" meeting="true" start="2017-03-28" duration="0" complete="0" expand="true"/>
-        <task id="71" name="Presentation vorbereiten" color="#000000" meeting="false" start="2017-02-01" duration="1" complete="0" expand="false">
-            <task id="72" name="Progress Report" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
-            <task id="73" name="Networking Übersicht" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
-            <task id="61" name="Game genauer vorstellen" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
-            <task id="81" name="How things are going" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
-        </task>
-        <task id="75" name="Produkt erstellen" color="#000000" meeting="false" start="2017-02-01" duration="1" complete="0" expand="false">
-            <task id="76" name="Player List" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
-            <task id="69" name="High Score" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
-            <task id="68" name="Game State auf Server" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
-            <task id="70" name="Handbuch zum Game erstellen" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
-            <task id="67" name="Game Logic erstellen" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
-            <task id="66" name="Game List erstellen" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
-            <task id="65" name="Chat als GUI" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
-            <task id="64" name="Command Line parameters funktionieren" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
-            <task id="63" name="Build Script erstellen" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
-            <task id="62" name="Broadcast" meeting="false" start="2017-02-01" duration="1" complete="0" expand="true"/>
+        <task id="71" name="Präsentation vorbereiten" color="#000000" meeting="false" start="2017-04-12" duration="7" complete="0" expand="true">
+            <depend id="59" type="2" difference="0" hardness="Strong"/>
+            <task id="72" name="Progress Report" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true">
+                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="73" name="Networking Übersicht" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true">
+                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="61" name="Game genauer vorstellen" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true">
+                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="81" name="How things are going" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true">
+                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="125" name="Meilensteine kontrollieren" meeting="false" start="2017-04-12" duration="7" complete="0" expand="true"/>
         </task>
         <task id="59" name="Meilenstein 3" color="#8cb6ce" meeting="true" start="2017-04-19" duration="0" complete="0" expand="true"/>
-        <task id="36" name="Blog aktuell halten" color="#33ccff" meeting="false" start="2017-02-27" duration="61" complete="0" expand="true"/>
+        <task id="122" name="Produkt erstellen" meeting="false" start="2017-04-20" duration="17" complete="0" expand="true">
+            <depend id="119" type="2" difference="0" hardness="Strong"/>
+            <task id="127" name="Spielbares Game GUI erstellen" meeting="false" start="2017-04-20" duration="17" complete="0" expand="true">
+                <depend id="119" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="128" name="Regeln funktionieren" meeting="false" start="2017-04-20" duration="17" complete="0" expand="true">
+                <depend id="119" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="131" name="Gewinner_in wird ermittelt" meeting="false" start="2017-04-20" duration="17" complete="0" expand="true">
+                <depend id="119" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="130" name="Unit-Test funktionieren" meeting="false" start="2017-04-20" duration="17" complete="0" expand="true">
+                <depend id="119" type="2" difference="0" hardness="Strong"/>
+            </task>
+        </task>
+        <task id="123" name="Präsentation vorbereiten" meeting="false" start="2017-05-04" duration="4" complete="0" expand="true">
+            <depend id="119" type="2" difference="0" hardness="Strong"/>
+            <task id="129" name="Game Test-Spielen" meeting="false" start="2017-05-04" duration="4" complete="0" expand="true">
+                <depend id="119" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="124" name="Meilensteine kontrollieren" meeting="false" start="2017-05-04" duration="4" complete="0" expand="true">
+                <depend id="119" type="2" difference="0" hardness="Strong"/>
+            </task>
+        </task>
+        <task id="119" name="Meilenstein 4" color="#8cb6ce" meeting="true" start="2017-05-08" duration="0" complete="0" expand="true"/>
+        <task id="132" name="Produkt erstellen" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true">
+            <depend id="121" type="2" difference="0" hardness="Strong"/>
+            <task id="135" name="Architektur Dokumentation" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true">
+                <depend id="121" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="136" name="Build Script funktioniert" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true">
+                <depend id="121" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="137" name="Command Line Parameters" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true">
+                <depend id="121" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="139" name="Game Manual" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true">
+                <depend id="121" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="141" name="Quality Assurence Dokumentiert" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true">
+                <depend id="121" type="2" difference="0" hardness="Strong"/>
+            </task>
+        </task>
+        <task id="133" name="Präsentation erstellen" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true">
+            <depend id="121" type="2" difference="0" hardness="Strong"/>
+            <task id="134" name="Game genau vorstellen" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true">
+                <depend id="121" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="140" name="Screenshot" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true">
+                <depend id="121" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="138" name="Logo existiert" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true">
+                <depend id="121" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="142" name="QA präsentieren" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true">
+                <depend id="121" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="143" name="Game präsentieren" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true">
+                <depend id="121" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="144" name="What have we learned?" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true">
+                <depend id="121" type="2" difference="0" hardness="Strong"/>
+            </task>
+        </task>
+        <task id="145" name="Bonus Punkte" meeting="false" start="2017-05-09" duration="13" complete="0" expand="true"/>
+        <task id="121" name="Meilenstein 5" color="#8cb6ce" meeting="true" start="2017-05-22" duration="0" complete="0" expand="true"/>
+        <task id="36" name="Blog aktuell halten" color="#33ccff" meeting="false" start="2017-02-27" duration="83" complete="0" expand="true">
+            <depend id="121" type="2" difference="0" hardness="Strong"/>
+        </task>
     </tasks>
     <resources>
         <resource id="0" name="Julischka" function="Default:0" contacts="julischka.saravia@stud.unibas.ch" phone=""/>
