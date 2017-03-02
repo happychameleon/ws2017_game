@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Programmierprojekt Gruppe 4" company="" webLink="http://" view-date="2017-02-19" view-index="0" gantt-divider-location="464" resource-divider-location="300" version="2.8.2" locale="en_US">
+<?xml version="1.0" encoding="UTF-8"?><project name="Programmierprojekt Gruppe 4" company="" webLink="http://" view-date="2017-02-27" view-index="0" gantt-divider-location="464" resource-divider-location="300" version="2.8.2" locale="de">
     <description/>
-    <view zooming-state="default:7" id="gantt-chart">
-        <field id="tpd3" name="Name" width="225" order="0"/>
-        <field id="tpd4" name="Begin date" width="109" order="1"/>
-        <field id="tpd5" name="End date" width="109" order="2"/>
+    <view zooming-state="default:5" id="gantt-chart">
+        <field id="tpd3" name="Vorgang" width="226" order="0"/>
+        <field id="tpd4" name="Anfang" width="110" order="1"/>
+        <field id="tpd5" name="Ende" width="109" order="2"/>
         <timeline><![CDATA[5]]></timeline>
-        <option id="color.recent"><![CDATA[#00cc00 #0099ff #ff3333 #33ccff]]></option>
+        <option id="color.recent"><![CDATA[#ff0000 #00ccff #33ccff #0099ff #ff3333 #00cc00]]></option>
     </view>
     <view id="resource-table">
-        <field id="0" name="Name" width="209" order="0"/>
-        <field id="1" name="Default role" width="85" order="1"/>
+        <field id="0" name="Ressource" width="210" order="0"/>
+        <field id="1" name="Rolle" width="86" order="1"/>
     </view>
     <!-- -->
     <calendars>
@@ -54,23 +54,23 @@
         <task id="5" name="Meilenstein 1" color="#8cb6ce" meeting="true" start="2017-03-03" duration="0" complete="0" expand="true"/>
         <task id="33" name="Client Server Protokoll" meeting="false" start="2017-03-04" duration="20" complete="0" expand="true">
             <depend id="9" type="2" difference="0" hardness="Strong"/>
-            <task id="85" name="Erstellen" meeting="false" start="2017-03-04" duration="7" complete="0" expand="true">
+            <task id="85" name="Erstellen" color="#0099ff" meeting="false" start="2017-03-04" duration="7" complete="0" expand="true">
                 <depend id="9" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="46" name="Login &amp; Logout" meeting="false" start="2017-03-11" duration="13" complete="0" expand="true">
+            <task id="46" name="Login &amp; Logout" color="#ff3333" meeting="false" start="2017-03-11" duration="13" complete="0" expand="true">
                 <depend id="9" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="48" name="Ping &amp; Pong" color="#8cb6ce" meeting="false" start="2017-03-11" duration="13" complete="0" expand="true">
+            <task id="48" name="Ping &amp; Pong" color="#0099ff" meeting="false" start="2017-03-11" duration="13" complete="0" expand="true">
                 <depend id="9" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="44" name="Client-Client Chat" color="#8cb6ce" meeting="false" start="2017-03-11" duration="13" complete="0" expand="true">
+            <task id="44" name="Client-Client Chat" color="#ff0000" meeting="false" start="2017-03-11" duration="13" complete="0" expand="true">
                 <depend id="9" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="43" name="Nicknames" color="#8cb6ce" meeting="false" start="2017-03-11" duration="13" complete="0" expand="true">
+            <task id="43" name="Nicknames" color="#33ccff" meeting="false" start="2017-03-11" duration="13" complete="0" expand="true">
                 <depend id="9" type="2" difference="0" hardness="Strong"/>
             </task>
         </task>
-        <task id="55" name="Software Quality Concept erstellen" meeting="false" start="2017-03-04" duration="20" complete="0" expand="true">
+        <task id="55" name="Software Quality Concept erstellen" color="#00ccff" meeting="false" start="2017-03-04" duration="20" complete="0" expand="true">
             <depend id="9" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="105" name="Präsentation 2 Vorbereiten" meeting="false" start="2017-03-23" duration="4" complete="0" expand="true">
