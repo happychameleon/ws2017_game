@@ -167,7 +167,12 @@ public class Tile {
         
         return (Tile[]) tilesInRange.keySet().toArray();
     }
-    
+	
+	@Override
+	public String toString() {
+		return "(" + x + "/" + y + ")";
+	}
+	
 	//endregion
 	
 	
@@ -188,7 +193,7 @@ public class Tile {
 	 * This is the size of one Tile in pixels for visualisation. It doesn't represent the pixels on the screen.
 	 * These depend on the Zoom Level.
 	 */
-	public static final int tileSizeInPixels = 32;
+	public static final int tileSizeInPixels = 16;
 	
 	/**
 	 * This array represents the current Pixels of this Tile and how they should be displayed at the moment.

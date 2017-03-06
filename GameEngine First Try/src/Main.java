@@ -17,7 +17,7 @@ public class Main {
 		
 		world = new World(20, 10);
 		
-		window = new Window(world);
+		window = new Window(world, "WasserschlachtSimulator 2017 Prototype");
 		
 	}
 	

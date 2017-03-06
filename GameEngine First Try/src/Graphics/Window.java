@@ -4,8 +4,8 @@ import Engine.Tile;
 import Engine.World;
 
 import javax.swing.*;
-import javax.swing.text.StyledEditorKit;
 import java.awt.*;
+import java.util.Random;
 
 /**
  * The Window containing the general info about how to display the Game.
@@ -13,6 +13,9 @@ import java.awt.*;
  * Created by flavia on 04.03.17.
  */
 public class Window extends JFrame {
+	
+	//FIXME: Just for testing.
+	Random random = new Random();
 	
 	/**
 	 * The World this Window displays.
@@ -23,7 +26,6 @@ public class Window extends JFrame {
 	 * How big one Pixel in the Game is in Pixels on the Screen.
 	 */
 	private static int pixelSize = 3;
-	
 	/**
 	 *
 	 * @return {@link #pixelSize}.
@@ -32,12 +34,20 @@ public class Window extends JFrame {
 		return pixelSize;
 	}
 	
-	public Window(World world) {
+	private int topInset;
+	
+	public Window(World world, String title) {
 		this.world = world;
 		
-		setSize(pixelSize * Tile.tileSizeInPixels * world.getMapWidth(), pixelSize * Tile.tileSizeInPixels * world.getMapHeight());
-		setVisible(true);
+		pack(); // So the Insets are set correctly.
+		topInset = getInsets().top;
+		setSize(pixelSize * Tile.tileSizeInPixels * world.getMapWidth(), topInset + pixelSize * Tile.tileSizeInPixels * world.getMapHeight());
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setTitle(title);
+		
+		setVisible(true);
+		
 		
 	}
 	
@@ -61,6 +71,10 @@ public class Window extends JFrame {
 	private void paintOneTile(Graphics g, Tile tile) {
 		int tileX = tile.getXPosition();
 		int tileY = tile.getYPosition();
+		
+		// TODO: For better performance this should only be called when something changed on the Tile.
+		tile.RecalculateCurrentPixels();
+		
 		for (int x = 0; x < Tile.tileSizeInPixels; x++) {
 			for (int y = 0; y < Tile.tileSizeInPixels; y++) {
 				paintOnePixel(g, tileX, tileY, x, y, tile.getCurrentPixelAt(x, y));
@@ -78,9 +92,11 @@ public class Window extends JFrame {
 	 * @param color The Color of this Pixel.
 	 */
 	private void paintOnePixel(Graphics g, int tileX, int tileY, int pixelX, int pixelY, Color color) {
-		int leftX = (tileX * Tile.tileSizeInPixels) + (pixelX * pixelSize);
-		int topY = (tileY * Tile.tileSizeInPixels) + (pixelY * pixelSize);
+		int leftX = (tileX * Tile.tileSizeInPixels * pixelSize) + (pixelX * pixelSize);
+		int topY = (tileY * Tile.tileSizeInPixels * pixelSize) + (pixelY * pixelSize);
 		
+		topY += topInset; // because of the Title Bar.
+
 		//FIXME: This is only for testing. As soon as we read in the correct pixels in the TileType enum only the else part is needed
 		if (pixelX == 0 || pixelY == 0) {
 			g.setColor(color.darker());
