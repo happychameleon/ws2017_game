@@ -44,7 +44,7 @@ public class Character {
 
 
     public Tile[] getAttackRangeInTiles() {
-        return this.tile.getAllTilesInRange(weapon.range);
+        return this.tile.getAllTilesInRange(weapon.range, false);
     }
 
 

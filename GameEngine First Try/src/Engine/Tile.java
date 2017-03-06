@@ -11,23 +11,35 @@ public class Tile {
 	
 	//region TileData
 	
+	
+    private int x;
 	/**
-     *  The X position on the game map.
-     */
-    int x;
-    /**
-     *  The Y position on the game map.
-     */
-    int y;
-
-    TileType tileType;
-
-    /**
+	 *  The X position on the game map.
+	 */
+	public int getXPosition() {
+		return x;
+	}
+	
+    private int y;
+	/**
+	 *  The Y position on the game map.
+	 */
+	public int getYPosition() {
+		return y;
+	}
+	
+    private TileType tileType;
+	
+	public TileType getTileType() {
+		return tileType;
+	}
+	
+	/**
      * The world this Engine.Tile belongs to.
      */
-    World world;
+	private World world;
 
-    boolean isWalkable = true;
+    private boolean isWalkable = true;
     /**
      * Most Tiles are walkable. E.g. Trees, Hedges, Walls etc. aren't.
      */
@@ -35,7 +47,7 @@ public class Tile {
         return isWalkable;
     }
 
-    boolean canShootThrough = true;
+    private boolean canShootThrough = true;
     /**
      * All walkable tiles can be shot through,
      * most non-walkable Tiles can't be shot through (like Trees, Walls)
@@ -45,7 +57,7 @@ public class Tile {
         return canShootThrough;
     }
     
-    Character character;
+    private Character character;
 	/**
 	 * The Character currently standing on this Tile. <code>null</code> if there is no Character on this Tile.
 	 */
@@ -168,6 +180,8 @@ public class Tile {
 		
     	currentPixels = new Color[tileSizeInPixels][tileSizeInPixels];
 		
+		RecalculateCurrentPixels();
+		
 	}
 	
 	/**
@@ -180,10 +194,10 @@ public class Tile {
 	 * This array represents the current Pixels of this Tile and how they should be displayed at the moment.
 	 * It is recalculated every time something on this Tile changes.
 	 */
-	Color[][] currentPixels;
+	private Color[][] currentPixels;
 	
-	public Color[][] getCurrentPixels() {
-		return currentPixels;
+	public Color getCurrentPixelAt(int x, int y) {
+		return currentPixels[x][y];
 	}
 	
 	/**
@@ -197,7 +211,7 @@ public class Tile {
 		calculatePixelsCharacter();
 	}
 	
-	void calculatePixelsBaseTile() {
+	private void calculatePixelsBaseTile() {
 		for (int x = 0; x < tileSizeInPixels; x++) {
 			for (int y = 0; y < tileSizeInPixels; y++) {
 				currentPixels[x][y] = tileType.pixels[x][y];
@@ -205,11 +219,11 @@ public class Tile {
 		}
 	}
 	
-	void calculatePixelsItem() {
+	private void calculatePixelsItem() {
 		//TODO: Item Visualisation.
 	}
 	
-	void calculatePixelsCharacter() {
+	private void calculatePixelsCharacter() {
 		if (character == null) {
 			// There is no character on this Tile.
 			return;

@@ -8,19 +8,19 @@ import java.awt.*;
  */
 public enum TileType {
 	
-	GRASS,
-	WATER;
+	GRASS (Color.green),
+	WATER (Color.blue);
 	
 	final Color[][] pixels;
 	
-	TileType() {
+	TileType(Color color) {
 		
 		pixels = new Color[Tile.tileSizeInPixels][Tile.tileSizeInPixels];
 		
 		//TODO: Read the pixels from a File instead of this here!
 		for (int x = 0; x < pixels.length; x++) {
 			for (int y = 0; y < pixels[0].length; y++) {
-				pixels[x][y] = Color.green;
+				pixels[x][y] = color;
 			}
 		}
 		
