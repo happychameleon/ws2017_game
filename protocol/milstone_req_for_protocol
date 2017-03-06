@@ -1,0 +1,97 @@
+Things the Protocol needs to do that are mille stone requirments:
+
+m2
+
+	"Protocol is properly 
+	encoded, decoded and 
+	Validated"
+
+	"Players can change their 
+	Nicknames"
+
+	"Client to client chat is 
+	Working"
+
+	"Arbitrarily many clients 
+	Can log on to the server"
+
+	"The server handles a client 
+	Logout in a meaningful way"
+
+	"Ping is regularly sent from 
+	server to client and 
+	Processed meaningfully"
+
+	"Ping is regularly sent from 
+	client to server and 
+	Processed meaningfully"
+
+	"The human-readable network 
+	protocol is defined and 
+	documented in source code"
+
+	"The human-readable network 
+	protocol is defined in 
+	Dedicated document"
+
+	"Network protocol is 
+	being used and validated 
+	Correctly"
+
+	"The server assures that 
+	duplicates in a consistent 
+	manner by assigning 
+	Appropriate names 
+	player nicknames as 
+	Unique and changes"
+
+	"The client suggest a 
+	nickname based on the 
+	System username"
+
+m3
+
+	"Broadcast to all clients 
+	across all games and 
+	Lobbies is working"
+
+	"Command line parameters 
+	are parsed correctly: 
+	(client <hostadress>: <port> 
+	(<username>) | server <port>)"
+
+	?
+	"There is a way to list both 
+	open, ongoing as well as 
+	Finished games"
+	
+	"Game state is kept on 
+	Server"
+
+	"There is a high score list 
+	which is stored persistently 
+	And updated when needed"
+
+	"Overview of the network 
+	Communication"
+	
+	"There is a way to list all 
+	player currently connected 
+	To the server"
+
+	"Whisper-chat between two 
+	Clients is working"
+
+m4
+
+	"The winner and the winstate 
+	Is correctly determined"
+
+m5
+
+	"Username can be specified 
+	via the command line 
+	(e.g.: java -jar some.jar 
+	Client server:port 
+	Username)"
+
