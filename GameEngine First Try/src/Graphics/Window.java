@@ -7,8 +7,6 @@ import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 /**
@@ -55,7 +53,6 @@ public class Window extends JFrame implements MouseInputListener {
 		
 		setVisible(true);
 		
-		
 	}
 	
 	
@@ -81,7 +78,7 @@ public class Window extends JFrame implements MouseInputListener {
 		int tileY = tile.getYPosition();
 		
 		// TODO: For better performance this should only be called when something changed on the Tile.
-		tile.RecalculateCurrentPixels();
+		// tile.RecalculateCurrentPixels();
 		
 		for (int x = 0; x < Tile.tileSizeInPixels; x++) {
 			for (int y = 0; y < Tile.tileSizeInPixels; y++) {
@@ -105,7 +102,7 @@ public class Window extends JFrame implements MouseInputListener {
 		
 		topY += topInset; // because of the Title Bar.
 
-		//FIXME: This is only for testing. As soon as we read in the correct pixels in the TileType enum only the else part is needed
+		//FIXME: This is only for testing. Should be replaced with a solid sprite drawing system.
 		if (pixelX == 0 || pixelY == 0) {
 			g.setColor(color.darker());
 		} else {
@@ -137,7 +134,7 @@ public class Window extends JFrame implements MouseInputListener {
 			case MouseEvent.BUTTON3:
 				System.out.println("right mouseClicked!");
 				world.setSelectedTile(tileUnderMouse);
-				highlightedTiles = tileUnderMouse.getAllTilesInRange(3, false);
+				highlightedTiles = tileUnderMouse.getAllTilesInRange(3, true);
 				System.out.println(highlightedTiles);
 				repaint();
 				break;

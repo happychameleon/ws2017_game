@@ -31,10 +31,7 @@ public class Character {
     /**
      * The main Engine.Weapon held by this Engine.Character.
      */
-    public Weapon getWeapon() {
-
-        return weapon;
-    }
+    public Weapon getWeapon() { return weapon; }
 
 
 
@@ -43,8 +40,11 @@ public class Character {
         this.tile = tile;
         this.weapon = weapon;
     }
-
-
+    
+    /**
+     *
+     * @return The Attack range calculated with {@link Tile#getAllTilesInRange(int, boolean)} from this Character's Weapon's range. Can be null!
+     */
     public Set<Tile> getAttackRangeInTiles() {
         return this.tile.getAllTilesInRange(weapon.range, false);
     }

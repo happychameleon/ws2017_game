@@ -8,12 +8,22 @@ import java.awt.*;
  */
 public enum TileType {
 	
-	GRASS (Color.green),
-	WATER (Color.blue);
+	GRASS (Color.green, true),
+	WATER (Color.blue, false);
 	
 	final Color[][] pixels;
 	
-	TileType(Color color) {
+	/**
+	 * Can a Character ever enter this tile?
+	 */
+	private final boolean isWalkable;
+	public boolean isWalkable() {
+		return isWalkable;
+	}
+	
+	TileType(Color color, boolean isWalkable) {
+		
+		this.isWalkable = isWalkable;
 		
 		pixels = new Color[Tile.tileSizeInPixels][Tile.tileSizeInPixels];
 		

@@ -2,7 +2,6 @@ package Engine;
 
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by flavia on 02.03.17.
@@ -39,12 +38,13 @@ public class Tile {
      */
 	private World world;
 
-    private boolean isWalkable = true;
     /**
-     * Most Tiles are walkable. E.g. Trees, Hedges, Walls etc. aren't.
+     * Most Tiles are walkable. Others (e.g. Trees, Hedges, Walls etc.) aren't.
+     * Whether they are walkable depends on the TileType (undone: and on whether something on the Tile is blocking it).
      */
     public boolean isWalkable() {
-        return isWalkable;
+    	//TODO: Add check for stuff blocking the Tile.
+    	return tileType.isWalkable();
     }
 
     private boolean canShootThrough = true;
@@ -121,12 +121,16 @@ public class Tile {
     
     
     /**
-     * Returns all the Tiles in the specified range from this Engine.Tile.
+     * Returns all the Tiles in the specified range from this Tile.
      * @param range The range in Tiles.
      * @param withWalking True if the Tiles should be reachable by walking.
-     * @return An Array of all the Tiles in range.
+     * @return An Array of all the Tiles in range. Is <code>null</code> if this Tile isn't walkable! If not <code>null</code> then should never be empty.
      */
     public Set<Tile> getAllTilesInRange(int range, boolean withWalking) {
+    	
+    	if (this.isWalkable() == false) {
+    		return null;
+	    }
         
         // All the tile of which we have to check the neighbours.
         ArrayList<Tile> tilesToCheck = new ArrayList<>();
@@ -158,7 +162,7 @@ public class Tile {
     
         // We can't shoot someone on a Tile which isn't walkable.
         for (Tile t : tilesInRange.keySet()) {
-            if (t.isWalkable == false) {
+            if (t.isWalkable() == false) {
                 tilesInRange.remove(t);
             }
         }
