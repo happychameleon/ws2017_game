@@ -1,8 +1,8 @@
 package Engine;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by flavia on 02.03.17.
@@ -86,7 +86,7 @@ public class Tile {
 	public Tile getNorthTile() { return world.getTileAt(x, y - 1); }
     public Tile getEastTile() { return world.getTileAt(x + 1, y); }
     public Tile getSouthTile() { return world.getTileAt(x, y + 1); }
-    public Tile getWestTile() { return world.getTileAt(x + 1, y); }
+    public Tile getWestTile() { return world.getTileAt(x - 1, y); }
     public Tile getNETile() { return world.getTileAt(x + 1, y - 1); }
     public Tile getSETile() { return world.getTileAt(x + 1, y + 1); }
     public Tile getSWTile() { return world.getTileAt(x - 1, y + 1); }
@@ -126,7 +126,7 @@ public class Tile {
      * @param withWalking True if the Tiles should be reachable by walking.
      * @return An Array of all the Tiles in range.
      */
-    public Tile[] getAllTilesInRange(int range, boolean withWalking) {
+    public Set<Tile> getAllTilesInRange(int range, boolean withWalking) {
         
         // All the tile of which we have to check the neighbours.
         ArrayList<Tile> tilesToCheck = new ArrayList<>();
@@ -135,49 +135,48 @@ public class Tile {
         
         tilesToCheck.add(this);
         tilesInRange.put(this, 0);
-        for (int i = 0; i < range; i++) {
-            while (tilesToCheck.isEmpty() == false) {
-                Tile t = tilesToCheck.get(0);
-                tilesToCheck.remove(t);
-                int currentTileRange = tilesInRange.get(t);
-                if (currentTileRange == range) {
-                    continue;
-                }
-                if (currentTileRange > range) {
-                    System.out.println("ERROR: A tile too far away was wrongly added to the tilesInRange!");
-                }
-                for (Tile n : t.getNeighbours(false)) {
-                    if (n != null && (tilesInRange.containsKey(n) == false ||
-                            tilesInRange.containsKey(n) && tilesInRange.get(n) > currentTileRange)) {
-                        if (withWalking && n.isWalkable() == false)
-                            continue;
-                        tilesInRange.put(n, currentTileRange + 1);
-                        tilesToCheck.add(n);
-                    }
+        while (tilesToCheck.isEmpty() == false) {
+            Tile t = tilesToCheck.get(0);
+            tilesToCheck.remove(t);
+            int currentTileRange = tilesInRange.get(t);
+            if (currentTileRange == range) {
+                continue;
+            }
+            if (currentTileRange > range) {
+                System.out.println("ERROR: A tile too far away was wrongly added to the tilesInRange!");
+            }
+            for (Tile n : t.getNeighbours(false)) {
+                if (n != null && (tilesInRange.containsKey(n) == false ||
+                        tilesInRange.containsKey(n) && tilesInRange.get(n) > currentTileRange)) {
+                    if (withWalking && n.isWalkable() == false)
+                        continue;
+                    tilesInRange.put(n, currentTileRange + 1);
+                    tilesToCheck.add(n);
                 }
             }
         }
     
-        // We can't shoot on a Engine.Tile which isn't walkable.
+        // We can't shoot someone on a Tile which isn't walkable.
         for (Tile t : tilesInRange.keySet()) {
             if (t.isWalkable == false) {
                 tilesInRange.remove(t);
             }
         }
         
-        return (Tile[]) tilesInRange.keySet().toArray();
+        return tilesInRange.keySet();
     }
 	
+	/**
+	 * @return The Tile's coordinates as "(x/y)".
+	 */
 	@Override
 	public String toString() {
 		return "(" + x + "/" + y + ")";
 	}
-	
 	//endregion
 	
 	
 	//region Visualisation
-	
 	/**
 	 * This method prepares the visualisation of this Tile.
 	 */

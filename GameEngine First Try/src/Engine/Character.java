@@ -1,5 +1,7 @@
 package Engine;
 
+import java.util.Set;
+
 /**
  * The children which are playing the game.
  *
@@ -43,7 +45,7 @@ public class Character {
     }
 
 
-    public Tile[] getAttackRangeInTiles() {
+    public Set<Tile> getAttackRangeInTiles() {
         return this.tile.getAllTilesInRange(weapon.range, false);
     }
 

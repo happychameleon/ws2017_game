@@ -4,19 +4,21 @@ import Engine.Tile;
 import Engine.World;
 
 import javax.swing.*;
+import javax.swing.event.MouseInputListener;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * The Window containing the general info about how to display the Game.
  *
  * Created by flavia on 04.03.17.
  */
-public class Window extends JFrame {
+public class Window extends JFrame implements MouseInputListener {
 	
-	//FIXME: Just for testing.
-	Random random = new Random();
-	
+	//region Data
 	/**
 	 * The World this Window displays.
 	 */
@@ -36,6 +38,10 @@ public class Window extends JFrame {
 	
 	private int topInset;
 	
+	private Set<Tile> highlightedTiles;
+	//endregion
+	
+	
 	public Window(World world, String title) {
 		this.world = world;
 		
@@ -45,6 +51,7 @@ public class Window extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle(title);
+		addMouseListener(this);
 		
 		setVisible(true);
 		
@@ -52,6 +59,7 @@ public class Window extends JFrame {
 	}
 	
 	
+	//region Painting
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -64,7 +72,7 @@ public class Window extends JFrame {
 	}
 	
 	/**
-	 * This method paints one Tile with all it's Pixels via {@link #paintOnePixel(Graphics, int, int, int, int, Color)}.
+	 * This method paints one Tile with all it's Pixels via {@link #paintOnePixel(Graphics, int, int, int, int, Color, Tile)}.
 	 * @param g The Graphics element.
 	 * @param tile The Tile to paint.
 	 */
@@ -77,7 +85,7 @@ public class Window extends JFrame {
 		
 		for (int x = 0; x < Tile.tileSizeInPixels; x++) {
 			for (int y = 0; y < Tile.tileSizeInPixels; y++) {
-				paintOnePixel(g, tileX, tileY, x, y, tile.getCurrentPixelAt(x, y));
+				paintOnePixel(g, tileX, tileY, x, y, tile.getCurrentPixelAt(x, y), tile);
 			}
 		}
 	}
@@ -91,7 +99,7 @@ public class Window extends JFrame {
 	 * @param pixelY The y-position of the Pixel in the Tile.
 	 * @param color The Color of this Pixel.
 	 */
-	private void paintOnePixel(Graphics g, int tileX, int tileY, int pixelX, int pixelY, Color color) {
+	private void paintOnePixel(Graphics g, int tileX, int tileY, int pixelX, int pixelY, Color color, Tile tile) {
 		int leftX = (tileX * Tile.tileSizeInPixels * pixelSize) + (pixelX * pixelSize);
 		int topY = (tileY * Tile.tileSizeInPixels * pixelSize) + (pixelY * pixelSize);
 		
@@ -104,6 +112,81 @@ public class Window extends JFrame {
 			g.setColor(color);
 		}
 		
+		if (tile == world.getSelectedTile() || (highlightedTiles != null && highlightedTiles.contains(tile))) {
+			g.setColor(g.getColor().darker().darker());
+		}
+		
 		g.fillRect(leftX, topY, pixelSize, pixelSize);
 	}
+	//endregion
+	
+	
+	//region Mouse
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		Tile tileUnderMouse = getTileForMouseCoordinates(e);
+		
+		switch (e.getButton()) {
+			case MouseEvent.BUTTON1:
+				//System.out.println("left mouseClicked!");
+				world.setSelectedTile(tileUnderMouse);
+				highlightedTiles = null;
+				repaint();
+				break;
+			case MouseEvent.BUTTON3:
+				System.out.println("right mouseClicked!");
+				world.setSelectedTile(tileUnderMouse);
+				highlightedTiles = tileUnderMouse.getAllTilesInRange(3, false);
+				System.out.println(highlightedTiles);
+				repaint();
+				break;
+			default:
+				break;
+		}
+	}
+	
+	private Tile getTileForMouseCoordinates(MouseEvent e) {
+		int x = e.getX();
+		x /= (pixelSize * Tile.tileSizeInPixels);
+		int y = e.getY() - topInset;
+		y /= (pixelSize * Tile.tileSizeInPixels);
+		
+		return world.getTileAt(x, y);
+	}
+	
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+	}
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		
+	}
+	
+	@Override
+	public void mouseExited(MouseEvent e) {
+		
+	}
+	
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		
+	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		
+	}
+	
+	//endregion
+	
+	
 }
