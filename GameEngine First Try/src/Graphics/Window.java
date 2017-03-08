@@ -102,15 +102,24 @@ public class Window extends JFrame implements MouseInputListener {
 		
 		topY += topInset; // because of the Title Bar.
 
-		//FIXME: This is only for testing. Should be replaced with a solid sprite drawing system.
+		//FIXME: This whole painting System is only for testing. Should be replaced with a solid sprite painting system.
+		
 		if (pixelX == 0 || pixelY == 0) {
-			g.setColor(color.darker());
+			g.setColor(color.darker()); // To make the edges of the Tiles visible.
 		} else {
 			g.setColor(color);
 		}
 		
-		if (tile == world.getSelectedTile() || (highlightedTiles != null && highlightedTiles.contains(tile))) {
+		if (highlightedTiles != null && highlightedTiles.contains(tile)) {
 			g.setColor(g.getColor().darker().darker());
+		}
+		
+		if (tile == world.getSelectedTile()) {
+			g.setColor(g.getColor().darker().darker().darker());
+		}
+		
+		if (tile.getCharacter() != null && (pixelX == Tile.tileSizeInPixels/2 && pixelY == Tile.tileSizeInPixels/2)) {
+			g.setColor(Color.yellow);
 		}
 		
 		g.fillRect(leftX, topY, pixelSize, pixelSize);

@@ -7,6 +7,8 @@ package Engine;
  */
 public class Player {
 
-
+	public Player() {
+		
+	}
 
 }

@@ -1,7 +1,9 @@
 package Engine;
 
+import javax.sound.midi.SysexMessage;
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by flavia on 02.03.17.
@@ -41,9 +43,13 @@ public class Tile {
     /**
      * Most Tiles are walkable. Others (e.g. Trees, Hedges, Walls etc.) aren't.
      * Whether they are walkable depends on the TileType (undone: and on whether something on the Tile is blocking it).
+     * @param considerCharacters If <code>true</code> Tiles with a Character considered non-walkable.
      */
-    public boolean isWalkable() {
+    public boolean isWalkable(boolean considerCharacters) {
     	//TODO: Add check for stuff blocking the Tile.
+	    if (considerCharacters && getCharacter() != null) {
+	    	return false;
+	    }
     	return tileType.isWalkable();
     }
 
@@ -56,13 +62,15 @@ public class Tile {
     public boolean canShootThrough() {
         return canShootThrough;
     }
-    
-    private Character character;
+	
 	/**
 	 * The Character currently standing on this Tile. <code>null</code> if there is no Character on this Tile.
 	 */
+    private Character character;
+	
 	public Character getCharacter() { return character; }
 	
+	public void setCharacter(Character character) { this.character = character; }
 	//endregion
     
     
@@ -128,7 +136,7 @@ public class Tile {
      */
     public Set<Tile> getAllTilesInRange(int range, boolean withWalking) {
     	
-    	if (this.isWalkable() == false) {
+    	if (this.isWalkable(false) == false) {
     		return null;
 	    }
         
@@ -152,19 +160,30 @@ public class Tile {
             for (Tile n : t.getNeighbours(false)) {
                 if (n != null && (tilesInRange.containsKey(n) == false ||
                         tilesInRange.containsKey(n) && tilesInRange.get(n) > currentTileRange)) {
-                    if (withWalking && n.isWalkable() == false)
+                    if (withWalking && n.isWalkable(true) == false) //TODO: Should a Character be able to walk through Characters in the same Team?
                         continue;
                     tilesInRange.put(n, currentTileRange + 1);
                     tilesToCheck.add(n);
                 }
             }
         }
-    
+        
+        if (tilesInRange.isEmpty()) {
+        	System.out.println("ERROR: Tiles In Range is empty but starting Tile wasn't! Is Character stuck?");
+        	return null;
+        }
+	
+	    System.out.println("tilesInRange: " + tilesInRange);
+	    
         // We can't shoot someone on a Tile which isn't walkable.
-        for (Tile t : tilesInRange.keySet()) {
-            if (t.isWalkable() == false) {
-                tilesInRange.remove(t);
+	    HashSet<Tile> tilesToRemove = new HashSet<Tile>();
+	    for (Tile t : tilesInRange.keySet()) {
+            if (t != null && t.isWalkable(true) == false) {
+                tilesToRemove.add(t);
             }
+        }
+        for (Tile t : tilesToRemove) {
+	    	tilesInRange.remove(t);
         }
         
         return tilesInRange.keySet();
