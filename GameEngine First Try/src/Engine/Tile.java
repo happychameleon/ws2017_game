@@ -13,7 +13,7 @@ public class Tile {
 	//region TileData
 	
 	
-    private int x;
+    private final int x;
 	/**
 	 *  The X position on the game map.
 	 */
@@ -21,7 +21,7 @@ public class Tile {
 		return x;
 	}
 	
-    private int y;
+	private final int y;
 	/**
 	 *  The Y position on the game map.
 	 */
@@ -29,7 +29,7 @@ public class Tile {
 		return y;
 	}
 	
-    private TileType tileType;
+	private TileType tileType;
 	
 	public TileType getTileType() {
 		return tileType;

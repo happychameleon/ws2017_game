@@ -135,16 +135,30 @@ public class Window extends JFrame implements MouseInputListener {
 		
 		switch (e.getButton()) {
 			case MouseEvent.BUTTON1:
-				//System.out.println("left mouseClicked!");
+				System.out.println("left mouseClicked!");
 				world.setSelectedTile(tileUnderMouse);
-				highlightedTiles = null;
+				if (tileUnderMouse.getCharacter() != null) {
+					highlightedTiles = tileUnderMouse.getAllTilesInRange(tileUnderMouse.getCharacter().getMoveRange(), true);
+				} else {
+					highlightedTiles = null;
+				}
 				repaint();
 				break;
 			case MouseEvent.BUTTON3:
 				System.out.println("right mouseClicked!");
-				world.setSelectedTile(tileUnderMouse);
-				highlightedTiles = tileUnderMouse.getAllTilesInRange(3, true);
-				System.out.println(highlightedTiles);
+				if (world.getSelectedTile() != null && world.getSelectedTile().getCharacter() != null) {
+					System.out.println("Character could be moved.");
+					// We have currently selected a Tile with a Character on it. RMB now moves the Character if possible.
+					if (highlightedTiles != null && highlightedTiles.contains(tileUnderMouse)) {
+						System.out.println("Character should be moved.");
+						if (world.getSelectedTile().getCharacter().moveCharacterTo(tileUnderMouse)) {
+							highlightedTiles = null;
+							world.setSelectedTile(null);
+						} else {
+							System.out.println("Window#mouseClicked - ERROR: Why can't we move the Character?");
+						}
+					}
+				}
 				repaint();
 				break;
 			default:

@@ -26,8 +26,18 @@ public class Character {
     public Tile getTile() {
         return tile;
     }
-
-    private Weapon weapon;
+	
+	public void setTile(Tile newTile) {
+    	if (newTile.getCharacter() != null) {
+    		System.out.println("Character::setTile - ERROR: Tile already occupied!");
+    		return;
+	    }
+    	this.tile.setCharacter(null);
+		this.tile = newTile;
+		newTile.setCharacter(this);
+	}
+	
+	private Weapon weapon;
     /**
      * The main Engine.Weapon held by this Engine.Character.
      */
@@ -55,6 +65,17 @@ public class Character {
 		if (wetness >= 100) {
 			KillCharacter();
 		}
+	}
+	
+	private int moveRange = 3;
+	
+	/**
+	 * Get's the maximum {@link #moveRange} of the Character.
+	 * @return
+	 */
+	public int getMoveRange() {
+		//TODO: Once the ActionPoints per Round are implemented this should return the maximum Tiles the Character can walk with their remaining ActionPoints.
+		return moveRange;
 	}
 	
 	/**
@@ -100,4 +121,64 @@ public class Character {
 	public void KillCharacter() {
     	// TODO!
     }
+	
+	/**
+	 * Moves the Character by one Tile.
+	 * @param direction The direction (N==0; E==1; S==2; W==3) where to move.
+	 * @return Whether the move was successful <code>true</code> or not <code>false</code> (e.g. blocked by sth).
+	 */
+	public boolean moveCharacter (int direction) {
+		if (direction > 3 || direction < 0) {
+			System.out.println("moveCharacter - ERROR: No valid direction");
+			return false;
+		}
+		switch (direction) {
+			case 0:
+				if (tile.getNorthTile() != null && tile.getNorthTile().isWalkable(true)) {
+					setTile(tile.getNorthTile());
+					return true;
+				}
+				break;
+			case 1:
+				if (tile.getEastTile() != null && tile.getEastTile().isWalkable(true)) {
+					setTile(tile.getEastTile());
+					return true;
+				}
+				break;
+			case 2:
+				if (tile.getSouthTile() != null && tile.getSouthTile().isWalkable(true)) {
+					setTile(tile.getSouthTile());
+					return true;
+				}
+				break;
+			case 3:
+				if (tile.getWestTile() != null && tile.getWestTile().isWalkable(true)) {
+					setTile(tile.getWestTile());
+					return true;
+				}
+				break;
+			default:
+				break;
+		}
+		return false;
+    }
+	
+	/**
+	 * Moves the Character to the specific Tile if it is walkable.
+	 * @param tile The Tile to move to.
+	 * @return True if successful, false otherwise.
+	 */
+	public boolean moveCharacterTo(Tile tile) {
+		if (tile == null) {
+			return false;
+		}
+		
+		if (tile.isWalkable(true)) {
+			setTile(tile);
+			return true;
+		} else {
+			return false;
+		}
+    }
+    
 }
