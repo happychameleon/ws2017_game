@@ -36,6 +36,11 @@ public class Window extends JFrame implements MouseInputListener {
 	
 	private int topInset;
 	
+	/**
+	 * These Tiles represent the movement Range if a Character is selected.
+	 * TODO: Add shooting Range when a Weapon/AttackType is selected and other things.
+	 * Can be null!
+	 */
 	private Set<Tile> highlightedTiles;
 	//endregion
 	
@@ -131,33 +136,19 @@ public class Window extends JFrame implements MouseInputListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		Tile tileUnderMouse = getTileForMouseCoordinates(e);
+		Tile tileUnderMouse = getTileForMouseCoordinates(e.getX(), e.getY());
 		
 		switch (e.getButton()) {
 			case MouseEvent.BUTTON1:
 				System.out.println("left mouseClicked!");
-				world.setSelectedTile(tileUnderMouse);
-				if (tileUnderMouse.getCharacter() != null) {
-					highlightedTiles = tileUnderMouse.getAllTilesInRange(tileUnderMouse.getCharacter().getMoveRange(), true);
-				} else {
-					highlightedTiles = null;
-				}
+				selectTile(tileUnderMouse);
 				repaint();
 				break;
 			case MouseEvent.BUTTON3:
 				System.out.println("right mouseClicked!");
 				if (world.getSelectedTile() != null && world.getSelectedTile().getCharacter() != null) {
-					System.out.println("Character could be moved.");
 					// We have currently selected a Tile with a Character on it. RMB now moves the Character if possible.
-					if (highlightedTiles != null && highlightedTiles.contains(tileUnderMouse)) {
-						System.out.println("Character should be moved.");
-						if (world.getSelectedTile().getCharacter().moveCharacterTo(tileUnderMouse)) {
-							highlightedTiles = null;
-							world.setSelectedTile(null);
-						} else {
-							System.out.println("Window#mouseClicked - ERROR: Why can't we move the Character?");
-						}
-					}
+					moveCharacter(tileUnderMouse);
 				}
 				repaint();
 				break;
@@ -166,13 +157,45 @@ public class Window extends JFrame implements MouseInputListener {
 		}
 	}
 	
-	private Tile getTileForMouseCoordinates(MouseEvent e) {
-		int x = e.getX();
+	/**
+	 * This returns the Tile which is at the given Window-Pixel-Coordinates.
+	 * @param x The x coordinate of the mouse.
+	 * @param y The y coordinate of the mouse.
+	 * @return The Tile which is under the mouse coordinates.
+	 */
+	private Tile getTileForMouseCoordinates(int x, int y) {
 		x /= (pixelSize * Tile.tileSizeInPixels);
-		int y = e.getY() - topInset;
+		y -= topInset;
 		y /= (pixelSize * Tile.tileSizeInPixels);
 		
 		return world.getTileAt(x, y);
+	}
+	
+	/**
+	 * This selects the given Tile.
+	 * When there is a Character under the Tile it highlights their movement Range.
+	 * @param tileUnderMouse The newly selected Tile.
+	 */
+	private void selectTile (Tile tileUnderMouse) {
+		world.setSelectedTile(tileUnderMouse);
+		if (tileUnderMouse.getCharacter() != null) {
+			// We have selected a Character. Highlight their movement Range.
+			highlightedTiles = tileUnderMouse.getAllTilesInRange(tileUnderMouse.getCharacter().getMoveRange(), true);
+		} else {
+			highlightedTiles = null;
+		}
+	}
+	
+	private void moveCharacter (Tile tileUnderMouse) {
+		if (highlightedTiles != null && highlightedTiles.contains(tileUnderMouse)) {
+			System.out.println("Character should be moved.");
+			if (world.getSelectedTile().getCharacter().moveCharacterTo(tileUnderMouse)) {
+				highlightedTiles = null;
+				world.setSelectedTile(null);
+			} else {
+				System.out.println("Window#mouseClicked - ERROR: Why can't we move the Character?");
+			}
+		}
 	}
 	
 	

@@ -136,7 +136,7 @@ public class Tile {
      */
     public Set<Tile> getAllTilesInRange(int range, boolean withWalking) {
     	
-    	if (this.isWalkable(false) == false) {
+    	if (this.isWalkable(false) == false || range <= 0) {
     		return null;
 	    }
         

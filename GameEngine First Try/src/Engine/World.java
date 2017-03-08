@@ -32,18 +32,47 @@ public class World {
     
     /**
      * The Tile which was selected last with a left mouse click.
+     * When a Character is on the selectedTile, the movement Range is shown.
      */
     private Tile selectedTile;
-    
-    public Tile getSelectedTile() {
+	
+	/**
+	 * @return The currently {@link #selectedTile}.
+	 */
+	public Tile getSelectedTile() {
         return selectedTile;
     }
-    
-    public void setSelectedTile(Tile selectedTile) {
+	
+	/**
+	 *
+	 * @param selectedTile The newly {@link #selectedTile}.
+	 */
+	public void setSelectedTile (Tile selectedTile) {
         this.selectedTile = selectedTile;
     }
-    
-    ArrayList<Player> players;
+	
+	/**
+	 * All the players Playing the game. The order of the Players in here represents the turn order
+	 * (players[0] is first, then players[1] etc.).
+	 * @see #getCurrentPlayer().
+	 */
+	private final ArrayList<Player> players;
+	
+	private int currentPlayerIndex = 0;
+	
+	/**
+	 * @return The player which's turn it is.
+	 */
+	public Player getCurrentPlayer() {
+		return players.get(currentPlayerIndex);
+	}
+	
+	public void endTurn () {
+		currentPlayerIndex++;
+		if (players.size() <= currentPlayerIndex) { // == should also work, but just to be sure.
+			currentPlayerIndex = 0;
+		}
+	}
     
     ArrayList<Character> characters;
     //endregion
