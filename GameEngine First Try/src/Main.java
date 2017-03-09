@@ -1,5 +1,5 @@
 import Engine.World;
-import Graphics.Window;
+import GraphicAndInput.Window;
 
 import javax.swing.*;
 

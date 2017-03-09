@@ -1,11 +1,15 @@
-package Graphics;
+package GraphicAndInput;
 
+import Engine.Character;
 import Engine.Tile;
+import Engine.Weapon;
 import Engine.World;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.util.Set;
 
@@ -14,7 +18,7 @@ import java.util.Set;
  *
  * Created by flavia on 04.03.17.
  */
-public class Window extends JFrame implements MouseInputListener {
+public class Window extends JFrame implements MouseInputListener, KeyListener {
 	
 	//region Data
 	/**
@@ -55,6 +59,9 @@ public class Window extends JFrame implements MouseInputListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle(title);
 		addMouseListener(this);
+		addKeyListener(this);
+		setFocusable(true);
+		requestFocus();
 		
 		setVisible(true);
 		
@@ -133,7 +140,6 @@ public class Window extends JFrame implements MouseInputListener {
 	
 	
 	//region Mouse
-	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Tile tileUnderMouse = getTileForMouseCoordinates(e.getX(), e.getY());
@@ -146,9 +152,17 @@ public class Window extends JFrame implements MouseInputListener {
 				break;
 			case MouseEvent.BUTTON3:
 				System.out.println("right mouseClicked!");
-				if (world.getSelectedTile() != null && world.getSelectedTile().getCharacter() != null) {
-					// We have currently selected a Tile with a Character on it. RMB now moves the Character if possible.
-					moveCharacter(tileUnderMouse);
+				switch (world.getSelectionType()) {
+					case CHARACTER:
+						// We have currently selected a Tile with a Character on it. RMB now moves the Character if possible.
+						moveCharacter(tileUnderMouse);
+						break;
+					case WEAPON:
+						attackCharacter(tileUnderMouse);
+						//TODO: Attack with Weapon.
+						break;
+					default:
+						break;
 				}
 				repaint();
 				break;
@@ -181,8 +195,10 @@ public class Window extends JFrame implements MouseInputListener {
 		if (tileUnderMouse.getCharacter() != null) {
 			// We have selected a Character. Highlight their movement Range.
 			highlightedTiles = tileUnderMouse.getAllTilesInRange(tileUnderMouse.getCharacter().getMoveRange(), true);
+			world.setSelectionType(SelectionType.CHARACTER);
 		} else {
 			highlightedTiles = null;
+			world.setSelectionType(SelectionType.TILE);
 		}
 	}
 	
@@ -194,6 +210,23 @@ public class Window extends JFrame implements MouseInputListener {
 				world.setSelectedTile(null);
 			} else {
 				System.out.println("Window#mouseClicked - ERROR: Why can't we move the Character?");
+			}
+		}
+	}
+	
+	private void attackCharacter(Tile attackedTile) {
+		System.out.println("Window::attackCharacter");
+		if (attackedTile.getCharacter() != null
+				&& world.getSelectedTile() != null
+				&& world.getSelectedTile().getCharacter() != null
+				&& world.getSelectedTile().getCharacter().getWeapon() != null) {
+			Character targetedCharacter = attackedTile.getCharacter();
+			Character attackingCharacter = world.getSelectedTile().getCharacter();
+			System.out.println("Targeting");
+			if (attackingCharacter.getAllCharactersInRange().contains(targetedCharacter)) {
+				// The attacking Character can attack the targeted Character.
+				targetedCharacter.changeWetness(attackingCharacter.getWeapon().getDamage());
+				System.out.println(attackingCharacter + " ATTACKED " + targetedCharacter + "!");
 			}
 		}
 	}
@@ -228,7 +261,42 @@ public class Window extends JFrame implements MouseInputListener {
 	public void mouseMoved(MouseEvent e) {
 		
 	}
+	//endregion
 	
+	//region Keyboard
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_SPACE:
+				System.out.println("SPACE typed!");
+				if (world.getSelectedTile() != null
+						&& world.getSelectedTile().getCharacter() != null
+						&& world.getSelectedTile().getCharacter().getWeapon() != null) {
+					selectWeapon();
+				}
+				repaint();
+				break;
+			default:
+				System.out.println("Key Typed: " + e.getKeyCode());
+				break;
+		}
+	}
+	
+	private void selectWeapon() {
+		world.setSelectionType(SelectionType.WEAPON);
+		Weapon selectedWeapon = world.getSelectedTile().getCharacter().getWeapon();
+		highlightedTiles = world.getSelectedTile().getAllTilesInRange(selectedWeapon.getRange(), false);
+	}
+	
+	@Override
+	public void keyReleased(KeyEvent e) {
+		
+	}
+	
+	@Override
+	public void keyTyped(KeyEvent e) {
+		
+	}
 	//endregion
 	
 	

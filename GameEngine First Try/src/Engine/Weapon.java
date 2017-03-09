@@ -1,5 +1,8 @@
 package Engine;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 /**
  * Created by flavia on 02.03.17.
  */
@@ -7,13 +10,25 @@ public class Weapon {
 	
 	
 	//region Data
-	final int range;
+	private final String name;
+	
+	public String getName() {
+		return name;
+	}
+	
+	private final int range;
     /**
      * The range of the Weapon in Tiles
      */
     public int getRange() {
         return range;
     }
+    
+    private final int damage;
+	
+	public int getDamage() {
+		return damage;
+	}
 	
 	/**
 	 * Which Character holds this Weapon. Can be null if on the Ground!
@@ -32,6 +47,7 @@ public class Weapon {
 	 * The tile this Weapon is on. Unused when hold by a Character.
 	 */
 	private Tile tile;
+	
 	/**
 	 * @return Returns the owner's tile if this Weapon is hold by someone or the tile on which this Weapon lies.
 	 */
@@ -50,11 +66,59 @@ public class Weapon {
 		this.tile = tile;
 	}
 	//endregion
-    
-    
-    public Weapon(int range) {
+	
+	
+	//region Weapon Prototypes
+	/**
+	 * These are all the prototypes of the weapons in the game. They aren't used directly in the game,
+	 * they are only used to create clones from them via {@link #addWeaponPrototype(int, String, int)}.
+	 */
+	static ArrayList<Weapon> weaponPrototypes = new ArrayList<>();
+	
+	/**
+	 * This adds a new prototype to {@link #weaponPrototypes}.
+	 * @param range
+	 */
+	public static void addWeaponPrototype (int range, String name, int damage) {
+		//TODO: Add sprite to prototype.
+		Weapon prototype = new Weapon(range, name, damage);
+		weaponPrototypes.add(prototype);
+	}
+	
+	/**
+	 * This is only used to create Weapon prototypes via {@link #addWeaponPrototype(int, String, int)}.
+	 * @param range The range of the Weapon.
+	 */
+	private Weapon(int range, String name, int damage) {
 		this.range = range;
+		this.name = name;
+		this.damage = damage;
+	}
+	//endregion
+	
+	/**
+	 * This creates a new Instance of a Weapon with the values copied from the given prototype from {@link #weaponPrototypes}.
+	 * @param weaponPrototype
+	 * @param tile
+	 * @param owner
+	 */
+	public Weapon(Weapon weaponPrototype, Tile tile, Character owner) {
+		this.range = weaponPrototype.range;
+		this.name = weaponPrototype.name;
+		this.damage = weaponPrototype.damage;
+		this.tile = tile;
+		this.owner = owner;
+		
+		if (owner != null) {
+			owner.setWeapon(this);
+		}
     }
-
-
+	
+	
+	@Override
+	public String toString() {
+		return name + " with range " + range;
+	}
+	
+	
 }

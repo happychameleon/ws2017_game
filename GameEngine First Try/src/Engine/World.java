@@ -1,5 +1,7 @@
 package Engine;
 
+import GraphicAndInput.SelectionType;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -44,7 +46,6 @@ public class World {
     }
 	
 	/**
-	 *
 	 * @param selectedTile The newly {@link #selectedTile}.
 	 */
 	public void setSelectedTile (Tile selectedTile) {
@@ -52,15 +53,35 @@ public class World {
     }
 	
 	/**
+	 * This defines what exactly on the Tile is selected. (e.g. the Tile itself, the Character on it,
+	 * the Weapon hold by the Character etc.)
+	 */
+	private SelectionType selectionType = SelectionType.NOTHING;
+	
+	/**
+	 * @return {@link #selectionType}
+	 */
+	public SelectionType getSelectionType() { return selectionType; }
+	
+	/**
+	 * @param selectionType {@link #selectionType}
+	 */
+	public void setSelectionType(SelectionType selectionType) { this.selectionType = selectionType; }
+	
+	/**
 	 * All the players Playing the game. The order of the Players in here represents the turn order
 	 * (players[0] is first, then players[1] etc.).
-	 * @see #getCurrentPlayer().
+	 * @see #getCurrentPlayer()
 	 */
 	private final ArrayList<Player> players;
 	
+	/**
+	 * The index of the Player from {@link #players} which's turn it is.
+	 */
 	private int currentPlayerIndex = 0;
 	
 	/**
+	 * This returns the Player from {@link #players} at index {@link #currentPlayerIndex}.
 	 * @return The player which's turn it is.
 	 */
 	public Player getCurrentPlayer() {
@@ -74,7 +95,26 @@ public class World {
 		}
 	}
     
-    ArrayList<Character> characters;
+    private ArrayList<Character> characters;
+	
+	public void removeCharacter(Character character) {
+		if (characters.contains(character) == false) {
+			System.out.println("World::removeCharacter - ERROR: Character not in characters!");
+		}
+		characters.remove(character);
+		if (selectedTile == character.getTile()) {
+			selectedTile = null;
+			setSelectionType(SelectionType.NOTHING);
+			//TODO: remove highlighted tiles.
+		}
+	}
+	
+	public void addCharacter(Character character) {
+		if (characters.contains(character)) {
+			System.out.println("World::addCharacter - ERROR: Character already in characters!");
+		}
+		characters.add(character);
+	}
     //endregion
 	
 	
@@ -102,8 +142,10 @@ public class World {
 		        tiles[x][y] = new Tile(this, x, y, tileType);
 	        }
         }
-        
-        // FIXME: Add real players.
+		
+		createWeaponPrototypes();
+		
+		// FIXME: Add real players.
 		players = new ArrayList<>();
 		players.add(new Player());
 		
@@ -114,17 +156,19 @@ public class World {
 		    }
 		}
 		
-		for (Character character :
-				characters) {
-			System.out.println(character.toString());
-		}
+	}
+	
+	private void createWeaponPrototypes() {
+		//TODO: (maybe) instead of hardcoding the weapons here we could read them in from a file.
+		Weapon.addWeaponPrototype(4, "Medium Water Gun", 30);
+		//TODO: Add more weapons.
 	}
 	
 	private void CreateNewRandomCharacter(Player player) {
     	Tile tile = getRandomTile(true);
     	Weapon weapon = getRandomWeapon();
     	
-    	Character character = new Character(player, tile, weapon);
+    	Character character = new Character(this, player, tile, weapon);
     	characters.add(character);
 	}
 	
@@ -138,8 +182,9 @@ public class World {
 	}
 	
 	private Weapon getRandomWeapon() {
-		//TODO (for testing).
-		return null;
+		//TODO add randomness (for testing).
+		Weapon prototype = Weapon.weaponPrototypes.get(0);
+		return new Weapon(prototype, null, null);
 	}
 	//endregion
 	
