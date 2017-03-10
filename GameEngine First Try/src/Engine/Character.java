@@ -13,15 +13,15 @@ public class Character {
 	//region Data
 	private World world;
 	
+	/**
+	 * The Player who controls this Character.
+	 */
     private Player owner;
-    /**
-     * The Engine.Player who controls this Engine.Character.
-     */
+    
     public Player getOwner() {
         return owner;
     }
-
-
+	
     private Tile tile;
     /**
      * The Engine.Tile on which this Engine.Character is.
@@ -125,9 +125,11 @@ public class Character {
     public String toString() {
     	String s = "Character " + name;
     	if (tile != null)
-    	    s += ", standing at " + tile.toString();
+    	    s += ", Position: " + tile.toString();
     	if (weapon != null)
-		    s += ", carrying " + weapon.toString();
+		    s += ", Weapon: " + weapon.toString();
+    	if (owner != null)
+    		s+= ", Owner: " + owner.name;
     	s += ", Wetness: " + wetness + "%";
     	return s;
     }
@@ -206,8 +208,7 @@ public class Character {
 		}
     }
 	
-	
-	public HashSet<Character> getAllCharactersInRange () {
+	public HashSet<Character> getAllEnemyCharactersInRange () {
 		if (weapon == null) {
 			System.out.println("Character::getAllCharactersInRange - ERROR: Character has no Weapon!");
 			return null;
@@ -215,11 +216,15 @@ public class Character {
 		HashSet<Character> charactersInRange = new HashSet<>();
 		for (Tile tile : tile.getAllTilesInRange(weapon.getRange(), false)) {
 			if (tile.getCharacter() != null
-					/*TODO: add check for same Team! && tile.getCharacter().getOwner().getTeam() != this.getOwner().getTeam()*/) {
+					&& this.isOnSameTeamAs(tile.getCharacter()) == false) {
 				charactersInRange.add(tile.getCharacter());
 			}
 		}
 		return charactersInRange;
+	}
+	
+	public boolean isOnSameTeamAs(Character otherCharacter) {
+		return this.owner.getTeam() == otherCharacter.owner.getTeam();
 	}
     
 }

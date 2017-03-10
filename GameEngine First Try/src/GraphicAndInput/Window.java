@@ -122,16 +122,19 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 			g.setColor(color);
 		}
 		
+		// Paint the highlighted Tiles
 		if (highlightedTiles != null && highlightedTiles.contains(tile)) {
 			g.setColor(g.getColor().darker().darker());
 		}
 		
+		// Paint the selected Tile
 		if (tile == world.getSelectedTile()) {
 			g.setColor(g.getColor().darker().darker().darker());
 		}
 		
+		// Paint the Character
 		if (tile.getCharacter() != null && (pixelX == Tile.tileSizeInPixels/2 && pixelY == Tile.tileSizeInPixels/2)) {
-			g.setColor(Color.yellow);
+			g.setColor(tile.getCharacter().getOwner().getColor());
 		}
 		
 		g.fillRect(leftX, topY, pixelSize, pixelSize);
@@ -159,7 +162,6 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 						break;
 					case WEAPON:
 						attackCharacter(tileUnderMouse);
-						//TODO: Attack with Weapon.
 						break;
 					default:
 						break;
@@ -192,7 +194,7 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 	 */
 	private void selectTile (Tile tileUnderMouse) {
 		world.setSelectedTile(tileUnderMouse);
-		if (tileUnderMouse.getCharacter() != null) {
+		if (tileUnderMouse.getCharacter() != null && tileUnderMouse.getCharacter().getOwner().hasTurn()) {
 			// We have selected a Character. Highlight their movement Range.
 			highlightedTiles = tileUnderMouse.getAllTilesInRange(tileUnderMouse.getCharacter().getMoveRange(), true);
 			world.setSelectionType(SelectionType.CHARACTER);
@@ -202,6 +204,10 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 		}
 	}
 	
+	/**
+	 * This method moves the selected Character to the given Tile, IF it is in range.
+	 * @param tileUnderMouse The destination Tile.
+	 */
 	private void moveCharacter (Tile tileUnderMouse) {
 		if (highlightedTiles != null && highlightedTiles.contains(tileUnderMouse)) {
 			System.out.println("Character should be moved.");
@@ -214,19 +220,25 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 		}
 	}
 	
+	/**
+	 * This Method carries out an Attack by the selected Character against the Character standing on the given Tile
+	 * @param attackedTile The Tile where the possible targeted Character stands on.
+	 */
 	private void attackCharacter(Tile attackedTile) {
-		System.out.println("Window::attackCharacter");
+		System.out.println("Window#attackCharacter");
 		if (attackedTile.getCharacter() != null
 				&& world.getSelectedTile() != null
 				&& world.getSelectedTile().getCharacter() != null
-				&& world.getSelectedTile().getCharacter().getWeapon() != null) {
+				&& world.getSelectedTile().getCharacter().getWeapon() != null
+				&& world.getSelectionType() == SelectionType.CHARACTER) {
 			Character targetedCharacter = attackedTile.getCharacter();
 			Character attackingCharacter = world.getSelectedTile().getCharacter();
 			System.out.println("Targeting");
-			if (attackingCharacter.getAllCharactersInRange().contains(targetedCharacter)) {
+			if (attackingCharacter.getAllEnemyCharactersInRange().contains(targetedCharacter)) {
 				// The attacking Character can attack the targeted Character.
 				targetedCharacter.changeWetness(attackingCharacter.getWeapon().getDamage());
 				System.out.println(attackingCharacter + " ATTACKED " + targetedCharacter + "!");
+				// TODO: Remove actionPoints from the attackingCharacter and first check if they have enough.
 			}
 		}
 	}
@@ -269,12 +281,18 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_SPACE:
 				System.out.println("SPACE typed!");
-				if (world.getSelectedTile() != null
-						&& world.getSelectedTile().getCharacter() != null
-						&& world.getSelectedTile().getCharacter().getWeapon() != null) {
-					selectWeapon();
+				if (world.getSelectedTile() != null && world.getSelectedTile().getCharacter() != null) {
+					if (World.instance.getSelectionType() == SelectionType.CHARACTER
+							&& world.getSelectedTile().getCharacter().getWeapon() != null) {
+						selectWeapon();
+					}
+				} else {
+					System.out.println("Window#keyPressed - ERROR: world.getSelectionType() == CHARACTER, but there is no selected Tile or Character on the selected Tile");
 				}
 				repaint();
+				break;
+			case KeyEvent.VK_ENTER:
+				world.endTurn();
 				break;
 			default:
 				System.out.println("Key Typed: " + e.getKeyCode());
@@ -282,9 +300,15 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 		}
 	}
 	
+	/**
+	 * This method selects the Weapon carried by the selected Player. The selected Player has to carry a weapon!
+	 */
 	private void selectWeapon() {
 		world.setSelectionType(SelectionType.WEAPON);
 		Weapon selectedWeapon = world.getSelectedTile().getCharacter().getWeapon();
+		if (selectedWeapon == null) {
+			System.out.println("Window#selectWeapon - ERROR: selected Character carries no Weapon!");
+		}
 		highlightedTiles = world.getSelectedTile().getAllTilesInRange(selectedWeapon.getRange(), false);
 	}
 	

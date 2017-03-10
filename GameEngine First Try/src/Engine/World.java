@@ -1,6 +1,7 @@
 package Engine;
 
 import GraphicAndInput.SelectionType;
+import TurnBasedSystem.TurnController;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -31,6 +32,13 @@ public class World {
     public int getMapHeight() {
         return tiles[0].length;
     }
+	
+	/**
+	 * This is the World we currently play in. It should be created at the start of the game. Everything else is created
+	 * when creating the World. Therefore it should never be null.
+	 * There can always only be one World!
+	 */
+	public static World instance;
     
     /**
      * The Tile which was selected last with a left mouse click.
@@ -68,31 +76,14 @@ public class World {
 	 */
 	public void setSelectionType(SelectionType selectionType) { this.selectionType = selectionType; }
 	
-	/**
-	 * All the players Playing the game. The order of the Players in here represents the turn order
-	 * (players[0] is first, then players[1] etc.).
-	 * @see #getCurrentPlayer()
-	 */
-	private final ArrayList<Player> players;
+	private final TurnController turnController;
 	
-	/**
-	 * The index of the Player from {@link #players} which's turn it is.
-	 */
-	private int currentPlayerIndex = 0;
-	
-	/**
-	 * This returns the Player from {@link #players} at index {@link #currentPlayerIndex}.
-	 * @return The player which's turn it is.
-	 */
 	public Player getCurrentPlayer() {
-		return players.get(currentPlayerIndex);
+		return turnController.getCurrentPlayer();
 	}
 	
-	public void endTurn () {
-		currentPlayerIndex++;
-		if (players.size() <= currentPlayerIndex) { // == should also work, but just to be sure.
-			currentPlayerIndex = 0;
-		}
+	public void endTurn() {
+		turnController.endTurn();
 	}
     
     private ArrayList<Character> characters;
@@ -120,6 +111,11 @@ public class World {
 	
 	//region World Creation
 	public World (int width, int height, int charactersPerPlayer) {
+		if (instance != null) {
+			System.out.println("ERROR: There can always only be one World! But there was already one when creating a new World!");
+		}
+		instance = this;
+		
         tiles = new Tile[width][height];
         Random random = new Random();
         // Generate all the Tiles and randomly set the tileType.
@@ -142,15 +138,13 @@ public class World {
 		        tiles[x][y] = new Tile(this, x, y, tileType);
 	        }
         }
+        
+        turnController = new TurnController(2);
 		
 		createWeaponPrototypes();
 		
-		// FIXME: Add real players.
-		players = new ArrayList<>();
-		players.add(new Player());
-		
 		characters = new ArrayList<>();
-		for (Player player : players) {
+		for (Player player : turnController.getPlayers()) {
 			for (int i = 0; i < charactersPerPlayer; i++) {
 			    CreateNewRandomCharacter(player);
 		    }
