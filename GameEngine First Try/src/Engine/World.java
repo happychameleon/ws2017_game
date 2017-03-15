@@ -1,5 +1,8 @@
 package Engine;
 
+import GraphicAndInput.SelectionType;
+import TurnBasedSystem.TurnController;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -29,6 +32,13 @@ public class World {
     public int getMapHeight() {
         return tiles[0].length;
     }
+	
+	/**
+	 * This is the World we currently play in. It should be created at the start of the game. Everything else is created
+	 * when creating the World. Therefore it should never be null.
+	 * There can always only be one World!
+	 */
+	public static World instance;
     
     /**
      * The Tile which was selected last with a left mouse click.
@@ -44,7 +54,6 @@ public class World {
     }
 	
 	/**
-	 *
 	 * @param selectedTile The newly {@link #selectedTile}.
 	 */
 	public void setSelectedTile (Tile selectedTile) {
@@ -52,34 +61,61 @@ public class World {
     }
 	
 	/**
-	 * All the players Playing the game. The order of the Players in here represents the turn order
-	 * (players[0] is first, then players[1] etc.).
-	 * @see #getCurrentPlayer().
+	 * This defines what exactly on the Tile is selected. (e.g. the Tile itself, the Character on it,
+	 * the Weapon hold by the Character etc.)
 	 */
-	private final ArrayList<Player> players;
-	
-	private int currentPlayerIndex = 0;
+	private SelectionType selectionType = SelectionType.NOTHING;
 	
 	/**
-	 * @return The player which's turn it is.
+	 * @return {@link #selectionType}
 	 */
+	public SelectionType getSelectionType() { return selectionType; }
+	
+	/**
+	 * @param selectionType {@link #selectionType}
+	 */
+	public void setSelectionType(SelectionType selectionType) { this.selectionType = selectionType; }
+	
+	private final TurnController turnController;
+	
 	public Player getCurrentPlayer() {
-		return players.get(currentPlayerIndex);
+		return turnController.getCurrentPlayer();
 	}
 	
-	public void endTurn () {
-		currentPlayerIndex++;
-		if (players.size() <= currentPlayerIndex) { // == should also work, but just to be sure.
-			currentPlayerIndex = 0;
-		}
+	public void endTurn() {
+		turnController.endTurn();
 	}
     
-    ArrayList<Character> characters;
+    private ArrayList<Character> characters;
+	
+	public void removeCharacter(Character character) {
+		if (characters.contains(character) == false) {
+			System.out.println("World::removeCharacter - ERROR: Character not in characters!");
+		}
+		characters.remove(character);
+		if (selectedTile == character.getTile()) {
+			selectedTile = null;
+			setSelectionType(SelectionType.NOTHING);
+			//TODO: remove highlighted tiles.
+		}
+	}
+	
+	public void addCharacter(Character character) {
+		if (characters.contains(character)) {
+			System.out.println("World::addCharacter - ERROR: Character already in characters!");
+		}
+		characters.add(character);
+	}
     //endregion
 	
 	
 	//region World Creation
 	public World (int width, int height, int charactersPerPlayer) {
+		if (instance != null) {
+			System.out.println("ERROR: There can always only be one World! But there was already one when creating a new World!");
+		}
+		instance = this;
+		
         tiles = new Tile[width][height];
         Random random = new Random();
         // Generate all the Tiles and randomly set the tileType.
@@ -103,28 +139,30 @@ public class World {
 	        }
         }
         
-        // FIXME: Add real players.
-		players = new ArrayList<>();
-		players.add(new Player());
+        turnController = new TurnController(2);
+		
+		createWeaponPrototypes();
 		
 		characters = new ArrayList<>();
-		for (Player player : players) {
+		for (Player player : turnController.getPlayers()) {
 			for (int i = 0; i < charactersPerPlayer; i++) {
 			    CreateNewRandomCharacter(player);
 		    }
 		}
 		
-		for (Character character :
-				characters) {
-			System.out.println(character.toString());
-		}
+	}
+	
+	private void createWeaponPrototypes() {
+		//TODO: (maybe) instead of hardcoding the weapons here we could read them in from a file.
+		Weapon.addWeaponPrototype(4, "Medium Water Gun", 30);
+		//TODO: Add more weapons.
 	}
 	
 	private void CreateNewRandomCharacter(Player player) {
     	Tile tile = getRandomTile(true);
     	Weapon weapon = getRandomWeapon();
     	
-    	Character character = new Character(player, tile, weapon);
+    	Character character = new Character(this, player, tile, weapon);
     	characters.add(character);
 	}
 	
@@ -138,8 +176,9 @@ public class World {
 	}
 	
 	private Weapon getRandomWeapon() {
-		//TODO (for testing).
-		return null;
+		//TODO add randomness (for testing).
+		Weapon prototype = Weapon.weaponPrototypes.get(0);
+		return new Weapon(prototype, null, null);
 	}
 	//endregion
 	

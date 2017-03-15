@@ -174,17 +174,6 @@ public class Tile {
         }
 	
 	    System.out.println("tilesInRange: " + tilesInRange);
-	    
-        // We can't shoot someone on a Tile which isn't walkable.
-	    HashSet<Tile> tilesToRemove = new HashSet<Tile>();
-	    for (Tile t : tilesInRange.keySet()) {
-            if (t != null && t.isWalkable(true) == false) {
-                tilesToRemove.add(t);
-            }
-        }
-        for (Tile t : tilesToRemove) {
-	    	tilesInRange.remove(t);
-        }
         
         return tilesInRange.keySet();
     }

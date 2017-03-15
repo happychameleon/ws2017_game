@@ -1,5 +1,6 @@
 package Engine;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -10,15 +11,17 @@ import java.util.Set;
 public class Character {
 
 	//region Data
+	private World world;
+	
+	/**
+	 * The Player who controls this Character.
+	 */
     private Player owner;
-    /**
-     * The Engine.Player who controls this Engine.Character.
-     */
+    
     public Player getOwner() {
         return owner;
     }
-
-
+	
     private Tile tile;
     /**
      * The Engine.Tile on which this Engine.Character is.
@@ -37,11 +40,19 @@ public class Character {
 		newTile.setCharacter(this);
 	}
 	
+	/**
+	 * The main Weapon held by this Character.
+	 */
 	private Weapon weapon;
-    /**
-     * The main Engine.Weapon held by this Engine.Character.
-     */
+    
     public Weapon getWeapon() { return weapon; }
+	
+	public void setWeapon(Weapon weapon) {
+    	if (this.weapon != null) {
+    		System.out.println("Character::setWeapon - ERROR: Character already has a weapon!");
+	    }
+		this.weapon = weapon;
+	}
 	
 	/**
 	 * This is like the health of the Character. If it reaches 100% the Character is "dead". They drop all their
@@ -89,7 +100,8 @@ public class Character {
 	//endregion
 	
 	
-	public Character(Player owner, Tile tile, Weapon weapon) {
+	public Character(World world, Player owner, Tile tile, Weapon weapon) {
+		this.world = world;
         this.owner = owner;
         this.tile = tile;
         this.weapon = weapon;
@@ -106,12 +118,20 @@ public class Character {
      * @return The Attack range calculated with {@link Tile#getAllTilesInRange(int, boolean)} from this Character's Weapon's range. Can be null!
      */
     public Set<Tile> getAttackRangeInTiles() {
-        return this.tile.getAllTilesInRange(weapon.range, false);
+        return this.tile.getAllTilesInRange(weapon.getRange(), false);
     }
     
     @Override
     public String toString() {
-        return "Character " + name + ", standing at " + tile.toString() /* TODO: add weapon + ", carrying " + weapon.toString() */ + ".";
+    	String s = "Character " + name;
+    	if (tile != null)
+    	    s += ", Position: " + tile.toString();
+    	if (weapon != null)
+		    s += ", Weapon: " + weapon.toString();
+    	if (owner != null)
+    		s+= ", Owner: " + owner.name;
+    	s += ", Wetness: " + wetness + "%";
+    	return s;
     }
 	
 	/**
@@ -119,7 +139,13 @@ public class Character {
 	 * It also checks the winning conditions and ends the game if necessary.
 	 */
 	public void KillCharacter() {
-    	// TODO!
+		if (tile != null) {
+			tile.setCharacter(null);
+		}
+		world.removeCharacter(this);
+    	// If more Lists with characters are implemented, remove them from there to! (E.g. Every Player will have a Character List.)
+		System.out.println(this.toString() + " has been \"killed\"!");
+		//TODO? Add to list of killed Characters for statistic or "kill" count or other info.
     }
 	
 	/**
@@ -175,10 +201,30 @@ public class Character {
 		
 		if (tile.isWalkable(true)) {
 			setTile(tile);
+			System.out.println(this.toString() + " moved to " + tile);
 			return true;
 		} else {
 			return false;
 		}
     }
+	
+	public HashSet<Character> getAllEnemyCharactersInRange () {
+		if (weapon == null) {
+			System.out.println("Character::getAllCharactersInRange - ERROR: Character has no Weapon!");
+			return null;
+		}
+		HashSet<Character> charactersInRange = new HashSet<>();
+		for (Tile tile : tile.getAllTilesInRange(weapon.getRange(), false)) {
+			if (tile.getCharacter() != null
+					&& this.isOnSameTeamAs(tile.getCharacter()) == false) {
+				charactersInRange.add(tile.getCharacter());
+			}
+		}
+		return charactersInRange;
+	}
+	
+	public boolean isOnSameTeamAs(Character otherCharacter) {
+		return this.owner.getTeam() == otherCharacter.owner.getTeam();
+	}
     
 }
