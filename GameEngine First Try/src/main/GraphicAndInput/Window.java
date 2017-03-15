@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 /**
@@ -42,6 +43,11 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 	private int topInset;
 	
 	/**
+	 * The image on where the world is first drawn and then copied from onto the window.
+	 */
+	private BufferedImage image;
+	
+	/**
 	 * These Tiles represent the movement Range if a Character is selected.
 	 * The keys are the Tiles, the values are the distance from the starting Tile.
 	 * TODO: Move this to the World? Or just Selection and highlightedTiles to the same place.
@@ -69,25 +75,35 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 		
 	}
 	
+	public void repaintImage() {
+		image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = image.createGraphics();
+		
+		// recalculate the image.
+		for (int x = 0; x < world.getMapWidth(); x++) {
+			for (int y = 0; y < world.getMapHeight(); y++) {
+				paintOneTile(g2d, world.getTileAt(x, y));
+			}
+		}
+		
+		//System.out.println("repaintImage");
+	}
+	
 	
 	//region Painting
 	@Override
 	public void paint(Graphics g) {
+		repaintImage();
 		super.paint(g);
-		
-		for (int x = 0; x < world.getMapWidth(); x++) {
-			for (int y = 0; y < world.getMapHeight(); y++) {
-				paintOneTile(g, world.getTileAt(x, y));
-			}
-		}
+		g.drawImage(image, 0, 0, null);
 	}
 	
 	/**
-	 * This method paints one Tile with all it's Pixels via {@link #paintOnePixel(Graphics, int, int, int, int, Color, Tile)}.
+	 * This method paints one Tile with all it's Pixels via {@link #paintOnePixel}.
 	 * @param g The Graphics element.
 	 * @param tile The Tile to paint.
 	 */
-	private void paintOneTile(Graphics g, Tile tile) {
+	private void paintOneTile(Graphics2D g, Tile tile) {
 		int tileX = tile.getXPosition();
 		int tileY = tile.getYPosition();
 		
@@ -107,7 +123,7 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 	 * @param pixelY The y-position of the Pixel in the Tile.
 	 * @param color The Color of this Pixel.
 	 */
-	private void paintOnePixel(Graphics g, int tileX, int tileY, int pixelX, int pixelY, Color color, Tile tile) {
+	private void paintOnePixel(Graphics2D g, int tileX, int tileY, int pixelX, int pixelY, Color color, Tile tile) {
 		int leftX = (tileX * Tile.tileSizeInPixels * pixelSize) + (pixelX * pixelSize);
 		int topY = (tileY * Tile.tileSizeInPixels * pixelSize) + (pixelY * pixelSize);
 		
