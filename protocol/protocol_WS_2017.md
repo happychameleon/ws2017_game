@@ -12,7 +12,8 @@ The WS\_2017 service is started by the server listening to port 1030. To start a
 Commands
 ========
 
-All commands are case insensitive and made up entirely of ASCII characters. Commands always have exactly one **keyword** followed by none or more **arguments**. The keyword is never longer then 5 characters. Commands are always terminated with a CR (Carriage Return: \\r).
+All commands are case insensitive and made up entirely of ASCII characters. Commands always have exactly one **keyword** followed by none or more **arguments**. The keyword is never longer then 5 characters. Commands are always terminated with a CRCF (Carriage Return: \\r, New Line: \\n). Commands will either be answered with a positive response confirming that the command has been understood and processed or negative response pointing out what is wrong.
+A positive response has a ’+OK’ followed by the command that was successful. A negative response has a ’-ERR’ followed by the command that failed and an argument that either is a message with what went wrong or a suggestion for change that is relevant to the keyword.
 
 AUTHORIZATION State Commands
 ============================
@@ -31,7 +32,7 @@ recognizing client:
 negative response:
 
 > c: uname &lt;name&gt;
-> s: -ERR &lt;name&gt; is already taken by another client
+> s: -ERR uname &lt;name\_suggestion&gt;
 
 Alternatively the server could remove used names after the client disconnects. When a client connects to the server the client has to send a message for the server to identify it by. If the name is already present in the server (i.e there is already a client connected with that name), the server returns a negative message. If the name given to the server is unique the server confirms it with a positive response.
 registering a name:
@@ -42,7 +43,7 @@ registering a name:
 negative response:
 
 > c: uname &lt;name&gt;
-> s: -ERR ’&lt;name&gt; is already taken by another client’
+> s: -ERR uname &lt;name\_suggestion&gt;
 
 TRANSACTION State Commands
 ==========================
