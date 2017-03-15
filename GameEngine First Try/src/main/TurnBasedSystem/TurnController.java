@@ -1,8 +1,7 @@
-package TurnBasedSystem;
+package main.TurnBasedSystem;
 
-import Engine.Player;
-import Engine.Team;
-import Engine.World;
+import main.Engine.Player;
+import main.Engine.Team;
 
 import java.util.ArrayList;
 

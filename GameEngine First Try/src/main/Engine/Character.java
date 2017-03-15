@@ -1,4 +1,4 @@
-package Engine;
+package main.Engine;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,14 +17,19 @@ public class Character {
 	 * The Player who controls this Character.
 	 */
     private Player owner;
-    
-    public Player getOwner() {
+	
+	public Player getOwner() {
         return owner;
     }
 	
-    private Tile tile;
+	/**
+	 * The movement Cost in {@link #actionPoints} per Tile moved.
+	 */
+	public static final int movementCostPerTile = 3;
+	
+	private Tile tile;
     /**
-     * The Engine.Tile on which this Engine.Character is.
+     * The main.Engine.Tile on which this main.Engine.Character is.
      */
     public Tile getTile() {
         return tile;
@@ -78,24 +83,80 @@ public class Character {
 		}
 	}
 	
-	private int moveRange = 3;
 	
 	/**
-	 * Get's the maximum {@link #moveRange} of the Character.
-	 * @return
+	 * @return The maximum move Range of the Character in Tiles.
 	 */
-	public int getMoveRange() {
-		//TODO: Once the ActionPoints per Round are implemented this should return the maximum Tiles the Character can walk with their remaining ActionPoints.
-		return moveRange;
+	public int getMoveRange () {
+		return actionPoints / movementCostPerTile;
+	}
+	
+	/**
+	 * The actionPoints this Character has left until it's their player's turn again.
+	 */
+	private int actionPoints;
+	
+	/**
+	 * @return {@link #actionPoints}
+	 */
+	public int getActionPoints () {
+		return actionPoints;
+	}
+	
+	/**
+	 * The actionPoints a Character has at the beginning of their player's turn.
+	 * This value could change (e.g. could be raised with power ups or could be less when this Character is 50% wet).
+	 */
+	private int maximumActionPoints = 10;
+	
+	/**
+	 * @return {@link #maximumActionPoints}
+	 */
+	public int getMaximumActionPoints() {
+		return maximumActionPoints;
+	}
+	
+	public void changeMaximumActionPoints(int maximumActionPointsChange) {
+		this.maximumActionPoints += maximumActionPointsChange;
+	}
+	
+	/**
+	 * Removes the given value from {@link #actionPoints} ONLY IF there are enough actionPoints left.
+	 * Called in an if statement before carrying out the action inside the if statement. In the else part optionally a
+	 * message can be displayed to the player (e.g. "not enough action points!").
+	 * @param actionPointsToRemove How much actionPoints the action cost.
+	 * @return <code>true</code> if the action could be carried out and the actionPoints were removed,
+	 * <code>false</code> if there weren't enough action points and the action could not be carried out.
+	 */
+	public boolean removeActionPoints (int actionPointsToRemove) {
+		if (actionPoints < actionPointsToRemove) {
+			System.out.println("Character.removeActionPoints - FAIL current actionPoints: " + actionPoints + "; actionPointsToRemove: " + actionPointsToRemove);
+			return false;
+		}
+		this.actionPoints -= actionPointsToRemove;
+		System.out.println("Character.removeActionPoints - SUCCESS current actionPoints: " + actionPoints + "; actionPointsToRemove: " + actionPointsToRemove);
+		return true;
+	}
+	
+	/**
+	 * Sets the current {@link #actionPoints} to the value of {@link #maximumActionPoints}.
+	 */
+	private void resetActionPoints() {
+		this.actionPoints = maximumActionPoints;
 	}
 	
 	/**
 	 * The name of this Character.
+	 * TODO: Add a List of (gender neutral?) names to randomly get one from.
 	 */
 	private String name = "Jane";
 	
 	public String getName() {
 		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 	//endregion
 	
@@ -105,6 +166,8 @@ public class Character {
         this.owner = owner;
         this.tile = tile;
         this.weapon = weapon;
+        
+        this.actionPoints = maximumActionPoints;
         
         if (tile != null && tile.getCharacter() != null) {
             System.out.println("ERROR: new Character placed on a Tile where there is already one!");
@@ -118,7 +181,7 @@ public class Character {
      * @return The Attack range calculated with {@link Tile#getAllTilesInRange(int, boolean)} from this Character's Weapon's range. Can be null!
      */
     public Set<Tile> getAttackRangeInTiles() {
-        return this.tile.getAllTilesInRange(weapon.getRange(), false);
+        return this.tile.getAllTilesInRange(weapon.getRange(), false).keySet();
     }
     
     @Override
@@ -191,18 +254,23 @@ public class Character {
 	
 	/**
 	 * Moves the Character to the specific Tile if it is walkable.
-	 * @param tile The Tile to move to.
-	 * @return True if successful, false otherwise.
+	 * @param destinationTile The Tile to move to.
+	 * @param distance The distance between the Characters current Tile and the destinationTile.
+	 * @return <code>true</code> if successful, <code>false</code> otherwise.
 	 */
-	public boolean moveCharacterTo(Tile tile) {
-		if (tile == null) {
+	public boolean moveCharacterTo(Tile destinationTile, int distance) {
+		if (destinationTile == null) {
 			return false;
 		}
 		
-		if (tile.isWalkable(true)) {
-			setTile(tile);
-			System.out.println(this.toString() + " moved to " + tile);
-			return true;
+		if (destinationTile.isWalkable(true)) {
+			if (this.removeActionPoints(distance * movementCostPerTile)) { // TODO: Check for action points!
+				setTile(destinationTile);
+				System.out.println(this.toString() + " moved to " + destinationTile);
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -214,7 +282,7 @@ public class Character {
 			return null;
 		}
 		HashSet<Character> charactersInRange = new HashSet<>();
-		for (Tile tile : tile.getAllTilesInRange(weapon.getRange(), false)) {
+		for (Tile tile : tile.getAllTilesInRange(weapon.getRange(), false).keySet()) {
 			if (tile.getCharacter() != null
 					&& this.isOnSameTeamAs(tile.getCharacter()) == false) {
 				charactersInRange.add(tile.getCharacter());
@@ -223,8 +291,18 @@ public class Character {
 		return charactersInRange;
 	}
 	
+	/**
+	 * @param otherCharacter another Character. (Could also be the same Character)
+	 * @return <code>true</code> if they're both on the same Team, <code>false</code> otherwise.
+	 */
 	public boolean isOnSameTeamAs(Character otherCharacter) {
 		return this.owner.getTeam() == otherCharacter.owner.getTeam();
 	}
-    
+	
+	/**
+	 * This method should be called by the owner for every Character, when the owner begins their turn.
+	 */
+	public void resetForNewTurn () {
+		resetActionPoints();
+	}
 }

@@ -1,9 +1,9 @@
-package Engine;
+package main.Engine;
 
 import java.awt.*;
 
 /**
- * The Types a Engine.Tile can be and it's properties. (eg Grass, Forest etc.)
+ * The Types a main.Engine.Tile can be and it's properties. (eg Grass, Forest etc.)
  * Created by flavia on 02.03.17.
  */
 public enum TileType {

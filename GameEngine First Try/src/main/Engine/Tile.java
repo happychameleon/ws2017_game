@@ -1,9 +1,7 @@
-package Engine;
+package main.Engine;
 
-import javax.sound.midi.SysexMessage;
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by flavia on 02.03.17.
@@ -36,7 +34,7 @@ public class Tile {
 	}
 	
 	/**
-     * The world this Engine.Tile belongs to.
+     * The world this main.Engine.Tile belongs to.
      */
 	private World world;
 
@@ -102,7 +100,7 @@ public class Tile {
     
     
     /**
-     * Returns all the Neighbours of this Engine.Tile in an Array.
+     * Returns all the Neighbours of this main.Engine.Tile in an Array.
      * Some Neighbours might be null! (At the end of the map).
      * @param includeDiagonals Whether the 4 diagonal Tiles should be included.
      * @return The Array with all the neighbouring Tiles. Depending on includeDiagonals the Array contains 4 or 8 Tiles. Some Neighbours might be null!
@@ -134,7 +132,7 @@ public class Tile {
      * @param withWalking True if the Tiles should be reachable by walking.
      * @return An Array of all the Tiles in range. Is <code>null</code> if this Tile isn't walkable! If not <code>null</code> then should never be empty.
      */
-    public Set<Tile> getAllTilesInRange(int range, boolean withWalking) {
+    public HashMap<Tile, Integer> getAllTilesInRange(int range, boolean withWalking) {
     	
     	if (this.isWalkable(false) == false || range <= 0) {
     		return null;
@@ -175,7 +173,7 @@ public class Tile {
 	
 	    System.out.println("tilesInRange: " + tilesInRange);
         
-        return tilesInRange.keySet();
+        return tilesInRange;
     }
 	
 	/**

@@ -1,7 +1,7 @@
-package Engine;
+package main.Engine;
 
-import GraphicAndInput.SelectionType;
-import TurnBasedSystem.TurnController;
+import main.GraphicAndInput.SelectionType;
+import main.TurnBasedSystem.TurnController;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -154,7 +154,8 @@ public class World {
 	
 	private void createWeaponPrototypes() {
 		//TODO: (maybe) instead of hardcoding the weapons here we could read them in from a file.
-		Weapon.addWeaponPrototype(4, "Medium Water Gun", 30);
+		Weapon.addWeaponPrototype(4, "Medium Water Gun", 30, 4);
+		
 		//TODO: Add more weapons.
 	}
 	
@@ -198,6 +199,15 @@ public class World {
             return null;
         }
         return tiles[x][y];
+    }
+	
+	public ArrayList<Character> getAllCharacterOfOwner (Player owner) {
+		ArrayList<Character> charactersOfOwner = new ArrayList<>();
+	    for (Character character : characters) {
+		    if (character.getOwner() == owner)
+		    	charactersOfOwner.add(character);
+	    }
+	    return charactersOfOwner;
     }
 
 

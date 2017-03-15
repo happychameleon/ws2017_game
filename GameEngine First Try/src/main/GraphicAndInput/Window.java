@@ -1,9 +1,10 @@
-package GraphicAndInput;
+package main.GraphicAndInput;
 
-import Engine.Character;
-import Engine.Tile;
-import Engine.Weapon;
-import Engine.World;
+import com.sun.istack.internal.Nullable;
+import main.Engine.Character;
+import main.Engine.Tile;
+import main.Engine.Weapon;
+import main.Engine.World;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
@@ -11,7 +12,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.util.Set;
+import java.util.HashMap;
 
 /**
  * The Window containing the general info about how to display the Game.
@@ -42,10 +43,11 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 	
 	/**
 	 * These Tiles represent the movement Range if a Character is selected.
-	 * TODO: Add shooting Range when a Weapon/AttackType is selected and other things.
-	 * Can be null!
+	 * The keys are the Tiles, the values are the distance from the starting Tile.
+	 * TODO: Move this to the World? Or just Selection and highlightedTiles to the same place.
 	 */
-	private Set<Tile> highlightedTiles;
+	@Nullable
+	private HashMap<Tile, Integer> highlightedTiles;
 	//endregion
 	
 	
@@ -89,9 +91,6 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 		int tileX = tile.getXPosition();
 		int tileY = tile.getYPosition();
 		
-		// TODO: For better performance this should only be called when something changed on the Tile.
-		// tile.RecalculateCurrentPixels();
-		
 		for (int x = 0; x < Tile.tileSizeInPixels; x++) {
 			for (int y = 0; y < Tile.tileSizeInPixels; y++) {
 				paintOnePixel(g, tileX, tileY, x, y, tile.getCurrentPixelAt(x, y), tile);
@@ -123,7 +122,7 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 		}
 		
 		// Paint the highlighted Tiles
-		if (highlightedTiles != null && highlightedTiles.contains(tile)) {
+		if (highlightedTiles != null && highlightedTiles.keySet().contains(tile)) {
 			g.setColor(g.getColor().darker().darker());
 		}
 		
@@ -209,13 +208,13 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 	 * @param tileUnderMouse The destination Tile.
 	 */
 	private void moveCharacter (Tile tileUnderMouse) {
-		if (highlightedTiles != null && highlightedTiles.contains(tileUnderMouse)) {
+		if (highlightedTiles != null && highlightedTiles.keySet().contains(tileUnderMouse)) {
 			System.out.println("Character should be moved.");
-			if (world.getSelectedTile().getCharacter().moveCharacterTo(tileUnderMouse)) {
+			if (world.getSelectedTile().getCharacter().moveCharacterTo(tileUnderMouse, highlightedTiles.get(tileUnderMouse))) {
 				highlightedTiles = null;
 				world.setSelectedTile(null);
 			} else {
-				System.out.println("Window#mouseClicked - ERROR: Why can't we move the Character?");
+				System.err.println("Window#mouseClicked - ERROR: Why can't we move the Character?");
 			}
 		}
 	}
@@ -225,20 +224,25 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 	 * @param attackedTile The Tile where the possible targeted Character stands on.
 	 */
 	private void attackCharacter(Tile attackedTile) {
-		System.out.println("Window#attackCharacter");
+		System.out.println("Window.attackCharacter");
 		if (attackedTile.getCharacter() != null
 				&& world.getSelectedTile() != null
 				&& world.getSelectedTile().getCharacter() != null
 				&& world.getSelectedTile().getCharacter().getWeapon() != null
-				&& world.getSelectionType() == SelectionType.CHARACTER) {
+				&& world.getSelectionType() == SelectionType.WEAPON) {
 			Character targetedCharacter = attackedTile.getCharacter();
 			Character attackingCharacter = world.getSelectedTile().getCharacter();
 			System.out.println("Targeting");
 			if (attackingCharacter.getAllEnemyCharactersInRange().contains(targetedCharacter)) {
-				// The attacking Character can attack the targeted Character.
-				targetedCharacter.changeWetness(attackingCharacter.getWeapon().getDamage());
-				System.out.println(attackingCharacter + " ATTACKED " + targetedCharacter + "!");
-				// TODO: Remove actionPoints from the attackingCharacter and first check if they have enough.
+				// The targeted Character is in range from the attacking Character
+				if (attackingCharacter.removeActionPoints(attackingCharacter.getWeapon().getActionPointPerShot())) {
+					targetedCharacter.changeWetness(attackingCharacter.getWeapon().getDamage());
+					System.out.println(attackingCharacter + " ATTACKED " + targetedCharacter + "!");
+				} else {
+					System.out.println("Not enough actionPoints for Attack! (ATTACKER: " + attackingCharacter + "; TARGET: " + targetedCharacter + ")");
+				}
+			} else {
+				System.out.println("Character not in Range! (ATTACKER: " + attackingCharacter + "; TARGET: " + targetedCharacter + ")");
 			}
 		}
 	}
@@ -287,7 +291,7 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 						selectWeapon();
 					}
 				} else {
-					System.out.println("Window#keyPressed - ERROR: world.getSelectionType() == CHARACTER, but there is no selected Tile or Character on the selected Tile");
+					System.err.println("Window#keyPressed - ERROR: world.getSelectionType() == CHARACTER, but there is no selected Tile or Character on the selected Tile");
 				}
 				repaint();
 				break;
@@ -307,7 +311,7 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 		world.setSelectionType(SelectionType.WEAPON);
 		Weapon selectedWeapon = world.getSelectedTile().getCharacter().getWeapon();
 		if (selectedWeapon == null) {
-			System.out.println("Window#selectWeapon - ERROR: selected Character carries no Weapon!");
+			System.err.println("Window#selectWeapon - ERROR: selected Character carries no Weapon!");
 		}
 		highlightedTiles = world.getSelectedTile().getAllTilesInRange(selectedWeapon.getRange(), false);
 	}

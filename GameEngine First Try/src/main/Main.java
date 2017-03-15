@@ -1,5 +1,7 @@
-import Engine.World;
-import GraphicAndInput.Window;
+package main;
+
+import main.Engine.World;
+import main.GraphicAndInput.Window;
 
 import javax.swing.*;
 
@@ -15,7 +17,7 @@ public class Main {
 	
 	public static void main (String[] args) {
 		
-		world = new World(20, 10, 2);
+		world = new World(20, 20, 2);
 		
 		window = new Window(world, "WasserschlachtSimulator 2017 Prototype");
 		

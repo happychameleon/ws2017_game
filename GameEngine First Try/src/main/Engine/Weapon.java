@@ -1,7 +1,6 @@
-package Engine;
+package main.Engine;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * Created by flavia on 02.03.17.
@@ -28,6 +27,15 @@ public class Weapon {
 	
 	public int getDamage() {
 		return damage;
+	}
+	
+	/**
+	 * How many actionPoint it costs a Character to shoot once with this Weapon.
+	 */
+	private final int actionPointPerShot;
+	
+	public int getActionPointPerShot() {
+		return actionPointPerShot;
 	}
 	
 	/**
@@ -71,7 +79,7 @@ public class Weapon {
 	//region Weapon Prototypes
 	/**
 	 * These are all the prototypes of the weapons in the game. They aren't used directly in the game,
-	 * they are only used to create clones from them via {@link #addWeaponPrototype(int, String, int)}.
+	 * they are only used to create clones from them via {@link #addWeaponPrototype}.
 	 */
 	static ArrayList<Weapon> weaponPrototypes = new ArrayList<>();
 	
@@ -79,20 +87,21 @@ public class Weapon {
 	 * This adds a new prototype to {@link #weaponPrototypes}.
 	 * @param range
 	 */
-	public static void addWeaponPrototype (int range, String name, int damage) {
+	public static void addWeaponPrototype (int range, String name, int damage, int actionPointPerShot) {
 		//TODO: Add sprite to prototype.
-		Weapon prototype = new Weapon(range, name, damage);
+		Weapon prototype = new Weapon(range, name, damage, actionPointPerShot);
 		weaponPrototypes.add(prototype);
 	}
 	
 	/**
-	 * This is only used to create Weapon prototypes via {@link #addWeaponPrototype(int, String, int)}.
+	 * This is only used to create Weapon prototypes via {@link #addWeaponPrototype}.
 	 * @param range The range of the Weapon.
 	 */
-	private Weapon(int range, String name, int damage) {
+	private Weapon(int range, String name, int damage, int actionPointPerShot) {
 		this.range = range;
 		this.name = name;
 		this.damage = damage;
+		this.actionPointPerShot = actionPointPerShot;
 	}
 	//endregion
 	
@@ -106,6 +115,8 @@ public class Weapon {
 		this.range = weaponPrototype.range;
 		this.name = weaponPrototype.name;
 		this.damage = weaponPrototype.damage;
+		this.actionPointPerShot = weaponPrototype.actionPointPerShot;
+		
 		this.tile = tile;
 		this.owner = owner;
 		
