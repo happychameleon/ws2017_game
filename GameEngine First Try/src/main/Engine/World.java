@@ -76,7 +76,7 @@ public class World {
 	 */
 	public void setSelectionType(SelectionType selectionType) { this.selectionType = selectionType; }
 	
-	private final TurnController turnController;
+	public final TurnController turnController;
 	
 	public Player getCurrentPlayer() {
 		return turnController.getCurrentPlayer();
@@ -139,7 +139,7 @@ public class World {
 	        }
         }
         
-        turnController = new TurnController(2);
+        turnController = new TurnController(4);
 		
 		createWeaponPrototypes();
 		
@@ -154,7 +154,8 @@ public class World {
 	
 	private void createWeaponPrototypes() {
 		//TODO: (maybe) instead of hardcoding the weapons here we could read them in from a file.
-		Weapon.addWeaponPrototype(4, "Medium Water Gun", 30, 4);
+		Weapon.addWeaponPrototype(4, "Medium Water Gun", 25, 3);
+		Weapon.addWeaponPrototype(2, "Heavy Water Gun", 60, 4);
 		
 		//TODO: Add more weapons.
 	}
@@ -178,7 +179,8 @@ public class World {
 	
 	private Weapon getRandomWeapon() {
 		//TODO add randomness (for testing).
-		Weapon prototype = Weapon.weaponPrototypes.get(0);
+		Random r = new Random();
+		Weapon prototype = Weapon.weaponPrototypes.get(r.nextInt(Weapon.weaponPrototypes.size()));
 		return new Weapon(prototype, null, null);
 	}
 	//endregion

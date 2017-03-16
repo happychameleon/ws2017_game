@@ -1,6 +1,8 @@
 package main.Engine;
 
-import java.awt.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  * The Types a main.Engine.Tile can be and it's properties. (eg Grass, Forest etc.)
@@ -8,10 +10,14 @@ import java.awt.*;
  */
 public enum TileType {
 	
-	GRASS (Color.green, true),
-	WATER (Color.blue, false);
+	GRASS ("grass.png", true),
+	WATER ("water.png", false);
 	
-	final Color[][] pixels;
+	private BufferedImage tileSprite;
+	
+	public BufferedImage getTileSprite() {
+		return tileSprite;
+	}
 	
 	/**
 	 * Can a Character ever enter this tile?
@@ -21,20 +27,19 @@ public enum TileType {
 		return isWalkable;
 	}
 	
-	TileType(Color color, boolean isWalkable) {
+	TileType(String tileFileName, boolean isWalkable) {
 		
 		this.isWalkable = isWalkable;
 		
-		pixels = new Color[Tile.tileSizeInPixels][Tile.tileSizeInPixels];
 		
-		//TODO: Read the pixels from a File instead of this here!
-		for (int x = 0; x < pixels.length; x++) {
-			for (int y = 0; y < pixels[0].length; y++) {
-				pixels[x][y] = color;
-			}
+		try {
+			tileSprite = ImageIO.read(getClass().getResource("/resources/images/tiles/" + tileFileName));
+			System.out.println("tileSprite initialised!");
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		
-		
 	}
+	
 	
 }

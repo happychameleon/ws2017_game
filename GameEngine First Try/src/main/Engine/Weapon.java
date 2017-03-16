@@ -30,6 +30,19 @@ public class Weapon {
 	}
 	
 	/**
+	 * The radius of Tiles effected when the center Tile is shot by this Weapon.
+	 * Most Weapons have 0. Special Weapons like e.g. Water Balloons have a aOE > 0.
+	 */
+	private int areaOfEffect = 0;
+	
+	/**
+	 * @return {@link #areaOfEffect}
+	 */
+	public int getAreaOfEffect() {
+		return areaOfEffect;
+	}
+	
+	/**
 	 * How many actionPoint it costs a Character to shoot once with this Weapon.
 	 */
 	private final int actionPointPerShot;
@@ -86,22 +99,38 @@ public class Weapon {
 	/**
 	 * This adds a new prototype to {@link #weaponPrototypes}.
 	 * @param range
+	 * @param name
+	 * @param damage
+	 * @param actionPointPerShot
+	 * @param areaOfEffect
+	 */
+	public static void addWeaponPrototype (int range, String name, int damage, int actionPointPerShot, int areaOfEffect) {
+		//TODO: Add sprite to prototype.
+		Weapon prototype = new Weapon(range, name, damage, actionPointPerShot, areaOfEffect);
+		weaponPrototypes.add(prototype);
+	}
+	
+	/**
+	 * {@link #addWeaponPrototype(int, String, int, int, int)} but with {@link #areaOfEffect} set to 0;
+	 * @param range
+	 * @param name
+	 * @param damage
+	 * @param actionPointPerShot
 	 */
 	public static void addWeaponPrototype (int range, String name, int damage, int actionPointPerShot) {
-		//TODO: Add sprite to prototype.
-		Weapon prototype = new Weapon(range, name, damage, actionPointPerShot);
-		weaponPrototypes.add(prototype);
+		addWeaponPrototype(range, name, damage, actionPointPerShot, 0);
 	}
 	
 	/**
 	 * This is only used to create Weapon prototypes via {@link #addWeaponPrototype}.
 	 * @param range The range of the Weapon.
 	 */
-	private Weapon(int range, String name, int damage, int actionPointPerShot) {
+	private Weapon(int range, String name, int damage, int actionPointPerShot, int areaOfEffect) {
 		this.range = range;
 		this.name = name;
 		this.damage = damage;
 		this.actionPointPerShot = actionPointPerShot;
+		this.areaOfEffect = areaOfEffect;
 	}
 	//endregion
 	
@@ -116,6 +145,7 @@ public class Weapon {
 		this.name = weaponPrototype.name;
 		this.damage = weaponPrototype.damage;
 		this.actionPointPerShot = weaponPrototype.actionPointPerShot;
+		this.areaOfEffect = weaponPrototype.areaOfEffect;
 		
 		this.tile = tile;
 		this.owner = owner;
@@ -128,7 +158,7 @@ public class Weapon {
 	
 	@Override
 	public String toString() {
-		return name + " with range " + range;
+		return name + "; range " + range + "; AoE " + areaOfEffect;
 	}
 	
 	

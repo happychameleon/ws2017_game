@@ -22,9 +22,10 @@ public class Player {
 		return name;
 	}
 	
-	private Color color;
+	private String color;
 	
-	public Color getColor() {
+	public String getColor() {
+		System.out.println("Color: " + color);
 		return color;
 	}
 	
@@ -36,7 +37,7 @@ public class Player {
 		color = availableColors.remove(0);
 	}
 	
-	private static ArrayList<Color> availableColors;
+	private static ArrayList<String> availableColors;
 	
 	
 	
@@ -46,7 +47,7 @@ public class Player {
 		
 		if (availableColors == null) {
 			availableColors = new ArrayList<>();
-			availableColors.add(Color.yellow); availableColors.add(Color.magenta); availableColors.add(Color.orange); availableColors.add(Color.pink);
+			availableColors.add("yellow"); availableColors.add("red"); availableColors.add("orange"); availableColors.add("pink");
 		}
 		setAColor();
 	}
@@ -70,8 +71,11 @@ public class Player {
 		
 	}
 	
-	
 	public boolean hasTurn() {
 		return World.instance.getCurrentPlayer() == this;
+	}
+	
+	public boolean hasCharactersLeft() {
+		return World.instance.getAllCharacterOfOwner(this).size() > 0;
 	}
 }

@@ -1,5 +1,9 @@
 package main.Engine;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,6 +25,12 @@ public class Character {
 	public Player getOwner() {
         return owner;
     }
+	
+    private BufferedImage sprite;
+    
+	public BufferedImage getSprite() {
+		return sprite;
+	}
 	
 	/**
 	 * The movement Cost in {@link #actionPoints} per Tile moved.
@@ -174,7 +184,15 @@ public class Character {
         } else {
             tile.setCharacter(this);
         }
-    }
+		
+        String imageString = "/resources/images/characters/character__topDown_" + owner.getColor() + ".png";
+		
+		try {
+			sprite = ImageIO.read(getClass().getResource(imageString));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
     
     /**
      *

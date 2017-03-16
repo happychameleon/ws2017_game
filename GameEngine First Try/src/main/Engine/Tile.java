@@ -1,6 +1,7 @@
 package main.Engine;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
 
 /**
@@ -33,8 +34,18 @@ public class Tile {
 		return tileType;
 	}
 	
+	public BufferedImage getSprite() {
+		return  tileType.getTileSprite();
+	}
+	
 	/**
-     * The world this main.Engine.Tile belongs to.
+	 * This is the size of one Tile in pixels for visualisation. It doesn't represent the pixels on the screen, which
+	 * depend on the Zoom Level.
+	 */
+	public static final int tileSizeInPixels = 16;
+	
+	/**
+     * The world this Tile belongs to.
      */
 	private World world;
 
@@ -81,7 +92,7 @@ public class Tile {
         this.y = y;
         this.tileType = tileType;
         
-        VisualisationStart();
+	    //VisualisationStart();
     }
 	
 	
@@ -186,67 +197,68 @@ public class Tile {
 	//endregion
 	
 	
-	//region Visualisation
-	/**
-	 * This method prepares the visualisation of this Tile.
-	 */
-	private void VisualisationStart() {
-		
-    	currentPixels = new Color[tileSizeInPixels][tileSizeInPixels];
-		
-		RecalculateCurrentPixels();
-		
-	}
+//	//region Visualisation
+//	/**
+//	 * This method prepares the visualisation of this Tile.
+//	 */
+//	private void VisualisationStart() {
+//
+//    	currentPixels = new Color[tileSizeInPixels][tileSizeInPixels];
+//
+//		RecalculateCurrentPixels();
+//
+//	}
+//
+//	/**
+//	 * This is the size of one Tile in pixels for visualisation. It doesn't represent the pixels on the screen.
+//	 * These depend on the Zoom Level.
+//	 */
+//	public static final int tileSizeInPixels = 16;
+//
+//	/**
+//	 * This array represents the current Pixels of this Tile and how they should be displayed at the moment.
+//	 * It is recalculated every time something on this Tile changes.
+//	 */
+//	private Color[][] currentPixels;
+//
+//	public Color getCurrentPixelAt(int x, int y) {
+//		return currentPixels[x][y];
+//	}
+//
+//	/**
+//	 * This method updates the currentPixels.
+//	 * All the pixels for the base tile, item and Character are recalculated.
+//	 * It should be called every time something changed on the Tile.
+//	 */
+//	public void RecalculateCurrentPixels() {
+//		calculatePixelsBaseTile();
+//		calculatePixelsItem();
+//		calculatePixelsCharacter();
+//	}
+//
+//	private void calculatePixelsBaseTile() {
+//		for (int x = 0; x < tileSizeInPixels; x++) {
+//			for (int y = 0; y < tileSizeInPixels; y++) {
+//				currentPixels[x][y] = tileType.pixels[x][y];
+//			}
+//		}
+//	}
+//
+//	private void calculatePixelsItem() {
+//		//TODO: Item Visualisation.
+//	}
+//
+//	private void calculatePixelsCharacter() {
+//		if (character == null) {
+//			// There is no character on this Tile.
+//			return;
+//		}
+//		//TODO: Character visualisation.
+//	}
+//
+//
+//
+//
+//	//endregion
 	
-	/**
-	 * This is the size of one Tile in pixels for visualisation. It doesn't represent the pixels on the screen.
-	 * These depend on the Zoom Level.
-	 */
-	public static final int tileSizeInPixels = 16;
-	
-	/**
-	 * This array represents the current Pixels of this Tile and how they should be displayed at the moment.
-	 * It is recalculated every time something on this Tile changes.
-	 */
-	private Color[][] currentPixels;
-	
-	public Color getCurrentPixelAt(int x, int y) {
-		return currentPixels[x][y];
-	}
-	
-	/**
-	 * This method updates the currentPixels.
-	 * All the pixels for the base tile, item and Character are recalculated.
-	 * It should be called every time something changed on the Tile.
-	 */
-	public void RecalculateCurrentPixels() {
-		calculatePixelsBaseTile();
-		calculatePixelsItem();
-		calculatePixelsCharacter();
-	}
-	
-	private void calculatePixelsBaseTile() {
-		for (int x = 0; x < tileSizeInPixels; x++) {
-			for (int y = 0; y < tileSizeInPixels; y++) {
-				currentPixels[x][y] = tileType.pixels[x][y];
-			}
-		}
-	}
-	
-	private void calculatePixelsItem() {
-		//TODO: Item Visualisation.
-	}
-	
-	private void calculatePixelsCharacter() {
-		if (character == null) {
-			// There is no character on this Tile.
-			return;
-		}
-		//TODO: Character visualisation.
-	}
-	
-	
-	
-	//endregion
-
 }

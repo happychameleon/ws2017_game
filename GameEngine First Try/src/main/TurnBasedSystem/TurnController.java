@@ -55,7 +55,7 @@ public class TurnController {
 		
 		players = new ArrayList<>(playerCount);
 		
-		//TODO: Add the real Players instead of just generic ones.
+		// TODO: Add the real Players instead of just generic ones.
 		for (int i = 0; i < playerCount; i++) {
 			Team newTeam = new Team("Team " + (i + 1));
 			Player newPlayer = new Player(newTeam, "Player " + (i + 1));
