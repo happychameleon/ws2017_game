@@ -1,4 +1,4 @@
-package main.GraphicAndInput;
+package GraphicAndInput;
 
 /**
  * Created by flavia on 09.03.17.

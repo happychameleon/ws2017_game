@@ -1,4 +1,4 @@
-package main.Engine;
+package Engine;
 
 import java.awt.*;
 import java.util.ArrayList;

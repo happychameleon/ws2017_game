@@ -1,9 +1,7 @@
-package main;
 
-import main.Engine.World;
-import main.GraphicAndInput.Window;
 
-import javax.swing.*;
+import Engine.World;
+import GraphicAndInput.Window;
 
 /**
  * Created by flavia on 06.03.17.

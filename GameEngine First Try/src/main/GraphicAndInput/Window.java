@@ -1,10 +1,10 @@
-package main.GraphicAndInput;
+package GraphicAndInput;
 
+import Engine.Character;
+import Engine.Tile;
+import Engine.Weapon;
+import Engine.World;
 import com.sun.istack.internal.Nullable;
-import main.Engine.Character;
-import main.Engine.Tile;
-import main.Engine.Weapon;
-import main.Engine.World;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,7 +16,6 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -32,6 +31,8 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 	 */
 	World world;
 	
+	private Camera camera;
+	
 	/**
 	 * How big one Pixel in the Game is in Pixels on the Screen.
 	 */
@@ -46,10 +47,22 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 	
 	private int topInset;
 	
+	public int getMapWidthInPixels() {
+		return pixelSize * Tile.tileSizeInPixels * world.getMapWidth();
+	}
+	
+	public int getMapHeightInPixels() {
+		return pixelSize * Tile.tileSizeInPixels * world.getMapHeight();
+	}
+	
+	public int getHeightWithoutTitlebar() {
+		return getHeight() - topInset;
+	}
+	
 	/**
-	 * The image on where the world is first drawn and then copied from onto the window.
+	 * The previewImage on where the world is first drawn and then copied from onto the window.
 	 */
-	private BufferedImage image;
+	private BufferedImage previewImage;
 	
 	
 	private BufferedImage attackRangeSprite;
@@ -71,6 +84,8 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 	
 	public Window(World world, String title) {
 		this.world = world;
+		
+		this.camera = new Camera(this);
 		
 		try {
 			attackRangeSprite = ImageIO.read(getClass().getResource("/resources/images/tiles/attackRangeSprite.png"));
@@ -102,27 +117,46 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 		
 		setVisible(true);
 		
+		repaintImage();
+		
 	}
 	
 	//region Painting
-	public void repaintImage() {
-		image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2d = image.createGraphics();
-		
-		// recalculate the image.
-		for (int x = 0; x < world.getMapWidth(); x++) {
-			for (int y = 0; y < world.getMapHeight(); y++) {
-				paintOneTile(g2d, world.getTileAt(x, y));
-			}
-		}
-		//repaint();
-	}
-	
 	@Override
 	public void paint(Graphics g) {
-		repaintImage();
 		super.paint(g);
-		g.drawImage(image, 0, 0, null);
+		g.drawImage(previewImage, -((int) camera.getXPosition()), -((int) camera.getYPosition()) + topInset, null);
+	}
+	
+	/**
+	 * Recalculates the {@link #previewImage}.
+	 */
+	public void repaintImage() {
+		if (previewImage == null) {
+			previewImage = new BufferedImage(getMapWidthInPixels(), getMapHeightInPixels(), BufferedImage.TYPE_INT_ARGB);
+			for (int x = 0; x < world.getMapWidth(); x++) {
+				for (int y = 0; y < world.getMapHeight(); y++) {
+					// Since we had to create a new Image, we have to draw all the Tiles.
+					world.getTileAt(x, y).setNeedsGraphicsUpdate();
+				}
+			}
+		}
+		Graphics2D g2d = previewImage.createGraphics();
+		
+		// recalculate the previewImage.
+		for (int x = 0; x < world.getMapWidth(); x++) {
+			for (int y = 0; y < world.getMapHeight(); y++) {
+				Tile tile = world.getTileAt(x, y);
+				if (tile.needsGraphicsUpdate()) {
+					paintOneTile(g2d, tile); // Update this Tile, if something has changed on it.
+					tile.setNeedsGraphicsUpdate(false);
+				}
+			}
+		}
+		
+		previewImage = toCompatibleImage(previewImage);
+		
+		repaint();
 	}
 	
 	/**
@@ -135,7 +169,7 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 		int tileY = tile.getYPosition();
 		
 		int leftX = (tileX * Tile.tileSizeInPixels * pixelSize);
-		int topY = (tileY * Tile.tileSizeInPixels * pixelSize) + topInset;
+		int topY = (tileY * Tile.tileSizeInPixels * pixelSize);
 		int tileSize = Tile.tileSizeInPixels * pixelSize;
 		
 		BufferedImage sprite = tile.getSprite();
@@ -162,6 +196,56 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 		}
 		
 	}
+	
+	/**
+	 * This sets all the currently selected Tiles to be redrawn (so they can be unselected)
+	 */
+	private void updateGraphicsForUnselection() {
+		if (world.getSelectedTile() != null) {
+			world.getSelectedTile().setNeedsGraphicsUpdate();
+		}
+		if (walkRangeTiles != null && walkRangeTiles.keySet() != null) {
+			for (Tile tile : walkRangeTiles.keySet()) {
+				tile.setNeedsGraphicsUpdate();
+			}
+		}
+		if (attackRangeTiles != null) {
+			for (Tile tile : attackRangeTiles) {
+				tile.setNeedsGraphicsUpdate();
+			}
+		}
+	}
+	
+	/**
+	 * This returns a copy of the given image which is much(!) faster to draw than the original image.
+	 * Code copied from <a href="http://stackoverflow.com/questions/196890/java2d-performance-issues">Stackoverflow</a>.
+	 * @param image The original image.
+	 * @return A faster-to-draw copy of the original image.
+	 */
+	private BufferedImage toCompatibleImage(BufferedImage image) {
+		// obtain the current system graphical settings
+		GraphicsConfiguration gfx_config = GraphicsEnvironment.
+				getLocalGraphicsEnvironment().getDefaultScreenDevice().
+				getDefaultConfiguration();
+		
+		
+        // if image is already compatible and optimized for current system settings, simply return it
+		if (image.getColorModel().equals(gfx_config.getColorModel()))
+			return image;
+		
+		// image is not optimized, so create a new image that is
+		BufferedImage new_image = gfx_config.createCompatibleImage(image.getWidth(), image.getHeight(), image.getTransparency());
+		
+		// get the graphics context of the new image to draw the old image on
+		Graphics2D g2d = (Graphics2D) new_image.getGraphics();
+		
+		// actually draw the image and dispose of context no longer needed
+		g2d.drawImage(image, 0, 0, null);
+		g2d.dispose();
+		
+		// return the new optimized image
+		return new_image;
+	}
 	//endregion
 	
 	
@@ -170,11 +254,13 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 	public void mouseClicked(MouseEvent e) {
 		Tile tileUnderMouse = getTileForMouseCoordinates(e.getX(), e.getY());
 		
+		updateGraphicsForUnselection();
+		
 		switch (e.getButton()) {
 			case MouseEvent.BUTTON1:
 				System.out.println("left mouseClicked!");
 				selectTile(tileUnderMouse);
-				repaint();
+				repaintImage();
 				break;
 			case MouseEvent.BUTTON3:
 				System.out.println("right mouseClicked!");
@@ -189,7 +275,7 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 					default:
 						break;
 				}
-				repaint();
+				repaintImage();
 				break;
 			default:
 				break;
@@ -203,6 +289,12 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 	 * @return The Tile which is under the mouse coordinates.
 	 */
 	private Tile getTileForMouseCoordinates(int x, int y) {
+		// TODO: fix bug where on the y-axis the tile is chosen with a slight offset (about 3 screen-pixels)
+		x += (int) camera.getXPosition();
+		y += (int) camera.getYPosition();
+		
+		y -= pixelSize; // Fix for a tiny bug, where the y axis is slightly offset by one pixelSize. Reason not found.
+		
 		x /= (pixelSize * Tile.tileSizeInPixels);
 		y -= topInset;
 		y /= (pixelSize * Tile.tileSizeInPixels);
@@ -216,11 +308,18 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 	 * @param tileUnderMouse The newly selected Tile.
 	 */
 	private void selectTile (Tile tileUnderMouse) {
+		if (tileUnderMouse == null) {
+			return;
+		}
 		world.setSelectedTile(tileUnderMouse);
+		tileUnderMouse.setNeedsGraphicsUpdate();
 		if (tileUnderMouse.getCharacter() != null && tileUnderMouse.getCharacter().getOwner().hasTurn()) {
 			// We have selected a Character. Highlight their movement Range.
 			walkRangeTiles = tileUnderMouse.getAllTilesInRange(tileUnderMouse.getCharacter().getMoveRange(), true);
 			world.setSelectionType(SelectionType.CHARACTER);
+			for (Tile tile : walkRangeTiles.keySet()) {
+				tile.setNeedsGraphicsUpdate();
+			}
 		} else {
 			walkRangeTiles = null;
 			world.setSelectionType(SelectionType.TILE);
@@ -306,6 +405,8 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 	//region Keyboard
 	@Override
 	public void keyPressed(KeyEvent e) {
+		updateGraphicsForUnselection();
+		
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_SPACE:
 				System.out.println("SPACE typed!");
@@ -317,7 +418,7 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 				} else {
 					System.err.println("Window#keyPressed - ERROR: world.getSelectionType() == CHARACTER, but there is no selected Tile or Character on the selected Tile");
 				}
-				repaint();
+				repaintImage();
 				break;
 			case KeyEvent.VK_ENTER:
 				world.setSelectionType(SelectionType.NOTHING);
@@ -325,7 +426,23 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 				if (world.getCurrentPlayer().hasCharactersLeft() == false) {
 					world.endTurn();
 				}
-				repaint();
+				repaintImage();
+				break;
+			case KeyEvent.VK_LEFT: case KeyEvent.VK_A:
+				camera.moveLeft();
+				repaintImage();
+				break;
+			case KeyEvent.VK_RIGHT: case KeyEvent.VK_D:
+				camera.moveRight();
+				repaintImage();
+				break;
+			case KeyEvent.VK_UP: case KeyEvent.VK_W:
+				camera.moveUp();
+				repaintImage();
+				break;
+			case KeyEvent.VK_DOWN: case KeyEvent.VK_S:
+				camera.moveDown();
+				repaintImage();
 				break;
 			default:
 				System.out.println("Key Typed: " + e.getKeyCode());
@@ -344,6 +461,9 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 			System.err.println("Window#selectWeapon - ERROR: selected Character carries no Weapon!");
 		}
 		attackRangeTiles = world.getSelectedTile().getAllTilesInRange(selectedWeapon.getRange(), false).keySet();
+		for (Tile tile : attackRangeTiles) {
+			tile.setNeedsGraphicsUpdate();
+		}
 	}
 	
 	@Override

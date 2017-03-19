@@ -1,7 +1,7 @@
-package main.Engine;
+package Engine;
 
-import main.GraphicAndInput.SelectionType;
-import main.TurnBasedSystem.TurnController;
+import GraphicAndInput.SelectionType;
+import TurnBasedSystem.TurnController;
 
 import java.util.ArrayList;
 import java.util.Random;

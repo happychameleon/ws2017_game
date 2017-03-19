@@ -1,8 +1,8 @@
-package main.Engine;
+package Engine;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by flavia on 02.03.17.
@@ -11,8 +11,21 @@ public class Tile {
 	
 	//region TileData
 	
+	private boolean needsGraphicsUpdate;
 	
-    private final int x;
+	public boolean needsGraphicsUpdate() {
+		return needsGraphicsUpdate;
+	}
+	
+	public void setNeedsGraphicsUpdate() {
+		this.needsGraphicsUpdate = true;
+	}
+	
+	public void setNeedsGraphicsUpdate(boolean b) {
+		this.needsGraphicsUpdate = b;
+	}
+	
+	private final int x;
 	/**
 	 *  The X position on the game map.
 	 */
@@ -79,7 +92,11 @@ public class Tile {
 	
 	public Character getCharacter() { return character; }
 	
-	public void setCharacter(Character character) { this.character = character; }
+	public void setCharacter(Character character) {
+		this.character = character;
+		
+		this.setNeedsGraphicsUpdate();
+	}
 	//endregion
     
     
