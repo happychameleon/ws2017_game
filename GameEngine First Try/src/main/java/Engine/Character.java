@@ -184,7 +184,7 @@ public class Character {
             tile.setCharacter(this);
         }
 		
-        String imageString = "/resources/images/characters/character__topDown_" + owner.getColor() + ".png";
+        String imageString = "/images/characters/character__topDown_" + owner.getColor() + ".png";
 		
 		try {
 			sprite = ImageIO.read(getClass().getResource(imageString));

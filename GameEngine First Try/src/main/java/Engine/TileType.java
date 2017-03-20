@@ -33,7 +33,8 @@ public enum TileType {
 		
 		
 		try {
-			tileSprite = ImageIO.read(getClass().getResource("/resources/images/tiles/" + tileFileName));
+			System.out.println("tileSprite initialised START!");
+			tileSprite = ImageIO.read(getClass().getResource("/images/tiles/" + tileFileName));
 			System.out.println("tileSprite initialised!");
 		} catch (IOException e) {
 			e.printStackTrace();

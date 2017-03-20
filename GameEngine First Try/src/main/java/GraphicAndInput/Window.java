@@ -4,7 +4,6 @@ import Engine.Character;
 import Engine.Tile;
 import Engine.Weapon;
 import Engine.World;
-import com.sun.istack.internal.Nullable;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -75,7 +74,6 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 	 * These Tiles represent the movement Range if a Character is selected.
 	 * The keys are the Tiles, the values are the distance from the starting Tile.
 	 */
-	@Nullable
 	private HashMap<Tile, Integer> walkRangeTiles;
 	
 	private Set<Tile> attackRangeTiles;
@@ -88,16 +86,16 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 		this.camera = new Camera(this);
 		
 		try {
-			attackRangeSprite = ImageIO.read(getClass().getResource("/resources/images/tiles/attackRangeSprite.png"));
-			walkRangeSprite = ImageIO.read(getClass().getResource("/resources/images/tiles/walkRangeSprite.png"));
-			selectedTileSprite = ImageIO.read(getClass().getResource("/resources/images/tiles/selectedTileSprite.png"));
+			attackRangeSprite = ImageIO.read(getClass().getResource("/images/tiles/attackRangeSprite.png"));
+			walkRangeSprite = ImageIO.read(getClass().getResource("/images/tiles/walkRangeSprite.png"));
+			selectedTileSprite = ImageIO.read(getClass().getResource("/images/tiles/selectedTileSprite.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		for (int i = 0; i < 10; i++) {
 			try {
-				characterWetnessSprites[i] = ImageIO.read(getClass().getResource("/resources/images/characters/character__topDown_wetness" + i + "0.png"));
+				characterWetnessSprites[i] = ImageIO.read(getClass().getResource("/images/characters/character__topDown_wetness" + i + "0.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
