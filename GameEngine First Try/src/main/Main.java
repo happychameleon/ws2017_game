@@ -15,7 +15,7 @@ public class Main {
 	
 	public static void main (String[] args) {
 		
-		world = new World(20, 10, 2);
+		world = new World(30, 25, 2);
 		
 		window = new Window(world, "WasserschlachtSimulator 2017 Prototype");
 		

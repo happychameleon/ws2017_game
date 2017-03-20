@@ -422,6 +422,7 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 				break;
 			case KeyEvent.VK_ENTER:
 				world.setSelectionType(SelectionType.NOTHING);
+				world.setSelectedTile(null);
 				world.endTurn();
 				if (world.getCurrentPlayer().hasCharactersLeft() == false) {
 					world.endTurn();
