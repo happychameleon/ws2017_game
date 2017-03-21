@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/GameEngine First Try.iml" filepath="$PROJECT_DIR$/.idea/GameEngine First Try.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GameEngine First Try.iml" filepath="$PROJECT_DIR$/.idea/modules/GameEngine First Try.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GameEngine_First_Try_main.iml" filepath="$PROJECT_DIR$/.idea/modules/GameEngine_First_Try_main.iml" group="GameEngine First Try" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GameEngine_First_Try_test.iml" filepath="$PROJECT_DIR$/.idea/modules/GameEngine_First_Try_test.iml" group="GameEngine First Try" />
     </modules>
   </component>
 </project>

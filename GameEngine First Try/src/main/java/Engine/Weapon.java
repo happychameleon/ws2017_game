@@ -53,6 +53,7 @@ public class Weapon {
 	
 	/**
 	 * Which Character holds this Weapon. Can be null if on the Ground!
+	 * TODO Remove this link
 	 */
 	Character owner;
     
