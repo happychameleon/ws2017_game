@@ -1,0 +1,41 @@
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'application'
+
+def description = """
+Example project for the CS108 Programming Project
+
+Project name: ${project.name}
+
+Author(s): 
+-
+-
+-
+-
+
+More information here ...
+"""
+
+mainClassName = "Main"
+
+
+dependencies {
+    // Use JUnit test framework
+    testCompile 'junit:junit:4.12'
+}
+
+jar{
+    baseName = 'pp-04'
+    version = '0.1.0'
+
+    manifest {
+        attributes "Main-Class": mainClassName
+    }
+}
+
+// Do not modify
+task info {
+    doLast {
+        println "${description}"
+    }
+}
