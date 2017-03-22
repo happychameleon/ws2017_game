@@ -6,7 +6,7 @@ package server;
 public class CnameParser {
     public String argument;
 
-    public CnameParser(String argument){
+    public CnameParser(String argument, CommandParser commandParser){
         this.argument = argument;
     }
 }

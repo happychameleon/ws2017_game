@@ -1,12 +1,17 @@
 package server;
 
 
-
 /**
  * Created by m on 3/21/17.
  */
 public class ChatmParser {
-    private String argument;
+	
+	// TODO: Add correct messages!
+	private final String errorMessageWrongSenderName = "ERROR: The entered sender name doesn't exist!";
+	private final String errorMessageWrongRecipientName = "ERROR: The entered recipient name doesn't exist!";
+	
+	private final CommandParser commandParser;
+	private final String argument;
 	
 	public String getArgument() {
 		return argument;
@@ -16,8 +21,9 @@ public class ChatmParser {
 	private String recipientName;
 	private String message;
 	
-	public ChatmParser(String argument){
+	public ChatmParser(String argument, CommandParser commandParser){
         this.argument = argument;
+        this.commandParser = commandParser;
         
         handleChat();
     }
@@ -31,8 +37,23 @@ public class ChatmParser {
 			// TODO: send this message back to the client.
 			return;
 		}
-		System.out.println("Message correctly received!");
 		
+		User sender = server.getUserByName(senderName);
+		User recipient = server.getUserByName(recipientName);
+		
+		if (recipient == null) {
+			commandParser.writeBackToClient(errorMessageWrongRecipientName);
+			return;
+		} else if (sender == null) {
+			commandParser.writeBackToClient(errorMessageWrongSenderName);
+			return;
+		}
+		
+		String toReceiver = argument;
+		String toSender = "+OK 'message relayed'";
+		
+		commandParser.writeToSpecificClient(toReceiver, recipientName);
+		commandParser.writeBackToClient(toSender);
 	}
 	
 	/**

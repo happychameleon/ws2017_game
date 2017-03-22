@@ -14,16 +14,19 @@ public class CommandParser {
     private StringBuffer command = new StringBuffer("");
     private String keyword = "";
     private String argument = "";
+	
     
     /**
-     * constructor, gives the class access to input and output to and from client
+     * Constructor, gives the class access to input and output to and from client.
      */
     public CommandParser(InputStream in, OutputStream out){
         this.in = in;
         this.out = out;
     }
-
-    //calls necessary functions to validate and execute commands
+	
+	/**
+	 * Calls necessary functions to validate and execute commands.
+	 */
     public void validateProtocol(){
         int c;
         try {
@@ -33,7 +36,7 @@ public class CommandParser {
 
                 inputToCommandArgument();
 
-                KeywordParser keywordParser = new KeywordParser(keyword, argument);
+                KeywordParser keywordParser = new KeywordParser(keyword, argument, this);
 
                 if(isValidCommand()){
                     keywordParser.comparKeyword();
@@ -47,8 +50,10 @@ public class CommandParser {
             e.printStackTrace();
         }
     }
-
-    //checks if command is correctly formatted
+	
+	/**
+	 * checks if command is correctly formatted
+	 */
     private boolean isValidCommand() {
         if(command.length() == 5){
             return true;
@@ -58,8 +63,10 @@ public class CommandParser {
         }
         return true;
     }
-
-    //puts input in an stringbuffer till the termination signal(\r \n)
+	
+	/**
+	 * Puts input in an stringbuffer till the termination signal (\r \n)
+	 */
     private void inputTranslate(InputStream in, int c){
         int terminat = 0;
         try {
@@ -79,8 +86,10 @@ public class CommandParser {
             e.printStackTrace();
         }
     }
-
-    //separates command in to keyword and argument
+	
+	/**
+	 * Separates command in to keyword and argument
+	 */
     private void inputToCommandArgument() {
         //checks for space between keyword and argument in command string
         int keywordEnd = command.indexOf(" ");
@@ -97,18 +106,55 @@ public class CommandParser {
         }
         //makes sure the keyword is the proper length and if not tells the client that wrong
         if(keyword.length() != 5){
-            writeToClient(command + " is not a properly formatted command ");
+            writeBackToClient(command + " is not a properly formatted command ");
             keyword = "";
             argument = "";
         }
     }
-
-    //function can be called to write directly to client
-    private void writeToClient(String output){
+	
+	/**
+	 * This can be called to write directly to the client who sent the command.
+	 */
+    public void writeBackToClient(String output){
         try {
             out.write((output + "\r\n").getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+	
+	
+	public void writeToSpecificClient(String output, String username) {
+		writeToSpecificClient(output, server.getUserByName(username));
+	}
+	
+	public void writeToSpecificClient(String output, User user) {
+		if (user == null) {
+			System.err.println("writeToSpecificClient ");
+			return;
+		}
+		
+		try {
+			OutputStream outputStream = user.getSocket().getOutputStream();
+			outputStream.write((output + "\r\n").getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Writes the output message to all clients.
+	 * @param output
+	 */
+	public void writeToAllClients(String output) {
+		for (User user : server.getAllUsers()) {
+			try {
+				OutputStream outputStream = user.getSocket().getOutputStream();
+				outputStream.write((output + "\r\n").getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }

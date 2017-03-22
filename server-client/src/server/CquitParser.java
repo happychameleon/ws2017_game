@@ -6,7 +6,7 @@ package server;
 public class CquitParser {
     public String argument;
 
-    public CquitParser(String argument){
+    public CquitParser(String argument, CommandParser commandParser){
         this.argument = argument;
     }
 }
