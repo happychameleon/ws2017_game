@@ -27,10 +27,6 @@ public class KeywordParser {
                 ping.pingConfermation();
                 break;
 
-            case "cname" :
-                CnameParser namechange = new CnameParser(argument, commandParser);
-                break;
-
             case "chatm" :
                 ChatmParser chat = new ChatmParser(argument, commandParser);
                 break;

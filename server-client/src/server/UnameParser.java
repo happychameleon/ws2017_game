@@ -22,12 +22,25 @@ public class UnameParser {
 	}
 	
 	private boolean validateArgument() {
+		if (argument == null || argument.isEmpty()) {
+			commandParser.writeBackToClient("ERROR: Username is empty! Please enter a username!");
+			return false;
+		}
+		if (argument.charAt(0) == '\'' && argument.charAt(argument.length() - 1) == '\'') {
+			argument = argument.substring(1, argument.length() - 1);
+		}
     	if (argument.contains(" ") || argument.contains("'")) {
     		commandParser.writeBackToClient("ERROR: Username contains invalid characters. Don't use ' or <space>!");
     		return false;
 	    }
+		
+	    if (commandParser.getUser().getName() != null && commandParser.getUser().getName().equals(argument)) {
+			commandParser.writeBackToClient("-ERR same username entered");
+			return false;
+	    }
+	    
 	    if (server.getUserByName(argument) != null) {
-    		int i = 1;
+    		int i = 2;
     		while (server.getUserByName(argument + i) != null) {
     			i++;
 		    }
@@ -41,11 +54,21 @@ public class UnameParser {
 	
 	private void addUsernameToServer() {
 		User sendingUser = commandParser.getUser();
+		
+		// Does the user change their already existing name or define a new one?
+		boolean nameChange = false;
 		if (sendingUser.getName() != null) {
-			System.err.println("ERROR: User already had a name! Why did they log in twice? New username assigned.");
+			nameChange = true;
 		}
+		
 		sendingUser.setName(argument);
-		commandParser.writeBackToClient("+OK you are " + argument);
+		
+		if (nameChange) {
+			// TODO: Maybe different response when changing name or defining a new one?
+			commandParser.writeBackToClient("+OK you are " + argument);
+		} else {
+			commandParser.writeBackToClient("+OK you are " + argument);
+		}
 		
 		// Just for testing
 		commandParser.writeBackToClient("All the following users are logged in:");
