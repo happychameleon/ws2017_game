@@ -21,29 +21,29 @@ AUTHORIZATION State Commands
 Once the session has gone in to the AUTHORIZATION state, the server will be expecting user name to identify the client by. If the server recognizes it as a user name that has already been used before and the IP address is the same as the client that last used it, it will return a positive message and all relevant information for the client. If it is a new name the server will create a new entry in the list of names. If the name is a previously used name and the IP address does not match, the server will return negative message.
 registering a user name:
 
-> c: uname &lt;name&gt;
-> s: +OK you are &lt;name&gt;
+> c: uname ’&lt;name&gt;’
+> s: +OK ’you are &lt;name&gt;’
 
 recognizing client:
 
-> c: uname &lt;name&gt;
-> s: +OK welcome back &lt;name&gt;
+> c: uname ’&lt;name&gt;’
+> s: +OK ’welcome back &lt;name&gt;’
 
 negative response:
 
-> c: uname &lt;name&gt;
-> s: -ERR uname &lt;name\_suggestion&gt;
+> c: uname ’&lt;name&gt;’
+> s: -ERR uname ’&lt;name\_suggestion&gt;’
 
 Alternatively the server could remove used names after the client disconnects. When a client connects to the server the client has to send a message for the server to identify it by. If the name is already present in the server (i.e there is already a client connected with that name), the server returns a negative message. If the name given to the server is unique the server confirms it with a positive response.
 registering a name:
 
-> c: uname &lt;name&gt;
+> c: uname ’&lt;name&gt;’
 > s: +OK ’you are &lt;name&gt;’
 
 negative response:
 
-> c: uname &lt;name&gt;
-> s: -ERR uname &lt;name\_suggestion&gt;
+> c: uname ’&lt;name&gt;’
+> s: -ERR uname ’&lt;name\_suggestion&gt;’
 
 TRANSACTION State Commands
 ==========================
@@ -52,11 +52,6 @@ Ping/Pong
 ---------
 
 in regular intervals server and client should exchange pings to make sure that they are still connected, if there is no response in a defined time the connection should be disconnected.
-client sends ping:
-
-> c: ping
-> s: +OK pong
-
 server sends ping:
 
 > s: ping
@@ -65,7 +60,7 @@ server sends ping:
 Change Name
 -----------
 
-> c: cname &lt;new\_name&gt;
+> c: cname ’&lt;new\_name&gt;’
 > s: +OK ’name changed from &lt;old\_name&gt; to &lt;new\_name&gt;’
 
 Chat
@@ -74,13 +69,13 @@ Chat
 When chatting, the server acts as a relay between two clients. When the message arrives at the destination client, the recipient automatically sends back a message (with the chatr command) to the server that then relays a message to the sending client that the message was received.
 sender:
 
-> c: chatm &lt;sender\_name&gt; &lt;recipient\_name&gt; &lt;message&gt;
+> c: chatm ’&lt;sender\_name&gt;’ ’&lt;recipient\_name&gt;’ ’&lt;message&gt;’
 > s: +OK ’message relayed’
 
 recipient:
 
-> s: chatm &lt;sender\_name&gt; &lt;recipient\_name&gt; &lt;message&gt;
-> c: chatr &lt;sender\_name&gt; &lt;recipient\_name&gt;
+> s: chatm ’&lt;sender\_name&gt;’ ’&lt;recipient\_name&gt;’ ’&lt;message&gt;’
+> c: chatr ’&lt;sender\_name&gt;’ ’&lt;recipient\_name&gt;’
 
 UPDATE State Commands
 =====================
