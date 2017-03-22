@@ -6,9 +6,7 @@ package server;
 public class UnameParser {
     private String argument;
     private CommandParser commandParser;
-    
-    private final String invalidUsername = "ERROR: Username contains invalid characters. Don't use ' or <space>!";
-    
+	
     public UnameParser(String argument, CommandParser commandParser){
         this.argument = argument;
 	    this.commandParser = commandParser;
@@ -25,7 +23,7 @@ public class UnameParser {
 	
 	private boolean validateArgument() {
     	if (argument.contains(" ") || argument.contains("'")) {
-    		commandParser.writeBackToClient(invalidUsername);
+    		commandParser.writeBackToClient("ERROR: Username contains invalid characters. Don't use ' or <space>!");
     		return false;
 	    }
 	    if (server.getUserByName(argument) != null) {
@@ -42,11 +40,14 @@ public class UnameParser {
 	
 	
 	private void addUsernameToServer() {
-    	User sendingUser = commandParser.getUser();
-    	if (sendingUser.getName() != null)
-		    System.err.println("ERROR: User already had a name! Why did they log in twice? New username assigned.");
+		User sendingUser = commandParser.getUser();
+		if (sendingUser.getName() != null) {
+			System.err.println("ERROR: User already had a name! Why did they log in twice? New username assigned.");
+		}
 		sendingUser.setName(argument);
 		commandParser.writeBackToClient("+OK you are " + argument);
+		
+		// Just for testing
 		commandParser.writeBackToClient("All the following users are logged in:");
 		for (User user : server.getAllUsers()) {
 			if (user.getName() != null) {
