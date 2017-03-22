@@ -11,13 +11,17 @@ import java.util.ArrayList;
  * Created by m on 3/9/17.
  */
 public class server {
-    private static ArrayList <User> userList = new ArrayList<User>();
+	static ArrayList <User> userList = new ArrayList<User>();
 	
 	/**
 	 * @return A shallow clone of the {@link #userList}.
 	 */
 	public static ArrayList<User> getAllUsers() {
 		return (ArrayList<User>) userList.clone();
+	}
+	
+	static void addUserToList(User user) {
+		userList.add(user);
 	}
 	
 	/**
@@ -28,7 +32,7 @@ public class server {
 	 */
     public static User getUserByName(String name) {
     	for (User user : userList) {
-    		if (user.getName() == name) {
+    		if (user.getName() != null && user.getName().equals(name)) {
     			return user;
 		    }
 	    }
@@ -66,10 +70,12 @@ class gameClientThread extends Thread{
             InputStream in = socket.getInputStream();
             OutputStream out = socket.getOutputStream();
             out.write(("gameserver connected to client " + connectedGameClient + "\r\n").getBytes());
-            CommandParser gameProtocol;
-            gameProtocol = new CommandParser(in, out);
+            User user = new User(null, socket);
+            server.addUserToList(user);
+            CommandParser gameProtocol = new CommandParser(in, out, user);
             gameProtocol.validateProtocol();
             System.out.println("connection to client " + connectedGameClient + " is being terminated");
+            server.userList.remove(user);
             socket.close();
         } catch (IOException e) {
             System.err.println(e.toString());

@@ -9,19 +9,29 @@ import java.io.OutputStream;
  * Created by m on 3/14/17.
  */
 public class CommandParser {
-    private InputStream in;
+	private final User user;
+	private InputStream in;
     private OutputStream out;
     private StringBuffer command = new StringBuffer("");
     private String keyword = "";
     private String argument = "";
 	
-    
-    /**
+	/**
+	 * Whenever the client should quit after a command (e.g. via the cquit command) this variable has to be set to true.
+	 */
+	public boolean shouldQuit = false;
+	
+	public User getUser() {
+		return user;
+	}
+	
+	/**
      * Constructor, gives the class access to input and output to and from client.
      */
-    public CommandParser(InputStream in, OutputStream out){
+    public CommandParser(InputStream in, OutputStream out, User user){
         this.in = in;
         this.out = out;
+        this.user = user;
     }
 	
 	/**
@@ -41,11 +51,15 @@ public class CommandParser {
                 if(isValidCommand()){
                     keywordParser.comparKeyword();
                 }
+                if (shouldQuit) {
+                	break;
+                }
                 //clears all global variables
                 command.delete(0, command.length());
                 keyword = "";
                 argument = "";
             }
+            
         } catch (IOException e) {
             e.printStackTrace();
         }

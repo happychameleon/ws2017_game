@@ -7,8 +7,11 @@ import java.net.Socket;
  */
 public class User {
     private String name;
-    
-    public String getName() {
+	
+	/**
+	 * @return The username. Can be null!
+	 */
+	public String getName() {
         return name;
     }
 	

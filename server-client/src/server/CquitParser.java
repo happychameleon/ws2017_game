@@ -8,5 +8,12 @@ public class CquitParser {
 
     public CquitParser(String argument, CommandParser commandParser){
         this.argument = argument;
+        
+        if (argument != null && argument.length() != 0) {
+            commandParser.writeBackToClient("-ERROR: cquit command takes no argument(s)!");
+            return;
+        }
+	    commandParser.writeBackToClient("+OK ’terminating tasks and disconnecting’");
+        commandParser.shouldQuit = true;
     }
 }

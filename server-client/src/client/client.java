@@ -20,10 +20,10 @@ public class client {
             String line = "";
             while (true){
                 line = comandlinInput.readLine();
-                if(line.equalsIgnoreCase("cquit"))break;
                 out.write(line.getBytes());
                 out.write('\r');
                 out.write('\n');
+                if(line.equalsIgnoreCase("cquit"))break;
             }
             //stop program
             System.out.println("terminating");

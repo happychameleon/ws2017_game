@@ -6,16 +6,11 @@ package server;
  */
 public class ChatmParser {
 	
-	// TODO: Add correct messages!
-	private final String errorMessageWrongSenderName = "ERROR: The entered sender name doesn't exist!";
+	// TODO: Add correct messages from protocol!
 	private final String errorMessageWrongRecipientName = "ERROR: The entered recipient name doesn't exist!";
 	
 	private final CommandParser commandParser;
 	private final String argument;
-	
-	public String getArgument() {
-		return argument;
-	}
 	
 	private String senderName;
 	private String recipientName;
@@ -31,7 +26,7 @@ public class ChatmParser {
 	
 	private void handleChat() {
 		if (separateArgument() == false) {
-			System.err.println("Argument for command CHATM not properly formatted!\n" +
+			commandParser.writeBackToClient("Argument for command CHATM not properly formatted!\n" +
 					"Please use format: 'chatm <sender_name> <recipient_name> <message>'!\n" +
 					"Don't forget to surround the <message> with 'apostrophes'!");
 			// TODO: send this message back to the client.
@@ -42,14 +37,14 @@ public class ChatmParser {
 		User recipient = server.getUserByName(recipientName);
 		
 		if (recipient == null) {
-			commandParser.writeBackToClient(errorMessageWrongRecipientName);
+			commandParser.writeBackToClient("ERROR: The entered recipient name '" + recipientName + "' doesn't exist!");
 			return;
 		} else if (sender == null) {
-			commandParser.writeBackToClient(errorMessageWrongSenderName);
+			commandParser.writeBackToClient("ERROR: The entered sender name '" + senderName + "' doesn't exist!");
 			return;
 		}
 		
-		String toReceiver = argument;
+		String toReceiver = "chatm " + argument;
 		String toSender = "+OK 'message relayed'";
 		
 		commandParser.writeToSpecificClient(toReceiver, recipientName);
@@ -112,6 +107,10 @@ public class ChatmParser {
 		} else {
 			return false;
 		}
+		
+		this.senderName = senderName.toString();
+		this.recipientName = recipientName.toString();
+		this.message = message.toString();
 		
 		return true;
 	}
