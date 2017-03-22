@@ -18,7 +18,7 @@ A positive response has a ’+OK’ followed by the command that was successful.
 AUTHORIZATION State Commands
 ============================
 
-Once the session has gone in to the AUTHORIZATION state, the server will be expecting user name to identify the client by. If the server recognizes it as a user name that has already been used before and the IP address is the same as the client that last used it, it will return a positive message and all relevant information for the client. If it is a new name the server will create a new entry in the list of names. If the name is a previously used name and the IP address does not match, the server will return negative message.
+Once the session has gone in to the AUTHORIZATION state, the server will be expecting user name to identify the client by. If the server recognizes it as a user name that has already been used before and the IP address is the same as the client that last used it, it will return a positive message and all relevant information for the client. If it is a new name the server will create a new entry in the list of names. If the name is a previously used name and the IP address does not match, the server will return negative message with a suggested new name. To change a name the user can use the same command to change the old name to the new name. The same answers apply here. If the user enters the name it already had it returns a negative message.
 registering a user name:
 
 > c: uname ’&lt;name&gt;’
@@ -29,10 +29,15 @@ recognizing client:
 > c: uname ’&lt;name&gt;’
 > s: +OK ’welcome back &lt;name&gt;’
 
-negative response:
+username already taken:
 
 > c: uname ’&lt;name&gt;’
 > s: -ERR uname ’&lt;name\_suggestion&gt;’
+
+own username entered:
+
+> c: uname ’&lt;name&gt;’
+> s: -ERR same username entered’
 
 Alternatively the server could remove used names after the client disconnects. When a client connects to the server the client has to send a message for the server to identify it by. If the name is already present in the server (i.e there is already a client connected with that name), the server returns a negative message. If the name given to the server is unique the server confirms it with a positive response.
 registering a name:
@@ -56,12 +61,6 @@ server sends ping:
 
 > s: ping
 > c: +OK pong
-
-Change Name
------------
-
-> c: cname ’&lt;new\_name&gt;’
-> s: +OK ’name changed from &lt;old\_name&gt; to &lt;new\_name&gt;’
 
 Chat
 ----
