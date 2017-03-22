@@ -6,7 +6,7 @@ package server;
 public class UnameParser {
     private String argument;
 
-    public UnameParser(String argument){
+    public UnameParser(String argument, CommandParser commandParser){
         this.argument = argument;
     }
 }

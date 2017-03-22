@@ -1,6 +1,8 @@
 package server;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -9,7 +11,30 @@ import java.util.ArrayList;
  * Created by m on 3/9/17.
  */
 public class server {
-    public static ArrayList <User> userList = new ArrayList<User>();
+    private static ArrayList <User> userList = new ArrayList<User>();
+	
+	/**
+	 * @return A shallow clone of the {@link #userList}.
+	 */
+	public static ArrayList<User> getAllUsers() {
+		return (ArrayList<User>) userList.clone();
+	}
+	
+	/**
+	 * Gets the User for the specific username.
+	 * @param name The username.
+	 * @return The User. Can be null if username doesn't exist!
+	 * TODO: Delete the user/username pair when logging off.
+	 */
+    public static User getUserByName(String name) {
+    	for (User user : userList) {
+    		if (user.getName() == name) {
+    			return user;
+		    }
+	    }
+	    return null;
+    }
+    
 
     public static void main(String[] args){
         int connectedGameClient = 1;

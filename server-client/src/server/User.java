@@ -1,26 +1,30 @@
 package server;
 
+import java.net.Socket;
+
 /**
  * Created by m on 3/20/17.
  */
 public class User {
-    public String name;
-    public String ipAddress;
-
-    public User(String name, String ipAddress){
-        this.name = name;
-        this.ipAddress = ipAddress;
-    }
-
-    public void changeName(String name){
-        this.name = name;
-    }
-
-    public String returnName(){
+    private String name;
+    
+    public String getName() {
         return name;
     }
-
-    public String returnAddress(){
-        return ipAddress;
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	private Socket socket;
+    
+    public Socket getSocket() {
+        return socket;
     }
+    
+    public User(String name, Socket socket){
+        this.name = name;
+        this.socket = socket;
+    }
+
 }
