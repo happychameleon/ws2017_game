@@ -6,11 +6,22 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
+ * TODO: description
+ *
  * Created by m on 3/14/17.
  */
 public class CommandParser {
+	/**
+	 * The user from which this CommandParser reads in the commands.
+	 */
 	private final User user;
+	/**
+	 * The {@link InputStream} of this {@link #user}
+	 */
 	private InputStream in;
+	/**
+	 * The {@link OutputStream} of this {@link #user}
+	 */
     private OutputStream out;
     private StringBuffer command = new StringBuffer("");
     private String keyword = "";
@@ -21,6 +32,9 @@ public class CommandParser {
 	 */
 	public boolean shouldQuit = false;
 	
+	/**
+	 * @return {@link #user}
+	 */
 	public User getUser() {
 		return user;
 	}
@@ -49,7 +63,7 @@ public class CommandParser {
                 KeywordParser keywordParser = new KeywordParser(keyword, argument, this);
 
                 if(isValidCommand()){
-                    keywordParser.comparKeyword();
+                    keywordParser.compareKeyword();
                 }
                 if (shouldQuit) {
                 	break;
@@ -79,19 +93,19 @@ public class CommandParser {
     }
 	
 	/**
-	 * Puts input in an stringbuffer till the termination signal (\r \n)
+	 * Puts input in a {@link StringBuffer} utill the termination signal (\r \n).
 	 */
     private void inputTranslate(InputStream in, int c){
-        int terminat = 0;
+        int terminate = 0;
         try {
             while (true){
                 if(c == '\r'){
-                    terminat++;
-                }else if(c == '\n'&& terminat == 1){
+                    terminate++;
+                }else if(c == '\n'&& terminate == 1){
                     break;
                 }
                 else{
-                    terminat = 0; //reset termination variable
+                    terminate = 0; //reset termination variable
                     command.append((char)c);
                 }
                 c = in.read();
@@ -102,7 +116,7 @@ public class CommandParser {
     }
 	
 	/**
-	 * Separates command in to keyword and argument
+	 * Separates the command into keyword and argument.
 	 */
     private void inputToCommandArgument() {
         //checks for space between keyword and argument in command string
@@ -137,14 +151,22 @@ public class CommandParser {
         }
     }
 	
-	
+	/**
+	 * This gets the User for the given username and calls {@link #writeToSpecificClient(String, User)}
+	 * @param username The name to translate into the User. Check first if the username exists!
+	 */
 	public void writeToSpecificClient(String output, String username) {
 		writeToSpecificClient(output, server.getUserByName(username));
 	}
 	
+	/**
+	 * This writes a message to the specific user.
+	 * @param output The message to write.
+	 * @param user The User to write to.
+	 */
 	public void writeToSpecificClient(String output, User user) {
 		if (user == null) {
-			System.err.println("writeToSpecificClient ");
+			System.err.println("CommandParser#writeToSpecificClient - Must enter a valid user!");
 			return;
 		}
 		

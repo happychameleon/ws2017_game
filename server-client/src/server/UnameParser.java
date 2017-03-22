@@ -21,6 +21,9 @@ public class UnameParser {
     	addUsernameToServer();
 	}
 	
+	/**
+	 * @return <code>true</code> if the argument is correctly formatted and valid, otherwise <code>false</code>.
+	 */
 	private boolean validateArgument() {
 		if (argument == null || argument.isEmpty()) {
 			commandParser.writeBackToClient("ERROR: Username is empty! Please enter a username!");
@@ -51,7 +54,10 @@ public class UnameParser {
 	    return true;
 	}
 	
-	
+	/**
+	 * This sets the username of the User who entered this command to the given username.
+	 * If the user didn't already have a name it newly assigns one, otherwise it overwrites the old one.
+	 */
 	private void addUsernameToServer() {
 		User sendingUser = commandParser.getUser();
 		

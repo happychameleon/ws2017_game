@@ -8,15 +8,17 @@ public class KeywordParser {
 	private final String keyword;
     private final String argument;
     
-    
-
+	
     public KeywordParser(String keyword, String argument, CommandParser commandParser){
         this.keyword = keyword;
         this.argument = argument;
         this.commandParser = commandParser;
     }
-
-    public void comparKeyword(){
+	
+	/**
+	 * This compares the command and if it is an existing command it creates the correct parser to execute the command.
+	 */
+	public void compareKeyword(){
         switch (keyword){
             case "uname" :
                 UnameParser name = new UnameParser(argument, commandParser);
@@ -24,7 +26,7 @@ public class KeywordParser {
 
             case "cpong" :
                 CpingParser ping = new CpingParser(commandParser);
-                ping.pingConfermation();
+                ping.pingConfirmation();
                 break;
 
             case "chatm" :
@@ -36,7 +38,8 @@ public class KeywordParser {
                 break;
 
             default:
-                System.out.println("The entered keyword is not a valid input!");
+            	// TODO: Add this answer to the protocol.
+                commandParser.writeBackToClient("-ERR entered command does not exist");
                 break;
         }
     }
