@@ -15,7 +15,7 @@ public class server {
         int connectedGameClient = 1;
 
         try{
-            System.out.print("server running waiting for client connection \n");
+            System.out.print("server running, waiting for client connection \n");
             ServerSocket gamesServer = new ServerSocket(1030);
             while(true) {
                 Socket socket = gamesServer.accept();
