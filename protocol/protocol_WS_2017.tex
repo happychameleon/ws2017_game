@@ -35,20 +35,20 @@ A positive response has a '+OK' followed by the command that was successful. A n
 Once the session has gone in to the AUTHORIZATION state, the server will be expecting user name to identify the client by. If the server recognizes it as a user name that has already been used before and the IP address is the same as the client that last used it, it will return a positive message and all relevant information for the client. If it is a new name the server will create a new entry in the list of names. If the name is a previously used name and the IP address does not match, the server will return negative message.\\\\
 registering a user name:
 \begin{quote}
-  c: uname <name>\\
-  s: +OK you are <name>
+  c: uname '<name>'\\
+  s: +OK 'you are <name>'
 \end{quote}
 \noindent
 recognizing client:
 \begin{quote}
-  c: uname <name>\\
-  s: +OK welcome back <name>
+  c: uname '<name>'\\
+  s: +OK 'welcome back <name>'
 \end{quote}
 \noindent
 negative response:
 \begin{quote}
-  c: uname <name>\\
-  s: -ERR uname <name\_suggestion>
+  c: uname '<name>'\\
+  s: -ERR uname '<name\_suggestion>'
 \end{quote}
 
 
@@ -56,14 +56,14 @@ Alternatively the server could remove used names after the client disconnects. W
 registering a name:
 
 \begin{quote}
-  c: uname <name>\\
+  c: uname '<name>'\\
   s: +OK 'you are <name>'
 \end{quote}
 \noindent
 negative response:
 \begin{quote}
-  c: uname <name>\\
-  s: -ERR uname <name\_suggestion>
+  c: uname '<name>'\\
+  s: -ERR uname '<name\_suggestion>'
 \end{quote}
 
 
@@ -71,11 +71,6 @@ negative response:
 \section{TRANSACTION State Commands}
 \subsection{Ping/Pong}
 in regular intervals server and client should exchange pings to make sure that they are still connected, if there is no response in a defined time the connection should be disconnected.\\\\
-client sends ping:
-\begin{quote}
-  c: ping\\
-  s: +OK pong
-\end{quote}
 \noindent
 server sends ping:
 \begin{quote}
@@ -87,7 +82,7 @@ server sends ping:
 \subsection{Change Name}
 
 \begin{quote}
-  c: cname <new\_name>\\
+  c: cname '<new\_name>'\\
   s: +OK 'name changed from <old\_name> to <new\_name>'
 \end{quote}
 
@@ -97,14 +92,14 @@ server sends ping:
 When chatting, the server acts as a relay between two clients. When the message arrives at the destination client, the recipient automatically sends back a message (with the chatr command) to the server that then relays a message to the sending client that the message was received.\\\\
 sender:
 \begin{quote}
-  c: chatm <sender\_name> <recipient\_name> <message>\\ %% chatm = chat message
+  c: chatm '<sender\_name>' '<recipient\_name>' '<message>'\\ %% chatm = chat message
   s: +OK 'message relayed'
 \end{quote}
 \noindent
 recipient:
 \begin{quote}
-    s: chatm <sender\_name> <recipient\_name> <message>\\
-  c: chatr <sender\_name> <recipient\_name>%%chat response tells the server that client got message from chat partner
+    s: chatm '<sender\_name>' '<recipient\_name>' '<message>'\\
+  c: chatr '<sender\_name>' '<recipient\_name>'%%chat response tells the server that client got message from chat partner
 \end{quote}
 \clearpage
 \section{UPDATE State Commands}
