@@ -36,9 +36,9 @@ class PingThread extends Thread{
     public void run(){
         commandParser.writeBackToClient("cping");
         try {
-            Thread.sleep(1000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
-            System.err.println(e.toString());
+            return;
         }
         System.out.println("-ERR client failed to respond to ping");
     }
