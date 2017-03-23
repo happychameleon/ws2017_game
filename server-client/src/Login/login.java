@@ -10,6 +10,7 @@ import java.awt.Dimension;
 public class login {
 
 int cnt = 0;
+char number = '1';
 static String username = "" ;
 String[] usernames = new String[9000];
  JFrame userframe = new JFrame("User Login");
@@ -24,19 +25,20 @@ public login() {
 }
 
 public void frame(){
-	
+	// modify JFrame component layout
 	userframe.setSize(650,300);
 	userframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	userframe.setVisible(true);
-	JPanel p = new JPanel();
-	p.add(userlabel);
-	p.add(usertext);
-	p.add(loginbutton);
-	userframe.add(p);
 	userlabel.setFont(new Font("Courier New", Font.BOLD, 75));
-	//t.setPreferredSize(new Dimension(15,50));
 	loginbutton.setPreferredSize(new Dimension(100,50));
 	usertext.setFont(new Font("Courier New", Font.ITALIC , 50));
+	// Create the window for the Login
+	JPanel userpanel = new JPanel();
+	userpanel.add(userlabel);
+	userpanel.add(usertext);
+	userpanel.add(loginbutton);
+	userframe.add(userpanel);
+	
 	
 	
 	loginbutton.addActionListener(new ActionListener(){
@@ -45,16 +47,19 @@ public void frame(){
 			
 				    String user = usertext.getText();
 				
-				
+		// Save username		
 					username = user;
 					usernames[cnt] = user;
 					cnt++;
-					
+
+//search if username already exist and show proposition if it's true				
 					for(int i = 0; i < cnt-1;i++){
 						if(usernames[i].equals(user)){
-								JOptionPane.showMessageDialog(null, "excestiert"); 
+								JOptionPane.showMessageDialog(null, "Username not avaible"); 
+							    
+							    usertext.setText(user+"0"+number);
+							    number++;
 							    break;
-						
 						}
 							
 						
@@ -66,6 +71,7 @@ public void frame(){
 	});
 
 }
+
 public static String getusers(){
 	return username;
 }

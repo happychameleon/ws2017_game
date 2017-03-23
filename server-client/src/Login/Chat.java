@@ -21,7 +21,7 @@ public class Chat {
 	}
 
 		public void frame() {
-
+// modify JFrame component layout
 	    chatframe.setSize(700, 700);
 	    chatframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		chatframe.setVisible(true);	
@@ -29,7 +29,7 @@ public class Chat {
 	    userchange_in.setFont(new Font("Courier New", Font.ITALIC, 50));
 	    send.setPreferredSize(new Dimension(100, 50));
         userchange.setPreferredSize(new Dimension(200,50));
-		
+// Create window for the chat		
         JPanel p = new JPanel();
 		p.add(text_out);
 		p.add(chat_in);
@@ -49,8 +49,18 @@ public class Chat {
 			}
 			
 		});
-		
+		userchange.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 
+
+
+				
+
+			}
+			
+		});
+
+		
 	}
 		public static String getusers(){
 			return username;
