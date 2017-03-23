@@ -1,4 +1,4 @@
-package login;
+package Login;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -9,8 +9,9 @@ import java.awt.Dimension;
 
 public class login {
 
-	int cnt = 0;
-	String[] usernames = new String[10];
+int cnt = 0;
+static String username = "" ;
+String[] usernames = new String[9000];
  JFrame f = new JFrame("User Login");
  JLabel l = new JLabel("Username:");
  JTextField t = new JTextField(20);
@@ -41,32 +42,30 @@ public void frame(){
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent e)
 		{
-			try
-			{
-				String user = t.getText();
+			
+				    String user = t.getText();
 				
 				
-					usernames[cnt] = new String(user);
+					username = user;
+					usernames[cnt] = user;
 					cnt++;
 					
-					if(cnt != 0 ){
-					for(int i = 0; i< cnt-1;i++){
-				
-					if(usernames[i].equals(user)){
-						JOptionPane.showMessageDialog(null, "excestiert"); break;
+					for(int i = 0; i < cnt-1;i++){
+						if(usernames[i].equals(user)){
+								JOptionPane.showMessageDialog(null, "excestiert"); 
+							    break;
+							
+						}
 					}
-				}
-					}	
 				
+			System.out.println(getusers());
 			
-			}
-			catch(Exception ex)
-			{
-				
-			}
 		}
 	});
 
+}
+public static String getusers(){
+	return username;
 }
 
 public static void main(String[] args){

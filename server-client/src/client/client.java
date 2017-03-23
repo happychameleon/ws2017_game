@@ -3,13 +3,21 @@ package client;
 import java.io.*;
 import java.net.Socket;
 
+import Login.*;
+
 /**
  * Created by m on 3/10/17.
  */
+
 public class client {
 
+	public void OpenChat(){
+		new Chat();
+	}
+	
     public static void main(String[] args){
         try{
+        	new login();
             Socket gameclient = new Socket("127.0.0.1", 1030);//starts a new socket that connects to server hosted locally
             InputStream in = gameclient.getInputStream();
             OutputStream out = gameclient.getOutputStream();
@@ -40,6 +48,7 @@ public class client {
         }
     }
 }
+
 
 class OutputThread extends Thread{
     InputStream in;
