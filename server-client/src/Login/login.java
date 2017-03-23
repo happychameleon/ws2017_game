@@ -12,10 +12,10 @@ public class login {
 int cnt = 0;
 static String username = "" ;
 String[] usernames = new String[9000];
- JFrame f = new JFrame("User Login");
- JLabel l = new JLabel("Username:");
- JTextField t = new JTextField(20);
- JButton b = new JButton("Login");
+ JFrame userframe = new JFrame("User Login");
+ JLabel userlabel = new JLabel("Username:");
+ JTextField usertext = new JTextField(20);
+ JButton loginbutton = new JButton("Login");
  
 
 public login() {
@@ -25,25 +25,25 @@ public login() {
 
 public void frame(){
 	
-	f.setSize(650,300);
-	f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	f.setVisible(true);
+	userframe.setSize(650,300);
+	userframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	userframe.setVisible(true);
 	JPanel p = new JPanel();
-	p.add(l);
-	p.add(t);
-	p.add(b);
-	f.add(p);
-	l.setFont(new Font("Courier New", Font.BOLD, 75));
+	p.add(userlabel);
+	p.add(usertext);
+	p.add(loginbutton);
+	userframe.add(p);
+	userlabel.setFont(new Font("Courier New", Font.BOLD, 75));
 	//t.setPreferredSize(new Dimension(15,50));
-	b.setPreferredSize(new Dimension(100,50));
-	t.setFont(new Font("Courier New", Font.ITALIC , 50));
+	loginbutton.setPreferredSize(new Dimension(100,50));
+	usertext.setFont(new Font("Courier New", Font.ITALIC , 50));
 	
 	
-	b.addActionListener(new ActionListener(){
+	loginbutton.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent e)
 		{
 			
-				    String user = t.getText();
+				    String user = usertext.getText();
 				
 				
 					username = user;
@@ -54,8 +54,10 @@ public void frame(){
 						if(usernames[i].equals(user)){
 								JOptionPane.showMessageDialog(null, "excestiert"); 
 							    break;
-							
+						
 						}
+							
+						
 					}
 				
 			System.out.println(getusers());
