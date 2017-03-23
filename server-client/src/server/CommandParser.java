@@ -158,7 +158,7 @@ public class CommandParser {
 	 * @param username The name to translate into the User. Check first if the username exists!
 	 */
 	public void writeToSpecificClient(String output, String username) {
-		writeToSpecificClient(output, server.getUserByName(username));
+		writeToSpecificClient(output, Server.getUserByName(username));
 	}
 	
 	/**
@@ -185,7 +185,7 @@ public class CommandParser {
 	 * @param output
 	 */
 	public void writeToAllClients(String output) {
-		for (User user : server.getAllUsers()) {
+		for (User user : Server.getAllUsers()) {
 			try {
 				OutputStream outputStream = user.getSocket().getOutputStream();
 				outputStream.write((output + "\r\n").getBytes());

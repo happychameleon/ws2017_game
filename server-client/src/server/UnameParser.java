@@ -42,9 +42,9 @@ public class UnameParser {
 			return false;
 	    }
 	    
-	    if (server.getUserByName(argument) != null) {
+	    if (Server.getUserByName(argument) != null) {
     		int i = 2;
-    		while (server.getUserByName(argument + i) != null) {
+    		while (Server.getUserByName(argument + i) != null) {
     			i++;
 		    }
 		    String nameSuggestion = argument + i;
@@ -78,7 +78,7 @@ public class UnameParser {
 		
 		// Just for testing
 		commandParser.writeBackToClient("All the following users are logged in:");
-		for (User user : server.getAllUsers()) {
+		for (User user : Server.getAllUsers()) {
 			if (user.getName() != null) {
 				commandParser.writeBackToClient(user.getName());
 			} else {

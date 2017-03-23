@@ -1,4 +1,4 @@
-package Login;
+package login;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -7,7 +7,7 @@ import java.awt.Dimension;
 
 
 
-public class login {
+public class Login {
 
 int cnt = 0;
 static String username = "" ;
@@ -15,11 +15,10 @@ String[] usernames = new String[9000];
  JFrame f = new JFrame("User Login");
  JLabel l = new JLabel("Username:");
  JTextField t = new JTextField(20);
- JButton b = new JButton("Login");
+ JButton b = new JButton("login");
  
 
-public login() {
-	
+public Login() {
 	frame();
 }
 
@@ -70,7 +69,7 @@ public static String getusers(){
 
 public static void main(String[] args){
 	
-	new login();
+	new Login();
 }
 
 

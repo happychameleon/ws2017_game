@@ -2,7 +2,7 @@ package server;
 
 /**
  * Class sends ping to client, if client does not respond
- * before timeout the server responds in a meaningful way
+ * before timeout the Server responds in a meaningful way
  *
  * Created by m on 3/20/17.
  */

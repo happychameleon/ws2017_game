@@ -33,8 +33,8 @@ public class ChatmParser {
 			return;
 		}
 		
-		User sender = server.getUserByName(senderName);
-		User recipient = server.getUserByName(recipientName);
+		User sender = Server.getUserByName(senderName);
+		User recipient = Server.getUserByName(recipientName);
 		
 		if (recipient == null) {
 			commandParser.writeBackToClient("ERROR: The entered recipient name '" + recipientName + "' doesn't exist!");
