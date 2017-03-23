@@ -1,4 +1,4 @@
-package net;
+package Login;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -13,6 +13,7 @@ public class Chat {
 	JFrame f = new JFrame("Chat");
 	JTextField t = new JTextField(20);
 	JButton b = new JButton("Send");
+	JButton b1 = new JButton("Change Username");
 	JTextArea a = new JTextArea(25,50);
 	public Chat() {
 
@@ -29,11 +30,13 @@ public class Chat {
 		p.add(a);
 		p.add(t);
 		p.add(b);
+		p.add(b1);
 		f.add(p);
 		//t.setPreferredSize(new Dimension(15,50));
 		b.setPreferredSize(new Dimension(100, 50));
-     
-		b.addActionListener(new ActionListener() {
+        b1.setPreferredSize(new Dimension(200,50));
+		
+        b.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				String user = t.getText();
