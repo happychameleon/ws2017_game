@@ -52,6 +52,8 @@ public class CommandParser {
 	 * Calls necessary functions to validate and execute commands.
 	 */
     public void validateProtocol(){
+        CpingParser ping = new CpingParser(this);
+        ping.sendPing();
         int c;
         try {
             while ((c = in.read()) != -1){
@@ -60,7 +62,7 @@ public class CommandParser {
 
                 inputToCommandArgument();
 
-                KeywordParser keywordParser = new KeywordParser(keyword, argument, this);
+                KeywordParser keywordParser = new KeywordParser(keyword, argument, ping, this);
 
                 if(isValidCommand()){
                     keywordParser.compareKeyword();

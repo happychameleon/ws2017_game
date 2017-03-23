@@ -5,14 +5,16 @@ package server;
  */
 public class KeywordParser {
 	private final CommandParser commandParser;
+    private final CpingParser ping;
 	private final String keyword;
     private final String argument;
     
 	
-    public KeywordParser(String keyword, String argument, CommandParser commandParser){
+    public KeywordParser(String keyword, String argument, CpingParser ping, CommandParser commandParser){
         this.keyword = keyword;
         this.argument = argument;
         this.commandParser = commandParser;
+        this.ping = ping;
     }
 	
 	/**
@@ -25,7 +27,6 @@ public class KeywordParser {
                 break;
 
             case "cpong" :
-                CpingParser ping = new CpingParser(commandParser);
                 ping.pingConfirmation();
                 break;
 
