@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Created by m on 3/9/17.
  */
 public class server {
-	static ArrayList <User> userList = new ArrayList<User>();
+	private static ArrayList <User> userList = new ArrayList<User>();
 	
 	/**
 	 * @return A shallow clone of the {@link #userList}.
@@ -20,8 +20,12 @@ public class server {
 		return (ArrayList<User>) userList.clone();
 	}
 	
-	static void addUserToList(User user) {
-		userList.add(user);
+	static boolean addUserToList(User user) {
+		return userList.add(user);
+	}
+	
+	static boolean removeUserFromList(User user) {
+		return userList.remove(user);
 	}
 	
 	/**
@@ -75,7 +79,7 @@ class gameClientThread extends Thread{
             CommandParser gameProtocol = new CommandParser(in, out, user);
             gameProtocol.validateProtocol();
             System.out.println("connection to client " + connectedGameClient + " is being terminated");
-            server.userList.remove(user);
+            server.removeUserFromList(user);
             socket.close();
         } catch (IOException e) {
             System.err.println(e.toString());
