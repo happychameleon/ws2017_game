@@ -38,7 +38,6 @@ public class KeywordParser {
                 break;
 
             default:
-            	// TODO: Add this answer to the protocol.
                 commandParser.writeBackToClient("-ERR entered command does not exist");
                 break;
         }

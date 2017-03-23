@@ -93,7 +93,7 @@ public class CommandParser {
     }
 	
 	/**
-	 * Puts input in a {@link StringBuffer} utill the termination signal (\r \n).
+	 * Puts input in a {@link StringBuffer} until the termination signal (\r \n) is reached.
 	 */
     private void inputTranslate(InputStream in, int c){
         int terminate = 0;
@@ -134,7 +134,7 @@ public class CommandParser {
         }
         //makes sure the keyword is the proper length and if not tells the client that wrong
         if(keyword.length() != 5){
-            writeBackToClient(command + " is not a properly formatted command ");
+            writeBackToClient("-ERR "+command + " is not a properly formatted command");
             keyword = "";
             argument = "";
         }
