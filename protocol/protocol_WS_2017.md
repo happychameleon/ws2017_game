@@ -14,6 +14,13 @@ Commands
 
 All commands are case insensitive and made up entirely of ASCII characters. Commands always have exactly one **keyword** followed by none or more **arguments**. The keyword is never longer then 5 characters. Commands are always terminated with a CRCF (Carriage Return: \\r, New Line: \\n). Commands will either be answered with a positive response confirming that the command has been understood and processed or negative response pointing out what is wrong.
 A positive response has a ’+OK’ followed by the command that was successful. A negative response has a ’-ERR’ followed by the command that failed and an argument that either is a message with what went wrong or a suggestion for change that is relevant to the keyword.
+If the entered command is badly formatted the Server should return:
+
+> s: -ERR ’&lt;command&gt; is not a properly formatted command’
+
+If the entered command does not match a valid command, the server should return:
+
+> s: -ERR ’entered command does not exist’
 
 AUTHORIZATION State Commands
 ============================
