@@ -9,61 +9,58 @@ import javax.swing.*;
 public class Chat {
 	
 	static String username = "";
-	int cnt = 1;
-	JFrame f = new JFrame("Chat");
-	JTextField t = new JTextField(20);
-	JButton b = new JButton("Send");
-	JButton b1 = new JButton("Change Username");
-	JTextArea a = new JTextArea(25,50);
+	JFrame chatframe = new JFrame("Chat");
+	JTextField chat_in = new JTextField(15);
+	JTextField userchange_in = new JTextField(15);
+	JButton send = new JButton("Send");
+	JButton userchange = new JButton("Change Username");
+	JTextArea text_out = new JTextArea(30,50);
 	public Chat() {
 
 		frame();
 	}
 
 		public void frame() {
-
-	    t.setFont(new Font("Courier New", Font.ITALIC, 50));
-		f.setSize(650, 650);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setVisible(true);
-		JPanel p = new JPanel();
-		p.add(a);
-		p.add(t);
-		p.add(b);
-		p.add(b1);
-		f.add(p);
-		//t.setPreferredSize(new Dimension(15,50));
-		b.setPreferredSize(new Dimension(100, 50));
-        b1.setPreferredSize(new Dimension(200,50));
+// modify JFrame component layout
+	    chatframe.setSize(700, 700);
+	    chatframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		chatframe.setVisible(true);	
+	    chat_in.setFont(new Font("Courier New", Font.ITALIC, 50));
+	    userchange_in.setFont(new Font("Courier New", Font.ITALIC, 50));
+	    send.setPreferredSize(new Dimension(100, 50));
+        userchange.setPreferredSize(new Dimension(200,50));
+// Create window for the chat		
+        JPanel p = new JPanel();
+		p.add(text_out);
+		p.add(chat_in);
+		p.add(send);
+		p.add(userchange_in);
+		p.add(userchange);
+		chatframe.add(p);
 		
-        b.addActionListener(new ActionListener() {
+		
+		send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				String user = t.getText();
 
-			
-				username = user;
-				cnt++;
 
-//				if (cnt != 0) {
-//					for (int i = 0; i < cnt - 1; i++) {
-//						if (usernames[i].equals(user)) {
-//							JOptionPane.showMessageDialog(null, "username excestiert bereits");
-//							break;
-//								
-//							
-//						} 
-//						
-//					}
-//				}
-				System.out.println(getusers());
-				f.setVisible(false);
+				
 
 			}
 			
 		});
-		
+		userchange.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 
+
+
+				
+
+			}
+			
+		});
+
+		
 	}
 		public static String getusers(){
 			return username;
