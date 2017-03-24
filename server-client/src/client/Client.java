@@ -14,9 +14,21 @@ import java.util.ArrayList;
 public class Client {
 	
 	private static Login loginWindow;
+	
+	/**
+	 * The main chat window. Here every logged in client can read everything.
+	 * TODO Meilenstein 3: possibility for private chats (different windows).
+	 */
 	private static Chat chatWindow;
 	
+	public static Chat getChatWindow() {
+		return chatWindow;
+	}
+	
 	private static boolean isLoggedIn = false;
+	public static boolean isLoggedIn() {
+		return isLoggedIn;
+	}
 	
 	
 	private static InputStream serverInputStream;
@@ -32,6 +44,13 @@ public class Client {
 	static ArrayList<ClientUser> users = new ArrayList<>();
 	
 	/**
+	 * @return A shallow copy of {@link #users}.
+	 */
+	public static ArrayList<ClientUser> getAllUsers() {
+		return (ArrayList<ClientUser>) users.clone();
+	}
+	
+	/**
 	 * Gets the User for the specific username.
 	 * @param name The username.
 	 * @return The User. Can be null if username doesn't exist!
@@ -45,9 +64,6 @@ public class Client {
 		return null;
 	}
 	
-	public static boolean isLoggedIn() {
-		return isLoggedIn;
-	}
 	
 	/**
 	 * This adds a new user with the username from the server's nuser command.
@@ -116,6 +132,10 @@ public class Client {
 		chatWindow = new Chat();
 	}
 	
+	public static void sendNewChatMessage(String chatMessage, ClientUser receivers) {
+	
+	
+	}
 	
 	public static void sendMessageToServer (String message) {
 		try {
@@ -176,7 +196,6 @@ public class Client {
             System.exit(1);
         }
     }
-	
 	
 	
 }

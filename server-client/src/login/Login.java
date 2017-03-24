@@ -6,10 +6,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 
-
-public class Login implements ActionListener {
+public class Login implements ActionListener, KeyListener {
 	
 	
 	JFrame userFrame = new JFrame("User Login");
@@ -42,7 +43,8 @@ public class Login implements ActionListener {
 		
 		userFrame.setVisible(true);
 		
-		
+		userNameText.addKeyListener(this);
+		userNameText.setFocusable(true);
 		loginButton.addActionListener(this);
 		
 	}
@@ -58,10 +60,36 @@ public class Login implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		sendUsernameRequest();
+	}
+	
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_ENTER:
+				sendUsernameRequest();
+				break;
+			default:
+				break;
+		}
+	}
+	
+	private void sendUsernameRequest() {
 		String username = userNameText.getText();
-		
+		if (username.isEmpty())
+			return;
 		Client.sendMessageToServer("uname " + username);
 	}
 	
 	
+	@Override
+	public void keyTyped(KeyEvent e) {
+	
+	}
+	
+	@Override
+	public void keyReleased(KeyEvent e) {
+	
+	}
 }
