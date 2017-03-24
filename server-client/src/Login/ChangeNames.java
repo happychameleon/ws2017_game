@@ -17,6 +17,7 @@ public class ChangeNames {
     JLabel labelchange = new JLabel("New name:");
     JTextField textchange = new JTextField(20);
     JButton buttonchange = new JButton("Change");
+    int counter = 1;
 
     /**
      * Frame properties
@@ -27,7 +28,7 @@ public class ChangeNames {
     }
     public void frame(){
         framechange.setVisible(true);
-        framechange.setSize(400, 200);
+        framechange.setSize(400, 180);
         framechange.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         framechange.setLocation(300, 200);
         labelchange.setFont(new Font("Courier New", Font.BOLD, 20));
@@ -41,7 +42,7 @@ public class ChangeNames {
 
         /**
          * ActionListener reacts to button. Tests if new name is free. Changes old name or changes new name till
-         * new name is free. Loop for unfree new names doesn't work.
+         * new name is free.
          */
 
         buttonchange.addActionListener(new ActionListener(){
@@ -49,20 +50,23 @@ public class ChangeNames {
             {
 
                 String wishname = textchange.getText();
-                int counter = 1;
-                //FIXME: INFINITE LOOP
-                while(usernames.contains(wishname)){
-                //if(usernames.contains(wishname)){
-                    JOptionPane.showMessageDialog(null, "Username already given!");
-                    textchange.setText(wishname + counter);
-                    counter++;
-                    continue;
-                } //else {
-                    int value = usernames.indexOf("Pelikan");
+                String actualuser = usernames.get(0);
+
+                if(usernames.contains(wishname)){
+                    while(usernames.contains(wishname)){
+                        JOptionPane.showMessageDialog(null, "Username already given!");
+                        textchange.setText(wishname + counter);
+                        counter++;
+                        break;
+                    }
+                } else {
+                    int value = usernames.indexOf(actualuser);
                     usernames.set(value, wishname);
+                    framechange.dispose();
                     System.out.println("Hallo " + usernames.get(value) + "!");
                     System.out.println(usernames);//test
-                //}
+
+                }
 
             }
         });
@@ -72,17 +76,17 @@ public class ChangeNames {
 
     /**
      * Test entries for class
-     * @param args not used
+     * @param args[] not used
      */
    public static void main(String[] args) {
       ChangeNames change = new ChangeNames();
        // ChangeNames a = new ChangeNames(); // added class object
        change.usernames = new ArrayList<>();
        change.usernames.add("Pelikan");
-       change.usernames.add("Flavia");
-       change.usernames.add("Patrick");
-       change.usernames.add("Max");
-       change.usernames.add("Julischka");
+       change.usernames.add("Pelikan1");
+       change.usernames.add("Pelikan12");
+       change.usernames.add("Pelikan123");
+       change.usernames.add("Pelikan1234");
        System.out.println(change.usernames);
 
 
