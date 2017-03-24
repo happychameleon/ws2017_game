@@ -17,6 +17,12 @@ public class ClientCommandParser {
     private String keyword = "";
     private String argument = "";
 
+    /**
+     *TODO: write a good comment for javadoc
+     * @param in
+     * @param out
+     * @param stopreaquest
+     */
     public ClientCommandParser(InputStream in, OutputStream out, boolean stopreaquest) {
         this.in = in;
         this.out = out;
@@ -24,10 +30,17 @@ public class ClientCommandParser {
         validateCommand();
     }
 
+    /**
+     *TODO: write a good comment for javadoc
+     * @param stopreaquest
+     */
     public void stopValidateingCommand(boolean stopreaquest){
         this.stopreaquest = stopreaquest;
     }
 
+    /**
+     *TODO: write a good comment for javadoc
+     */
     private void validateCommand() {
         int len;
         try {
@@ -59,8 +72,12 @@ public class ClientCommandParser {
             //e.printStackTrace();
         }
     }
-	
-	
+
+    /**
+     *TODO: write a good comment for javadoc
+     * @param in
+     * @param c
+     */
 	private void inputTranslate(InputStream in, int c){
         int terminate = 0;
         try {
@@ -85,6 +102,9 @@ public class ClientCommandParser {
         }
     }
 
+    /**
+     *TODO: write a good comment for javadoc
+     */
     private void inputToCommandArgument() {
         //checks for space between keyword and argument in command string
         int keywordEnd = command.indexOf(" ");
@@ -108,6 +128,10 @@ public class ClientCommandParser {
         //}
     }
 
+    /**
+     *TODO: write a good comment for javadoc
+     * @return
+     */
     private boolean isValidCommand() {
         if(command.length() == 5){
             //System.out.println("length 5");
@@ -119,7 +143,11 @@ public class ClientCommandParser {
         }
         return true;
     }
-	
+
+    /**
+     * TODO: write a good comment for javadoc
+     * @return
+     */
 	private boolean isValidAnswer() {
 		if (command.charAt(0) == '-' || command.charAt(0) == '+') {
 			System.out.println("it's an answer!");
