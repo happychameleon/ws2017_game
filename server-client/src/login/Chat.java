@@ -75,8 +75,5 @@ public class Chat implements ActionListener {
 		
 		}
 	}
-	
-	
-	
 }
 
