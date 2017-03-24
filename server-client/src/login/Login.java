@@ -37,6 +37,9 @@ public class Login implements ActionListener {
 		userpanel.add(loginButton);
 		userFrame.add(userpanel);
 		
+		// Achievement whoami (The client suggest a nickname based on the system username)
+		userNameText.setText(System.getProperty("user.name"));
+		
 		userFrame.setVisible(true);
 		
 		

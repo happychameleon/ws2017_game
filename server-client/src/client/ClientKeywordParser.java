@@ -66,7 +66,7 @@ public class ClientKeywordParser {
 		
 		
 		
-		// TODO: "-ERR entered command does not exist"
+		// TODO: "-ERR entered command does not exist" What should we do with that?
 	}
 	
 	private void nameChange(String argument) {
