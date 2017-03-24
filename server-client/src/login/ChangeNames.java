@@ -1,4 +1,4 @@
-package Login;
+package login;
 
 import javax.swing.*;
 import java.awt.Font;

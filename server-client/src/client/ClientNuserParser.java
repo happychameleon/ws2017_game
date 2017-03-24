@@ -21,6 +21,13 @@ public class ClientNuserParser {
 			return;
 		}
 		Client.addNewUser(argument);
+		if (Client.getChatWindow() != null) {
+			Client.getChatWindow().displayInfo(argument + " has logged in and joined the chat!");
+		} else {
+			System.err.println("Client is logged in but no Chat Window open!");
+		}
+		
+		// TODO: Maybe add to the chat that a user with 'name' has logged in.
 	}
 	
 }

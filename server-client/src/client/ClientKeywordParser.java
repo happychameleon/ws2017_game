@@ -95,7 +95,9 @@ public class ClientKeywordParser {
 		ClientUser user = Client.getUserByName(oldName);
 		if (user != null) {
 			user.setName(newName);
-			System.out.println(oldName + " changed their name to " + newName);
+			if (Client.isLoggedIn() && Client.getChatWindow() != null) {
+				Client.getChatWindow().displayInfo( oldName + " changed their name to " + newName );
+			}
 		} else {
 			System.err.println("User who changed their name wasn't registered!");
 		}

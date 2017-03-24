@@ -23,13 +23,18 @@ public class Chat implements ActionListener, KeyListener {
 	 */
 	private ArrayList<ChatMessage> messages = new ArrayList<>();
 	
+	private boolean lastMessageIsInfo = false;
+	
 	/**
-	 * Adds a {@link ChatMessage} to the chat and displays it properly.
-	 * @param chatMessage the message to display
+	 * @return The last message that was displayed in this chat. Null if there was no message yet or the last entry was an Info.
 	 */
-	private void addNewMessage(ChatMessage chatMessage) {
-		messages.add(chatMessage);
-		chatText.append(chatMessage.getSender().getName() + ": " + chatMessage.getMessage() + "\n");
+	private ChatMessage getLastMessage() {
+		if (lastMessageIsInfo || messages.isEmpty()) {
+			System.out.println("NO LAST MESSAGES");
+			return null;
+		}
+		System.out.println("LAST MESSAGE FROM: " + messages.get(messages.size() - 1).getSender().getName());
+		return messages.get(messages.size() - 1);
 	}
 	
 	
@@ -101,6 +106,34 @@ public class Chat implements ActionListener, KeyListener {
 	}
 	
 	/**
+	 * This is to display info like when a new user joins or when a user changes their name.
+	 * // TODO Meilenstein 3: add message for logging off.
+	 * @param info the info text to display.
+	 */
+	public void displayInfo(String info) {
+		chatText.append("\n>>>" + info + "\n\n");
+		lastMessageIsInfo = true;
+	}
+	
+	/**
+	 * Adds a {@link ChatMessage} to the chat and displays it properly.
+	 * @param chatMessage the message to display
+	 */
+	private void addNewMessage(ChatMessage chatMessage) {
+		String textToAppend = "";
+		if (getLastMessage() != null && chatMessage.getSender() != getLastMessage().getSender()) {
+			// If the last message was from a different person add a bigger gap between.
+			System.out.println("ADD GAP");
+			textToAppend += "\n";
+		}
+		textToAppend += chatMessage.getSender().getName() + ": " + chatMessage.getMessage() + "\n";
+		chatText.append(textToAppend);
+		
+		messages.add(chatMessage);
+		lastMessageIsInfo = false;
+	}
+	
+	/**
 	 * This is called when the server sends a new message with the chatm command.
 	 * @param argument the argument from the server.
 	 */
@@ -150,7 +183,6 @@ public class Chat implements ActionListener, KeyListener {
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println("KEY PRESSED!");
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_ENTER:
 				if (chat_in.isFocusOwner()) {
