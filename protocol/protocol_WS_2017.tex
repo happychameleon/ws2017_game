@@ -62,24 +62,30 @@ If the entered command does not match a valid command, the server should return:
 %
 %
 % \noindent
-Once the session has gone in to the AUTHORIZATION state, the server will be expecting user name to identify the client by. This is done by sending a message with the desired user name to the server. If the name is already present in the server (i.e there is already a client connected with that name), the server returns a negative response. If the name given to the server is unique the server confirms it with a positive response. When a user disconnects from the server the user name is removed.\\\\
+Once the session has gone in to the AUTHORIZATION state, the server will be expecting user name to identify the client by. This is done by sending a message with the desired user name to the server. If the name is already present in the server (i.e there is already a client connected with that name), the server returns a negative response. If the name given to the server is unique the server confirms it with a positive response. As soon as the client has entered the user name, it is broadcasted to all other connected clients.\\ 
+When a user disconnects from the server the user name is removed.\\\\
 registering a name:
 
 \begin{quote}
-  c: uname '<name>'\\
-  s: +OK 'you are <name>'
+  c: uname <name>\\
+  s: +OK 'you are' <name>
 \end{quote}
 \noindent
 own username entered:
 \begin{quote}
-  c: uname '<name>'\\
-  s: -ERR same username entered'
+  c: uname <name>\\
+  s: -ERR 'same username entered'
 \end{quote}
 \noindent
 username already taken:
 \begin{quote}
-  c: uname '<name>'\\
-  s: -ERR uname '<name\_suggestion>'
+  c: uname <name>\\
+  s: -ERR uname <name\_suggestion>
+\end{quote}
+\noindent
+broadcast new user name to other clients:
+\begin{quote}
+  s: nuser <name>
 \end{quote}
 
 
@@ -90,15 +96,26 @@ in regular intervals server and client should exchange pings to make sure that t
 \noindent
 server sends ping:
 \begin{quote}
-  s: ping\\
-  c: +OK pong
+  s: cping\\
+  c: +OK cpong
 \end{quote}
 
 \subsection{Changing user name}
-To change user name the same command is used as to enter the original user name in the AUTHORIZATION State\\
+To change user name the same command is used as to enter the original user name in the AUTHORIZATION State.\\
+change name:
 \begin{quote}
   c: uname <new\_name>
-  s: +OK you are <new\_name>
+  s: +OK uname <new\_name>
+\end{quote}
+\noindent
+When the a name is changed this has to be sent to all other clients:\\
+\begin{quote}
+  s: +OK nuser <old\_name> <new\_name>
+\end{quote}
+\noindent
+(actully part of the AUTHORIZATION State)When a user joins the server the name is announced to all users
+\begin{quote}
+  s: nuser <newusername> 
 \end{quote}
 
 %%\subsubsection{Chat Room}
@@ -107,7 +124,7 @@ To change user name the same command is used as to enter the original user name 
 To be able to send a message or find to an other user one needs to know the name of the other users.
 \begin{quote}
   c: cgetu\\
-  s: +OK <user0> <user2> <user2> ...
+  s: +OK cgetu <user0> <user2> <user2> ...
 \end{quote} 
 \subsection{Chat}
 When chatting, the server acts as a relay between two clients. When the message arrives at the destination client, the recipient automatically sends back a message (with the chatr command) to the server that then relays a message to the sending client that the message was received.\\\\
@@ -119,14 +136,10 @@ sender:
 \noindent
 recipient:
 \begin{quote}
-    s: chatm <sender\_name> <recipient\_name> '<message>'\\
+  s: chatm <sender\_name> <recipient\_name> '<message>'\\
   c: chatr <sender\_name> <recipient\_name>%%chat response tells the server that client got message from chat partner
 \end{quote}
 
-\noindent
-\begin{quote}
-  c: cgetu
-\end{quote}
 \clearpage
 \section{UPDATE State Commands}
 \subsection{Quit}

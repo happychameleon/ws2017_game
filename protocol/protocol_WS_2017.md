@@ -25,21 +25,26 @@ If the entered command does not match a valid command, the server should return:
 AUTHORIZATION State Commands
 ============================
 
-Once the session has gone in to the AUTHORIZATION state, the server will be expecting user name to identify the client by. This is done by sending a message with the desired user name to the server. If the name is already present in the server (i.e there is already a client connected with that name), the server returns a negative response. If the name given to the server is unique the server confirms it with a positive response. When a user disconnects from the server the user name is removed.
+Once the session has gone in to the AUTHORIZATION state, the server will be expecting user name to identify the client by. This is done by sending a message with the desired user name to the server. If the name is already present in the server (i.e there is already a client connected with that name), the server returns a negative response. If the name given to the server is unique the server confirms it with a positive response. As soon as the client has entered the user name, it is broadcasted to all other connected clients.
+When a user disconnects from the server the user name is removed.
 registering a name:
 
-> c: uname ’&lt;name&gt;’
-> s: +OK ’you are &lt;name&gt;’
+> c: uname &lt;name&gt;
+> s: +OK ’you are’ &lt;name&gt;
 
 own username entered:
 
-> c: uname ’&lt;name&gt;’
-> s: -ERR same username entered’
+> c: uname &lt;name&gt;
+> s: -ERR ’same username entered’
 
 username already taken:
 
-> c: uname ’&lt;name&gt;’
-> s: -ERR uname ’&lt;name\_suggestion&gt;’
+> c: uname &lt;name&gt;
+> s: -ERR uname &lt;name\_suggestion&gt;
+
+broadcast new user name to other clients:
+
+> s: nuser &lt;name&gt;
 
 TRANSACTION State Commands
 ==========================
@@ -50,15 +55,24 @@ Ping/Pong
 in regular intervals server and client should exchange pings to make sure that they are still connected, if there is no response in a defined time the connection should be disconnected.
 server sends ping:
 
-> s: ping
-> c: +OK pong
+> s: cping
+> c: +OK cpong
 
 Changing user name
 ------------------
 
-To change user name the same command is used as to enter the original user name in the AUTHORIZATION State
+To change user name the same command is used as to enter the original user name in the AUTHORIZATION State.
+change name:
 
-> c: uname &lt;new\_name&gt; s: +OK you are &lt;new\_name&gt;
+> c: uname &lt;new\_name&gt; s: +OK uname &lt;new\_name&gt;
+
+When the a name is changed this has to be sent to all other clients:
+
+> s: +OK nuser &lt;old\_name&gt; &lt;new\_name&gt;
+
+(actully part of the AUTHORIZATION State)When a user joins the server the name is announced to all users
+
+> s: nuser &lt;newusername&gt;
 
 Get all user names
 ------------------
@@ -66,7 +80,7 @@ Get all user names
 To be able to send a message or find to an other user one needs to know the name of the other users.
 
 > c: cgetu
-> s: +OK &lt;user0&gt; &lt;user2&gt; &lt;user2&gt; ...
+> s: +OK cgetu &lt;user0&gt; &lt;user2&gt; &lt;user2&gt; ...
 
 Chat
 ----
@@ -81,8 +95,6 @@ recipient:
 
 > s: chatm &lt;sender\_name&gt; &lt;recipient\_name&gt; ’&lt;message&gt;’
 > c: chatr &lt;sender\_name&gt; &lt;recipient\_name&gt;
-
-> c: cgetu
 
 UPDATE State Commands
 =====================
