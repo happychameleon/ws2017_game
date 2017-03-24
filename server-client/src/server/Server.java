@@ -3,8 +3,10 @@ package server;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 /**
@@ -45,11 +47,21 @@ public class Server {
 
     public static void main(String[] args){
 	    int connectedGameClient = 1;
-
-        try{
-            System.out.print("Server running, waiting for client connection \n");
-            ServerSocket gamesServer = new ServerSocket(1030);
-            while(true) {
+	    int port = 1030;
+	    if (args.length > 0) {
+	    	port = Integer.parseInt(args[0]);
+	    }
+	    String serverIP = "-";
+	    try {
+		    serverIP = InetAddress.getLocalHost().getHostAddress();
+	    } catch (UnknownHostException e) {
+		    e.printStackTrace();
+	    }
+	
+	    try{
+            ServerSocket gamesServer = new ServerSocket(port);
+	        System.out.print("Server running with ip " + serverIP + ", waiting for client connection on Port " + port + "\n");
+	        while(true) {
                 Socket socket = gamesServer.accept();
                 (new GameClientThread(connectedGameClient++, userList, socket)).start(); //creates a new Server thread
             }

@@ -135,7 +135,17 @@ public class Client {
 	
 	public static void main(String[] args){
         try{
-	        serverSocket = new Socket("127.0.0.1", 1030);//starts a new socket that connects to server hosted locally
+        	String hostIP = "127.0.0.1";
+        	int port = 1030;
+        	if (args.length >= 2) {
+        		hostIP = args[0];
+        		port = Integer.parseInt(args[1]);
+		        if (args.length >= 3) {
+        			// TODO Meilenstein 3: optionally set username here.
+		        }
+	        }
+	        System.out.println("Trying to connect to server with ip " + hostIP + " on port " + port);
+	        serverSocket = new Socket(hostIP, port);//starts a new socket that connects to server hosted locally
 	        serverInputStream = serverSocket.getInputStream();
 	        serverOutputStream = serverSocket.getOutputStream();
 	        serverSocket.setSoTimeout(200);
