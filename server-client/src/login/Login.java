@@ -13,17 +13,10 @@ int cnt = 0;
 char number = '1';
 static String username = "" ;
 String[] usernames = new String[9000];
-<<<<<<< HEAD:server-client/src/login/Login.java
- JFrame f = new JFrame("User Login");
- JLabel l = new JLabel("Username:");
- JTextField t = new JTextField(20);
- JButton b = new JButton("login");
-=======
  JFrame userframe = new JFrame("User Login");
  JLabel userlabel = new JLabel("Username:");
  JTextField usertext = new JTextField(20);
  JButton loginbutton = new JButton("Login");
->>>>>>> 43f6579f61e6faec6332ee680994ffa1cbd0a924:server-client/src/Login/login.java
  
 
 public Login() {
