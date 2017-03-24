@@ -1,88 +1,64 @@
-package login;
+package login; // TODO: Rename package to gui (and move into client)
 
-import java.awt.event.*;
+import client.Client;
+
 import javax.swing.*;
-import java.awt.Font;
-import java.awt.Dimension;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 
-public class Login {
-
-int cnt = 0;
-char number = '1';
-static String username = "" ;
-String[] usernames = new String[9000];
- JFrame userframe = new JFrame("User Login");
- JLabel userlabel = new JLabel("Username:");
- JTextField usertext = new JTextField(20);
- JButton loginbutton = new JButton("Login");
- 
-
-public Login() {
-	frame();
-}
-
-public void frame(){
-	// modify JFrame component layout
-	userframe.setSize(650,300);
-	userframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	userframe.setVisible(true);
-	userlabel.setFont(new Font("Courier New", Font.BOLD, 75));
-	loginbutton.setPreferredSize(new Dimension(100,50));
-	usertext.setFont(new Font("Courier New", Font.ITALIC , 50));
-	// Create the window for the Login
-	JPanel userpanel = new JPanel();
-	userpanel.add(userlabel);
-	userpanel.add(usertext);
-	userpanel.add(loginbutton);
-	userframe.add(userpanel);
+public class Login implements ActionListener {
 	
 	
+	JFrame userFrame = new JFrame("User Login");
+	JLabel userLabel = new JLabel("Username:");
+	JTextField userNameText = new JTextField(20);
+	JButton loginButton = new JButton("Login");
 	
-	loginbutton.addActionListener(new ActionListener(){
-		public void actionPerformed(ActionEvent e)
-		{
-			
-				    String user = usertext.getText();
-				
-		// Save username		
-					username = user;
-					usernames[cnt] = user;
-					cnt++;
-
-//search if username already exist and show proposition if it's true				
-					for(int i = 0; i < cnt-1;i++){
-						if(usernames[i].equals(user)){
-								JOptionPane.showMessageDialog(null, "Username not avaible"); 
-							    
-							    usertext.setText(user+"0"+number);
-							    number++;
-							    break;
-						}
-							
-						
-					}
-				
-			System.out.println(getusers());
-			
-		}
-	});
-
-}
-
-public static String getusers(){
-	return username;
-}
-
-public static void main(String[] args){
 	
-	new Login();
-}
-
-
-
-
-
-
+	public Login() {
+		
+		frame();
+	}
+	
+	public void frame(){
+		// modify JFrame component layout
+		userFrame.setSize(650,300);
+		userFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		userLabel.setFont(new Font("Courier New", Font.BOLD, 75));
+		loginButton.setPreferredSize(new Dimension(100,50));
+		userNameText.setFont(new Font("Courier New", Font.ITALIC , 50));
+		// Create the window for the Login
+		JPanel userpanel = new JPanel();
+		userpanel.add(userLabel);
+		userpanel.add(userNameText);
+		userpanel.add(loginButton);
+		userFrame.add(userpanel);
+		
+		userFrame.setVisible(true);
+		
+		
+		loginButton.addActionListener(this);
+		
+	}
+	
+	public void closeWindow() {
+		userFrame.dispose();
+	}
+	
+	public void proposeUsername(String proposedUsername) {
+		userNameText.setText(proposedUsername);
+	}
+	
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String username = userNameText.getText();
+		
+		Client.sendMessageToServer("uname " + username);
+	}
+	
+	
 }

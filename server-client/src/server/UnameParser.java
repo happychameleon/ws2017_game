@@ -77,14 +77,14 @@ public class UnameParser {
 		}
 		
 		// Just for testing
-		commandParser.writeBackToClient("All the following users are logged in:");
-		for (User user : Server.getAllUsers()) {
-			if (user.getName() != null) {
-				commandParser.writeBackToClient(user.getName());
-			} else {
-				commandParser.writeBackToClient("UNNAMED USER");
-			}
-		}
+		//commandParser.writeBackToClient("All the following users are logged in:");
+		//for (User user : Server.getAllUsers()) {
+		//	if (user.getName() != null) {
+		//		commandParser.writeBackToClient(user.getName());
+		//	} else {
+		//		commandParser.writeBackToClient("UNNAMED USER");
+		//	}
+		//}
 	}
 	
 	

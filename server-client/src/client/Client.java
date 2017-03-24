@@ -1,36 +1,103 @@
 package client;
 
+import login.Chat;
+import login.Login;
+
 import java.io.*;
 import java.net.Socket;
-
-import login.*;
+import java.util.ArrayList;
 
 /**
  * Created by m on 3/10/17.
  */
 
 public class Client {
-
-	public void OpenChat(){
-		new Chat();
+	
+	private static Login loginWindow;
+	
+	private static Chat chatWindow;
+	
+	private static InputStream serverInputStream;
+	private static OutputStream serverOutputStream;
+	private static Socket serverSocket;
+	
+	private static ClientUser thisUser;
+	
+	static ArrayList<ClientUser> users = new ArrayList<>();
+	
+	public static void startClient () {
+		
+		thisUser = new ClientUser();
+		users.add(thisUser);
+		
+		loginWindow = new Login();
+		
 	}
 	
-    public static void main(String[] args){
+	/**
+	 * This gets called only when the server gave back the ok to change the username.
+	 * When the loginWindow is open (meaning the user hasn't logged in yet) it closes the loginWindow
+	 * and starts the ChatWindow.
+	 * @param username The new username
+	 */
+	public static void setUsername(String username) {
+		thisUser.setName(username);
+		if (loginWindow != null) {
+			loginWindow.closeWindow();
+			loginWindow = null;
+			if (chatWindow == null) {
+				chatWindow = new Chat();
+				// TODO: Get all usernames from the server.
+				
+			}
+		}
+		chatWindow.setTitle("Username: " + username);
+	}
+	
+	public static void proposeUsername(String proposedUsername) {
+		if (loginWindow != null) {
+			loginWindow.proposeUsername(proposedUsername);
+		} else if (chatWindow != null) {
+			chatWindow.proposeUsername(proposedUsername);
+		} else {
+			System.err.println("Why is there no window open?");
+		}
+	}
+	
+	
+	public static void sendMessageToServer (String message) {
+		try {
+			serverOutputStream.write((message + "\r\n").getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public static void main(String[] args){
         try{
-        	new Login();
-            Socket gameclient = new Socket("127.0.0.1", 1030);//starts a new socket that connects to server hosted locally
-            InputStream in = gameclient.getInputStream();
-            OutputStream out = gameclient.getOutputStream();
-            gameclient.setSoTimeout(200);
-            ClientThread th = new ClientThread(in, out);
+	        serverSocket = new Socket("127.0.0.1", 1030);//starts a new socket that connects to server hosted locally
+	        serverInputStream = serverSocket.getInputStream();
+	        serverOutputStream = serverSocket.getOutputStream();
+	        serverSocket.setSoTimeout(200);
+            ClientThread th = new ClientThread(serverInputStream, serverOutputStream);
             th.start();
+            startClient();
             BufferedReader comandlinInput = new BufferedReader(new InputStreamReader(System.in));
             String line = "";
             while (true){
                 line = comandlinInput.readLine();
-                out.write(line.getBytes());
-                out.write('\r');
-                out.write('\n');
+                // TODO: are those three lines necessary?
+                serverOutputStream.write(line.getBytes());
+                serverOutputStream.write('\r');
+                serverOutputStream.write('\n');
                 if(line.equalsIgnoreCase("cquit"))break;
             }
             //stop program
@@ -39,14 +106,16 @@ public class Client {
             try{
                 Thread.sleep(1000);
             } catch (InterruptedException e){}
-            in.close();
-            out.close();
-            gameclient.close();
+            serverInputStream.close();
+            serverOutputStream.close();
+	        serverSocket.close();
         }catch (IOException e){
             System.err.println();
             System.exit(1);
         }
     }
+	
+	
 }
 
 
@@ -68,6 +137,6 @@ class ClientThread extends Thread{
 
     public void run(){
         ClientCommandParser commandParser = new ClientCommandParser(in, out, stopreaquest);
-        commandParser.stopValidateingCommand(stopreaquest);
+	    commandParser.stopValidateingCommand(stopreaquest);
     }
 }
