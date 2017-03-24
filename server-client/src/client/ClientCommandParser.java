@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
-import java.lang.invoke.MethodType;
 
 /**
  * Created by m on 3/23/17
@@ -43,6 +42,8 @@ public class ClientCommandParser {
                     ClientKeywordParser keywordParser = new ClientKeywordParser(keyword, argument, this);
                     if(isValidCommand()){
                         keywordParser.compareKeyword();
+                    } else if (isValidAnswer()) {
+		                keywordParser.compareAnswer();
                     }
                     System.out.println(command.toString());
                     //clears all global variables
@@ -58,8 +59,9 @@ public class ClientCommandParser {
             //e.printStackTrace();
         }
     }
-
-    private void inputTranslate(InputStream in, int c){
+	
+	
+	private void inputTranslate(InputStream in, int c){
         int terminate = 0;
         try {
             while (true){
@@ -97,31 +99,33 @@ public class ClientCommandParser {
         if(keywordEnd > 0 && command.length() > keywordEnd){
             argument = command.substring(keywordEnd+1, command.length());
         }
+        // NOT NEEDED, because it could also be an answer where the keyword is -OK or -ERR.
         //makes sure the keyword is the proper length and if not tells the client that wrong
-        if(keyword.length() != 5){
-            //writeBackToServer("-ERR " + command + " is not a properly formatted command");
-            keyword = "";
-            argument = "";
-        }
+        //if(keyword.length() != 5){
+        //    writeBackToServer("-ERR " + command + " is not a properly formatted command");
+        //    keyword = "";
+        //    argument = "";
+        //}
     }
 
     private boolean isValidCommand() {
         if(command.length() == 5){
-            System.out.println("length 5");
+            //System.out.println("length 5");
             return true;
         }
         else if(keyword.length() != 5){
-            System.out.println("return false, length not 5");
+            //System.out.println("return false, length not 5");
             return false;
         }
         return true;
     }
-
-    public void writeBackToServer(String output){
-        try {
-            out.write((output + "\r\n").getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	
+	private boolean isValidAnswer() {
+		if (command.charAt(0) == '-' || command.charAt(0) == '+') {
+			System.out.println("it's an answer!");
+			return true;
+		}
+		return false;
+	}
+	
 }

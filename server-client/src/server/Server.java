@@ -45,7 +45,7 @@ public class Server {
     
 
     public static void main(String[] args){
-        int connectedGameClient = 1;
+	    int connectedGameClient = 1;
 
         try{
             System.out.print("Server running, waiting for client connection \n");

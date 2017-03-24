@@ -25,9 +25,27 @@ public class ClientKeywordParser {
                 ping.sendPong();
                 break;
 
+            // TODO: Chat command
+            
             default:
                 //commandParser.writeBackToServer("-ERR entered command does not exist");
                 break;
         }
     }
+	
+	public void compareAnswer() {
+ 
+        if (keyword.equals("+OK") && argument.startsWith("you are ")) {
+        	String username = argument.substring(8);
+        	Client.setUsername(username);
+        } else
+        if (keyword.equals("-ERR") && argument.equals("same username entered")) {
+        	// just ignore this. Maybe add message later?
+		} else
+		if (keyword.equals("-ERR") && argument.startsWith("uname ")) {
+        	String proposedUsername = argument.substring(6);
+        	Client.proposeUsername(proposedUsername);
+		}
+ 
+	}
 }

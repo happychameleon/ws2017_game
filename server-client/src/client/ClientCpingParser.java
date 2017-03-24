@@ -12,6 +12,6 @@ public class ClientCpingParser {
     }
     public void sendPong(){
         System.out.println("responding to ping with pong");
-        commandParser.writeBackToServer("cpong");
+        Client.sendMessageToServer("cpong");
     }
 }
