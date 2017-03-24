@@ -1,6 +1,9 @@
 package server;
 
 /**
+ * Handles the cgetu command which is a request by a client to get all the existing users which already have a name.
+ * The requesting client is also listed if they already have a name.
+ *
  * Created by flavia on 24.03.17.
  */
 public class CgetuParser {

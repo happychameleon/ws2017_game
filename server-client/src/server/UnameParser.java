@@ -1,6 +1,8 @@
 package server;
 
 /**
+ * TODO: write a good comment for javadoc
+ *
  * Created by m on 3/20/17.
  */
 public class UnameParser {
@@ -72,7 +74,7 @@ public class UnameParser {
 		sendingUser.setName(newName);
 		
 		if (nameChange) {
-			commandParser.writeBackToClient("+OK you are " + newName); // TODO change message to "+OK uname <username>"
+			commandParser.writeBackToClient("+OK you are " + newName); // TODO: change message to "+OK uname <username>"
 			commandParser.writeToAllOtherClients("+OK nuser " + oldName + " " + newName);
 		} else {
 			commandParser.writeBackToClient("+OK you are " + newName);

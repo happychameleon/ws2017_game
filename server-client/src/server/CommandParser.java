@@ -82,7 +82,7 @@ public class CommandParser {
     }
 	
 	/**
-	 * checks if command is correctly formatted
+	 * Checks if command is correctly formatted
 	 */
     private boolean isValidCommand() {
         if(command.length() == 5){

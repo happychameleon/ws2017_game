@@ -22,10 +22,16 @@ public class Server {
 		return (ArrayList<User>) userList.clone();
 	}
 	
+	/**
+	 * @see #userList
+	 */
 	static boolean addUserToList(User user) {
 		return userList.add(user);
 	}
 	
+	/**
+	 * @see #userList
+	 */
 	static boolean removeUserFromList(User user) {
 		return userList.remove(user);
 	}
@@ -72,6 +78,9 @@ public class Server {
     }
 }
 
+/**
+ * TODO: write a good comment for javadoc
+ */
 class GameClientThread extends Thread{
     private int connectedGameClient;
     private Socket socket;

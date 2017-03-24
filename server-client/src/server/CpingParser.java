@@ -40,6 +40,9 @@ public class CpingParser {
     }
 }
 
+/**
+ * TODO: write a good comment for javadoc
+ */
 class PingThread extends Thread{
     CommandParser commandParser;
     public PingThread(CommandParser commandParser){

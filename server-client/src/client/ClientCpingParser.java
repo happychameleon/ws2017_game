@@ -1,6 +1,8 @@
 package client;
 
 /**
+ * TODO: write a good comment for javadoc
+ *
  * Created by m on 3/23/17.
  */
 public class ClientCpingParser {

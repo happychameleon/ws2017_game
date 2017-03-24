@@ -1,6 +1,8 @@
 package server;
 
 /**
+ * Compares the command with {@link #compareKeyword()} and if it is an existing command it creates the correct parser to execute the command.
+ *
  * Created by m on 3/20/17.
  */
 public class KeywordParser {
@@ -18,7 +20,7 @@ public class KeywordParser {
     }
 	
 	/**
-	 * This compares the command and if it is an existing command it creates the correct parser to execute the command.
+	 * Compares the command and if it is an existing command it creates the correct parser to execute the command.
 	 */
 	public void compareKeyword(){
         switch (keyword){

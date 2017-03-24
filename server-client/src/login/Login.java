@@ -9,7 +9,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-
+/**
+ * This is the first window when starting the client. Here the user can log in by setting their username.
+ */
 public class Login implements ActionListener, KeyListener {
 	
 	
@@ -24,6 +26,9 @@ public class Login implements ActionListener, KeyListener {
 		frame();
 	}
 	
+	/**
+	 * Opens and displays the Login Window.
+	 */
 	public void frame(){
 		// modify JFrame component layout
 		userFrame.setSize(650,300);
@@ -75,6 +80,10 @@ public class Login implements ActionListener, KeyListener {
 		}
 	}
 	
+	/**
+	 * Sends a request to see if the entered username is available.
+	 * The answer is handled by the {@link client.ClientCommandParser}.
+	 */
 	private void sendUsernameRequest() {
 		String username = userNameText.getText();
 		if (username.isEmpty())

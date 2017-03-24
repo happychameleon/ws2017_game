@@ -12,7 +12,10 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
+/**
+ * The general Chat window where all users can chat with each other and name changes can be requested.
+ * TODO: In future milestones there will also be the possibility to start a game with selected people and to privately chat
+ */
 public class Chat implements ActionListener, KeyListener {
 	
 	/**
@@ -44,6 +47,9 @@ public class Chat implements ActionListener, KeyListener {
 		frame();
 	}
 	
+	/**
+	 * Opens and displays the Chat Window.
+	 */
 	public void frame() {
 		// modify JFrame component layout
 		chatFrame.setSize(700, 700);

@@ -3,6 +3,8 @@ package client;
 import java.util.ArrayList;
 
 /**
+ * TODO: write a good comment for javadoc
+ *
  * Created by m on 3/23/17.
  */
 public class ClientKeywordParser {
@@ -43,6 +45,9 @@ public class ClientKeywordParser {
 		}
 	}
 	
+	/**
+	 * This compares the answer to one of the possible answers defined in the protocol.
+	 */
 	public void compareAnswer() {
 		
 		// UNAME Answers
@@ -73,6 +78,10 @@ public class ClientKeywordParser {
 		// TODO: "-ERR entered command does not exist" What should we do with that?
 	}
 	
+	/**
+	 * Receives and handles the answer to a name change request from another user.
+	 * @param argument the argument of the answer, starting with "nuser ".
+	 */
 	private void nameChange(String argument) {
 		String usernameSeparator = " ";
 		int separatorIndex = argument.indexOf(usernameSeparator);

@@ -6,6 +6,8 @@ import java.io.InterruptedIOException;
 import java.io.OutputStream;
 
 /**
+ * TODO: write a good comment for javadoc
+ *
  * Created by m on 3/23/17
  */
 public class ClientCommandParser {
@@ -18,7 +20,7 @@ public class ClientCommandParser {
     private String argument = "";
 
     /**
-     *TODO: write a good comment for javadoc
+     * TODO: write a good comment for javadoc
      * @param in
      * @param out
      * @param stopreaquest
@@ -34,7 +36,7 @@ public class ClientCommandParser {
      *TODO: write a good comment for javadoc
      * @param stopreaquest
      */
-    public void stopValidateingCommand(boolean stopreaquest){
+    public void stopValidatingCommand(boolean stopreaquest){
         this.stopreaquest = stopreaquest;
     }
 
@@ -129,8 +131,8 @@ public class ClientCommandParser {
     }
 
     /**
-     *TODO: write a good comment for javadoc
-     * @return
+     * @return <code>true</code> when the received message from the server is a new command,
+     * <code>false</code> otherwise.
      */
     private boolean isValidCommand() {
         if(command.length() == 5){
@@ -145,8 +147,8 @@ public class ClientCommandParser {
     }
 
     /**
-     * TODO: write a good comment for javadoc
-     * @return
+     * @return <code>true</code> when the received message from the server is an answer to a command sent from this client,
+     * <code>false</code> otherwise.
      */
 	private boolean isValidAnswer() {
 		if (command.charAt(0) == '-' || command.charAt(0) == '+') {

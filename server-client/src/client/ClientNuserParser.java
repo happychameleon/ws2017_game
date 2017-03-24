@@ -1,6 +1,8 @@
 package client;
 
 /**
+ * Handles the nuser command by adding the new user to the userlist IF this user is already logged in.
+ *
  * Created by flavia on 24.03.17.
  */
 public class ClientNuserParser {

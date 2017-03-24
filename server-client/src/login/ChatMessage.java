@@ -6,6 +6,8 @@ import client.ClientUser;
 import java.util.ArrayList;
 
 /**
+ * This represents a single Chat message sent between the specified users.
+ *
  * Created by flavia on 24.03.17.
  */
 public class ChatMessage {

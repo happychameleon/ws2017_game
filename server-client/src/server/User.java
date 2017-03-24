@@ -11,9 +11,9 @@ public class User {
     private String name;
 
     /**
-     * constructor for User class
-     * @param name
-     * @param socket
+     * Constructor for the User class
+     * @param name the name of the user.
+     * @param socket the Socket to the client.
      */
     public User(String name, Socket socket){
         this.name = name;

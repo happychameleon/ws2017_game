@@ -6,15 +6,11 @@ package server;
  */
 public class ChatmParser {
 	
-	// TODO: Add correct messages from protocol!
-	private final String errorMessageWrongRecipientName = "ERROR: The entered recipient name doesn't exist!";
-	
 	private final CommandParser commandParser;
 	private final String argument;
 	
 	private String senderName;
 	private String recipientName;
-	private String message;
 	
 	public ChatmParser(String argument, CommandParser commandParser){
         this.argument = argument;
@@ -110,7 +106,6 @@ public class ChatmParser {
 		
 		this.senderName = senderName.toString();
 		this.recipientName = recipientName.toString();
-		this.message = message.toString();
 		
 		return true;
 	}

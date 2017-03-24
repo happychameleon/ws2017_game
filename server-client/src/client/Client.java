@@ -25,7 +25,14 @@ public class Client {
 		return chatWindow;
 	}
 	
+	/**
+	 * If this client has already logged in and chosen a username.
+	 */
 	private static boolean isLoggedIn = false;
+	
+	/**
+	 * @return {@link #isLoggedIn}.
+	 */
 	public static boolean isLoggedIn() {
 		return isLoggedIn;
 	}
@@ -35,12 +42,19 @@ public class Client {
 	private static OutputStream serverOutputStream;
 	private static Socket serverSocket;
 	
+	/**
+	 * The user representing this client.
+	 */
 	private static final ClientUser thisUser = new ClientUser();
 	
 	public static ClientUser getThisUser() {
 		return thisUser;
 	}
 	
+	/**
+	 * All the logged in users.
+	 * It's empty until this client has logged in.
+	 */
 	static ArrayList<ClientUser> users = new ArrayList<>();
 	
 	/**
@@ -101,6 +115,10 @@ public class Client {
 		}
 	}
 	
+	/**
+	 * This is called when the server sends back a message after the client requested a username which was already taken.
+	 * @param proposedUsername the alternative username (with a number at the end).
+	 */
 	public static void proposeUsername(String proposedUsername) {
 		if (loginWindow != null) {
 			loginWindow.proposeUsername(proposedUsername);
@@ -132,11 +150,10 @@ public class Client {
 		chatWindow = new Chat();
 	}
 	
-	public static void sendNewChatMessage(String chatMessage, ClientUser receivers) {
-	
-	
-	}
-	
+	/**
+	 * Sends a new message (command) to the server.
+	 * @param message the message text.
+	 */
 	public static void sendMessageToServer (String message) {
 		try {
 			serverOutputStream.write((message + "\r\n").getBytes());
@@ -211,14 +228,17 @@ class ClientThread extends Thread{
         this.out = out;
         stopreaquest = false;
     }
-
-    public synchronized void requestStop(){
+	
+	/**
+	 * TODO:
+	 */
+	public synchronized void requestStop(){
         stopreaquest = true;
     }
 
 
     public void run(){
         ClientCommandParser commandParser = new ClientCommandParser(in, out, stopreaquest);
-	    commandParser.stopValidateingCommand(stopreaquest);
+	    commandParser.stopValidatingCommand(stopreaquest);
     }
 }
