@@ -1,5 +1,7 @@
 package client;
 
+import java.util.ArrayList;
+
 /**
  * Created by m on 3/23/17.
  */
@@ -34,18 +36,50 @@ public class ClientKeywordParser {
     }
 	
 	public void compareAnswer() {
- 
+     
+    	// UNAME Answers
         if (keyword.equals("+OK") && argument.startsWith("you are ")) {
         	String username = argument.substring(8);
         	Client.setUsername(username);
-        } else
-        if (keyword.equals("-ERR") && argument.equals("same username entered")) {
+        } else if (keyword.equals("-ERR") && argument.equals("same username entered")) {
         	// just ignore this. Maybe add message later?
-		} else
-		if (keyword.equals("-ERR") && argument.startsWith("uname ")) {
+		} else if (keyword.equals("-ERR") && argument.startsWith("uname ")) {
         	String proposedUsername = argument.substring(6);
         	Client.proposeUsername(proposedUsername);
 		}
- 
+		
+		// CGETU Answers
+		else if (keyword.equals("-OK") && argument.startsWith("cgetu ")) {
+        	parseAllUsernames(argument.toCharArray());
+        }
+        
+        // CHATM Answers
+		
+		
+		
+		// TODO: "-ERR entered command does not exist"
+	}
+	
+	/**
+	 * This is for receiving all usernames when logging in as an answer to the cgetu command.
+	 * @param argument
+	 */
+	private void parseAllUsernames(char[] argument) {
+    	String usernameSeparator = " ";
+		ArrayList<String> usernames = new ArrayList<>();
+		String currentUsername = "";
+		for (int i = 6; i < argument.length; i++) {
+			if (argument[i] == ' ') {
+				usernames.add(currentUsername);
+				currentUsername = "";
+			} else {
+				currentUsername += argument[i];
+				if (i == argument.length - 1) {
+					// last user isn't recognised with a space, has to be added here.
+					usernames.add(currentUsername);
+				}
+			}
+		}
+		Client.readInAllUsernames(usernames);
 	}
 }

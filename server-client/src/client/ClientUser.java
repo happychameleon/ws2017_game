@@ -5,7 +5,7 @@ package client;
  */
 public class ClientUser {
 	
-	String name;
+	private String name;
 	
 	public String getName() {
 		return name;
@@ -15,5 +15,13 @@ public class ClientUser {
 		this.name = name;
 	}
 	
+	
+	public ClientUser (String name) {
+		this.name = name;
+	}
+	
+	public ClientUser () {
+	
+	}
 	
 }

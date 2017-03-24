@@ -25,6 +25,10 @@ public class KeywordParser {
             case "uname" :
                 UnameParser name = new UnameParser(argument, commandParser);
                 break;
+                
+            case "cgetu" :
+                CgetuParser cgetu = new CgetuParser(argument, commandParser);
+                break;
 
             case "cpong" :
                 ping.pingConfirmation();

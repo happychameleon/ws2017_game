@@ -21,13 +21,16 @@ public class Client {
 	private static OutputStream serverOutputStream;
 	private static Socket serverSocket;
 	
-	private static ClientUser thisUser;
+	private static final ClientUser thisUser = new ClientUser();
+	
+	public static ClientUser getThisUser() {
+		return thisUser;
+	}
 	
 	static ArrayList<ClientUser> users = new ArrayList<>();
 	
 	public static void startClient () {
 		
-		thisUser = new ClientUser();
 		users.add(thisUser);
 		
 		loginWindow = new Login();
@@ -46,12 +49,12 @@ public class Client {
 			loginWindow.closeWindow();
 			loginWindow = null;
 			if (chatWindow == null) {
-				chatWindow = new Chat();
-				// TODO: Get all usernames from the server.
-				
+				sendMessageToServer("cgetu");
 			}
 		}
-		chatWindow.setTitle("Username: " + username);
+		if (chatWindow != null) {
+			chatWindow.setTitle("Username: " + username);
+		}
 	}
 	
 	public static void proposeUsername(String proposedUsername) {
@@ -62,6 +65,22 @@ public class Client {
 		} else {
 			System.err.println("Why is there no window open?");
 		}
+	}
+	
+	public static void readInAllUsernames(ArrayList<String> usernames) {
+		for (String username : usernames) {
+			if (username.equals(thisUser.getName())) {
+				// We already added ourselves at the start.
+				//System.out.println("Received our own name, seems to be working.");
+				continue;
+			}
+			ClientUser user = new ClientUser(username);
+			users.add(user);
+		}
+		if (chatWindow != null) {
+			System.err.println("Chat Window should be null before receiving all usernames!");
+		}
+		chatWindow = new Chat();
 	}
 	
 	
@@ -114,6 +133,7 @@ public class Client {
             System.exit(1);
         }
     }
+	
 	
 	
 }

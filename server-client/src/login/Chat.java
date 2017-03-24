@@ -1,4 +1,5 @@
 package login;
+
 import client.Client;
 
 import javax.swing.*;
@@ -10,7 +11,6 @@ import java.awt.event.ActionListener;
 public class Chat implements ActionListener {
 	
 	
-	
 	JFrame chatFrame = new JFrame("Chat");
 	JTextField chat_in = new JTextField(15);
 	JTextField usernameChange_in = new JTextField(15);
@@ -19,6 +19,8 @@ public class Chat implements ActionListener {
 	JTextArea text_out = new JTextArea(30,50);
 	
 	public Chat() {
+		
+		chatFrame.setTitle("Username: " + Client.getThisUser().getName());
 		
 		frame();
 	}
@@ -50,6 +52,7 @@ public class Chat implements ActionListener {
 		
 	}
 	
+	
 	/**
 	 * Sets the Title of the Chat Window.
 	 * @param newTitle
@@ -75,8 +78,6 @@ public class Chat implements ActionListener {
 		
 		}
 	}
-	
-	
 	
 }
 

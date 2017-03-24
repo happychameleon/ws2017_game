@@ -11,6 +11,8 @@ public class ChatMessage {
 	
 	private ClientUser sender;
 	
-	
-	
+	public ChatMessage(String message, ClientUser sender) {
+		this.message = message;
+		this.sender = sender;
+	}
 }
