@@ -37,7 +37,7 @@ public class UnameParser {
     		return false;
 	    }
 		
-	    if (commandParser.getUser().getName() != null && commandParser.getUser().getName().equals(argument)) {
+	    if (commandParser.getReceivingUser().getName() != null && commandParser.getReceivingUser().getName().equals(argument)) {
 			commandParser.writeBackToClient("-ERR same username entered");
 			return false;
 	    }
@@ -59,32 +59,26 @@ public class UnameParser {
 	 * If the user didn't already have a name it newly assigns one, otherwise it overwrites the old one.
 	 */
 	private void addUsernameToServer() {
-		User sendingUser = commandParser.getUser();
+		User sendingUser = commandParser.getReceivingUser();
+		String oldName = sendingUser.getName();
+		String newName = argument;
 		
 		// Does the user change their already existing name or define a new one?
 		boolean nameChange = false;
-		if (sendingUser.getName() != null) {
+		if (oldName != null) {
 			nameChange = true;
 		}
 		
-		sendingUser.setName(argument);
+		sendingUser.setName(newName);
 		
 		if (nameChange) {
-			// TODO: Maybe different response when changing name or defining a new one?
-			commandParser.writeBackToClient("+OK you are " + argument);
+			commandParser.writeBackToClient("+OK you are " + newName); // TODO change message to "+OK uname <username>"
+			commandParser.writeToAllOtherClients("+OK nuser " + oldName + " " + newName);
 		} else {
-			commandParser.writeBackToClient("+OK you are " + argument);
+			commandParser.writeBackToClient("+OK you are " + newName);
+			commandParser.writeToAllOtherClients("nuser " + newName);
 		}
 		
-		// Just for testing
-		//commandParser.writeBackToClient("All the following users are logged in:");
-		//for (User user : Server.getAllUsers()) {
-		//	if (user.getName() != null) {
-		//		commandParser.writeBackToClient(user.getName());
-		//	} else {
-		//		commandParser.writeBackToClient("UNNAMED USER");
-		//	}
-		//}
 	}
 	
 	

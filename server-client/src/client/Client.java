@@ -14,8 +14,10 @@ import java.util.ArrayList;
 public class Client {
 	
 	private static Login loginWindow;
-	
 	private static Chat chatWindow;
+	
+	private static boolean isLoggedIn = false;
+	
 	
 	private static InputStream serverInputStream;
 	private static OutputStream serverOutputStream;
@@ -28,6 +30,32 @@ public class Client {
 	}
 	
 	static ArrayList<ClientUser> users = new ArrayList<>();
+	
+	/**
+	 * Gets the User for the specific username.
+	 * @param name The username.
+	 * @return The User. Can be null if username doesn't exist!
+	 */
+	public static ClientUser getUserByName(String name) {
+		for (ClientUser user : users) {
+			if (user.getName() != null && user.getName().equals(name)) {
+				return user;
+			}
+		}
+		return null;
+	}
+	
+	public static boolean isLoggedIn() {
+		return isLoggedIn;
+	}
+	
+	/**
+	 * This adds a new user with the username from the server's nuser command.
+	 * @param username the username of the new user.
+	 */
+	public static void addNewUser(String username) {
+		users.add(new ClientUser(username));
+	}
 	
 	public static void startClient () {
 		
@@ -67,6 +95,10 @@ public class Client {
 		}
 	}
 	
+	/**
+	 * Reads in all the users from the cgetu command once we log in with a name.
+	 * @param usernames
+	 */
 	public static void readInAllUsernames(ArrayList<String> usernames) {
 		for (String username : usernames) {
 			if (username.equals(thisUser.getName())) {
@@ -80,6 +112,7 @@ public class Client {
 		if (chatWindow != null) {
 			System.err.println("Chat Window should be null before receiving all usernames!");
 		}
+		isLoggedIn = true;
 		chatWindow = new Chat();
 	}
 	

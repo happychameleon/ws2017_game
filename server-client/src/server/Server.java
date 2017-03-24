@@ -32,7 +32,6 @@ public class Server {
 	 * Gets the User for the specific username.
 	 * @param name The username.
 	 * @return The User. Can be null if username doesn't exist!
-	 * TODO: Delete the user/username pair when logging off.
 	 */
     public static User getUserByName(String name) {
     	for (User user : userList) {

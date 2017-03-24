@@ -12,15 +12,15 @@ import java.io.OutputStream;
  */
 public class CommandParser {
 	/**
-	 * The user from which this CommandParser reads in the commands.
+	 * The receivingUser from which this CommandParser reads in the commands.
 	 */
-	private final User user;
+	private final User receivingUser;
 	/**
-	 * The {@link InputStream} of this {@link #user}
+	 * The {@link InputStream} of this {@link #receivingUser}
 	 */
 	private InputStream in;
 	/**
-	 * The {@link OutputStream} of this {@link #user}
+	 * The {@link OutputStream} of this {@link #receivingUser}
 	 */
     private OutputStream out;
     private StringBuffer command = new StringBuffer("");
@@ -38,14 +38,14 @@ public class CommandParser {
     public CommandParser(InputStream in, OutputStream out, User user){
         this.in = in;
         this.out = out;
-        this.user = user;
+        this.receivingUser = user;
     }
 	
 	/**
-	 * @return {@link #user}
+	 * @return {@link #receivingUser}
 	 */
-	public User getUser() {
-		return user;
+	public User getReceivingUser() {
+		return receivingUser;
 	}
 
 	/**
@@ -162,13 +162,13 @@ public class CommandParser {
 	}
 	
 	/**
-	 * This writes a message to the specific user.
+	 * This writes a message to the specific receivingUser.
 	 * @param output The message to write.
 	 * @param user The User to write to.
 	 */
 	public void writeToSpecificClient(String output, User user) {
 		if (user == null) {
-			System.err.println("CommandParser#writeToSpecificClient - Must enter a valid user!");
+			System.err.println("CommandParser#writeToSpecificClient - Must enter a valid receivingUser!");
 			return;
 		}
 		
@@ -182,10 +182,28 @@ public class CommandParser {
 	
 	/**
 	 * Writes the output message to all clients.
-	 * @param output
+	 * @param output the message
 	 */
 	public void writeToAllClients(String output) {
 		for (User user : Server.getAllUsers()) {
+			try {
+				OutputStream outputStream = user.getSocket().getOutputStream();
+				outputStream.write((output + "\r\n").getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * Writes the output message to all clients except to the one who sent the command.
+	 * @param output the message
+	 */
+	public void writeToAllOtherClients(String output) {
+		for (User user : Server.getAllUsers()) {
+			if (user == this.receivingUser) {
+				continue;
+			}
 			try {
 				OutputStream outputStream = user.getSocket().getOutputStream();
 				outputStream.write((output + "\r\n").getBytes());

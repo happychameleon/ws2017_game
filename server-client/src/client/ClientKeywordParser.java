@@ -26,6 +26,10 @@ public class ClientKeywordParser {
                 ClientCpingParser ping = new ClientCpingParser(commandParser);
                 ping.sendPong();
                 break;
+                
+	        case "nuser" :
+	        	ClientNuserParser nuser = new ClientNuserParser(argument);
+	        	break;
 
             // TODO: Chat command
             
@@ -36,10 +40,10 @@ public class ClientKeywordParser {
     }
 	
 	public void compareAnswer() {
-     
-    	// UNAME Answers
+		
+		// UNAME Answers
         if (keyword.equals("+OK") && argument.startsWith("you are ")) {
-        	String username = argument.substring(8);
+	        String username = argument.substring(8);
         	Client.setUsername(username);
         } else if (keyword.equals("-ERR") && argument.equals("same username entered")) {
         	// just ignore this. Maybe add message later?
@@ -48,8 +52,13 @@ public class ClientKeywordParser {
         	Client.proposeUsername(proposedUsername);
 		}
 		
+		// NUSER Answers
+		else if(keyword.equals("+OK") && argument.startsWith("nuser ")) {
+            nameChange(argument.substring(6));
+        }
+		
 		// CGETU Answers
-		else if (keyword.equals("-OK") && argument.startsWith("cgetu ")) {
+		else if (keyword.equals("+OK") && argument.startsWith("cgetu ")) {
         	parseAllUsernames(argument.toCharArray());
         }
         
@@ -58,6 +67,26 @@ public class ClientKeywordParser {
 		
 		
 		// TODO: "-ERR entered command does not exist"
+	}
+	
+	private void nameChange(String argument) {
+		String usernameSeparator = " ";
+		int separatorIndex = argument.indexOf(usernameSeparator);
+		if (separatorIndex < 1) {
+			System.err.println("nameChange - nuser answer wrong formated");
+			return;
+		}
+		String oldName = argument.substring(0, separatorIndex);
+		String newName = argument.substring(separatorIndex + 1, argument.length() - 1);
+		
+		ClientUser user = Client.getUserByName(oldName);
+		if (user != null) {
+			user.setName(newName);
+			System.out.println(oldName + " changed their name to " + newName);
+		} else {
+			System.err.println("User who changed their name wasn't registered!");
+		}
+		
 	}
 	
 	/**

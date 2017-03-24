@@ -150,7 +150,7 @@ public class ClientCommandParser {
      */
 	private boolean isValidAnswer() {
 		if (command.charAt(0) == '-' || command.charAt(0) == '+') {
-			System.out.println("it's an answer!");
+			//System.out.println("it's an answer!");
 			return true;
 		}
 		return false;

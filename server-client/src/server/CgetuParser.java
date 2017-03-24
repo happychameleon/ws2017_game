@@ -20,9 +20,9 @@ public class CgetuParser {
 			System.err.println("cgetu should not have an argument!");
 		}
 		
-		String answer = "-OK cgetu";
+		String answer = "+OK cgetu";
 		for (User user : Server.getAllUsers()) {
-			if (user.getName().isEmpty()) {
+			if (user.getName() == null || user.getName().isEmpty()) {
 				// We ignore non-registered users, since they will be sent to the client as new users when logging in.
 				continue;
 			}

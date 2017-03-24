@@ -11,7 +11,13 @@ public class ClientCpingParser {
         this.commandParser = commandParser;
     }
     public void sendPong(){
-        System.out.println("responding to ping with pong");
+        //System.out.println("responding to ping with pong");
         Client.sendMessageToServer("cpong");
+        
+        // Just for testing:
+	    System.out.println("Current users:");
+	    for (ClientUser user : Client.users) {
+		    System.out.println(" " + user.getName());
+	    }
     }
 }
