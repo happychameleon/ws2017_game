@@ -27,6 +27,11 @@ public class CpingParser {
         sendPing();
     }
 
+    public void terminatePingThread(){
+        System.out.println("interrupting ping thread");
+        newPingThead.interrupt();
+    }
+
     /**
      * function is called to start the PingThread
      */
@@ -35,17 +40,24 @@ public class CpingParser {
     }
 }
 
-
 class PingThread extends Thread{
     CommandParser commandParser;
     public PingThread(CommandParser commandParser){
         this.commandParser = commandParser;
     }
-    //TODO: A more meaningful way of handling a client timeout
+    //TODO: A more meaningful response a client timeout (closing socket?)
     public void run(){
+        long pingDelay = 15000;
+        long pingTimeout = 2000;
+        try {
+            Thread.sleep(pingDelay);
+        }catch (InterruptedException e){
+            return;
+        }
+        System.out.println("sending client ping");
         commandParser.writeBackToClient("cping");
         try {
-            Thread.sleep(5000);
+            Thread.sleep(pingTimeout);
         } catch (InterruptedException e) {
             return;
         }

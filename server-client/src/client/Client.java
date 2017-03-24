@@ -22,7 +22,7 @@ public class Client {
             InputStream in = gameclient.getInputStream();
             OutputStream out = gameclient.getOutputStream();
             gameclient.setSoTimeout(200);
-            OutputThread th = new OutputThread(in);
+            ClientThread th = new ClientThread(in, out);
             th.start();
             BufferedReader comandlinInput = new BufferedReader(new InputStreamReader(System.in));
             String line = "";
@@ -50,33 +50,24 @@ public class Client {
 }
 
 
-class OutputThread extends Thread{
+class ClientThread extends Thread{
     InputStream in;
+    OutputStream out;
     boolean stopreaquest;
-    public OutputThread(InputStream in){
+    public ClientThread(InputStream in, OutputStream out){
         super();
         this.in = in;
+        this.out = out;
         stopreaquest = false;
     }
+
     public synchronized void requestStop(){
         stopreaquest = true;
     }
+
+
     public void run(){
-        int len;
-        byte[] b = new byte[100];
-        try {
-            while (!stopreaquest) {
-                try {
-                    if ((len = in.read(b)) == -1) {
-                        break;
-                    }
-                    System.out.write(b, 0, len);
-                } catch (InterruptedIOException e) {
-                 //try again
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("OutputThread: " + e.toString());
-        }
+        ClientCommandParser commandParser = new ClientCommandParser(in, out, stopreaquest);
+        commandParser.stopValidateingCommand(stopreaquest);
     }
 }

@@ -31,15 +31,8 @@ public class CommandParser {
 	 * Whenever the client should quit after a command (e.g. via the cquit command) this variable has to be set to true.
 	 */
 	public boolean shouldQuit = false;
-	
-	/**
-	 * @return {@link #user}
-	 */
-	public User getUser() {
-		return user;
-	}
-	
-	/**
+
+    /**
      * Constructor, gives the class access to input and output to and from client.
      */
     public CommandParser(InputStream in, OutputStream out, User user){
@@ -49,6 +42,13 @@ public class CommandParser {
     }
 	
 	/**
+	 * @return {@link #user}
+	 */
+	public User getUser() {
+		return user;
+	}
+
+	/**
 	 * Calls necessary functions to validate and execute commands.
 	 */
     public void validateProtocol(){
@@ -57,7 +57,6 @@ public class CommandParser {
         int c;
         try {
             while ((c = in.read()) != -1){
-
                 inputTranslate(in, c);
 
                 inputToCommandArgument();
@@ -75,6 +74,7 @@ public class CommandParser {
                 keyword = "";
                 argument = "";
             }
+            ping.terminatePingThread();
             
         } catch (IOException e) {
             e.printStackTrace();
