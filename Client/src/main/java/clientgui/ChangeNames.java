@@ -1,4 +1,4 @@
-package login;
+package clientgui;
 
 import javax.swing.*;
 import java.awt.Font;

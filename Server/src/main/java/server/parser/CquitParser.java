@@ -1,4 +1,4 @@
-package server;
+package server.parser;
 
 /**
  * Created by m on 3/20/17.

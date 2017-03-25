@@ -1,5 +1,8 @@
-package server;
+package server.parser;
 
+
+import server.Server;
+import server.User;
 
 import java.io.IOException;
 import java.io.InputStream;

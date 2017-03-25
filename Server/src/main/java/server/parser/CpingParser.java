@@ -1,4 +1,4 @@
-package server;
+package server.parser;
 
 /**
  * Class sends ping to client, if client does not respond

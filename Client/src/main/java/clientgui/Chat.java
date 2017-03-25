@@ -1,4 +1,4 @@
-package login;
+package clientgui;
 
 import client.Client;
 import client.ClientUser;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 /**
  * The general Chat window where all users can chat with each other and name changes can be requested.
- * TODO: In future milestones there will also be the possibility to start a game with selected people and to privately chat
+ * TODO Milestone 3: In future milestones there will also be the possibility to start a game with selected people and to privately chat
  */
 public class Chat implements ActionListener, KeyListener {
 	

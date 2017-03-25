@@ -1,7 +1,7 @@
 package client;
 
-import login.Chat;
-import login.Login;
+import clientgui.Chat;
+import clientgui.Login;
 
 import java.io.*;
 import java.net.Socket;

@@ -1,4 +1,7 @@
-package server;
+package server.parser;
+
+import server.Server;
+import server.User;
 
 /**
  * Handles the cgetu command which is a request by a client to get all the existing users which already have a name.

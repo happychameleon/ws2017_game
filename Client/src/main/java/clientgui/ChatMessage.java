@@ -1,4 +1,4 @@
-package login;
+package clientgui;
 
 import client.Client;
 import client.ClientUser;

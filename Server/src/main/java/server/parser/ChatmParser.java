@@ -1,5 +1,8 @@
-package server;
+package server.parser;
 
+
+import server.Server;
+import server.User;
 
 /**
  * Created by m on 3/21/17.

@@ -1,4 +1,7 @@
-package server;
+package server.parser;
+
+import server.Server;
+import server.User;
 
 /**
  * TODO: write a good comment for javadoc
