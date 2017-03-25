@@ -44,6 +44,7 @@ public class Chat implements ActionListener, KeyListener {
 	JButton sendChatButton = new JButton("Send");
 	JButton usernameChange = new JButton("Change Username");
 	JTextArea chatText = new JTextArea(30,50);
+	JScrollPane scroll;
 	
 	public Chat() {
 		
@@ -64,11 +65,20 @@ public class Chat implements ActionListener, KeyListener {
 		sendChatButton.setPreferredSize(new Dimension(100, 50));
 		usernameChange.setPreferredSize(new Dimension(200,50));
 		
+		// Make scrolling possible:
 		chatText.setEditable(false);
+		scroll = new JScrollPane (chatText);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		
+		// Either set lineWrap to true or make horizontal scrolling available. Just change the commented line to get the other option.
+		// One of them has to be active or long text will be cut.
+		chatText.setLineWrap(true);
+		//scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		
 		
 		// Create window for the chat
 		JPanel p = new JPanel();
-		p.add(chatText);
+		p.add(scroll);
 		p.add(chat_in);
 		p.add(sendChatButton);
 		p.add(usernameChange_in);
