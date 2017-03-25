@@ -94,7 +94,7 @@ public class ClientKeywordParser {
 			return;
 		}
 		String oldName = argument.substring(0, separatorIndex);
-		String newName = argument.substring(separatorIndex + 1, argument.length() - 1);
+		String newName = argument.substring(separatorIndex + 1, argument.length());
 		
 		ClientUser user = Client.getUserByName(oldName);
 		if (user != null) {
