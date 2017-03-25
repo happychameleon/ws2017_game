@@ -51,6 +51,21 @@ public class Server {
 	    }
 	    return null;
     }
+	
+	/**
+	 * Writes the output message to all clients.
+	 * @param output the message
+	 */
+	public static void writeToAllClients(String output) {
+		for (User user : getAllUsers()) {
+			try {
+				OutputStream outputStream = user.getSocket().getOutputStream();
+				outputStream.write((output + "\r\n").getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
     
 
     public static void main(String[] args){
@@ -102,6 +117,7 @@ class GameClientThread extends Thread{
             gameProtocol.validateProtocol();
             System.out.println("connection to client " + connectedGameClient + " is being terminated");
             Server.removeUserFromList(user);
+            Server.writeToAllClients("cquit " + user.getName());
             socket.close();
         } catch (IOException e) {
             System.err.println(e.toString());

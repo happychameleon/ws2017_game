@@ -78,6 +78,14 @@ public class Client {
 		return null;
 	}
 	
+	/**
+	 * Removes the specified User from the {@link #users} list.
+	 * @param user The user to delete.
+	 */
+	public static void removeUser(ClientUser user) {
+		users.remove(user);
+	}
+	
 	
 	/**
 	 * This adds a new user with the username from the server's nuser command.

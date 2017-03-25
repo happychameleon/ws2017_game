@@ -111,7 +111,11 @@ public class Chat implements ActionListener, KeyListener {
 	 * @param info the info text to display.
 	 */
 	public void displayInfo(String info) {
-		chatText.append("\n>>>" + info + "\n\n");
+		String infoMessage = "";
+		if (lastMessageIsInfo == false)
+			infoMessage += "\n";
+		infoMessage += ">>>" + info + "\n\n";
+		chatText.append(infoMessage);
 		lastMessageIsInfo = true;
 	}
 	

@@ -38,6 +38,10 @@ public class ClientKeywordParser {
 					Client.getChatWindow().receiveMessage(argument);
 				}
 				break;
+				
+			case "cquit" :
+				ClientCquitParser cquitParser = new ClientCquitParser(argument);
+				break;
 			
 			default:
 				//commandParser.writeBackToServer("-ERR entered command does not exist");

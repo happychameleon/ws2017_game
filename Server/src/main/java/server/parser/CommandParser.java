@@ -184,21 +184,6 @@ public class CommandParser {
 	}
 	
 	/**
-	 * Writes the output message to all clients.
-	 * @param output the message
-	 */
-	public void writeToAllClients(String output) {
-		for (User user : Server.getAllUsers()) {
-			try {
-				OutputStream outputStream = user.getSocket().getOutputStream();
-				outputStream.write((output + "\r\n").getBytes());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	/**
 	 * Writes the output message to all clients except to the one who sent the command.
 	 * @param output the message
 	 */
