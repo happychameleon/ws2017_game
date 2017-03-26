@@ -1,8 +1,6 @@
 package server;
 
 
-import server.parser.CpingParser;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -29,6 +27,12 @@ public class CommandParser {
     private String keyword = "";
     private String argument = "";
 	
+	private CpingSender cpingSender;
+	
+	public CpingSender getCpingSender() {
+		return cpingSender;
+	}
+	
 	/**
 	 * Whenever the client should quit after a command (e.g. via the cquit command) this variable has to be set to true.
 	 */
@@ -54,8 +58,8 @@ public class CommandParser {
 	 * Calls necessary functions to validate and execute commands.
 	 */
     public void validateProtocol(){
-        CpingParser ping = new CpingParser(this);
-        ping.sendPing();
+        cpingSender = new CpingSender(this);
+        cpingSender.sendPing();
         int c;
         try {
             while ((c = in.read()) != -1){
@@ -63,7 +67,7 @@ public class CommandParser {
 
                 inputToCommandArgument();
 
-                KeywordParser keywordParser = new KeywordParser(keyword, argument, ping, this);
+                KeywordParser keywordParser = new KeywordParser(keyword, argument, cpingSender, this);
 
                 if(isValidCommand()){
                     keywordParser.compareKeyword();
@@ -76,7 +80,7 @@ public class CommandParser {
                 keyword = "";
                 argument = "";
             }
-            ping.terminatePingThread();
+            cpingSender.terminatePingThread();
             
         } catch (IOException e) {
             e.printStackTrace();

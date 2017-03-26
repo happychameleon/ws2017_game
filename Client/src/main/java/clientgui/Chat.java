@@ -237,7 +237,7 @@ public class Chat implements ActionListener, KeyListener {
 	 */
 	private void sendChangeUsernameRequest() {
 		String username = usernameChange_in.getText();
-		if (username.isEmpty())
+		if (username.isEmpty() || username.contains(" ") || username.contains("'"))
 			return;
 		Client.sendMessageToServer("uname " + username);
 		usernameChange_in.setText("");

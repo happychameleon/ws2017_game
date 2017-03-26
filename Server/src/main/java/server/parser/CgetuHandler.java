@@ -1,6 +1,5 @@
 package server.parser;
 
-import server.CommandParser;
 import server.Server;
 import server.User;
 
@@ -10,19 +9,10 @@ import server.User;
  *
  * Created by flavia on 24.03.17.
  */
-public class CgetuParser {
+public class CgetuHandler extends CommandHandler {
 	
-	private String argument;
-	private CommandParser commandParser;
-	
-	public CgetuParser(String argument, CommandParser commandParser){
-		this.argument = argument;
-		this.commandParser = commandParser;
-		
-		handleCgetu();
-	}
-	
-	private void handleCgetu() {
+	@Override
+	public void handleCommand(String argument) {
 		if (argument.isEmpty() == false) {
 			System.err.println("cgetu should not have an argument!");
 		}
@@ -37,5 +27,4 @@ public class CgetuParser {
 		}
 		commandParser.writeBackToClient(answer);
 	}
-	
 }

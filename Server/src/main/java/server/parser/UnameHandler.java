@@ -1,6 +1,5 @@
 package server.parser;
 
-import server.CommandParser;
 import server.Server;
 import server.User;
 
@@ -9,37 +8,34 @@ import server.User;
  *
  * Created by m on 3/20/17.
  */
-public class UnameParser {
-    private String argument;
-    private CommandParser commandParser;
+public class UnameHandler extends CommandHandler {
 	
-    public UnameParser(String argument, CommandParser commandParser){
-        this.argument = argument;
-	    this.commandParser = commandParser;
-	    
-	    handleUname();
-    }
 	
-	private void handleUname() {
-    	if (validateArgument() == false) {
-    		return;
-	    }
-    	addUsernameToServer();
+	@Override
+	public void handleCommand(String argument) {
+		if (validateArgument(argument) == false) {
+			return;
+		}
+		addUsernameToServer(argument);
 	}
+	
 	
 	/**
 	 * @return <code>true</code> if the argument is correctly formatted and valid, otherwise <code>false</code>.
+	 * @param argument
 	 */
-	private boolean validateArgument() {
+	private boolean validateArgument(String argument) {
 		if (argument == null || argument.isEmpty()) {
-			commandParser.writeBackToClient("ERROR: Username is empty! Please enter a username!");
+			// This should actually never happen, because the client doesn't send empty names.
+			commandParser.writeBackToClient("-ERR uname username is empty");// Please enter a username!
 			return false;
 		}
 		if (argument.charAt(0) == '\'' && argument.charAt(argument.length() - 1) == '\'') {
 			argument = argument.substring(1, argument.length() - 1);
 		}
     	if (argument.contains(" ") || argument.contains("'")) {
-    		commandParser.writeBackToClient("ERROR: Username contains invalid characters. Don't use ' or <space>!");
+		    // This should actually never happen, because the client doesn't send these names.
+    		commandParser.writeBackToClient("-ERR uname username contains invalid characters");// Don't use ' or <space>!
     		return false;
 	    }
 		
@@ -63,8 +59,9 @@ public class UnameParser {
 	/**
 	 * This sets the username of the User who entered this command to the given username.
 	 * If the user didn't already have a name it newly assigns one, otherwise it overwrites the old one.
+	 * @param argument
 	 */
-	private void addUsernameToServer() {
+	private void addUsernameToServer(String argument) {
 		User sendingUser = commandParser.getReceivingUser();
 		String oldName = sendingUser.getName();
 		String newName = argument;

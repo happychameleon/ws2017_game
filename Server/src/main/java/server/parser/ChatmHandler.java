@@ -1,31 +1,21 @@
 package server.parser;
 
 
-import server.CommandParser;
 import server.Server;
 import server.User;
 
 /**
  * Created by m on 3/21/17.
  */
-public class ChatmParser {
-	
-	private final CommandParser commandParser;
-	private final String argument;
+public class ChatmHandler extends CommandHandler {
 	
 	private String senderName;
 	private String recipientName;
 	
-	public ChatmParser(String argument, CommandParser commandParser){
-        this.argument = argument;
-        this.commandParser = commandParser;
-        
-        handleChat();
-    }
 	
-	
-	private void handleChat() {
-		if (separateArgument() == false) {
+	@Override
+	public void handleCommand(String argument) {
+		if (separateArgument(argument) == false) {
 			commandParser.writeBackToClient("Argument for command CHATM not properly formatted!\n" +
 					"Please use format: 'chatm <sender_name> <recipient_name> <message>'!\n" +
 					"Don't forget to surround the <message> with 'apostrophes'!");
@@ -51,11 +41,12 @@ public class ChatmParser {
 		commandParser.writeBackToClient(toSender);
 	}
 	
+	
 	/**
 	 * This method checks the argument and separates the given arguments into the three arguments needed for the Chat.
 	 * @return <code>false</code> when the argument isn't formatted correctly, <code>true</code> when everything's ok with the argument.
 	 */
-	private boolean separateArgument() {
+	private boolean separateArgument(String argument) {
     	char[] argumentChars = argument.toCharArray();
     	StringBuffer senderName = new StringBuffer();
     	StringBuffer recipientName = new StringBuffer();
@@ -113,4 +104,6 @@ public class ChatmParser {
 		
 		return true;
 	}
+	
+	
 }

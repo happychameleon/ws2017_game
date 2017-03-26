@@ -86,9 +86,10 @@ public class Login implements ActionListener, KeyListener {
 	 */
 	private void sendUsernameRequest() {
 		String username = userNameText.getText();
-		if (username.isEmpty())
+		if (username.isEmpty() || username.contains(" ") || username.contains("'"))
 			return;
 		Client.sendMessageToServer("uname " + username);
+		userNameText.setText("");
 	}
 	
 	
