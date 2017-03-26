@@ -27,10 +27,10 @@ public class ChatmHandler extends CommandHandler {
 		User recipient = Server.getUserByName(recipientName);
 		
 		if (recipient == null) {
-			commandParser.writeBackToClient("ERROR: The entered recipient name '" + recipientName + "' doesn't exist!");
+			commandParser.writeBackToClient("-ERR entered recipient name '" + recipientName + "' doesn't exist!");
 			return;
 		} else if (sender == null) {
-			commandParser.writeBackToClient("ERROR: The entered sender name '" + senderName + "' doesn't exist!");
+			commandParser.writeBackToClient("-ERR entered sender name '" + senderName + "' doesn't exist!");
 			return;
 		}
 		
