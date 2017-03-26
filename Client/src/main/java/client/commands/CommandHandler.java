@@ -16,4 +16,6 @@ public abstract class CommandHandler {
 	
 	public abstract void handleCommand(String argument);
 	
+	public abstract void handleAnswer(String argument, boolean isOK);
+	
 }

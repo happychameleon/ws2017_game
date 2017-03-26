@@ -54,11 +54,12 @@ public class ClientCommandParser {
                     }
                     inputTranslate(in, len);
                     inputToCommandArgument();
-                    ClientKeywordParser keywordParser = new ClientKeywordParser(keyword, argument, this);
                     if(isValidCommand()){
+                        ClientKeywordParser keywordParser = new ClientKeywordParser(keyword, argument, this);
                         keywordParser.compareKeyword();
                     } else if (isValidAnswer()) {
-		                keywordParser.compareAnswer();
+                        ClientAnswerParser answerParser = new ClientAnswerParser(keyword, argument, this);
+		                answerParser.compareAnswer();
                     }
                     System.out.println(command.toString());
                     //clears all global variables
