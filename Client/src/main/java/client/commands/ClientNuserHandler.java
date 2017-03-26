@@ -28,8 +28,8 @@ public class ClientNuserHandler extends CommandHandler {
 	
 	@Override
 	public void handleAnswer(String argument, boolean isOK) {
-		if(isOK && argument.startsWith("nuser ")) {
-			nameChange(argument.substring(6));
+		if(isOK) {
+			nameChange(argument);
 		}
 	}
 	

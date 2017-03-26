@@ -25,7 +25,17 @@ public class KeywordParser {
 	 * Compares the command and if it is an existing command it creates the correct parser to execute the command.
 	 */
 	public void compareKeyword(){
-		Command command = Enum.valueOf(Command.class, keyword);
+		if (keyword == null)
+			return;
+		
+		Command command;
+		try {
+			command = Enum.valueOf(Command.class, keyword);
+		} catch (IllegalArgumentException iae) {
+			// TODO Meilenstein 3: Server should send the errors to the client, so the user knows something is wrong and it can be fixed.
+			System.err.println("Received command does not exist!");
+			return;
+		}
 		
 		if (command == null) {
 			// TODO Meilenstein 3: Server should send the errors to the client, so the user knows something is wrong and it can be fixed.
@@ -35,17 +45,6 @@ public class KeywordParser {
 		}
 		
 		command.handleArgument(commandParser, argument);
-	    
-	    
-	    
-        switch (keyword){
-            
-            case "cpong" :
-                break;
-            
-            default:
-                commandParser.writeBackToClient("-ERR entered command does not exist");
-                break;
-        }
+		
     }
 }

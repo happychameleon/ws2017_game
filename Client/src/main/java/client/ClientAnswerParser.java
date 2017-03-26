@@ -8,8 +8,8 @@ import client.commands.Answer;
 public class ClientAnswerParser {
 	private final ClientCommandParser commandParser;
 	private final boolean isOK;
-	private String keyword;
-	private String argument;
+	private String keyword = "";
+	private String argument = "";
 	
 	
 	public ClientAnswerParser(String keyword, String argument, ClientCommandParser commandParser){
@@ -58,9 +58,13 @@ public class ClientAnswerParser {
 	 */
 	public void compareAnswer() {
 		
-		Answer answer = Enum.valueOf(Answer.class, keyword);
+		if (keyword.isEmpty())
+			return;
 		
-		if (answer == null) {
+		Answer answer;
+		try {
+			answer = Enum.valueOf(Answer.class, keyword);
+		} catch (IllegalArgumentException iae) {
 			if (Client.getChatWindow() != null) {
 				Client.getChatWindow().displayError("Received answer does not exist!");
 			} else {

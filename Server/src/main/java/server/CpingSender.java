@@ -63,6 +63,6 @@ class PingThread extends Thread{
         } catch (InterruptedException e) {
             return;
         }
-        System.out.println("-ERR client failed to respond to ping");
+        System.out.println("ERROR: client failed to respond to ping");
     }
 }

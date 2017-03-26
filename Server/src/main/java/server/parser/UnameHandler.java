@@ -40,7 +40,7 @@ public class UnameHandler extends CommandHandler {
 	    }
 		
 	    if (commandParser.getReceivingUser().getName() != null && commandParser.getReceivingUser().getName().equals(argument)) {
-			commandParser.writeBackToClient("-ERR same username entered");
+			commandParser.writeBackToClient("-ERR uname same username entered");
 			return false;
 	    }
 	    
@@ -50,7 +50,7 @@ public class UnameHandler extends CommandHandler {
     			i++;
 		    }
 		    String nameSuggestion = argument + i;
-		    commandParser.writeBackToClient("-ERR uname " + nameSuggestion);
+		    commandParser.writeBackToClient("-ERR uname new username " + nameSuggestion);
 		    return false;
 	    }
 	    return true;
@@ -75,10 +75,10 @@ public class UnameHandler extends CommandHandler {
 		sendingUser.setName(newName);
 		
 		if (nameChange) {
-			commandParser.writeBackToClient("+OK you are " + newName); // TODO: change message to "+OK uname <username>"
+			commandParser.writeBackToClient("+OK uname you are " + newName); // TODO Meilenstein 3: change message to "+OK uname <username>"
 			commandParser.writeToAllOtherClients("+OK nuser " + oldName + " " + newName);
 		} else {
-			commandParser.writeBackToClient("+OK you are " + newName);
+			commandParser.writeBackToClient("+OK uname you are " + newName);
 			commandParser.writeToAllOtherClients("nuser " + newName);
 		}
 		

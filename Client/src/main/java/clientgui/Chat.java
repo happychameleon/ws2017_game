@@ -30,10 +30,8 @@ public class Chat implements ActionListener, KeyListener {
 	 */
 	private ChatMessage getLastMessage() {
 		if (lastMessageIsInfo || messages.isEmpty()) {
-			System.out.println("NO LAST MESSAGES");
 			return null;
 		}
-		System.out.println("LAST MESSAGE FROM: " + messages.get(messages.size() - 1).getSender().getName());
 		return messages.get(messages.size() - 1);
 	}
 	

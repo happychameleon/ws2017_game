@@ -108,7 +108,7 @@ class GameClientThread extends Thread{
         try {
             InputStream in = socket.getInputStream();
             OutputStream out = socket.getOutputStream();
-            out.write(("+OK gameserver connected to client " + connectedGameClient + " \r\n").getBytes());
+            //out.write(("+OK gameserver connected to client " + connectedGameClient + " \r\n").getBytes());
             User user = new User(null, socket);
             Server.addUserToList(user);
             CommandParser gameProtocol = new CommandParser(in, out, user);

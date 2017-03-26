@@ -17,7 +17,7 @@ public class ClientCgetuHandler extends CommandHandler {
 	
 	@Override
 	public void handleAnswer(String argument, boolean isOK) {
-		if (isOK && argument.startsWith("cgetu ")) {
+		if (isOK) {
 			parseAllUsernames(argument.toCharArray());
 		}
 	}
@@ -30,7 +30,7 @@ public class ClientCgetuHandler extends CommandHandler {
 		String usernameSeparator = " ";
 		ArrayList<String> usernames = new ArrayList<>();
 		String currentUsername = "";
-		for (int i = 6; i < argument.length; i++) {
+		for (int i = 0; i < argument.length; i++) {
 			if (argument[i] == ' ') {
 				usernames.add(currentUsername);
 				currentUsername = "";
