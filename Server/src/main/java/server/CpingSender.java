@@ -1,5 +1,7 @@
 package server;
 
+import java.io.IOException;
+
 /**
  * Class sends ping to client, if client does not respond
  * before timeout the Server responds in a meaningful way.
@@ -47,10 +49,10 @@ class PingThread extends Thread{
     public PingThread(CommandParser commandParser){
         this.commandParser = commandParser;
     }
-    //TODO: A more meaningful response a client timeout (closing socket?)
+
     public void run(){
-        long pingDelay = 15000;
-        long pingTimeout = 2000;
+        long pingDelay = 5000;
+        long pingTimeout = 15000;
         try {
             Thread.sleep(pingDelay);
         }catch (InterruptedException e){
@@ -64,5 +66,12 @@ class PingThread extends Thread{
             return;
         }
         System.out.println("-ERR client failed to respond to ping");
+        System.out.println(commandParser.getReceivingUser().getName() + "has been removed form user list");
+        Server.removeUserFromList(commandParser.getReceivingUser());
+        try {
+            commandParser.socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

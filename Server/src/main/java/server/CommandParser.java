@@ -4,6 +4,7 @@ package server;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Socket;
 
 /**
  * TODO: description
@@ -23,6 +24,7 @@ public class CommandParser {
 	 * The {@link OutputStream} of this {@link #receivingUser}
 	 */
     private OutputStream out;
+    Socket socket;
     private StringBuffer command = new StringBuffer("");
     private String keyword = "";
     private String argument = "";
@@ -41,9 +43,18 @@ public class CommandParser {
     /**
      * Constructor, gives the class access to input and output to and from client.
      */
-    public CommandParser(InputStream in, OutputStream out, User user){
-        this.in = in;
-        this.out = out;
+    public CommandParser(Socket socket, User user){
+        try {
+            in = socket.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            out = socket.getOutputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.socket = socket;
         this.receivingUser = user;
     }
 	

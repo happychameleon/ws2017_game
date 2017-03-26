@@ -17,8 +17,8 @@ public class ClientCpingHandler extends CommandHandler {
 	 */
 	@Override
 	public void handleCommand(String argument) {
-		//System.out.println("responding to ping with pong");
-		Client.sendMessageToServer("cpong");
+		System.out.println();
+		commandParser.getClientCpongSender();
 		
 		// Just for testing:
 		System.out.println("Current users:");

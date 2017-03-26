@@ -7,7 +7,7 @@ import client.ClientCommandParser;
  */
 public abstract class CommandHandler {
 	
-	private ClientCommandParser commandParser;
+	protected ClientCommandParser commandParser;
 	
 	public void setCommandParser(ClientCommandParser commandParser) {
 		this.commandParser = commandParser;
