@@ -27,4 +27,9 @@ public class ClientCpingHandler extends CommandHandler {
 		}
 	}
 	
+	@Override
+	public void handleAnswer(String argument, boolean isOK) {
+		// NOT CURRENTLY USED
+	}
+	
 }

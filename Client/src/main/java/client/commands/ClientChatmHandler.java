@@ -14,4 +14,9 @@ public class ClientChatmHandler extends CommandHandler {
 			Client.getChatWindow().receiveMessage(argument);
 		}
 	}
+	
+	@Override
+	public void handleAnswer(String argument, boolean isOK) {
+		// NOT CURRENTLY USED
+	}
 }

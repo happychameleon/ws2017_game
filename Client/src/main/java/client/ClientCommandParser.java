@@ -75,11 +75,12 @@ public class ClientCommandParser {
                     }
                     inputTranslate(in, len);
                     inputToCommandArgument();
-                    ClientKeywordParser keywordParser = new ClientKeywordParser(keyword, argument, this);
                     if(isValidCommand()){
+                        ClientKeywordParser keywordParser = new ClientKeywordParser(keyword, argument, this);
                         keywordParser.compareKeyword();
                     } else if (isValidAnswer()) {
-		                keywordParser.compareAnswer();
+                        ClientAnswerParser answerParser = new ClientAnswerParser(keyword, argument, this);
+		                answerParser.compareAnswer();
                     }
                     System.out.println(command.toString());
                     //clears all global variables
@@ -155,12 +156,13 @@ public class ClientCommandParser {
      * <code>false</code> otherwise.
      */
     private boolean isValidCommand() {
+        if (command.charAt(0) == '-') {
+            return false;
+        }
         if(command.length() == 5){
-            //System.out.println("length 5");
             return true;
         }
         else if(keyword.length() != 5){
-            //System.out.println("return false, length not 5");
             return false;
         }
         return true;

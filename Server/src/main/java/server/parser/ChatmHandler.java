@@ -16,10 +16,10 @@ public class ChatmHandler extends CommandHandler {
 	@Override
 	public void handleCommand(String argument) {
 		if (separateArgument(argument) == false) {
-			commandParser.writeBackToClient("Argument for command CHATM not properly formatted!\n" +
+			System.err.println("Argument for command CHATM not properly formatted!\n" +
 					"Please use format: 'chatm <sender_name> <recipient_name> <message>'!\n" +
 					"Don't forget to surround the <message> with 'apostrophes'!");
-			// TODO: send this message back to the client.
+			// TODO Meilenstein 3: send this message back to the client.
 			return;
 		}
 		
@@ -27,15 +27,17 @@ public class ChatmHandler extends CommandHandler {
 		User recipient = Server.getUserByName(recipientName);
 		
 		if (recipient == null) {
-			commandParser.writeBackToClient("ERROR: The entered recipient name '" + recipientName + "' doesn't exist!");
+			// TODO: Answer not yet implemented
+			commandParser.writeBackToClient("-ERR chatm entered recipient name '" + recipientName + "' doesn't exist!");
 			return;
 		} else if (sender == null) {
-			commandParser.writeBackToClient("ERROR: The entered sender name '" + senderName + "' doesn't exist!");
+			// TODO: Answer not yet implemented
+			commandParser.writeBackToClient("-ERR chatm entered sender name '" + senderName + "' doesn't exist!");
 			return;
 		}
 		
 		String toReceiver = "chatm " + argument;
-		String toSender = "+OK 'message relayed'";
+		String toSender = "+OK chatm message relayed";
 		
 		commandParser.writeToSpecificClient(toReceiver, recipientName);
 		commandParser.writeBackToClient(toSender);

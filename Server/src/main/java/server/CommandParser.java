@@ -153,7 +153,7 @@ public class CommandParser {
         }
         //makes sure the keyword is the proper length and if not tells the client that wrong
         if(keyword.length() != 5){
-            writeBackToClient("-ERR "+command + " is not a properly formatted command");
+            writeBackToClient("-ERR " + command + " is not a properly formatted command");
             keyword = "";
             argument = "";
         }
