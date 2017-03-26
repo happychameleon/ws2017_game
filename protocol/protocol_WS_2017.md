@@ -13,7 +13,7 @@ Commands
 ========
 
 All commands are case insensitive and made up entirely of ASCII characters. Commands always have exactly one **keyword** followed by none or more **arguments**. The keyword is never longer then 5 characters. Commands are always terminated with a CRCF (Carriage Return: \\r, New Line: \\n). Commands will either be answered with a positive response confirming that the command has been understood and processed or negative response pointing out what is wrong.
-A positive response has a ’+OK’ followed by the command that was successful. A negative response has a ’-ERR’ followed by the command that failed and an argument that either is a message with what went wrong or a suggestion for change that is relevant to the keyword.
+A positive response has a ’+OK’ followed by the command that was successful and if required one or more argumments. A negative response has a ’-ERR’ followed by the command that failed and an argument that either is a message with what went wrong or a suggestion for change that is relevant to the keyword.
 If the entered command is badly formatted the Server should return:
 
 > s: -ERR ’&lt;command&gt; is not a properly formatted command’
@@ -25,22 +25,22 @@ If the entered command does not match a valid command, the server should return:
 AUTHORIZATION State Commands
 ============================
 
-Once the session has gone in to the AUTHORIZATION state, the server will be expecting user name to identify the client by. This is done by sending a message with the desired user name to the server. If the name is already present in the server (i.e there is already a client connected with that name), the server returns a negative response. If the name given to the server is unique the server confirms it with a positive response. As soon as the client has entered the user name, it is broadcasted to all other connected clients.
+Once the session has gone in to the AUTHORIZATION state, the server will be expecting a user name to identify the client by. This is done by sending a command with the desired user name to the server. If the name is already present in the server (i.e there is already a client connected with that name), the server returns a negative response. If the name given to the server is unique the server confirms it with a positive response. As soon as the client has entered the user name, it is broadcasted to all other connected clients.
 When a user disconnects from the server the user name is removed.
 registering a name:
 
 > c: uname &lt;name&gt;
-> s: +OK ’you are’ &lt;name&gt;
+> s: +OK uname ’you are’ &lt;name&gt;
 
 own username entered:
 
 > c: uname &lt;name&gt;
-> s: -ERR ’same username entered’
+> s: -ERR uname ’same username entered’
 
 username already taken:
 
 > c: uname &lt;name&gt;
-> s: -ERR uname &lt;name\_suggestion&gt;
+> s: -ERR uname suggested &lt;name\_suggestion&gt;
 
 broadcast new user name to other clients:
 
@@ -52,11 +52,12 @@ TRANSACTION State Commands
 Ping/Pong
 ---------
 
-in regular intervals server and client should exchange pings to make sure that they are still connected, if there is no response in a defined time the connection should be disconnected.
-server sends ping:
+Every 5 seconds server and client should exchange a ping and pong which is initialized by the server, to make sure that they are still connected. If there is no response within 15 seconds (after 3 pings) the connection should be disconnected. The server does this by starting a thread that sends out a ping to the client, which if it is not interrupted soon enough by the client with a pong, it removes the client form the user list and closes the socket.
+On the client side, once the ping has been received from the server, the client starts a thread that if not interrupted by a server ping within 20 seconds, will shutdown the client
+ping/pong:
 
 > s: cping
-> c: +OK cpong
+> c: cpong
 
 Changing user name
 ------------------
@@ -64,7 +65,8 @@ Changing user name
 To change user name the same command is used as to enter the original user name in the AUTHORIZATION State.
 change name:
 
-> c: uname &lt;new\_name&gt; s: +OK uname &lt;new\_name&gt;
+> c: uname &lt;new\_name&gt;
+> s: +OK uname ’you are’ &lt;new\_name&gt;
 
 When the a name is changed this has to be sent to all other clients:
 
@@ -89,7 +91,7 @@ When chatting, the server acts as a relay between two clients. When the message 
 sender:
 
 > c: chatm ’&lt;sender\_name&gt;’ ’&lt;recipient\_name&gt;’ ’&lt;message&gt;’
-> s: +OK ’message relayed’
+> s: +OK chatm ’message relayed’
 
 recipient:
 
@@ -105,4 +107,4 @@ Quit
 When the client wants to terminate the connection to the server, the client uses the quit command which leads the session from the TRANSACTION state to the UPDATE state. In this state the server ends tasks related to the client in a safe manner.
 
 > c: cquit
-> s: +OK ’terminating tasks and disconnecting’
+> s: +OK cquit ’terminating tasks and disconnecting’
