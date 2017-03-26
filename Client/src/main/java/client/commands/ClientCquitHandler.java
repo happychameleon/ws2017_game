@@ -1,19 +1,18 @@
-package client;
+package client.commands;
+
+import client.Client;
+import client.ClientUser;
 
 /**
  * Created by flavia on 25.03.17.
  */
-public class ClientCquitParser {
+public class ClientCquitHandler extends CommandHandler {
 	
-	String argument;
-	
-	public ClientCquitParser(String argument) {
-		this.argument = argument;
-		
-		handleCquit();
-	}
-	
-	private void handleCquit() {
+	/**
+	 * Handles the cquit command from the server telling this client that the client specified in the argument has logged off.
+	 * @param argument the command argument containing the logged of client's name.
+	 */
+	public void handleCommand(String argument) {
 		if (Client.isLoggedIn() == false)
 			return;
 		
@@ -28,4 +27,5 @@ public class ClientCquitParser {
 			System.err.println("cquit used with a non-exisitng username!");
 		}
 	}
+	
 }

@@ -1,8 +1,7 @@
-package server.parser;
+package server;
 
 
-import server.Server;
-import server.User;
+import server.parser.CpingParser;
 
 import java.io.IOException;
 import java.io.InputStream;

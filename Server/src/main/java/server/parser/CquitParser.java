@@ -1,5 +1,7 @@
 package server.parser;
 
+import server.CommandParser;
+
 /**
  * Created by m on 3/20/17.
  */

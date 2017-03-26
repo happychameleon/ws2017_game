@@ -1,4 +1,6 @@
-package server.parser;
+package server;
+
+import server.parser.*;
 
 /**
  * Compares the command with {@link #compareKeyword()} and if it is an existing command it creates the correct parser to execute the command.

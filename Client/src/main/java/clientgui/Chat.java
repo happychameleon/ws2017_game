@@ -129,6 +129,11 @@ public class Chat implements ActionListener, KeyListener {
 		lastMessageIsInfo = true;
 	}
 	
+	public void displayError(String errorMessage) {
+		// TODO Meilenstein 3: separate Error message format than Info.
+		displayInfo("ERROR: " + errorMessage);
+	}
+	
 	/**
 	 * Adds a {@link ChatMessage} to the chat and displays it properly.
 	 * @param chatMessage the message to display

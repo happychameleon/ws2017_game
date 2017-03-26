@@ -1,5 +1,7 @@
 package server.parser;
 
+import server.CommandParser;
+
 /**
  * Class sends ping to client, if client does not respond
  * before timeout the Server responds in a meaningful way

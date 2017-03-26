@@ -1,5 +1,6 @@
 package server.parser;
 
+import server.CommandParser;
 import server.Server;
 import server.User;
 

@@ -1,5 +1,7 @@
 package client;
 
+import client.commands.Command;
+
 import java.util.ArrayList;
 
 /**
@@ -23,30 +25,19 @@ public class ClientKeywordParser {
 	 * This compares the command and if it is an existing command it creates the correct parser to execute the command.
 	 */
 	public void compareKeyword(){
-		switch (keyword){
-			case "cping" :
-				ClientCpingParser ping = new ClientCpingParser(commandParser);
-				ping.sendPong();
-				break;
-			
-			case "nuser" :
-				ClientNuserParser nuser = new ClientNuserParser(argument);
-				break;
-			
-			case "chatm" :
-				if (Client.isLoggedIn() && Client.getChatWindow() != null) {
-					Client.getChatWindow().receiveMessage(argument);
-				}
-				break;
-				
-			case "cquit" :
-				ClientCquitParser cquitParser = new ClientCquitParser(argument);
-				break;
-			
-			default:
-				//commandParser.writeBackToServer("-ERR entered command does not exist");
-				break;
+		Command command = Enum.valueOf(Command.class, keyword);
+		
+		if (command == null) {
+			if (Client.getChatWindow() != null) {
+				Client.getChatWindow().displayError("Received command does not exist!");
+			} else {
+				System.err.println("Received command does not exist!");
+			}
+			return;
 		}
+		
+		command.handleArgument(commandParser, argument);
+		
 	}
 	
 	/**
