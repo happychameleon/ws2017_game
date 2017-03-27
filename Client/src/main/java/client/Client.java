@@ -37,6 +37,15 @@ public class Client {
 		return isLoggedIn;
 	}
 	
+	/**
+	 * If the username is given via command line, this is set to the given username, otherwise it stays empty.
+	 * It is only used when opening the login window to set the textfield proposing the username.
+	 */
+	protected static String commandLineUsername = "";
+	
+	public static String getCommandLineUsername() {
+		return commandLineUsername;
+	}
 	
 	private static InputStream serverInputStream;
 	private static OutputStream serverOutputStream;
@@ -186,7 +195,7 @@ public class Client {
         		hostIP = args[0];
         		port = Integer.parseInt(args[1]);
 		        if (args.length >= 3) {
-        			// TODO Meilenstein 3: optionally set username here.
+        			Client.commandLineUsername = args[2];
 		        }
 	        }
 	        System.out.println("Trying to connect to server with ip " + hostIP + " on port " + port);
