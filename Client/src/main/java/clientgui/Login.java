@@ -43,6 +43,12 @@ public class Login implements ActionListener, KeyListener {
 		userpanel.add(loginButton);
 		userFrame.add(userpanel);
 		
+		userNameText.addKeyListener(this);
+		userNameText.setFocusable(true);
+		loginButton.addActionListener(this);
+		
+		userFrame.setVisible(true);
+		
 		// Propose a username by presetting the value in the login window text field if possible.
 		// First get the systemUsername safely
 		String systemUserName;
@@ -55,16 +61,13 @@ public class Login implements ActionListener, KeyListener {
 		if (Client.getCommandLineUsername().isEmpty() == false) {
 			// Set the username from the command line if one is given.
 			userNameText.setText(Client.getCommandLineUsername());
+			// This immediately tries to log in when a user name is given via command line, as if the user logged in via button.
+			// If the username is invalid the login window stays open.
+			sendUsernameRequest();
 		} else if (systemUserName.isEmpty() == false) {
 			// Achievement whoami (The client suggest a nickname based on the system username)
 			userNameText.setText(System.getProperty("user.name"));
 		}
-		
-		userFrame.setVisible(true);
-		
-		userNameText.addKeyListener(this);
-		userNameText.setFocusable(true);
-		loginButton.addActionListener(this);
 		
 	}
 	
