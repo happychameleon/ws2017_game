@@ -1,4 +1,4 @@
-package clientgui; // TODO: Rename package to gui (and move into client)
+package clientgui;
 
 import client.Client;
 

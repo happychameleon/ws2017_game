@@ -201,7 +201,6 @@ public class Client {
             String line = "";
             while (true){
                 line = comandlinInput.readLine();
-                // TODO: are those three lines necessary?
                 serverOutputStream.write(line.getBytes());
                 serverOutputStream.write('\r');
                 serverOutputStream.write('\n');
@@ -238,7 +237,7 @@ class ClientThread extends Thread{
     }
 	
 	/**
-	 * TODO:
+	 * TODO: write a good comment for javadoc
 	 */
 	public synchronized void requestStop(){
         stopreaquest = true;

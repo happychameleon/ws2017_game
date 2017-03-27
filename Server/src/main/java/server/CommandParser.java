@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 /**
- * TODO: description
+ * TODO: write a good comment for javadoc
  *
  * Created by m on 3/14/17.
  */

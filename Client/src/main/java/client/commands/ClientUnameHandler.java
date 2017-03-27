@@ -19,7 +19,7 @@ public class ClientUnameHandler extends CommandHandler {
 			Client.setUsername(username);
 		} else if (isOK == false && argument.equals("same username entered")) {
 			// just ignore this. Maybe add message later?
-		} else if (isOK == false && argument.startsWith("suggested ")) { // TODO: This message needs to be updated according to the protocol.
+		} else if (isOK == false && argument.startsWith("suggested ")) {
 			String proposedUsername = argument.substring(argument.lastIndexOf(" ") + 1);
 			Client.proposeUsername(proposedUsername);
 		}

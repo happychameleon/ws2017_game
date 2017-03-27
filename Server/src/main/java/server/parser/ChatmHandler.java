@@ -19,7 +19,7 @@ public class ChatmHandler extends CommandHandler {
 			System.err.println("Argument for command CHATM not properly formatted!\n" +
 					"Please use format: 'chatm <sender_name> <recipient_name> <message>'!\n" +
 					"Don't forget to surround the <message> with 'apostrophes'!");
-			// TODO Meilenstein 3: send this message back to the client.
+			// TODO Meilenstein 3: Error Message Answers not yet implemented
 			return;
 		}
 		
@@ -27,11 +27,11 @@ public class ChatmHandler extends CommandHandler {
 		User recipient = Server.getUserByName(recipientName);
 		
 		if (recipient == null) {
-			// TODO: Answer not yet implemented
+			// TODO Meilenstein 3: Error Message Answers not yet implemented
 			commandParser.writeBackToClient("-ERR chatm entered recipient name '" + recipientName + "' doesn't exist!");
 			return;
 		} else if (sender == null) {
-			// TODO: Answer not yet implemented
+			// TODO Meilenstein 3: Error Message Answers not yet implemented
 			commandParser.writeBackToClient("-ERR chatm entered sender name '" + senderName + "' doesn't exist!");
 			return;
 		}
