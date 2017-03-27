@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 /**
  * Created by Julischka Saravia on 23.03.2017.
+ *
+ * Not currently used!
  */
 public class ChangeNames {
 
@@ -76,7 +78,7 @@ public class ChangeNames {
 
     /**
      * Test entries for class
-     * @param args[] not used
+     * @param args not used
      */
    public static void main(String[] args) {
       ChangeNames change = new ChangeNames();
