@@ -51,8 +51,8 @@ class PingThread extends Thread{
     }
 
     public void run(){
-        long pingDelay = 5000;
-        long pingTimeout = 5000;
+        long pingDelay = 1000;
+        long pingTimeout = 1000;
         for(int i = 0; i < 3; i++) {
             try {
                 Thread.sleep(pingDelay);
@@ -69,10 +69,12 @@ class PingThread extends Thread{
             return;
         }
         System.out.println("-ERR client failed to respond to ping");
-        System.out.println(commandParser.getReceivingUser().getName() + "has been removed form user list");
+        System.out.println(commandParser.getReceivingUser().getName() + " has been removed from user list");
         Server.removeUserFromList(commandParser.getReceivingUser());
         try {
-            commandParser.socket.close();
+        	// Sending empty byte[] to tell the input stream to quit.
+	        commandParser.getIn().read(new byte[] {});
+	        commandParser.getSocket().close();
         } catch (IOException e) {
             e.printStackTrace();
         }
