@@ -1,0 +1,42 @@
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'application'
+
+def description = """
+Client application for the Wasserschlacht Simulator 2017.
+
+Project name: ${project.name}
+
+Author(s): 
+-
+-
+-
+-
+
+Project of Group 4 for the CS108 Programming Project.
+
+"""
+
+mainClassName = "client.Client"
+
+
+dependencies {
+    // Use JUnit test framework
+    testCompile 'junit:junit:4.12'
+}
+
+jar{
+    baseName = 'pp04-WS-Client'
+    version = '0.2.0'
+
+    manifest {
+        attributes "Main-Class": mainClassName
+    }
+}
+
+// Do not modify
+task info {
+    doLast {
+        println "${description}"
+    }
+}
