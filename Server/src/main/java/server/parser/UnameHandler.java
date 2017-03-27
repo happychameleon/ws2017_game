@@ -50,7 +50,7 @@ public class UnameHandler extends CommandHandler {
     			i++;
 		    }
 		    String nameSuggestion = argument + i;
-		    commandParser.writeBackToClient("-ERR uname new username " + nameSuggestion);
+		    commandParser.writeBackToClient("-ERR uname suggested " + nameSuggestion);
 		    return false;
 	    }
 	    return true;
