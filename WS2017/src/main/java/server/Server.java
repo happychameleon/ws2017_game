@@ -1,5 +1,7 @@
 package server;
 
+import game.GameController;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
@@ -12,6 +14,9 @@ import java.util.ArrayList;
  * Created by m on 3/9/17.
  */
 public class Server {
+	
+	private static ArrayList<GameController> gameList = new ArrayList<>();
+	
 	private static ArrayList <User> userList = new ArrayList<User>();
 	
 	/**

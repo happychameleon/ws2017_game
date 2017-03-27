@@ -189,8 +189,10 @@ public class Client {
 	
 	public static void main(String[] args){
         try{
+        	// default values
         	String hostIP = "127.0.0.1";
         	int port = 1030;
+        	// read in the command line arguments
         	if (args.length == 2) {
         		port = Integer.parseInt(args[1]);
 	        } else if (args.length >= 3) {
@@ -200,6 +202,7 @@ public class Client {
         			Client.commandLineUsername = args[3];
 		        }
 	        }
+	        
 	        System.out.println("Trying to connect to server with ip " + hostIP + " on port " + port);
 	        serverSocket = new Socket(hostIP, port);//starts a new socket that connects to server hosted locally
 	        serverInputStream = serverSocket.getInputStream();
