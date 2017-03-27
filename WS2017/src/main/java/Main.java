@@ -19,8 +19,8 @@ public class Main {
 					"'server <port>'\n" +
 					"'client <server_ip> <port> <username>'\n" +
 					"'client <server_ip> <port>'\n" +
-					"'client <port>'\t\t\t\t\t\t\tshortcut for 'client 172.0.0.1 <port>'\n" +
-					"'client'\t\t\t\t\t\t\t\tshortcut for 'client 172.0.0.1 1030'\n" +
+					"'client <port>'\t\t\t\t\t\t\tshortcut for 'client 127.0.0.1 <port>'\n" +
+					"'client'\t\t\t\t\t\t\t\tshortcut for 'client 127.0.0.1 1030'\n" +
 					"'server'\t\t\t\t\t\t\t\tshortcut for 'server 1030'\n" +
 					"<empty>\t\t\t\t\t\t\t\t\tshortcut for 'server 1030'");
 		}
