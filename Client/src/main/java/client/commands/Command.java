@@ -23,7 +23,11 @@ public enum Command {
 		this.commandHandler = commandHandler;
 	}
 	
-	public void handleArgument(ClientCommandParser commandParser, String argument) {
+	/**
+	 * First sets the commandParser and then handles the Command.
+	 * @see CommandHandler#handleCommand
+	 */
+	public void handleCommand(ClientCommandParser commandParser, String argument) {
 		commandHandler.setCommandParser(commandParser);
 		commandHandler.handleCommand(argument);
 	}
