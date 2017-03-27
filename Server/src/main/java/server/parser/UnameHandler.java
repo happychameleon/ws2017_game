@@ -4,7 +4,11 @@ import server.Server;
 import server.User;
 
 /**
- * TODO: write a good comment for javadoc
+ * Handles the uname command by checking if
+ * - the name doesn't contain illegal characters (TODO: send error message back),
+ * - the name isn't the same as before (sends same username entered message back),
+ * - the name isn't already taken (sends suggested name back)
+ * and if the name is ok it changes the name and informs all clients about the name change or name assignment.
  *
  * Created by m on 3/20/17.
  */

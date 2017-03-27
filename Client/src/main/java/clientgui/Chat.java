@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 /**
  * The general Chat window where all users can chat with each other and name changes can be requested.
- * TODO Milestone 3: In future milestones there will also be the possibility to start a game with selected people and to privately chat
+ * TODO Meilenstein 3: In future milestones there will also be the possibility to start a game with selected people and to privately chat
  */
 public class Chat implements ActionListener, KeyListener {
 	
@@ -115,7 +115,6 @@ public class Chat implements ActionListener, KeyListener {
 	
 	/**
 	 * This is to display info like when a new user joins or when a user changes their name.
-	 * // TODO Meilenstein 3: add message for logging off.
 	 * @param info the info text to display.
 	 */
 	public void displayInfo(String info) {
