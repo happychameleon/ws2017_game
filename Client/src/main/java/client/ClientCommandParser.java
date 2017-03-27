@@ -54,7 +54,7 @@ public class ClientCommandParser {
     }
 
     /**
-     *TODO: write a good comment for javadoc
+     * TODO: write a good comment for javadoc
      * @param stopreaquest
      */
     public void stopValidatingCommand(boolean stopreaquest){
@@ -62,7 +62,7 @@ public class ClientCommandParser {
     }
 
     /**
-     *TODO: write a good comment for javadoc
+     * TODO: write a good comment for javadoc
      */
     private void validateCommand() {
         int len;
@@ -98,7 +98,7 @@ public class ClientCommandParser {
     }
 
     /**
-     *TODO: write a good comment for javadoc
+     * TODO: write a good comment for javadoc
      * @param in
      * @param c
      */
@@ -127,7 +127,7 @@ public class ClientCommandParser {
     }
 
     /**
-     *TODO: write a good comment for javadoc
+     * TODO: write a good comment for javadoc
      */
     private void inputToCommandArgument() {
         //checks for space between keyword and argument in command string
