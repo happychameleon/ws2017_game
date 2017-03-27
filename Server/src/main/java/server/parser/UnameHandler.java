@@ -75,7 +75,7 @@ public class UnameHandler extends CommandHandler {
 		sendingUser.setName(newName);
 		
 		if (nameChange) {
-			commandParser.writeBackToClient("+OK uname you are " + newName); // TODO Meilenstein 3: change message to "+OK uname <username>"
+			commandParser.writeBackToClient("+OK uname you are " + newName); // TODO Meilenstein 3: change message to differ between uname changes and uname assignements.
 			commandParser.writeToAllOtherClients("+OK nuser " + oldName + " " + newName);
 		} else {
 			commandParser.writeBackToClient("+OK uname you are " + newName);

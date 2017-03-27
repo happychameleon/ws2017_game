@@ -32,13 +32,13 @@ public class KeywordParser {
 		try {
 			command = Enum.valueOf(Command.class, keyword);
 		} catch (IllegalArgumentException iae) {
-			// TODO Meilenstein 3: Server should send the errors to the client, so the user knows something is wrong and it can be fixed.
+			// TODO Meilenstein 3: Error Message Answers not yet implemented
 			System.err.println("Received command does not exist!");
 			return;
 		}
 		
 		if (command == null) {
-			// TODO Meilenstein 3: Server should send the errors to the client, so the user knows something is wrong and it can be fixed.
+			// TODO Meilenstein 3: Error Message Answers not yet implemented
 			// commandParser.writeBackToClient("Received command does not exist!");
 			System.err.println("Received command does not exist!");
 			return;
