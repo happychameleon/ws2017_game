@@ -52,14 +52,17 @@ class PingThread extends Thread{
 
     public void run(){
         long pingDelay = 5000;
-        long pingTimeout = 15000;
-        try {
-            Thread.sleep(pingDelay);
-        }catch (InterruptedException e){
-            return;
+        long pingTimeout = 5000;
+        for(int i = 0; i < 3; i++) {
+            try {
+                Thread.sleep(pingDelay);
+            } catch (InterruptedException e) {
+                return;
+            }
+            System.out.println("sending client ping");
+            commandParser.writeBackToClient("cping");
         }
-        System.out.println("sending client ping");
-        commandParser.writeBackToClient("cping");
+
         try {
             Thread.sleep(pingTimeout);
         } catch (InterruptedException e) {
