@@ -1,9 +1,12 @@
 package client;
 
+import client.commands.ClientCpongSender;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
+import java.net.Socket;
 
 /**
  * TODO: write a good comment for javadoc
@@ -11,6 +14,7 @@ import java.io.OutputStream;
  * Created by m on 3/23/17
  */
 public class ClientCommandParser {
+    public Socket serverSocket;
     InputStream in;
     OutputStream out;
     boolean stopreaquest;
@@ -19,17 +23,34 @@ public class ClientCommandParser {
     private String keyword = "";
     private String argument = "";
 
+    private ClientCpongSender cpongSender = new ClientCpongSender(this);
+
     /**
      * TODO: write a good comment for javadoc
-     * @param in
-     * @param out
+     * @param serverSocket
      * @param stopreaquest
      */
-    public ClientCommandParser(InputStream in, OutputStream out, boolean stopreaquest) {
-        this.in = in;
-        this.out = out;
+    public ClientCommandParser(Socket serverSocket, boolean stopreaquest) {
+        this.serverSocket = serverSocket;
+
+        try {
+            in = serverSocket.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            out = serverSocket.getOutputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         this.stopreaquest = stopreaquest;
         validateCommand();
+    }
+
+    public void getClientCpongSender(){
+        cpongSender.sendCpong();
     }
 
     /**
@@ -125,7 +146,6 @@ public class ClientCommandParser {
         // NOT NEEDED, because it could also be an answer where the keyword is -OK or -ERR.
         //makes sure the keyword is the proper length and if not tells the client that wrong
         //if(keyword.length() != 5){
-        //    writeBackToServer("-ERR " + command + " is not a properly formatted command");
         //    keyword = "";
         //    argument = "";
         //}

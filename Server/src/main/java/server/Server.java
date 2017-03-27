@@ -106,12 +106,11 @@ class GameClientThread extends Thread{
     public void run() {
         System.out.println("gameserver connected to client " + connectedGameClient);
         try {
-            InputStream in = socket.getInputStream();
             OutputStream out = socket.getOutputStream();
             //out.write(("+OK gameserver connected to client " + connectedGameClient + " \r\n").getBytes());
             User user = new User(null, socket);
             Server.addUserToList(user);
-            CommandParser gameProtocol = new CommandParser(in, out, user);
+            CommandParser gameProtocol = new CommandParser(socket, user);
             gameProtocol.validateProtocol();
             System.out.println("connection to client " + connectedGameClient + " is being terminated");
             Server.removeUserFromList(user);

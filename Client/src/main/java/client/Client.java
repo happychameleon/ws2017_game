@@ -194,7 +194,7 @@ public class Client {
 	        serverInputStream = serverSocket.getInputStream();
 	        serverOutputStream = serverSocket.getOutputStream();
 	        serverSocket.setSoTimeout(200);
-            ClientThread th = new ClientThread(serverInputStream, serverOutputStream);
+            ClientThread th = new ClientThread(serverSocket);
             th.start();
             startClient();
             BufferedReader comandlinInput = new BufferedReader(new InputStreamReader(System.in));
@@ -227,14 +227,14 @@ public class Client {
 
 
 class ClientThread extends Thread{
+	Socket serverSocket;
     InputStream in;
     OutputStream out;
     boolean stopreaquest;
-    public ClientThread(InputStream in, OutputStream out){
+    public ClientThread(Socket serverSocket){
         super();
-        this.in = in;
-        this.out = out;
-        stopreaquest = false;
+        this.serverSocket = serverSocket;
+		stopreaquest = false;
     }
 	
 	/**
@@ -246,7 +246,7 @@ class ClientThread extends Thread{
 
 
     public void run(){
-        ClientCommandParser commandParser = new ClientCommandParser(in, out, stopreaquest);
+        ClientCommandParser commandParser = new ClientCommandParser(serverSocket, stopreaquest);
 	    commandParser.stopValidatingCommand(stopreaquest);
     }
 }
