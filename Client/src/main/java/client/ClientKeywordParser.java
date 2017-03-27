@@ -34,7 +34,7 @@ public class ClientKeywordParser {
 			return;
 		}
 		
-		command.handleArgument(commandParser, argument);
+		command.handleCommand(commandParser, argument);
 		
 	}
 	
