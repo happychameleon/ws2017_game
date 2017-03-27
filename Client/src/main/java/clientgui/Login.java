@@ -66,7 +66,7 @@ public class Login implements ActionListener, KeyListener {
 			sendUsernameRequest();
 		} else if (systemUserName.isEmpty() == false) {
 			// Achievement whoami (The client suggest a nickname based on the system username)
-			userNameText.setText(System.getProperty("user.name"));
+			userNameText.setText(systemUserName);
 		}
 		
 	}
