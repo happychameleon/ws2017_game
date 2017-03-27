@@ -43,7 +43,7 @@ class TimeoutThread extends Thread{
     }
 
     public void run(){
-        long timeoutDelay = 20000;
+        long timeoutDelay = 3000;
         try {
             Thread.sleep(timeoutDelay);
         }catch (InterruptedException e){

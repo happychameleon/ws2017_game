@@ -20,12 +20,22 @@ public class CommandParser {
 	 * The {@link InputStream} of this {@link #receivingUser}
 	 */
 	private InputStream in;
+	
+	public InputStream getIn() {
+		return in;
+	}
+	
 	/**
 	 * The {@link OutputStream} of this {@link #receivingUser}
 	 */
     private OutputStream out;
-    Socket socket;
-    private StringBuffer command = new StringBuffer("");
+    private Socket socket;
+	
+	public Socket getSocket() {
+		return socket;
+	}
+	
+	private StringBuffer command = new StringBuffer("");
     private String keyword = "";
     private String argument = "";
 	
@@ -71,31 +81,40 @@ public class CommandParser {
     public void validateProtocol(){
         cpingSender = new CpingSender(this);
         cpingSender.sendPing();
-        int c;
-        try {
-            while ((c = in.read()) != -1){
-                inputTranslate(in, c);
-
-                inputToCommandArgument();
-
-                KeywordParser keywordParser = new KeywordParser(keyword, argument, cpingSender, this);
-
-                if(isValidCommand()){
-                    keywordParser.compareKeyword();
-                }
-                if (shouldQuit) {
-                	break;
-                }
-                //clears all global variables
-                command.delete(0, command.length());
-                keyword = "";
-                argument = "";
+	    int c;
+	    try {
+		    c = in.read();
+	    } catch (IOException e) {
+	    	c = -1;
+	    }
+        while (c != -1){
+            if (shouldQuit) {
+	            break;
             }
-            cpingSender.terminatePingThread();
             
-        } catch (IOException e) {
-            e.printStackTrace();
+            inputTranslate(in, c);
+
+            inputToCommandArgument();
+
+            KeywordParser keywordParser = new KeywordParser(keyword, argument, cpingSender, this);
+
+            if(isValidCommand()){
+                keywordParser.compareKeyword();
+            }
+            
+            //clears all global variables
+            command.delete(0, command.length());
+            keyword = "";
+            argument = "";
+            
+            try {
+                c = in.read();
+            } catch (IOException e) {
+            	c = -1;
+            }
         }
+        cpingSender.terminatePingThread();
+		    
     }
 	
 	/**

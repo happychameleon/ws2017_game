@@ -315,8 +315,10 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 			// We have selected a Character. Highlight their movement Range.
 			walkRangeTiles = tileUnderMouse.getAllTilesInRange(tileUnderMouse.getCharacter().getMoveRange(), true);
 			world.setSelectionType(SelectionType.CHARACTER);
-			for (Tile tile : walkRangeTiles.keySet()) {
-				tile.setNeedsGraphicsUpdate();
+			if (walkRangeTiles != null && walkRangeTiles.keySet() != null) {
+				for (Tile tile : walkRangeTiles.keySet()) {
+					tile.setNeedsGraphicsUpdate();
+				}
 			}
 		} else {
 			walkRangeTiles = null;
