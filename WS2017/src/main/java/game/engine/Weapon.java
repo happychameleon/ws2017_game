@@ -95,7 +95,14 @@ public class Weapon {
 	 * These are all the prototypes of the weapons in the game. They aren't used directly in the game,
 	 * they are only used to create clones from them via {@link #addWeaponPrototype}.
 	 */
-	static ArrayList<Weapon> weaponPrototypes = new ArrayList<>();
+	private static final ArrayList<Weapon> weaponPrototypes = new ArrayList<>();
+	
+	/**
+	 * @return A shallow copy of {@link #weaponPrototypes}.
+	 */
+	public static ArrayList<Weapon> getWeaponPrototypes() {
+		return (ArrayList<Weapon>) weaponPrototypes.clone();
+	}
 	
 	/**
 	 * This adds a new prototype to {@link #weaponPrototypes}.
