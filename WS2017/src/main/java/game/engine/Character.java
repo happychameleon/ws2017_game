@@ -38,18 +38,36 @@ public class Character {
 	
 	private Tile tile;
     /**
-     * The main.game.engine.Tile on which this main.game.engine.Character is.
+     * The Tile on which this Character is.
      */
     public Tile getTile() {
         return tile;
     }
 	
-	public void setTile(Tile newTile) {
-    	if (newTile.getCharacter() != null) {
-    		System.out.println("Character::setTile - ERROR: Tile already occupied!");
+	/**
+	 * Sets the Character on the specified Tile, only if the Character hadn't had a Tile before.
+	 * @return true if it was successful, false if the character already had a Tile.
+	 */
+	public boolean setStartingTile(Tile startingTile) {
+    	if (this.tile == null) {
+    		setTile(startingTile);
+    		return true;
+	    }
+		System.err.println("Character#setStartingTile - Character already had a Tile!");
+		return false;
+    }
+	
+	/**
+	 * This is only used by the Character themselves to move.
+	 */
+	private void setTile(Tile newTile) {
+    	if (newTile.isWalkable(true)) {
+    		System.err.println("Character#setTile - Tile already occupied!");
     		return;
 	    }
-    	this.tile.setCharacter(null);
+	    if (this.tile != null) {
+		    this.tile.setCharacter(null);
+	    }
 		this.tile = newTile;
 		newTile.setCharacter(this);
 	}
@@ -156,24 +174,19 @@ public class Character {
 	
 	/**
 	 * The name of this Character.
-	 * TODO: Add a List of (gender neutral?) names to randomly get one from.
 	 */
-	private String name = "Jane";
+	private String name;
 	
 	public String getName() {
 		return name;
 	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
 	//endregion
 	
 	
-	public Character(World world, Player owner, Tile tile, Weapon weapon) {
+	public Character(World world, String name, Player owner, Weapon weapon) {
 		this.world = world;
-        this.owner = owner;
-        this.tile = tile;
+		this.name = name;
+		this.owner = owner;
         this.weapon = weapon;
         
         this.actionPoints = maximumActionPoints;
@@ -295,7 +308,7 @@ public class Character {
 	
 	public HashSet<Character> getAllEnemyCharactersInRange () {
 		if (weapon == null) {
-			System.out.println("Character::getAllCharactersInRange - ERROR: Character has no Weapon!");
+			System.err.println("Character#getAllCharactersInRange - Character has no Weapon!");
 			return null;
 		}
 		HashSet<Character> charactersInRange = new HashSet<>();

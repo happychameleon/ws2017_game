@@ -15,7 +15,7 @@ public class World {
 	
 	//region Data
 	/**
-	 * The gameController of this World. All the server-client communication goes over this GameController.
+	 * The gameStartController of this World. All the server-client communication goes over this GameStartController.
 	 */
 	private final GameController gameController;
 	
@@ -165,20 +165,26 @@ public class World {
 	
 	private void createWeaponPrototypes() {
 		//TODO: (maybe) instead of hardcoding the weapons here we could read them in from a file.
-		Weapon.addWeaponPrototype(4, "Medium Water Gun", 25, 3);
-		Weapon.addWeaponPrototype(2, "Heavy Water Gun", 60, 4);
+		Weapon.addWeaponPrototype("Medium Water Gun", 5, 4, 3, 25);
+		Weapon.addWeaponPrototype("Heavy Water Gun", 4, 2, 4, 60);
 		
 		//TODO: Add more weapons.
 	}
 	
+	/**
+	 * JUST FOR TESTING!
+	 */
 	private void CreateNewRandomCharacter(Player player) {
     	Tile tile = getRandomTile(true);
     	Weapon weapon = getRandomWeapon();
     	
-    	Character character = new Character(this, player, tile, weapon);
+    	Character character = new Character(this, "Jane", player, weapon);
     	characters.add(character);
 	}
 	
+	/**
+	 * JUST FOR TESTING!
+	 */
 	private Tile getRandomTile(boolean walkable) {
     	// TODO: add randomness (for testing).
 		Tile tile = getTileAt(0, 0);
@@ -188,11 +194,14 @@ public class World {
     	return tile;
 	}
 	
+	/**
+	 * JUST FOR TESTING!
+	 */
 	private Weapon getRandomWeapon() {
 		//TODO add randomness (for testing).
 		Random r = new Random();
-		Weapon prototype = Weapon.weaponPrototypes.get(r.nextInt(Weapon.weaponPrototypes.size()));
-		return new Weapon(prototype, null, null);
+		Weapon prototype = Weapon.getWeaponPrototypes().get(r.nextInt(Weapon.getWeaponPrototypes().size()));
+		return new Weapon(prototype);
 	}
 	//endregion
 	

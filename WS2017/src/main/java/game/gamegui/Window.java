@@ -20,6 +20,9 @@ import java.util.Set;
 /**
  * The Window containing the general info about how to display the Game.
  *
+ * TODO: Create Pane, draw everything in a panel, add panel to center in pane.
+ * TODO: Additional Info pane at the bottom with pane.add(component, BorderLayout.PAGE_END), first pane.setLayout(new BorderLayout())
+ *
  * Created by flavia on 04.03.17.
  */
 public class Window extends JFrame implements MouseInputListener, KeyListener {

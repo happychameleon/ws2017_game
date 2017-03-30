@@ -3,7 +3,7 @@ package game.engine;
 import java.util.ArrayList;
 
 /**
- * The main.game.engine.Player represents the "Real Life" Person playing the game.
+ * The Player represents the "Real Life" Person playing the game.
  *
  * Created by flavia on 02.03.17.
  */
@@ -36,6 +36,7 @@ public class Player {
 		color = availableColors.remove(0);
 	}
 	
+	// TODO: Replace with PlayerColor!
 	private static ArrayList<String> availableColors;
 	
 	
@@ -52,7 +53,7 @@ public class Player {
 	}
 	
 	/**
-	 * This method is called by {@link main.TurnBasedSystem.TurnController} to inform the Player that it's their turn now.
+	 * This method is called by {@link TurnController} to inform the Player that it's their turn now.
 	 * TODO: It should restore all of the actionPoints of this Player's Characters, Process all effects that happen in this Player's turn etc.
 	 */
 	public void startNewTurn() {
@@ -62,7 +63,7 @@ public class Player {
 	}
 	
 	/**
-	 * This method is called by {@link main.TurnBasedSystem.TurnController} to inform the Player that it's not their turn anymore.
+	 * This method is called by {@link TurnController} to inform the Player that it's not their turn anymore.
 	 * It is called before {@link Player#startNewTurn()} of the next Player.
 	 * TODO: Does nothing atm.
 	 */

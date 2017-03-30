@@ -15,6 +15,18 @@ public class Weapon {
 		return name;
 	}
 	
+	/**
+	 * How many points this Weapon costs
+	 */
+	private int pointCost;
+	
+	/**
+	 * @return {@link #pointCost}.
+	 */
+	public int getPointCost() {
+		return pointCost;
+	}
+	
 	private final int range;
     /**
      * The range of the Weapon in Tiles
@@ -50,43 +62,6 @@ public class Weapon {
 	public int getActionPointPerShot() {
 		return actionPointPerShot;
 	}
-	
-	/**
-	 * Which Character holds this Weapon. Can be null if on the Ground!
-	 * TODO Remove this link
-	 */
-	Character owner;
-    
-    public Character getOwner() {
-        return owner;
-    }
-    
-    public void setOwner(Character owner) {
-        this.owner = owner;
-    }
-	
-	/**
-	 * The tile this Weapon is on. Unused when hold by a Character.
-	 */
-	private Tile tile;
-	
-	/**
-	 * @return Returns the owner's tile if this Weapon is hold by someone or the tile on which this Weapon lies.
-	 */
-	public Tile getTile() {
-    	if (owner != null) {
-    		return owner.getTile();
-	    }
-	    return tile;
-    }
-	
-	/**
-	 * Sets the Tile this Weapon lies on. Should be changed whenever this Weapon get's dropped.
-	 * @param tile
-	 */
-	public void setTile(Tile tile) {
-		this.tile = tile;
-	}
 	//endregion
 	
 	
@@ -105,35 +80,46 @@ public class Weapon {
 	}
 	
 	/**
+	 * @return An Array with all the Weapons from {@link #weaponPrototypes}.
+	 */
+	public static Weapon[] getWeaponPrototypesArray() {
+		return weaponPrototypes.toArray(new Weapon[]{});
+	}
+	
+	/**
 	 * This adds a new prototype to {@link #weaponPrototypes}.
-	 * @param range
 	 * @param name
+	 * @param pointCost
 	 * @param damage
 	 * @param actionPointPerShot
 	 * @param areaOfEffect
+	 * @param range
 	 */
-	public static void addWeaponPrototype (int range, String name, int damage, int actionPointPerShot, int areaOfEffect) {
+	public static void addWeaponPrototype(String name, int pointCost, int damage, int actionPointPerShot, int areaOfEffect, int range) {
 		//TODO: Add sprite to prototype.
-		Weapon prototype = new Weapon(range, name, damage, actionPointPerShot, areaOfEffect);
+		Weapon prototype = new Weapon(name, pointCost, range, damage, actionPointPerShot, areaOfEffect);
 		weaponPrototypes.add(prototype);
 	}
 	
 	/**
-	 * {@link #addWeaponPrototype(int, String, int, int, int)} but with {@link #areaOfEffect} set to 0;
-	 * @param range
+	 * {@link #addWeaponPrototype(String, int, int, int, int, int)} but with {@link #areaOfEffect} set to 0;
 	 * @param name
-	 * @param damage
+	 * @param pointCost
+	 * @param range
 	 * @param actionPointPerShot
+	 * @param damage
 	 */
-	public static void addWeaponPrototype (int range, String name, int damage, int actionPointPerShot) {
-		addWeaponPrototype(range, name, damage, actionPointPerShot, 0);
+	public static void addWeaponPrototype(String name, int pointCost, int range, int actionPointPerShot, int damage) {
+		addWeaponPrototype(name, pointCost , damage, actionPointPerShot, 0, range);
 	}
 	
 	/**
 	 * This is only used to create Weapon prototypes via {@link #addWeaponPrototype}.
+	 * @param pointCost
 	 * @param range The range of the Weapon.
 	 */
-	private Weapon(int range, String name, int damage, int actionPointPerShot, int areaOfEffect) {
+	private Weapon(String name, int pointCost, int range, int damage, int actionPointPerShot, int areaOfEffect) {
+		this.pointCost = pointCost;
 		this.range = range;
 		this.name = name;
 		this.damage = damage;
@@ -145,22 +131,16 @@ public class Weapon {
 	/**
 	 * This creates a new Instance of a Weapon with the values copied from the given prototype from {@link #weaponPrototypes}.
 	 * @param weaponPrototype
-	 * @param tile
-	 * @param owner
+	 *
 	 */
-	public Weapon(Weapon weaponPrototype, Tile tile, Character owner) {
+	public Weapon(Weapon weaponPrototype) {
 		this.range = weaponPrototype.range;
 		this.name = weaponPrototype.name;
 		this.damage = weaponPrototype.damage;
 		this.actionPointPerShot = weaponPrototype.actionPointPerShot;
 		this.areaOfEffect = weaponPrototype.areaOfEffect;
 		
-		this.tile = tile;
-		this.owner = owner;
 		
-		if (owner != null) {
-			owner.setWeapon(this);
-		}
     }
 	
 	
@@ -169,5 +149,10 @@ public class Weapon {
 		return name + "; range " + range + "; AoE " + areaOfEffect;
 	}
 	
-	
+	/**
+	 * @return The String we want to display in the Start Screen's Weapon Selector.
+	 */
+	public String getStartScreenString() {
+		return name + " (" + pointCost + "Pt)";
+	}
 }
