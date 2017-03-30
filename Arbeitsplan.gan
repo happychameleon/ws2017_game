@@ -1,15 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Programmierprojekt Gruppe 4" company="" webLink="http://" view-date="2017-02-27" view-index="0" gantt-divider-location="464" resource-divider-location="300" version="2.8.2" locale="de">
-    <description/>
-    <view zooming-state="default:5" id="gantt-chart">
-        <field id="tpd3" name="Vorgang" width="226" order="0"/>
-        <field id="tpd4" name="Anfang" width="110" order="1"/>
-        <field id="tpd5" name="Ende" width="109" order="2"/>
-        <timeline><![CDATA[5]]></timeline>
-        <option id="color.recent"><![CDATA[#ff0000 #00ccff #33ccff #0099ff #ff3333 #00cc00]]></option>
+<?xml version="1.0" encoding="UTF-8"?><project name="WSS2017" company="Programmier-Projekt" webLink="http://p9.cs.unibas.ch/cs108/2017/TrAcF5LQYn.html" view-date="2017-02-06" view-index="0" gantt-divider-location="353" resource-divider-location="300" version="2.8.2" locale="de">
+    <description><![CDATA[This is the timetable with responsiblilities for our Project]]></description>
+    <view zooming-state="default:7" id="gantt-chart">
+        <field id="tpd3" name="Vorgang" width="190" order="0"/>
+        <field id="tpd4" name="Anfang" width="72" order="1"/>
+        <field id="tpd5" name="Ende" width="72" order="2"/>
+        <option id="color.recent"><![CDATA[#33ccff #660000 #000000 #660099 #0066ff #3399ff #ff3333 #ff00ff #f4f4f4 #00cc00]]></option>
     </view>
     <view id="resource-table">
-        <field id="0" name="Ressource" width="210" order="0"/>
-        <field id="1" name="Rolle" width="86" order="1"/>
+        <field id="0" name="Ressource" width="296" order="0"/>
     </view>
     <!-- -->
     <calendars>
@@ -35,187 +33,183 @@
             <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
-        <task id="0" name="Entscheidung für GameKonzept" color="#8cb6ce" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
-            <depend id="5" type="2" difference="0" hardness="Strong"/>
+        <task id="0" name="Entscheidung für GameKonzept" color="#8cb6ce" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2017-02-27" duration="1" complete="100" expand="true">
+            <depend id="27" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="8" name="Blog erstellen" color="#00cc00" meeting="false" start="2017-02-27" duration="1" complete="0" expand="true">
-            <depend id="5" type="2" difference="0" hardness="Strong"/>
+        <task id="10" name="Blog erstellen" color="#00cc00" meeting="false" start="2017-02-27" duration="1" complete="100" expand="true">
+            <depend id="27" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="2" name="Präsentation vorbereiten" color="#8cb6ce" meeting="false" start="2017-02-27" duration="4" complete="0" expand="true">
+        <task id="13" name="Präsentation vorbereiten" color="#000000" meeting="false" start="2017-02-27" duration="4" complete="100" expand="false">
             <notes><![CDATA[-Client Server Schnittstellen
 -Anforderung
 -Gantt Erstellen]]></notes>
-            <depend id="5" type="2" difference="0" hardness="Strong"/>
-            <task id="14" name="Client Server Schnittstellen" color="#0099ff" meeting="false" start="2017-02-27" duration="3" complete="0" expand="true"/>
-            <task id="16" name="Anforderungen" color="#ff3333" meeting="false" start="2017-02-27" duration="3" complete="0" expand="true"/>
-            <task id="17" name="Gantt Erstellen" color="#00cc00" meeting="false" start="2017-02-27" duration="3" complete="0" expand="true"/>
-            <task id="82" name="Game vorstellen" color="#00cc00" meeting="false" start="2017-03-02" duration="1" complete="0" expand="true"/>
-        </task>
-        <task id="5" name="Meilenstein 1" color="#8cb6ce" meeting="true" start="2017-03-03" duration="0" complete="0" expand="true"/>
-        <task id="33" name="Client Server Protokoll" meeting="false" start="2017-03-04" duration="20" complete="0" expand="true">
-            <depend id="9" type="2" difference="0" hardness="Strong"/>
-            <task id="85" name="Erstellen" color="#0099ff" meeting="false" start="2017-03-04" duration="7" complete="0" expand="true">
-                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            <depend id="27" type="2" difference="0" hardness="Strong"/>
+            <task id="15" name="Client Server Schnittstellen" color="#0066ff" meeting="false" start="2017-02-27" duration="3" complete="100" expand="true">
+                <depend id="27" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="46" name="Login &amp; Logout" color="#ff3333" meeting="false" start="2017-03-11" duration="13" complete="0" expand="true">
-                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            <task id="18" name="Anforderungen" color="#ff3333" meeting="false" start="2017-02-27" duration="3" complete="100" expand="true">
+                <depend id="27" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="48" name="Ping &amp; Pong" color="#0099ff" meeting="false" start="2017-03-11" duration="13" complete="0" expand="true">
-                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            <task id="25" name="Gantt Erstellen" color="#00cc00" meeting="false" start="2017-02-27" duration="3" complete="100" expand="true">
+                <depend id="27" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="44" name="Client-Client Chat" color="#ff0000" meeting="false" start="2017-03-11" duration="13" complete="0" expand="true">
-                <depend id="9" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="43" name="Nicknames" color="#33ccff" meeting="false" start="2017-03-11" duration="13" complete="0" expand="true">
-                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            <task id="30" name="Game vorstellen" color="#00cc00" meeting="false" start="2017-03-02" duration="1" complete="100" expand="true">
+                <depend id="27" type="2" difference="0" hardness="Strong"/>
             </task>
         </task>
-        <task id="55" name="Software Quality Concept erstellen" color="#00ccff" meeting="false" start="2017-03-04" duration="20" complete="0" expand="true">
-            <depend id="9" type="2" difference="0" hardness="Strong"/>
-        </task>
-        <task id="105" name="Präsentation 2 Vorbereiten" meeting="false" start="2017-03-23" duration="4" complete="0" expand="true">
-            <depend id="9" type="2" difference="0" hardness="Strong"/>
-            <task id="57" name="PowerPoint erstellen" color="#8cb6ce" meeting="false" start="2017-03-23" duration="4" complete="0" expand="true">
-                <depend id="9" type="2" difference="0" hardness="Strong"/>
+        <task id="27" name="Meilenstein 1" color="#8cb6ce" meeting="true" start="2017-03-03" duration="0" complete="0" expand="true"/>
+        <task id="33" name="Client Server Protokoll" color="#000000" meeting="false" start="2017-03-04" duration="20" complete="100" expand="false">
+            <depend id="77" type="2" difference="0" hardness="Strong"/>
+            <task id="35" name="Erstelen" color="#3399ff" meeting="false" start="2017-03-04" duration="7" complete="100" expand="true">
+                <depend id="77" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="107" name="Meilensteine kontrollieren" meeting="false" start="2017-03-23" duration="4" complete="0" expand="true"/>
-        </task>
-        <task id="9" name="Meilenstein 2" color="#8cb6ce" meeting="true" start="2017-03-27" duration="0" complete="0" expand="true"/>
-        <task id="75" name="Produkt erstellen" color="#000000" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
-            <depend id="59" type="2" difference="0" hardness="Strong"/>
-            <task id="76" name="Player List" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
-                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            <task id="43" name="Login &amp; Logout" color="#ff3333" meeting="false" start="2017-03-11" duration="13" complete="100" expand="true">
+                <depend id="77" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="69" name="High Score" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
-                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            <task id="46" name="Ping &amp; Pong" color="#3399ff" meeting="false" start="2017-03-11" duration="13" complete="100" expand="true">
+                <depend id="77" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="68" name="Game State auf Server" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
-                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            <task id="48" name="Client-Client Chat" color="#ff3333" meeting="false" start="2017-03-11" duration="13" complete="100" expand="true">
+                <depend id="77" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="66" name="Game List erstellen" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
-                <depend id="59" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="65" name="Chat als GUI" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
-                <depend id="59" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="64" name="Command Line parameters funktionieren" color="#8cb6ce" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
-                <depend id="59" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="63" name="Build Script erstellen" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
-                <depend id="59" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="62" name="Broadcast" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
-                <depend id="59" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="67" name="Game Logic erstellen" meeting="false" start="2017-03-27" duration="19" complete="0" expand="true">
-                <depend id="59" type="2" difference="0" hardness="Strong"/>
-                <depend id="70" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="70" name="Handbuch zum Game erstellen" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true">
-                <depend id="59" type="2" difference="0" hardness="Strong"/>
+            <task id="57" name="Nicknames" color="#33ccff" meeting="false" start="2017-03-11" duration="13" complete="100" expand="true">
+                <depend id="77" type="2" difference="0" hardness="Strong"/>
             </task>
         </task>
-        <task id="71" name="Präsentation vorbereiten" color="#000000" meeting="false" start="2017-04-12" duration="7" complete="0" expand="true">
-            <depend id="59" type="2" difference="0" hardness="Strong"/>
-            <task id="72" name="Progress Report" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true">
-                <depend id="59" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="73" name="Networking Übersicht" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true">
-                <depend id="59" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="61" name="Game genauer vorstellen" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true">
-                <depend id="59" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="81" name="How things are going" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true">
-                <depend id="59" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="125" name="Meilensteine kontrollieren" meeting="false" start="2017-04-12" duration="7" complete="0" expand="true"/>
+        <task id="59" name="Software Quality Concept" color="#33ccff" meeting="false" start="2017-03-04" duration="20" complete="100" expand="true">
+            <depend id="77" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="59" name="Meilenstein 3" color="#8cb6ce" meeting="true" start="2017-04-19" duration="0" complete="0" expand="true"/>
-        <task id="122" name="Produkt erstellen" meeting="false" start="2017-04-20" duration="17" complete="0" expand="true">
-            <depend id="119" type="2" difference="0" hardness="Strong"/>
-            <task id="127" name="Spielbares Game GUI erstellen" meeting="false" start="2017-04-20" duration="17" complete="0" expand="true">
-                <depend id="119" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="128" name="Regeln funktionieren" meeting="false" start="2017-04-20" duration="17" complete="0" expand="true">
-                <depend id="119" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="131" name="Gewinner_in wird ermittelt" meeting="false" start="2017-04-20" duration="17" complete="0" expand="true">
-                <depend id="119" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="130" name="Unit-Test funktionieren" meeting="false" start="2017-04-20" duration="17" complete="0" expand="true">
-                <depend id="119" type="2" difference="0" hardness="Strong"/>
-            </task>
+        <task id="75" name="Meilenstein kontrollieren" color="#8cb6ce" meeting="false" start="2017-03-23" duration="4" complete="100" expand="true">
+            <depend id="77" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="123" name="Präsentation vorbereiten" meeting="false" start="2017-05-04" duration="4" complete="0" expand="true">
-            <depend id="119" type="2" difference="0" hardness="Strong"/>
-            <task id="129" name="Game Test-Spielen" meeting="false" start="2017-05-04" duration="4" complete="0" expand="true">
-                <depend id="119" type="2" difference="0" hardness="Strong"/>
+        <task id="77" name="Meilenstein 2" color="#8cb6ce" meeting="true" start="2017-03-27" duration="0" complete="0" expand="true"/>
+        <task id="81" name="Produkt:" color="#000000" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
+            <depend id="169" type="2" difference="0" hardness="Strong"/>
+            <task id="83" name="Broadcast" color="#3399ff" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true"/>
+            <task id="90" name="Build script" color="#00cc00" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
+                <notes><![CDATA[The build script produces an executable jar as well as the javadoc]]></notes>
             </task>
-            <task id="124" name="Meilensteine kontrollieren" meeting="false" start="2017-05-04" duration="4" complete="0" expand="true">
-                <depend id="119" type="2" difference="0" hardness="Strong"/>
+            <task id="97" name="Command line" color="#00cc00" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true"/>
+            <task id="110" name="Game state on server" color="#0066ff" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true"/>
+            <task id="129" name="Network protocol" color="#3399ff" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
+                <notes><![CDATA[Network protocol is completely defined and documented in source code]]></notes>
             </task>
+            <task id="132" name="Definition Network protocol" color="#3399ff" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
+                <notes><![CDATA[The definition of the network protocol is complete]]></notes>
+            </task>
+            <task id="102" name="Game list" color="#3399ff" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true"/>
+            <task id="117" name="High score" color="#33ccff" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true"/>
+            <task id="125" name="Player List" color="#3399ff" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true"/>
+            <task id="134" name="Technologies and libraries" color="#660099" meeting="false" start="2017-03-27" duration="22" complete="0" expand="true"/>
+            <task id="138" name="Whisper chat" color="#660000" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true"/>
+            <task id="104" name="Game logic" color="#8cb6ce" meeting="false" start="2017-03-27" duration="19" complete="0" expand="true">
+                <task id="105" name="Panel" color="#ff3333" meeting="false" start="2017-03-27" duration="19" complete="0" expand="true"/>
+                <task id="107" name="Game start screen" color="#33ccff" meeting="false" start="2017-03-27" duration="19" complete="0" expand="true"/>
+            </task>
+            <task id="124" name="Manual" color="#ff3333" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true"/>
         </task>
-        <task id="119" name="Meilenstein 4" color="#8cb6ce" meeting="true" start="2017-05-08" duration="0" complete="0" expand="true"/>
-        <task id="132" name="Produkt erstellen" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true">
-            <depend id="121" type="2" difference="0" hardness="Strong"/>
-            <task id="135" name="Architektur Dokumentation" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true">
-                <depend id="121" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="136" name="Build Script funktioniert" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true">
-                <depend id="121" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="137" name="Command Line Parameters" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true">
-                <depend id="121" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="139" name="Game Manual" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true">
-                <depend id="121" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="141" name="Quality Assurence Dokumentiert" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true">
-                <depend id="121" type="2" difference="0" hardness="Strong"/>
-            </task>
+        <task id="144" name="Presentation:" color="#000000" meeting="false" start="2017-04-12" duration="7" complete="0" expand="true">
+            <depend id="169" type="2" difference="0" hardness="Strong"/>
+            <task id="146" name="Outline of Game" color="#ff3333" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true"/>
+            <task id="150" name="Progress report" color="#ff3333" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true"/>
+            <task id="153" name="Networking overview" color="#3399ff" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true"/>
+            <task id="155" name="Quality Assurance" color="#33ccff" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true"/>
+            <task id="159" name="Rules to code" color="#0066ff" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true"/>
+            <task id="166" name="Project timeline" color="#33ccff" meeting="false" start="2017-04-15" duration="4" complete="0" expand="true"/>
+            <task id="338" name="Meilenstein kontrollieren" meeting="false" start="2017-04-12" duration="7" complete="0" expand="true"/>
         </task>
-        <task id="133" name="Präsentation erstellen" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true">
-            <depend id="121" type="2" difference="0" hardness="Strong"/>
-            <task id="134" name="Game genau vorstellen" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true">
-                <depend id="121" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="140" name="Screenshot" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true">
-                <depend id="121" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="138" name="Logo existiert" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true">
-                <depend id="121" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="142" name="QA präsentieren" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true">
-                <depend id="121" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="143" name="Game präsentieren" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true">
-                <depend id="121" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="144" name="What have we learned?" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true">
-                <depend id="121" type="2" difference="0" hardness="Strong"/>
-            </task>
+        <task id="169" name="Meilenstein 3.1" color="#8cb6ce" meeting="true" start="2017-04-19" duration="0" complete="0" expand="true">
+            <notes><![CDATA[+ show working prototype]]></notes>
+            <depend id="172" type="2" difference="0" hardness="Rubber"/>
         </task>
-        <task id="145" name="Bonus Punkte" meeting="false" start="2017-05-09" duration="13" complete="0" expand="true"/>
-        <task id="121" name="Meilenstein 5" color="#8cb6ce" meeting="true" start="2017-05-22" duration="0" complete="0" expand="true"/>
-        <task id="36" name="Blog aktuell halten" color="#33ccff" meeting="false" start="2017-02-27" duration="83" complete="0" expand="true">
-            <depend id="121" type="2" difference="0" hardness="Strong"/>
+        <task id="172" name="Meilenstein 3.2" color="#8cb6ce" meeting="true" start="2017-04-24" duration="0" complete="0" expand="true">
+            <notes><![CDATA[Playing working prototype in Üungsstunde]]></notes>
         </task>
+        <task id="204" name="Produkt:" color="#000000" meeting="false" start="2017-04-24" duration="13" complete="0" expand="true">
+            <depend id="213" type="2" difference="0" hardness="Strong"/>
+            <task id="207" name="Game GUI" meeting="false" start="2017-04-24" duration="13" complete="0" expand="true"/>
+            <task id="208" name="Working Rules" meeting="false" start="2017-04-24" duration="13" complete="0" expand="true"/>
+            <task id="209" name="Winner determined" meeting="false" start="2017-04-24" duration="13" complete="0" expand="true"/>
+            <task id="210" name="Unit-Test working" color="#8cb6ce" meeting="false" start="2017-04-24" duration="13" complete="0" expand="true"/>
+        </task>
+        <task id="211" name="Präsentation:" color="#000000" meeting="false" start="2017-05-04" duration="4" complete="0" expand="true">
+            <depend id="213" type="2" difference="0" hardness="Strong"/>
+            <task id="212" name="Play Game" meeting="false" start="2017-05-04" duration="4" complete="0" expand="true"/>
+            <task id="345" name="Meilenstein kontrollieren" meeting="false" start="2017-05-04" duration="4" complete="0" expand="true"/>
+        </task>
+        <task id="213" name="Meilenstein 4" color="#8cb6ce" meeting="true" start="2017-05-08" duration="0" complete="0" expand="true"/>
+        <task id="318" name="Source code" color="#8cb6ce" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true"/>
+        <task id="214" name="Product:" color="#000000" meeting="false" start="2017-05-09" duration="13" complete="0" expand="true">
+            <depend id="228" type="2" difference="0" hardness="Strong"/>
+            <task id="215" name="Architecture documented" color="#8cb6ce" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true"/>
+            <task id="216" name="Build script works" color="#8cb6ce" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true"/>
+            <task id="217" name="Command Line Parameters" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true"/>
+            <task id="218" name="Game Manual" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true"/>
+            <task id="219" name="Quality Assurance documented" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true"/>
+            <task id="322" name="Screenshot" meeting="false" start="2017-05-21" duration="1" complete="0" expand="true"/>
+        </task>
+        <task id="220" name="Präsentation:" color="#000000" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true">
+            <depend id="228" type="2" difference="0" hardness="Strong"/>
+            <task id="221" name="Game outline" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true"/>
+            <task id="320" name="Manual" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true"/>
+            <task id="223" name="Logo" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true"/>
+            <task id="224" name="QA" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true"/>
+            <task id="225" name="Game präsentieren" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true"/>
+            <task id="226" name="What have we learned?" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true"/>
+        </task>
+        <task id="227" name="Bonus Punkte" color="#8cb6ce" meeting="false" start="2017-05-09" duration="13" complete="0" expand="true"/>
+        <task id="228" name="Meilenstein 5.1" color="#8cb6ce" meeting="true" start="2017-05-22" duration="0" complete="0" expand="true">
+            <depend id="337" type="2" difference="0" hardness="Rubber"/>
+        </task>
+        <task id="337" name="Meilenstein 5.2" color="#8cb6ce" meeting="true" start="2017-05-31" duration="0" complete="0" expand="true"/>
+        <task id="229" name="Update Blog" color="#33ccff" meeting="false" start="2017-02-27" duration="83" complete="0" expand="true"/>
     </tasks>
     <resources>
-        <resource id="0" name="Julischka" function="Default:0" contacts="julischka.saravia@stud.unibas.ch" phone=""/>
-        <resource id="1" name="Max" function="Default:0" contacts="m.hackinger@stud.unibas.ch" phone=""/>
-        <resource id="2" name="Flavia" function="Default:0" contacts="flavia.brogle@unibas.ch" phone=""/>
-        <resource id="3" name="Patrick" function="Default:0" contacts="patrick.brehm@stud.unibas.ch" phone=""/>
+        <resource id="0" name="Max" function="Default:0" contacts="m.hackinger@stud.unibas.ch" phone=""/>
+        <resource id="1" name="Flavia" function="Default:0" contacts="flavia.brogle@unibas.ch" phone=""/>
+        <resource id="2" name="Patrick" function="Default:0" contacts="patrick.brehm@stud.unibas.ch" phone=""/>
+        <resource id="3" name="Julischka" function="Default:0" contacts="julischka.saravia@stud.unibas.ch" phone=""/>
     </resources>
     <allocations>
-        <allocation task-id="36" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="0" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="0" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="0" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="82" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="0" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="16" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="15" resource-id="0" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="35" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="77" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="83" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="102" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="110" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="125" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="129" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="132" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="134" resource-id="0" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="138" resource-id="0" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="153" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="159" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="25" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="77" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="90" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="97" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="97" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="134" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="138" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="18" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="77" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="105" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="124" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="134" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="138" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="146" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="150" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="15" resource-id="3" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="59" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="77" resource-id="3" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="107" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="110" resource-id="3" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="117" resource-id="3" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="134" resource-id="3" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="155" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="159" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="166" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="229" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
     </allocations>
     <vacations/>
     <previous/>
