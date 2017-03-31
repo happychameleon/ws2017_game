@@ -15,7 +15,7 @@ public class World {
 	
 	//region Data
 	/**
-	 * The gameStartController of this World. All the server-client communication goes over this GameStartController.
+	 * The gameStartController of this World. All the server-client communication goes over this ClientGameStartController.
 	 */
 	private final GameController gameController;
 	
@@ -120,7 +120,7 @@ public class World {
 	
 	
 	//region World Creation
-	public World (int width, int height, GameController gameController, int charactersPerPlayer) {
+	public World (int width, int height, GameController gameController) {
 		this.gameController = gameController;
 		if (instance != null) {
 			System.out.println("ERROR: There can always only be one World! But there was already one when creating a new World!");
@@ -152,14 +152,8 @@ public class World {
         
         turnController = new TurnController(4);
 		
-		createWeaponPrototypes();
-		
 		characters = new ArrayList<>();
-		for (Player player : turnController.getPlayers()) {
-			for (int i = 0; i < charactersPerPlayer; i++) {
-			    CreateNewRandomCharacter(player);
-		    }
-		}
+		
 		
 	}
 	

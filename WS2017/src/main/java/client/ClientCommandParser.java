@@ -70,7 +70,7 @@ public class ClientCommandParser {
             while (!stopreaquest) {
                 try {
                     if ((len = in.read()) == -1) {
-                        System.out.println("stooped with -1");
+                        System.out.println("stopped with -1");
                         break;
                     }
                     inputTranslate(in, len);
@@ -156,6 +156,10 @@ public class ClientCommandParser {
      * <code>false</code> otherwise.
      */
     private boolean isValidCommand() {
+        if (command.length() == 0) {
+	        System.err.println("Command Empty?!");
+	        return false;
+        }
         if (command.charAt(0) == '-') {
             return false;
         }
@@ -173,6 +177,10 @@ public class ClientCommandParser {
      * <code>false</code> otherwise.
      */
 	private boolean isValidAnswer() {
+		if (command.length() == 0) {
+			//System.err.println("Command Empty?!");
+			return false;
+		}
 		if (command.charAt(0) == '-' || command.charAt(0) == '+') {
 			//System.out.println("it's an answer!");
 			return true;

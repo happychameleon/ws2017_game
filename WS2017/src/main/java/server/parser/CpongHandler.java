@@ -8,7 +8,7 @@ public class CpongHandler extends CommandHandler {
 	
 	@Override
 	public void handleCommand(String argument) {
-		System.out.println();
+		//System.out.println();
 		commandParser.getCpingSender().pingConfirmation();
 	}
 }

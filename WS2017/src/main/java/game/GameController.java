@@ -1,20 +1,21 @@
 package game;
 
-import game.gamegui.Window;
-
 /**
- * This handles the connection between a game and the server or client.
- * For each game there is one GameStartController per Client.
- *
- * All the game commands are sent to this controller which handles them.
- *
- * Created by flavia on 30.03.17.
+ * Created by flavia on 31.03.17.
  */
-public class GameController {
-
-	Window window;
+public abstract class GameController {
 	
+	/**
+	 * The unique name of the game.
+	 */
+	String gameName;
 	
+	/**
+	 * @return {@link #gameName}.
+	 */
+	public String getGameName() {
+		return gameName;
+	}
 
-
+	
 }

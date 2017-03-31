@@ -44,6 +44,8 @@ public class Chat implements ActionListener, KeyListener {
 	JTextArea chatText = new JTextArea(30,50);
 	JScrollPane scroll;
 	
+	JButton newGameButton = new JButton("Create Game");
+	
 	public Chat() {
 		
 		chatFrame.setTitle("Username: " + Client.getThisUser().getName());
@@ -81,6 +83,7 @@ public class Chat implements ActionListener, KeyListener {
 		p.add(sendChatButton);
 		p.add(usernameChange_in);
 		p.add(usernameChange);
+		p.add(newGameButton);
 		chatFrame.add(p);
 		
 		usernameChange_in.addKeyListener(this);
@@ -88,6 +91,8 @@ public class Chat implements ActionListener, KeyListener {
 		
 		chat_in.addKeyListener(this);
 		chat_in.setFocusable(true);
+		
+		newGameButton.addActionListener(this);
 		
 		chatFrame.setVisible(true);
 		
@@ -193,6 +198,10 @@ public class Chat implements ActionListener, KeyListener {
 		} else if (e.getSource() == sendChatButton) {
 			// TODO Meilenstein 3: add possibility (maybe different chat windows?) to send to specific user.
 			sendMessage();
+		} else if (e.getSource() == newGameButton) {
+			// TODO: Open popup window dialog to create new game.
+			Client.sendMessageToServer("newgm 40 flaviasGame");
+			displayInfo("Game Start sent");
 		}
 	}
 	

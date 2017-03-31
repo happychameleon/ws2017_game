@@ -1,7 +1,7 @@
 package server.parser;
 
 import server.Server;
-import server.User;
+import server.ServerUser;
 
 /**
  * Handles the uname command by checking if
@@ -61,12 +61,12 @@ public class UnameHandler extends CommandHandler {
 	}
 	
 	/**
-	 * This sets the username of the User who entered this command to the given username.
+	 * This sets the username of the ServerUser who entered this command to the given username.
 	 * If the user didn't already have a name it newly assigns one, otherwise it overwrites the old one.
 	 * @param argument
 	 */
 	private void addUsernameToServer(String argument) {
-		User sendingUser = commandParser.getReceivingUser();
+		ServerUser sendingUser = commandParser.getReceivingUser();
 		String oldName = sendingUser.getName();
 		String newName = argument;
 		

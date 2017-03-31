@@ -70,12 +70,27 @@ public class Weapon {
 	 * These are all the prototypes of the weapons in the game. They aren't used directly in the game,
 	 * they are only used to create clones from them via {@link #addWeaponPrototype}.
 	 */
-	private static final ArrayList<Weapon> weaponPrototypes = new ArrayList<>();
+	private static ArrayList<Weapon> weaponPrototypes;
+	
+	/**
+	 * Creates all the prototype weapons.
+	 */
+	private static void createWeaponPrototypes() {
+		weaponPrototypes = new ArrayList<>();
+		
+		//TODO: (maybe) instead of hardcoding the weapons here we could read them in from a file.
+		Weapon.addWeaponPrototype("Medium Water Gun", 5, 4, 3, 25);
+		Weapon.addWeaponPrototype("Heavy Water Gun", 4, 2, 4, 60);
+		
+		//TODO: Add more weapons.
+	}
 	
 	/**
 	 * @return A shallow copy of {@link #weaponPrototypes}.
 	 */
 	public static ArrayList<Weapon> getWeaponPrototypes() {
+		if (weaponPrototypes == null)
+			createWeaponPrototypes();
 		return (ArrayList<Weapon>) weaponPrototypes.clone();
 	}
 	
@@ -83,6 +98,8 @@ public class Weapon {
 	 * @return An Array with all the Weapons from {@link #weaponPrototypes}.
 	 */
 	public static Weapon[] getWeaponPrototypesArray() {
+		if (weaponPrototypes == null)
+			createWeaponPrototypes();
 		return weaponPrototypes.toArray(new Weapon[]{});
 	}
 	

@@ -12,7 +12,9 @@ public enum Command {
 	cquit(new CquitHandler()),
 	chatm(new ChatmHandler()),
 	uname(new UnameHandler()),
-	cgetu(new CgetuHandler());
+	cgetu(new CgetuHandler()),
+	newgm(new NewgmHandler()),
+	ready(new ReadyHandler());
 	
 	
 	private final CommandHandler commandHandler;

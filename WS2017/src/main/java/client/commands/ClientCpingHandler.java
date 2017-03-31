@@ -1,8 +1,5 @@
 package client.commands;
 
-import client.Client;
-import client.ClientUser;
-
 /**
  * TODO: write a good comment for javadoc
  *
@@ -17,14 +14,14 @@ public class ClientCpingHandler extends CommandHandler {
 	 */
 	@Override
 	public void handleCommand(String argument) {
-		System.out.println();
+		//System.out.println();
 		commandParser.getClientCpongSender();
 		
 		// Just for testing:
-		System.out.println("Current users:");
-		for (ClientUser user : Client.getAllUsers()) {
-			System.out.println(" " + user.getName());
-		}
+		//System.out.println("Current users:");
+		//for (ClientUser user : Client.getAllUsers()) {
+		//	System.out.println(" " + user.getName());
+		//}
 	}
 	
 	@Override

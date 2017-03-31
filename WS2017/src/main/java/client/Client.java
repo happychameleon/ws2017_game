@@ -54,7 +54,7 @@ public class Client {
 	/**
 	 * The user representing this client.
 	 */
-	private static final ClientUser thisUser = new ClientUser();
+	private static final ClientUser thisUser = new ClientUser(null);
 	
 	public static ClientUser getThisUser() {
 		return thisUser;
@@ -235,7 +235,7 @@ public class Client {
         }
     }
 	
-	
+    
 }
 
 

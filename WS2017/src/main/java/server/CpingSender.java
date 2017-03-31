@@ -24,7 +24,7 @@ public class CpingSender {
     public void pingConfirmation(){
         newPingThread.interrupt();
         newPingThread = new PingThread(commandParser);
-        System.out.println("+OK ping has been received");
+        //System.out.println("+OK ping has been received");
         sendPing();
     }
 
@@ -59,7 +59,7 @@ class PingThread extends Thread{
             } catch (InterruptedException e) {
                 return;
             }
-            System.out.println("sending client ping");
+            //System.out.println("sending client ping");
             commandParser.writeBackToClient("cping");
         }
 

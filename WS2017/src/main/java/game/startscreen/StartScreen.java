@@ -1,13 +1,9 @@
 package game.startscreen;
 
-import game.engine.PlayerColor;
-import game.engine.Character;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 /**
  * Handles the selection of the team at the start of the game.
@@ -17,19 +13,14 @@ import java.util.ArrayList;
 public class StartScreen extends JPanel implements ActionListener {
 	
 	/**
-	 * The GameStartController for this game.
+	 * The ClientGameStartController for this game.
 	 */
-	private final GameStartController gameStartController;
+	private final ClientGameStartController clientGameStartController;
 	
 	/**
 	 * The amount of points to spend for Children and Equipment.
 	 */
 	private final int startingPoints;
-	
-	/**
-	 * The Color this player was assigned to from the server. Should be displayed somewhere here.
-	 */
-	private final PlayerColor playerColor;
 	
 	/**
 	 * The window this is displayed in.
@@ -73,12 +64,10 @@ public class StartScreen extends JPanel implements ActionListener {
 	 * Opens the Start Screen to choose the team.
 	 * @param gameStartController
 	 * @param startingPoints The max amount of points to choose the team from.
-	 * @param playerColor The Color of this user.
 	 */
-	public StartScreen(GameStartController gameStartController, int startingPoints, PlayerColor playerColor) {
-		this.gameStartController = gameStartController;
+	public StartScreen(ClientGameStartController gameStartController, int startingPoints) {
+		this.clientGameStartController = gameStartController;
 		this.startingPoints = startingPoints;
-		this.playerColor = playerColor;
 		
 		window = new JFrame();
 		window.add(this);
@@ -113,7 +102,7 @@ public class StartScreen extends JPanel implements ActionListener {
 		else if (i.equals(startGameButton)) {
 			recalculatePoints(); // Just to be sure an update to the points went missing.
 			if (currentPoints <= startingPoints) {
-				gameStartController.clientIsReady(getAllChildrenAsCharacterArrayList());
+				clientGameStartController.clientIsReady(getAllChildrenAsString());
 			} else {
 				System.err.println("The startGameButton wasn't disabled but the currentPoints > startingPoints!");
 			}
@@ -157,10 +146,13 @@ public class StartScreen extends JPanel implements ActionListener {
 		updateCurrentPointsLabel();
 	}
 	
+	/**
+	 * Prevents the user from selecting too many points or no child at all.
+	 */
 	private void updateButtonEnabling() {
-		if (currentPoints > startingPoints)
+		if (currentPoints > startingPoints || currentPoints == 0) {
 			startGameButton.setEnabled(false);
-		else
+		} else
 			startGameButton.setEnabled(true);
 	}
 	
@@ -169,22 +161,21 @@ public class StartScreen extends JPanel implements ActionListener {
 	}
 	
 	/**
-	 * Creates all the Children as specified in the  and
-	 * @return
+	 * Creates the String representing all the Children
+	 * [<child1name> <child1weaponname> <child2name> <child2weaponname>]
 	 */
-	private ArrayList<Character> getAllChildrenAsCharacterArrayList() {
-		ArrayList<Character> characters = new ArrayList<Character>();
+	private String getAllChildrenAsString() {
+		String characters = "[";
 		for (Component component : childrenPanels.getComponents()) {
 			if (component instanceof ChildPanel) {
 				ChildPanel childPanel = ((ChildPanel) component);
-				characters.add(new Character(
-						gameStartController.getWorld(),
-						childPanel.getCharacterName(),
-						gameStartController.getThisClientPlayer(),
-						childPanel.getCharacterWeapon()
-				));
+				String name = childPanel.getCharacterName();
+				String weaponName = childPanel.getCharacterWeapon().getName();
+				characters += name + " " + weaponName + " ";
 			}
 		}
+		characters.substring(0, characters.length() - 1); // To remove last space
+		characters += "]";
 		return characters;
 	}
 	

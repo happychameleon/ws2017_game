@@ -1,5 +1,7 @@
 package server;
 
+import serverclient.User;
+
 import java.net.Socket;
 
 /**
@@ -7,33 +9,25 @@ import java.net.Socket;
  *
  * Created by m on 3/20/17.
  */
-public class User {
-    private String name;
-
+public class ServerUser extends User {
+	
     /**
-     * Constructor for the User class
+     * Constructor for the ServerUser class
      * @param name the name of the user.
      * @param socket the Socket to the client.
      */
-    public User(String name, Socket socket){
-        this.name = name;
+    public ServerUser(String name, Socket socket){
+		super(name);
         this.socket = socket;
+        
     }
 
-	/**
-	 * @return The username. Can be null (if not logged in)!
-	 */
-	public String getName() {
-        return name;
-    }
 	
-	public void setName(String name) {
-		this.name = name;
-	}
 	
 	private Socket socket;
     
     public Socket getSocket() {
         return socket;
     }
+    
 }

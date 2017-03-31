@@ -2,7 +2,7 @@ package server.parser;
 
 
 import server.Server;
-import server.User;
+import server.ServerUser;
 
 /**
  * Created by m on 3/21/17.
@@ -23,8 +23,8 @@ public class ChatmHandler extends CommandHandler {
 			return;
 		}
 		
-		User sender = Server.getUserByName(senderName);
-		User recipient = Server.getUserByName(recipientName);
+		ServerUser sender = Server.getUserByName(senderName);
+		ServerUser recipient = Server.getUserByName(recipientName);
 		
 		if (recipient == null) {
 			// TODO Meilenstein 3: Error Message Answers not yet implemented

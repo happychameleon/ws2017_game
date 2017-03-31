@@ -15,7 +15,7 @@ public class CommandParser {
 	/**
 	 * The receivingUser from which this CommandParser reads in the commands.
 	 */
-	private final User receivingUser;
+	private final ServerUser receivingUser;
 	/**
 	 * The {@link InputStream} of this {@link #receivingUser}
 	 */
@@ -53,7 +53,7 @@ public class CommandParser {
     /**
      * Constructor, gives the class access to input and output to and from client.
      */
-    public CommandParser(Socket socket, User user){
+    public CommandParser(Socket socket, ServerUser user){
         try {
             in = socket.getInputStream();
         } catch (IOException e) {
@@ -71,7 +71,7 @@ public class CommandParser {
 	/**
 	 * @return {@link #receivingUser}
 	 */
-	public User getReceivingUser() {
+	public ServerUser getReceivingUser() {
 		return receivingUser;
 	}
 
@@ -190,7 +190,7 @@ public class CommandParser {
     }
 	
 	/**
-	 * This gets the User for the given username and calls {@link #writeToSpecificClient(String, User)}
+	 * This gets the User for the given username and calls {@link #writeToSpecificClient(String, ServerUser)}
 	 * @param username The name to translate into the User. Check first if the username exists!
 	 */
 	public void writeToSpecificClient(String output, String username) {
@@ -202,7 +202,7 @@ public class CommandParser {
 	 * @param output The message to write.
 	 * @param user The User to write to.
 	 */
-	public void writeToSpecificClient(String output, User user) {
+	public void writeToSpecificClient(String output, ServerUser user) {
 		if (user == null) {
 			System.err.println("CommandParser#writeToSpecificClient - Must enter a valid receivingUser!");
 			return;
@@ -221,7 +221,7 @@ public class CommandParser {
 	 * @param output the message
 	 */
 	public void writeToAllOtherClients(String output) {
-		for (User user : Server.getAllUsers()) {
+		for (ServerUser user : Server.getAllUsers()) {
 			if (user == this.receivingUser) {
 				continue;
 			}
