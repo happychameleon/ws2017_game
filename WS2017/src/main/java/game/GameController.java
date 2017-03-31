@@ -1,5 +1,9 @@
 package game;
 
+import serverclient.User;
+
+import java.util.ArrayList;
+
 /**
  * Created by flavia on 31.03.17.
  */
@@ -16,6 +20,10 @@ public abstract class GameController {
 	public String getGameName() {
 		return gameName;
 	}
-
 	
+	
+	public ArrayList<User> getAllUsers() {
+		// TODO!
+		return null;
+	}
 }

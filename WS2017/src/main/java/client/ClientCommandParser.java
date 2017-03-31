@@ -82,7 +82,8 @@ public class ClientCommandParser {
                         ClientAnswerParser answerParser = new ClientAnswerParser(keyword, argument, this);
 		                answerParser.compareAnswer();
                     }
-                    System.out.println(command.toString());
+                    if (keyword.equals("cping") == false)
+	                    System.out.println(command.toString());
                     //clears all global variables
                     command.delete(0, command.length());
                     keyword = "";

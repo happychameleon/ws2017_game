@@ -33,14 +33,14 @@ public class KeywordParser {
 			command = Enum.valueOf(Command.class, keyword);
 		} catch (IllegalArgumentException iae) {
 			// TODO Meilenstein 3: Error Message Answers not yet implemented
-			System.err.println("Received command does not exist!");
+			System.err.println("Received command does not exist! " + keyword + " " + argument);
 			return;
 		}
 		
 		if (command == null) {
 			// TODO Meilenstein 3: Error Message Answers not yet implemented
 			// commandParser.writeBackToClient("Received command does not exist!");
-			System.err.println("Received command does not exist!");
+			System.err.println("Received command does not exist: " + keyword + " " + argument);
 			return;
 		}
 		

@@ -2,6 +2,7 @@ package game.startscreen;
 
 import serverclient.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -43,5 +44,39 @@ public class GameStartController {
 		this.gameName = gameName;
 		this.startingPoints = startingPoints;
 	}
-
+	
+	/**
+	 * @return All users either in the {@link #waitingUsers} or {@link #choosingUsers} List.
+	 */
+	public ArrayList<User> getAllUsers() {
+		ArrayList<User> users = new ArrayList<>();
+		for (User user : waitingUsers.keySet()) {
+			users.add(user);
+		}
+		for (User user : choosingUsers) {
+			users.add(user);
+		}
+		return users;
+	}
+	
+	/**
+	 * Adds the user to the game's {@link #choosingUsers} list.
+	 */
+	public void addUserToGame(User user) {
+		choosingUsers.add(user);
+	}
+	
+	/**
+	 * Removes the user from {@link #choosingUsers} and adds them to {@link #waitingUsers}.
+	 */
+	public void moveUserToWaiting(User user, String characterString) {
+		choosingUsers.remove(user);
+		waitingUsers.put(user, characterString);
+	}
+	
+	
+	@Override
+	public String toString() {
+		return gameName + " (" + startingPoints + "Pts)";
+	}
 }

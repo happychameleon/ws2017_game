@@ -23,14 +23,16 @@ public class ClientKeywordParser {
 	 * This compares the command and if it is an existing command it creates the correct parser to execute the command.
 	 */
 	public void compareKeyword(){
-		Command command = Enum.valueOf(Command.class, keyword);
+		Command command;
+		try {
+			command = Enum.valueOf(Command.class, keyword);
+		} catch (IllegalArgumentException iae) {
+			System.err.println("Received command does not exist! " + keyword + " " + argument);
+			return;
+		}
 		
 		if (command == null) {
-			if (Client.getChatWindow() != null) {
-				Client.getChatWindow().displayError("Received command does not exist!");
-			} else {
-				System.err.println("Received command does not exist!");
-			}
+			System.err.println("Received command does not exist! " + keyword + " " + argument);
 			return;
 		}
 		

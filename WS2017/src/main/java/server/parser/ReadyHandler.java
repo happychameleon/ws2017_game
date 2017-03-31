@@ -10,6 +10,7 @@ public class ReadyHandler extends CommandHandler {
 		String username = getFirstWord(argument);
 		String characterString = getCharacterString(argument);
 		
+		// TODO:
 	}
 	
 	private String getFirstWord(String argument) {

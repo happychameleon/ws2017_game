@@ -2,6 +2,7 @@ package server;
 
 import game.ServerGameController;
 import game.startscreen.ServerGameStartController;
+import serverclient.User;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -28,6 +29,9 @@ public class Server {
 	 */
 	private static ArrayList<ServerGameController> runningGameList = new ArrayList<>();
 	
+	/**
+	 * A list of all the connected users.
+	 */
 	private static ArrayList <ServerUser> userList = new ArrayList<ServerUser>();
 	
 	/**
@@ -45,9 +49,27 @@ public class Server {
 	}
 	
 	/**
+	 * Removes the user from all the lists they are in when the connection is terminated.
 	 * @see #userList
 	 */
 	static boolean removeUserFromList(ServerUser user) {
+		System.out.println("removeUserFromList");
+		for (int i = 0; i < waitingGameList.size(); i++) {
+			ServerGameStartController sgsc = waitingGameList.get(i);
+			for (User u : sgsc.getAllUsers()) {
+				if (user == u) {
+					sgsc.removeUser(user);
+				}
+			}
+		}
+		for (int i = 0; i < runningGameList.size(); i++) {
+			ServerGameController sgc = runningGameList.get(i);
+			for (User u : sgc.getAllUsers()) {
+				if (user == u) {
+					sgc.removeUser(user);
+				}
+			}
+		}
 		return userList.remove(user);
 	}
 	
@@ -66,6 +88,32 @@ public class Server {
     }
 	
 	/**
+	 * Gets the ServerGameStartController for the specific gamename.
+	 * @param name The game's name.
+	 * @return The ServerGameStartController. Can be null if username doesn't exist!
+	 */
+	public static ServerGameStartController getWaitingGameByName(String name) {
+		for (ServerGameStartController sgsc : waitingGameList) {
+			if (sgsc.getGameName().equals(name))
+				return sgsc;
+		}
+		return null;
+	}
+	
+	/**
+	 * Gets the ServerGameController for the specific gamename.
+	 * @param name The game's name.
+	 * @return The ServerGameStartController. Can be null if username doesn't exist!
+	 */
+	public static ServerGameController getRunningGameByName(String name) {
+		for (ServerGameController sgsc : runningGameList) {
+			if (sgsc.getGameName().equals(name))
+				return sgsc;
+		}
+		return null;
+	}
+	
+	/**
 	 * Writes the output message to all clients.
 	 * @param output the message
 	 */
@@ -82,14 +130,10 @@ public class Server {
 	
 	/**
 	 * Adds the newly created game (which is still in the game start phase) to the list of new games.
-	 * Tells all the clients about this game.
 	 * @see #waitingGameList
 	 */
 	public static void addNewWaitingGame(ServerGameStartController newGame) {
 		waitingGameList.add(newGame);
-		String newGameMessage = "";
-		// TODO: Tell all the clients about the newly opened game!
-		writeToAllClients(newGameMessage);
 	}
 	
 	/**

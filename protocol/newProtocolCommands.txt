@@ -1,0 +1,48 @@
+rmgam <gamename>
+	Informs all the clients that this game was deleted (because every player left it).
+	The game could either be already playing or still be in the starting phase.
+
+
+newgm <points> <gamename>
+	Client to Server:
+		The Client tells the server that they created a new game.
+		If name is Taken, Server writes back to client.
+		Else the Server tells then all the Clients about the new game (including creator)
+	Server to Client:
+		The Server informs the Clients about the new game which can now be joined.
+
+-ERR game name taken
+	Server informs the Client that the chosen game name is already taken.
+
+
+joing <gamename> <username>
+	Client to Server:
+		The Client informs the Server that they want to join the game.
+	Server to Client:
+		The Server informs all the Clients, that the client has joined this game.
+
+-ERR joing game already full
+	The Server informs the user that there is no place left in the game.
+
+
+ready <username> [<characterstring>]
+	Client to Server:
+		The Client tells the server that it is ready and has chosen the specified characters.
+	Server to Client:
+		The Server tells the Clients (including sender) that the Client is now ready.
+	[<characterstring>] is formated as following (with any number of characters > 0):
+		[<character1name> <weapon1name> <character2name> <weapon2name>]
+
+
+cgetg
+	Client asks about all open games (similar to cgetu)
+
+
+leavg <gamename> <username>
+	Client to Server:
+		The Client informs the server that they left the game.
+	Server to Client:
+		The Server informs all the Clients, that the Client has left the game.
+
+
+

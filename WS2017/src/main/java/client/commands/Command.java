@@ -13,7 +13,9 @@ public enum Command {
 	cquit(new ClientCquitHandler()),
 	chatm(new ClientChatmHandler()),
 	nuser(new ClientNuserHandler()),
-	newgm(new ClientNewgmHandler());
+	newgm(new ClientNewgmHandler()),
+	joing(new ClientJoingHandler()),
+	rmgam(new ClientRmgamHandler());
 	
 	/**
 	 * The correct CommandHandler which processes the command.

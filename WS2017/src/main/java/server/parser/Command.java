@@ -14,6 +14,7 @@ public enum Command {
 	uname(new UnameHandler()),
 	cgetu(new CgetuHandler()),
 	newgm(new NewgmHandler()),
+	joing(new JoingHandler()),
 	ready(new ReadyHandler());
 	
 	

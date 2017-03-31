@@ -22,9 +22,9 @@ public class ClientNewgmHandler extends CommandHandler {
 		
 		ClientGameStartController newGame = new ClientGameStartController(new HashMap<>(), new HashSet<>(), gameName, maxPoints);
 		
-		System.out.println("New Game '" + gameName + "' with maxPoints: " + maxPoints);
+		Client.getChatWindow().addNewGameToList(newGame);
 		
-		// TODO: Add the game to a list of games on the main chat window.
+		// TODO: Add the game to a list of games on the main chat window instead and open it when selected.
 		// There this client can join the game. No need to keep all the games in the client.
 		// Client.addNewWaitingGame(newGame);
 	}
@@ -32,7 +32,7 @@ public class ClientNewgmHandler extends CommandHandler {
 	@Override
 	public void handleAnswer(String argument, boolean isOK) {
 		if (isOK == false && argument.startsWith("game name taken")) {
-			Client.getChatWindow().displayError("Your name for the new Game already exists. Please choose a new one!");
+			Client.getChatWindow().displayError("The name for the new Game already exists. Please choose a new one!");
 		}
 	}
 	

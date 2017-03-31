@@ -2,6 +2,7 @@ package client.clientgui;
 
 import client.Client;
 import client.ClientUser;
+import game.startscreen.ClientGameStartController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,17 +36,41 @@ public class Chat implements ActionListener, KeyListener {
 		return messages.get(messages.size() - 1);
 	}
 	
+	/**
+	 * The Panel where the main Chat is in.
+	 */
+	JPanel mainChatPanel;
 	
 	JFrame chatFrame = new JFrame("Chat");
-	JTextField chat_in = new JTextField(15);
-	JTextField usernameChange_in = new JTextField(15);
+	JTextField chatInput = new JTextField(15);
+	JTextField usernameChangeInput = new JTextField(15);
 	JButton sendChatButton = new JButton("Send");
-	JButton usernameChange = new JButton("Change Username");
+	JButton usernameChangeButton = new JButton("Change Username");
 	JTextArea chatText = new JTextArea(30,50);
 	JScrollPane scroll;
 	
-	JButton newGameButton = new JButton("Create Game");
 	
+	DefaultListModel<ClientGameStartController> openGameListModel = new DefaultListModel<>();
+	/**
+	 * All the currently open games where this client can join.
+	 */
+	JList<ClientGameStartController> openGameList = new JList<>(openGameListModel);
+	
+	JButton newGameButton = new JButton("Create Game");
+	JButton joinGameButton = new JButton("Join Game");
+	
+	// The Dialog Window for creating a new game.
+	JDialog newGameDialog = new JDialog(chatFrame);
+	JTextField gameNameTF = new JTextField("Name");
+	JTextField maxPointsTF = new JTextField("MaxPoints");
+	JButton createGameButton = new JButton("Create Game");
+	JButton cancelGameCreationButton = new JButton("Cancel");
+	
+	
+	
+	/**
+	 * Opens the main Chat window.
+	 */
 	public Chat() {
 		
 		chatFrame.setTitle("Username: " + Client.getThisUser().getName());
@@ -60,44 +85,63 @@ public class Chat implements ActionListener, KeyListener {
 		// modify JFrame component layout
 		chatFrame.setSize(700, 700);
 		chatFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		chat_in.setFont(new Font("Courier New", Font.ITALIC, 50));
-		usernameChange_in.setFont(new Font("Courier New", Font.ITALIC, 50));
+		chatInput.setFont(new Font("Courier New", Font.ITALIC, 50));
+		usernameChangeInput.setFont(new Font("Courier New", Font.ITALIC, 50));
 		sendChatButton.setPreferredSize(new Dimension(100, 50));
-		usernameChange.setPreferredSize(new Dimension(200,50));
+		usernameChangeButton.setPreferredSize(new Dimension(200,50));
 		
 		// Make scrolling possible:
 		chatText.setEditable(false);
 		scroll = new JScrollPane (chatText);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		
 		// Either set lineWrap to true or make horizontal scrolling available. Just change the commented line to get the other option.
 		// One of them has to be active or long text will be cut.
 		chatText.setLineWrap(true);
 		//scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
+		// Create main Panel for the chat
+		mainChatPanel = new JPanel(new BorderLayout());
+		mainChatPanel.add(scroll, BorderLayout.CENTER);
 		
-		// Create window for the chat
-		JPanel p = new JPanel();
-		p.add(scroll);
-		p.add(chat_in);
-		p.add(sendChatButton);
-		p.add(usernameChange_in);
-		p.add(usernameChange);
-		p.add(newGameButton);
-		chatFrame.add(p);
+		// The Panel with the text input for the chat and username change
+		JPanel textInputPanel = new JPanel(new GridLayout(2,2));
+		textInputPanel.add(chatInput);
+		textInputPanel.add(sendChatButton);
+		textInputPanel.add(usernameChangeInput);
+		textInputPanel.add(usernameChangeButton);
+		mainChatPanel.add(textInputPanel, BorderLayout.PAGE_END);
 		
-		usernameChange_in.addKeyListener(this);
-		usernameChange_in.setFocusable(true);
+		// The left panel with the game selection and new game creation.
+		JPanel gameCreationPanel = new JPanel();
+		gameCreationPanel.setLayout(new BoxLayout(gameCreationPanel, BoxLayout.Y_AXIS));
+		JScrollPane openGameListScroller = new JScrollPane(openGameList);
+		gameCreationPanel.add(openGameListScroller);
+		gameCreationPanel.add(joinGameButton);
+		gameCreationPanel.add(newGameButton);
+		mainChatPanel.add(gameCreationPanel, BorderLayout.LINE_START);
 		
-		chat_in.addKeyListener(this);
-		chat_in.setFocusable(true);
+		chatFrame.add(mainChatPanel);
+		
+		
+		// Non-Layout specific configurations for the ui elements
+		
+		usernameChangeInput.addKeyListener(this);
+		usernameChangeInput.setFocusable(true);
+		
+		chatInput.addKeyListener(this);
+		chatInput.setFocusable(true);
 		
 		newGameButton.addActionListener(this);
+		joinGameButton.addActionListener(this);
+		
+		openGameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		openGameList.setLayoutOrientation(JList.VERTICAL);
+		
 		
 		chatFrame.setVisible(true);
 		
 		sendChatButton.addActionListener(this);
-		usernameChange.addActionListener(this);
+		usernameChangeButton.addActionListener(this);
 		
 	}
 	
@@ -115,7 +159,7 @@ public class Chat implements ActionListener, KeyListener {
 	 * @param proposedUsername the proposed username (with a number at the end)
 	 */
 	public void proposeUsername(String proposedUsername) {
-		usernameChange_in.setText(proposedUsername);
+		usernameChangeInput.setText(proposedUsername);
 	}
 	
 	/**
@@ -189,20 +233,99 @@ public class Chat implements ActionListener, KeyListener {
 	}
 	
 	
+	public void addNewGameToList(ClientGameStartController cgsc) {
+		openGameListModel.addElement(cgsc);
+	}
+	
+	public void removeGameFromList(ClientGameStartController cgsc) {
+		openGameListModel.removeElement(cgsc);
+	}
+	
+	/**
+	 * Gets the Game with the specified name from the List of games.
+	 * @return The ClientGameStartController or null if the name doesn't exist.
+	 */
+	public ClientGameStartController getWaitingGameByName(String gameName) {
+		for (int i = 0; i < openGameListModel.getSize(); i++) {
+			if (openGameListModel.get(i).getGameName().equals(gameName)) {
+				return openGameListModel.get(i);
+			}
+		}
+		return null;
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if (e.getSource() == usernameChange) {
+		if (e.getSource() == usernameChangeButton) {
 			sendChangeUsernameRequest();
 		} else if (e.getSource() == sendChatButton) {
 			// TODO Meilenstein 3: add possibility (maybe different chat windows?) to send to specific user.
 			sendMessage();
 		} else if (e.getSource() == newGameButton) {
-			// TODO: Open popup window dialog to create new game.
-			Client.sendMessageToServer("newgm 40 flaviasGame");
-			displayInfo("Game Start sent");
+			openNewGameInputWindow();
+			
+		} else if (e.getSource() == cancelGameCreationButton) {
+			newGameDialog.dispose();
+			newGameDialog = null;
+		} else if (e.getSource() == createGameButton) {
+			tryCreateGame();
+			newGameDialog.dispose();
+			newGameDialog = null;
+		} else if (e.getSource() == joinGameButton) {
+			ClientGameStartController cgsc = openGameList.getSelectedValue();
+			if (cgsc != null)
+				cgsc.joinGame();
 		}
+	}
+	
+	/**
+	 * Tries to create a new game from the input entered into the {@link #newGameDialog}.
+	 */
+	private void tryCreateGame() {
+		String gameName = gameNameTF.getText();
+		if (gameName.contains(" ") || gameName.contains("'") || gameName.isEmpty()) {
+			displayError("New Game Name Contains Invalid Characters or is empty");
+			return;
+		}
+		int maxPoints;
+		try {
+			maxPoints = Integer.parseInt(maxPointsTF.getText());
+		} catch (NumberFormatException nfe) {
+			displayError("MaxPoints must be entered as a valid number.");
+			return;
+		}
+		if (maxPoints <= 0) {
+			displayError("MaxPoints must be positive!");
+			return;
+		}
+		// Now we know the input is valid
+		Client.sendMessageToServer("newgm " + maxPoints + " " + gameName);
+		displayInfo("Game Start sent to server!");
+	}
+	
+	private void openNewGameInputWindow() {
+		newGameDialog = new JDialog(chatFrame);
+		gameNameTF = new JTextField("GameName");
+		maxPointsTF = new JTextField("MaxPoints");
+		createGameButton = new JButton("Create Game");
+		cancelGameCreationButton = new JButton("Cancel");
+		
+		createGameButton.addActionListener(this);
+		cancelGameCreationButton.addActionListener(this);
+		
+		JPanel panel = new JPanel();
+		
+		panel.add(gameNameTF);
+		panel.add(maxPointsTF);
+		panel.add(cancelGameCreationButton);
+		panel.add(createGameButton);
+		
+		newGameDialog.add(panel);
+		
+		newGameDialog.pack();
+		newGameDialog.setVisible(true);
+		
 	}
 	
 	
@@ -210,9 +333,9 @@ public class Chat implements ActionListener, KeyListener {
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_ENTER:
-				if (chat_in.isFocusOwner()) {
+				if (chatInput.isFocusOwner()) {
 					sendMessage();
-				} else if (usernameChange_in.isFocusOwner()) {
+				} else if (usernameChangeInput.isFocusOwner()) {
 					sendChangeUsernameRequest();
 				}
 				break;
@@ -222,10 +345,10 @@ public class Chat implements ActionListener, KeyListener {
 	}
 	
 	/**
-	 * Sends the text in the chat text field {@link #chat_in} as a chat message to all the connected clients.
+	 * Sends the text in the chat text field {@link #chatInput} as a chat message to all the connected clients.
 	 */
 	private void sendMessage() {
-		if (chat_in.getText().isEmpty())
+		if (chatInput.getText().isEmpty())
 			return;
 		
 		ArrayList<ClientUser> receivers = new ArrayList<>();
@@ -234,19 +357,19 @@ public class Chat implements ActionListener, KeyListener {
 				receivers.add(user);
 			}
 		}
-		addNewMessage(new ChatMessage(chat_in.getText(), receivers));
-		chat_in.setText("");
+		addNewMessage(new ChatMessage(chatInput.getText(), receivers));
+		chatInput.setText("");
 	}
 	
 	/**
 	 * Sends a message to the server requesting to change the username.
 	 */
 	private void sendChangeUsernameRequest() {
-		String username = usernameChange_in.getText();
+		String username = usernameChangeInput.getText();
 		if (username.isEmpty() || username.contains(" ") || username.contains("'"))
 			return;
 		Client.sendMessageToServer("uname " + username);
-		usernameChange_in.setText("");
+		usernameChangeInput.setText("");
 	}
 	
 	
@@ -260,5 +383,7 @@ public class Chat implements ActionListener, KeyListener {
 	public void keyReleased(KeyEvent e) {
 	
 	}
+	
+	
 }
 

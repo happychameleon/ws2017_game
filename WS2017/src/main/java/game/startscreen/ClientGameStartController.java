@@ -1,7 +1,6 @@
 package game.startscreen;
 
 import client.Client;
-import game.engine.PlayerColor;
 import serverclient.User;
 
 import java.util.HashMap;
@@ -14,12 +13,12 @@ import java.util.HashSet;
  */
 public class ClientGameStartController extends GameStartController {
 	
-	
-	
 	/**
 	 * The Window to choose the team from.
 	 */
 	private StartScreen startScreen;
+	
+	
 	
 	/**
 	 * Opens the Window to choose the team from.
@@ -31,8 +30,29 @@ public class ClientGameStartController extends GameStartController {
 	public ClientGameStartController(HashMap<User, String> waitingUsers, HashSet<User> choosingUsers, String gameName, int startingPoints) {
 		super(waitingUsers, choosingUsers, gameName, startingPoints);
 		
-		startScreen = new StartScreen(this, startingPoints);
 	}
+	
+	/**
+	 * Asks the server to join the game.
+	 */
+	public void joinGame() {
+		String userJoinMessage = "joing " + gameName + " " + Client.getThisUser().getName();
+		Client.sendMessageToServer(userJoinMessage);
+	}
+	
+	/**
+	 * The server informs that a new user has joined the game. They get added to the choosingUsers List
+	 * If it is this user, the startScreen opens to select the Team.
+	 */
+	@Override
+	public void addUserToGame(User joinedUser) {
+		choosingUsers.add(joinedUser);
+		if (Client.getThisUser() == joinedUser) {
+			startScreen = new StartScreen(this, startingPoints);
+		}
+	}
+	
+	
 	
 	/**
 	 * This is called by the StartScreen window and tells the server that this client is ready to play.

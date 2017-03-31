@@ -1,6 +1,7 @@
 package game;
 
 import game.startscreen.ClientGameStartController;
+import serverclient.User;
 
 /**
  * The {@link ClientGameController} on the server side.
@@ -18,5 +19,14 @@ public class ServerGameController extends GameController {
 		//World world = new World(30, 25, this);
 		
 	}
-
+	
+	/**
+	 * TODO!
+	 * Removes the user from this game and handles it correctly.
+	 * Informs the clients.
+	 * If the game now is empty, remove it and inform the server.
+	 */
+	public void removeUser(User user) {
+		//TODO!
+	}
 }
