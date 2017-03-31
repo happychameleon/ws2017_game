@@ -38,6 +38,8 @@ public class Login implements ActionListener, KeyListener {
 		userNameText.setFont(new Font("Courier New", Font.ITALIC , 50));
 		// Create the window for the Login
 		JPanel userpanel = new JPanel();
+		userpanel.setLayout(new BoxLayout(userpanel, BoxLayout.Y_AXIS));
+		
 		userpanel.add(userLabel);
 		userpanel.add(userNameText);
 		userpanel.add(loginButton);
@@ -46,8 +48,6 @@ public class Login implements ActionListener, KeyListener {
 		userNameText.addKeyListener(this);
 		userNameText.setFocusable(true);
 		loginButton.addActionListener(this);
-		
-		userFrame.setVisible(true);
 		
 		// Propose a username by presetting the value in the login window text field if possible.
 		// First get the systemUsername safely
@@ -68,6 +68,9 @@ public class Login implements ActionListener, KeyListener {
 			// Achievement whoami (The client suggest a nickname based on the system username)
 			userNameText.setText(systemUserName);
 		}
+		
+		userFrame.pack();
+		userFrame.setVisible(true);
 		
 	}
 	
