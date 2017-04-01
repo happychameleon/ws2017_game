@@ -23,10 +23,12 @@ public class ServerGameController extends GameController {
 	/**
 	 * TODO!
 	 * Removes the user from this game and handles it correctly.
-	 * Informs the clients.
+	 * Informs the clients about the user leaving.
 	 * If the game now is empty, remove it and inform the server.
 	 */
+	@Override
 	public void removeUser(User user) {
+		super.removeUser(user);
 		//TODO!
 	}
 }

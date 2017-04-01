@@ -9,7 +9,7 @@ import java.util.HashSet;
 /**
  * Created by flavia on 31.03.17.
  */
-public class GameStartController {
+public abstract class GameStartController {
 	
 	/**
 	 * The users waiting for the game to start and the string representing their chosen characters.
@@ -64,6 +64,16 @@ public class GameStartController {
 	 */
 	public void addUserToGame(User user) {
 		choosingUsers.add(user);
+	}
+	
+	/**
+	 * Removes the user from the game.
+	 */
+	public void removeUser (User user) {
+		if (waitingUsers.containsKey(user))
+			waitingUsers.remove(user);
+		else if (choosingUsers.contains(user))
+			choosingUsers.remove(user);
 	}
 	
 	/**

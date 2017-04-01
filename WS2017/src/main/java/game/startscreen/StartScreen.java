@@ -1,9 +1,13 @@
 package game.startscreen;
 
+import client.Client;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 /**
  * Handles the selection of the team at the start of the game.
@@ -12,7 +16,7 @@ import java.awt.event.ActionListener;
  *
  * Created by flavia on 28.03.17.
  */
-public class StartScreen extends JPanel implements ActionListener {
+public class StartScreen extends JPanel implements ActionListener, WindowListener {
 	
 	/**
 	 * The ClientGameStartController for this game.
@@ -53,14 +57,14 @@ public class StartScreen extends JPanel implements ActionListener {
 	 * The Button to accept the current selection and start the Game.
 	 * It is disabled if too many points were spent.
 	 */
-	private JButton startGameButton = new JButton("Start Game");
+	private JButton acceptSelectionButton = new JButton("Accept Selection");
+	
+	private JButton cancelButton = new JButton("Cancel");
 	
 	/**
-	 * Holds the Components at the Bottom of this window, namely {@link #currentPointCost} and {@link #startGameButton}.
+	 * Holds the Components at the Bottom of this window, namely {@link #currentPointCost} and {@link #acceptSelectionButton}.
 	 */
 	private JPanel pageEndPanel = new JPanel();
-	
-	// TODO: Add cancel button to leave this game.
 	
 	/**
 	 * Opens the Start Screen to choose the team.
@@ -73,6 +77,8 @@ public class StartScreen extends JPanel implements ActionListener {
 		
 		window = new JFrame();
 		window.add(this);
+		window.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		window.addWindowListener(this);
 		
 		this.setLayout(new BorderLayout());
 		
@@ -85,7 +91,7 @@ public class StartScreen extends JPanel implements ActionListener {
 		
 		pageEndPanel.setLayout(new BoxLayout(pageEndPanel, BoxLayout.X_AXIS));
 		pageEndPanel.add(currentPointCost);
-		pageEndPanel.add(startGameButton);
+		pageEndPanel.add(acceptSelectionButton);
 		recalculatePoints(); // To set the currentPointCost-Label Text and to be sure (in case we add default stuff or change something else)
 		this.add(pageEndPanel, BorderLayout.PAGE_END);
 		
@@ -101,14 +107,26 @@ public class StartScreen extends JPanel implements ActionListener {
 		if (i.equals(newChildButton)) {
 			addNewChild();
 		}
-		else if (i.equals(startGameButton)) {
+		else if (i.equals(acceptSelectionButton)) {
 			recalculatePoints(); // Just to be sure an update to the points went missing.
 			if (currentPoints <= startingPoints) {
 				clientGameStartController.clientIsReady(getAllChildrenAsString());
 			} else {
-				System.err.println("The startGameButton wasn't disabled but the currentPoints > startingPoints!");
+				System.err.println("The acceptSelectionButton wasn't disabled but the currentPoints > startingPoints!");
 			}
+		} else if (i.equals(cancelButton)) {
+			leaveGame();
 		}
+	}
+	
+	/**
+	 * This needs to be called whenever a user has canceled joining the game.
+	 * (when a user quits it is registered by the server automatically)
+	 * TODO: When the window is closed, this also has to be called!
+	 */
+	private void leaveGame() {
+		String message = "leavg " + clientGameStartController.getGameName() + " " + Client.getThisUser().getName();
+		Client.sendMessageToServer(message);
 	}
 	
 	/**
@@ -153,9 +171,9 @@ public class StartScreen extends JPanel implements ActionListener {
 	 */
 	private void updateButtonEnabling() {
 		if (currentPoints > startingPoints || currentPoints == 0) {
-			startGameButton.setEnabled(false);
+			acceptSelectionButton.setEnabled(false);
 		} else
-			startGameButton.setEnabled(true);
+			acceptSelectionButton.setEnabled(true);
 	}
 	
 	private void updateCurrentPointsLabel() {
@@ -181,4 +199,43 @@ public class StartScreen extends JPanel implements ActionListener {
 		return characters;
 	}
 	
+	
+	//region windowEvent
+	@Override
+	public void windowOpened(WindowEvent e) {
+	
+	}
+	
+	@Override
+	public void windowClosing(WindowEvent e) {
+		System.out.println("Window Closed, game left!");
+		leaveGame();
+		window.dispose();
+	}
+	
+	@Override
+	public void windowClosed(WindowEvent e) {
+	
+	}
+	
+	@Override
+	public void windowIconified(WindowEvent e) {
+	
+	}
+	
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+	
+	}
+	
+	@Override
+	public void windowActivated(WindowEvent e) {
+	
+	}
+	
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+	
+	}
+	//endregion
 }

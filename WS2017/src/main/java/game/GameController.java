@@ -26,4 +26,12 @@ public abstract class GameController {
 		// TODO!
 		return null;
 	}
+	
+	/**
+	 * Removes the user from the list.
+	 */
+	public void removeUser(User user) {
+		// TODO!
+	}
+	
 }

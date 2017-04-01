@@ -16,6 +16,7 @@ import java.util.Arrays;
 /**
  * The general Chat window where all users can chat with each other and name changes can be requested.
  * TODO Meilenstein 3: In future milestones there will also be the possibility to start a game with selected people and to privately chat
+ * TODO: Separate this Chat Class into two classes, one for only the main Chat stuff and one for the whole window and keeping track of the game.
  */
 public class Chat implements ActionListener, KeyListener {
 	
@@ -60,11 +61,8 @@ public class Chat implements ActionListener, KeyListener {
 	JButton joinGameButton = new JButton("Join Game");
 	
 	// The Dialog Window for creating a new game.
-	JDialog newGameDialog = new JDialog(chatFrame);
-	JTextField gameNameTF = new JTextField("Name");
-	JTextField maxPointsTF = new JTextField("MaxPoints");
-	JButton createGameButton = new JButton("Create Game");
-	JButton cancelGameCreationButton = new JButton("Cancel");
+	NewGameDialog newGameDialog;
+	
 	
 	
 	
@@ -259,73 +257,38 @@ public class Chat implements ActionListener, KeyListener {
 		
 		if (e.getSource() == usernameChangeButton) {
 			sendChangeUsernameRequest();
+			
 		} else if (e.getSource() == sendChatButton) {
 			// TODO Meilenstein 3: add possibility (maybe different chat windows?) to send to specific user.
 			sendMessage();
+			
 		} else if (e.getSource() == newGameButton) {
 			openNewGameInputWindow();
 			
-		} else if (e.getSource() == cancelGameCreationButton) {
-			newGameDialog.dispose();
-			newGameDialog = null;
-		} else if (e.getSource() == createGameButton) {
-			tryCreateGame();
-			newGameDialog.dispose();
-			newGameDialog = null;
 		} else if (e.getSource() == joinGameButton) {
 			ClientGameStartController cgsc = openGameList.getSelectedValue();
 			if (cgsc != null)
 				cgsc.joinGame();
+			
 		}
 	}
 	
 	/**
 	 * Tries to create a new game from the input entered into the {@link #newGameDialog}.
 	 */
-	private void tryCreateGame() {
-		String gameName = gameNameTF.getText();
-		if (gameName.contains(" ") || gameName.contains("'") || gameName.isEmpty()) {
-			displayError("New Game Name Contains Invalid Characters or is empty");
-			return;
-		}
-		int maxPoints;
-		try {
-			maxPoints = Integer.parseInt(maxPointsTF.getText());
-		} catch (NumberFormatException nfe) {
-			displayError("MaxPoints must be entered as a valid number.");
-			return;
-		}
+	protected void tryCreateGame(String gameName, int maxPoints) {
+		
 		if (maxPoints <= 0) {
 			displayError("MaxPoints must be positive!");
 			return;
 		}
 		// Now we know the input is valid
 		Client.sendMessageToServer("newgm " + maxPoints + " " + gameName);
-		displayInfo("Game Start sent to server!");
+
 	}
 	
 	private void openNewGameInputWindow() {
-		newGameDialog = new JDialog(chatFrame);
-		gameNameTF = new JTextField("GameName");
-		maxPointsTF = new JTextField("MaxPoints");
-		createGameButton = new JButton("Create Game");
-		cancelGameCreationButton = new JButton("Cancel");
-		
-		createGameButton.addActionListener(this);
-		cancelGameCreationButton.addActionListener(this);
-		
-		JPanel panel = new JPanel();
-		
-		panel.add(gameNameTF);
-		panel.add(maxPointsTF);
-		panel.add(cancelGameCreationButton);
-		panel.add(createGameButton);
-		
-		newGameDialog.add(panel);
-		
-		newGameDialog.pack();
-		newGameDialog.setVisible(true);
-		
+		newGameDialog = new NewGameDialog(chatFrame, this);
 	}
 	
 	

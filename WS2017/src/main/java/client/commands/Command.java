@@ -15,6 +15,7 @@ public enum Command {
 	nuser(new ClientNuserHandler()),
 	newgm(new ClientNewgmHandler()),
 	joing(new ClientJoingHandler()),
+	leavg(new ClientLeavgHandler()),
 	rmgam(new ClientRmgamHandler());
 	
 	/**

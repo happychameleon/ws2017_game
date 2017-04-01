@@ -53,15 +53,12 @@ public class ClientGameStartController extends GameStartController {
 	}
 	
 	
-	
 	/**
 	 * This is called by the StartScreen window and tells the server that this client is ready to play.
 	 */
 	public void clientIsReady (String characterString) {
 		
-		// TODO: Inform the server with the selected characters.
-		String message = "ready " + Client.getThisUser().getName() + " ";
-		message += characterString;
+		String message = String.format("ready %s %s", Client.getThisUser().getName(), characterString);
 		Client.sendMessageToServer(message);
 	}
 	

@@ -23,15 +23,13 @@ public class ServerGameStartController extends GameStartController {
 	 * If the game now is empty, it is removed and the clients are informed.
 	 */
 	public void removeUser(User user) {
-		System.out.println("removeUser");
-		if (waitingUsers.containsKey(user))
-			waitingUsers.remove(user);
-		else if (choosingUsers.contains(user))
-			choosingUsers.remove(user);
+		super.removeUser(user);
 		
 		if (getAllUsers().isEmpty()) {
 			Server.removeWaitingGame(this);
-			Server.writeToAllClients("rmgam " + gameName); // TODO: Add command to protocol!
+			Server.writeToAllClients("rmgam " + gameName);
+		} else {
+			Server.writeToAllClients(String.format("leavg %s %s", gameName, user.getName()));
 		}
 	}
 }

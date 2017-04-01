@@ -2,6 +2,7 @@ package client;
 
 import client.clientgui.Chat;
 import client.clientgui.Login;
+import game.ClientGameController;
 
 import java.io.*;
 import java.net.Socket;
@@ -168,6 +169,13 @@ public class Client {
 	}
 	
 	/**
+	 * TODO: Gets the Game from the list of running Games(also todo).
+	 */
+	public static ClientGameController getRunningGameByName(String gameName) {
+		return null;
+	}
+	
+	/**
 	 * Sends a new message (command) to the server.
 	 * @param message the message text.
 	 */
@@ -235,7 +243,6 @@ public class Client {
         }
     }
 	
-    
 }
 
 

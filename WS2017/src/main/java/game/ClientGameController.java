@@ -1,6 +1,7 @@
 package game;
 
 import game.gamegui.Window;
+import serverclient.User;
 
 /**
  * This handles the connection between a game and the server or client.
@@ -15,6 +16,10 @@ public class ClientGameController extends GameController {
 	Window window;
 	
 	
-
+	@Override
+	public void removeUser(User user) {
+		super.removeUser(user);
+		//TODO!
+	}
 
 }
