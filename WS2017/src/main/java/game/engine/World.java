@@ -15,7 +15,7 @@ public class World {
 	
 	//region Data
 	/**
-	 * The gameStartController of this World. All the server-client communication goes over this ClientGameStartController.
+	 * The gameController of this World. All the server-client communication goes over this GameController.
 	 */
 	private final GameController gameController;
 	
@@ -38,15 +38,6 @@ public class World {
     public int getMapHeight() {
         return tiles[0].length;
     }
-	
-	/**
-	 * This is the World we currently play in. It should be created at the start of the game. Everything else is created
-	 * when creating the World. Therefore it should never be null.
-	 * There can always only be one World!
-	 *
-	 * TODO: Give the world to every class in the game, since there can be more worlds.
-	 */
-	public static World instance;
     
     /**
      * The Tile which was selected last with a left mouse click.
@@ -122,10 +113,6 @@ public class World {
 	//region World Creation
 	public World (int width, int height, GameController gameController) {
 		this.gameController = gameController;
-		if (instance != null) {
-			System.out.println("ERROR: There can always only be one World! But there was already one when creating a new World!");
-		}
-		instance = this;
 		
         tiles = new Tile[width][height];
         Random random = new Random();
@@ -150,10 +137,11 @@ public class World {
 	        }
         }
         
-        turnController = new TurnController(4);
+        // TODO: Give the users to the turn controller to create the players from.
+        turnController = new TurnController(4, this);
 		
 		characters = new ArrayList<>();
-		
+		// TODO: Parse the Character Array and create all the characters for the correct player.
 		
 	}
 	

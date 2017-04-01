@@ -414,7 +414,7 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 			case KeyEvent.VK_SPACE:
 				System.out.println("SPACE typed!");
 				if (world.getSelectedTile() != null && world.getSelectedTile().getCharacter() != null) {
-					if (World.instance.getSelectionType() == SelectionType.CHARACTER
+					if (world.getSelectionType() == SelectionType.CHARACTER
 							&& world.getSelectedTile().getCharacter().getWeapon() != null) {
 						selectWeapon();
 					}

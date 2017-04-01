@@ -9,6 +9,8 @@ import java.util.ArrayList;
  */
 public class Player {
 	
+	private final World world;
+	
 	final Team team;
 	
 	public Team getTeam() {
@@ -41,9 +43,10 @@ public class Player {
 	
 	
 	
-	public Player (Team team, String name) {
+	public Player (Team team, String name, World world) {
 		this.team = team;
 		this.name = name;
+		this.world = world;
 		
 		if (availableColors == null) {
 			availableColors = new ArrayList<>();
@@ -57,7 +60,7 @@ public class Player {
 	 * TODO: It should restore all of the actionPoints of this Player's Characters, Process all effects that happen in this Player's turn etc.
 	 */
 	public void startNewTurn() {
-		for (Character character : World.instance.getAllCharacterOfOwner(this)) {
+		for (Character character : world.getAllCharacterOfOwner(this)) {
 			character.resetForNewTurn();
 		}
 	}
@@ -72,10 +75,10 @@ public class Player {
 	}
 	
 	public boolean hasTurn() {
-		return World.instance.getCurrentPlayer() == this;
+		return world.getCurrentPlayer() == this;
 	}
 	
 	public boolean hasCharactersLeft() {
-		return World.instance.getAllCharacterOfOwner(this).size() > 0;
+		return world.getAllCharacterOfOwner(this).size() > 0;
 	}
 }

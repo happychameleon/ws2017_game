@@ -8,15 +8,29 @@ import java.util.ArrayList;
 public class TurnController {
 	
 	//region Data
+	private final World world;
+	
 	/**
 	 * All the players Playing the game. The order of the Players in here represents the turn order
-	 * (players[0] is first, then players[1] etc.).
+	 * (players.get(0) is first, then players.get(1) etc.).
 	 * @see #getCurrentPlayer()
 	 */
 	private final ArrayList<Player> players;
 	
 	public ArrayList<Player> getPlayers() {
 		return players;
+	}
+	
+	/**
+	 * The total number of played turns.
+	 */
+	private int turnCount = 1;
+	
+	/**
+	 * @return {@link #turnCount}
+	 */
+	public int getTurnCount() {
+		return turnCount;
 	}
 	
 	/**
@@ -31,20 +45,12 @@ public class TurnController {
 	public Player getCurrentPlayer() {
 		return players.get(currentPlayerIndex);
 	}
-	
-	public void endTurn () {
-		getCurrentPlayer().endCurrentTurn();
-		currentPlayerIndex++;
-		if (players.size() <= currentPlayerIndex) { // == should also work, but just to be sure.
-			currentPlayerIndex = 0;
-		}
-		System.out.println(getCurrentPlayer().getName() + " started their turn!");
-		getCurrentPlayer().startNewTurn();
-	}
 	//endregion
 	
 	
-	public TurnController(int playerCount) {
+	public TurnController(int playerCount, World world) {
+		this.world = world;
+		
 		if (playerCount > 4) {
 			playerCount = 4;
 			System.out.println("Maximum 4 Players!");
@@ -55,10 +61,22 @@ public class TurnController {
 		// TODO: Add the real Players instead of just generic ones.
 		for (int i = 0; i < playerCount; i++) {
 			Team newTeam = new Team("Team " + (i + 1));
-			Player newPlayer = new Player(newTeam, "Player " + (i + 1));
+			Player newPlayer = new Player(newTeam, "Player " + (i + 1), world);
 			players.add(newPlayer);
 			newTeam.addPlayerToTeam(newPlayer);
 		}
+	}
+	
+	
+	public void endTurn () {
+		getCurrentPlayer().endCurrentTurn();
+		currentPlayerIndex++;
+		if (players.size() <= currentPlayerIndex) { // == should also work, but just to be sure.
+			turnCount++;
+			currentPlayerIndex = 0;
+		}
+		System.out.println(getCurrentPlayer().getName() + " started their turn!");
+		getCurrentPlayer().startNewTurn();
 	}
 	
 	
