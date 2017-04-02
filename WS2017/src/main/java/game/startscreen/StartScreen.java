@@ -64,7 +64,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	/**
 	 * Holds the Components at the Bottom of this window, namely {@link #currentPointCost} and {@link #acceptSelectionButton}.
 	 */
-	private JPanel pageEndPanel = new JPanel();
+	private Box pageEndBox;
 	
 	/**
 	 * Opens the Start Screen to choose the team.
@@ -89,11 +89,17 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 		childrenPanels.setLayout(new BoxLayout(childrenPanels, BoxLayout.Y_AXIS));
 		childrenPanels.add(new JSeparator(SwingConstants.HORIZONTAL));
 		
-		pageEndPanel.setLayout(new BoxLayout(pageEndPanel, BoxLayout.X_AXIS));
-		pageEndPanel.add(currentPointCost);
-		pageEndPanel.add(acceptSelectionButton);
-		recalculatePoints(); // To set the currentPointCost-Label Text and to be sure (in case we add default stuff or change something else)
-		this.add(pageEndPanel, BorderLayout.PAGE_END);
+		pageEndBox = Box.createVerticalBox();
+		pageEndBox.add(currentPointCost);
+		currentPointCost.setAlignmentX(CENTER_ALIGNMENT);
+		Box buttonsBox = Box.createHorizontalBox();
+		buttonsBox.add(cancelButton);
+		cancelButton.addActionListener(this);
+		buttonsBox.add(acceptSelectionButton);
+		pageEndBox.add(buttonsBox);
+		this.add(pageEndBox, BorderLayout.PAGE_END);
+		
+		recalculatePoints(); // To set the currentPointCost-Label Text and just to be sure (in case we add default stuff or change something else)
 		
 		window.pack();
 		window.setVisible(true);
@@ -127,6 +133,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	private void leaveGame() {
 		String message = "leavg " + clientGameStartController.getGameName() + " " + Client.getThisUser().getName();
 		Client.sendMessageToServer(message);
+		window.dispose();
 	}
 	
 	/**
@@ -208,9 +215,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	
 	@Override
 	public void windowClosing(WindowEvent e) {
-		System.out.println("Window Closed, game left!");
 		leaveGame();
-		window.dispose();
 	}
 	
 	@Override

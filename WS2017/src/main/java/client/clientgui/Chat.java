@@ -142,18 +142,17 @@ public class Chat implements ActionListener, KeyListener {
 		mainPanel.add(chatPanel);
 		
 		// The left panel with the game selection and new game creation.
-		JPanel gameCreationPanel = new JPanel();
-		gameCreationPanel.setLayout(new BoxLayout(gameCreationPanel, BoxLayout.Y_AXIS));
-		gameCreationPanel.add(newGameButton, Component.RIGHT_ALIGNMENT);
-		gameCreationPanel.add(new JLabel("Open Games:"));
+		Box gameCreationBox = Box.createVerticalBox();
+		gameCreationBox.add(newGameButton);
+		gameCreationBox.add(new JLabel("Open Games:"));
 		JScrollPane openGameListScroller = new JScrollPane(openGameList);
-		gameCreationPanel.add(openGameListScroller);
-		gameCreationPanel.add(joinGameButton);
-		gameCreationPanel.add(new JLabel("Running Games:"));
+		gameCreationBox.add(openGameListScroller);
+		gameCreationBox.add(joinGameButton);
+		gameCreationBox.add(new JLabel("Running Games:"));
 		JScrollPane runningGameListScroller = new JScrollPane(runningGameList);
-		gameCreationPanel.add(runningGameListScroller);
-		gameCreationPanel.add(watchGameButton);
-		mainPanel.add(gameCreationPanel, BorderLayout.LINE_START);
+		gameCreationBox.add(runningGameListScroller);
+		gameCreationBox.add(watchGameButton);
+		mainPanel.add(gameCreationBox, BorderLayout.LINE_START);
 		
         
 		// Add the main Panel as a Tab to the tabbedPanel.
