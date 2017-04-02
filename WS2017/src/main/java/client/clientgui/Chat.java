@@ -20,8 +20,7 @@ import java.util.Arrays;
  * TODO: Separate this Chat Class into two classes, one for only the main Chat stuff and one for the whole window and keeping track of the game.
  */
 public class Chat implements ActionListener, KeyListener {
-	String data[] = {"Game 1", "Game 2", "Game 3", 
-            "Game 4", "Game 5", "Gme 6", "Game 7"};
+	
 	/**
 	 * All the messages in this chat. A message should ALWAYS be added via {@link #addNewMessage(ChatMessage)}!
 	 */
@@ -38,6 +37,11 @@ public class Chat implements ActionListener, KeyListener {
 		}
 		return messages.get(messages.size() - 1);
 	}
+    
+    
+    JTabbedPane tab = new JTabbedPane(JTabbedPane.TOP);
+    
+    
 	
 	/**
 	 * The Panel where the main Chat is in.
@@ -48,17 +52,9 @@ public class Chat implements ActionListener, KeyListener {
 	JTextField chatInput = new JTextField(15);
 	JTextField usernameChangeInput = new JTextField(15);
 	JButton sendChatButton = new JButton("Send");
-<<<<<<< HEAD
 	JButton usernameChangeButton = new JButton("Change Username");
-=======
-	JButton usernameChange = new JButton("Change Username");
-	JButton joinGame = new JButton("Join Game");
-	JButton newGame = new JButton("New Game");
->>>>>>> 38e786f08ea6e06519793a89330c9b71935a4921
 	JTextArea chatText = new JTextArea(30,50);
 	JScrollPane scroll;
-	JList list = new JList(data);
-	JTabbedPane tab = new JTabbedPane(JTabbedPane.TOP);
 	
 	
 	DefaultListModel<ClientGameStartController> openGameListModel = new DefaultListModel<>();
@@ -134,7 +130,7 @@ public class Chat implements ActionListener, KeyListener {
 		// The middle contains the Chat Panel
 		JPanel chatPanel = new JPanel();
 		chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.Y_AXIS));
-		chatPanel.add(new JLabel("MAIN CHAT"));
+		//chatPanel.add(new JLabel("MAIN CHAT")); Already existing in Tab
 		chatPanel.add(scroll);
 		// The Panel with the text input for the chat and username change
 		JPanel textInputPanel = new JPanel(new GridLayout(2,2));
@@ -145,7 +141,6 @@ public class Chat implements ActionListener, KeyListener {
 		chatPanel.add(textInputPanel);
 		mainPanel.add(chatPanel);
 		
-<<<<<<< HEAD
 		// The left panel with the game selection and new game creation.
 		JPanel gameCreationPanel = new JPanel();
 		gameCreationPanel.setLayout(new BoxLayout(gameCreationPanel, BoxLayout.Y_AXIS));
@@ -159,39 +154,13 @@ public class Chat implements ActionListener, KeyListener {
 		gameCreationPanel.add(runningGameListScroller);
 		gameCreationPanel.add(watchGameButton);
 		mainPanel.add(gameCreationPanel, BorderLayout.LINE_START);
-=======
-		// Create window for the chat
 		
+        
+		// Add the main Panel as a Tab to the tabbedPanel.
+        tab.addTab("Main Chat", mainPanel);
+        // Add the tabbedPanel to the main frame
+		chatFrame.add(tab);
 		
-		
-		
-		JPanel mainPanel = new JPanel();
-		JPanel tabPanel = new JPanel();
-		tabPanel.add(scroll);
-		tab.addTab("MainChat", tabPanel);
-		
-		 
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setLayoutOrientation(JList.VERTICAL);
-		
-		JPanel p = new JPanel();
-		p.add(list);
-		p.add(joinGame);
-		p.add(newGame);
-		//p.add(scroll);
-		p.add(chat_in);
-		p.add(sendChatButton);
-		p.add(usernameChange_in);
-		p.add(usernameChange);
-		
-		mainPanel.add(tab);
-		mainPanel.add(p);
-		
-		chatFrame.add(mainPanel);
->>>>>>> 38e786f08ea6e06519793a89330c9b71935a4921
-		
-		// Add the main Panel to the JFrame.
-		chatFrame.add(mainPanel);
 		
 		
 		// Non-Layout specific configurations for the ui elements
