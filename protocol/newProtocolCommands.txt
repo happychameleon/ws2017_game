@@ -35,7 +35,13 @@ ready <username> [<characterstring>]
 
 
 cgetg
-	Client asks about all open games (similar to cgetu)
+	Client asks about all open games (similar to cgetu).
+	Client asks when getting the answer for the cgetu command, after registering all usernames (to make sure they are registered).
+	Server responds with a response for each game:
+		(waiting = not yet started; running = already playing)
+
++OK cgetg waiting <gameName> <maxPoints> <username1> (ready [<characterstring>]|choosing) <username2> (ready [<characterstring>]|choosing)
++OK cgetg running <gameName> <username1> <username2>
 
 
 leavg <gamename> <username>

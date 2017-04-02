@@ -24,6 +24,7 @@ public class ClientNewgmHandler extends CommandHandler {
 		
 		Client.getChatWindow().addNewGameToList(newGame);
 		
+		Client.getChatWindow().displayInfo("A new game called " + newGame.getGameName() + " has been created.");
 		
 	}
 	

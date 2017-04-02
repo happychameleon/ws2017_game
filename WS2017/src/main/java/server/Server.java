@@ -24,6 +24,10 @@ public class Server {
 	 */
 	private static ArrayList<ServerGameStartController> waitingGameList = new ArrayList<>();
 	
+	public static ArrayList<ServerGameStartController> getAllWaitingGames() {
+		return (ArrayList<ServerGameStartController>) waitingGameList.clone();
+	}
+	
 	/**
 	 * The games which are currently playing and can't be joined anymore.
 	 */
@@ -150,7 +154,30 @@ public class Server {
 	public static void addNewRunningGame(ServerGameController newRunningGame) {
 		runningGameList.add(newRunningGame);
 	}
-    
+	
+	
+	/**
+	 * Checks the existing games for duplicates.
+	 * @param newGameName The proposed new name for the game.
+	 * @return true if the newGameName is unique, false otherwise.
+	 */
+	public static boolean isGameNameUnique(String newGameName) {
+		for (ServerGameStartController game : waitingGameList) {
+			if (game.getGameName().equals(newGameName))
+				return false;
+		}
+		for (ServerGameController game : runningGameList) {
+			if (game.getGameName().equals(newGameName))
+				return false;
+		}
+		return true;
+	}
+	
+	
+	
+	
+	
+	
 	
 
     public static void main(String[] args){
@@ -178,23 +205,6 @@ public class Server {
             System.exit(1);
         }
     }
-	
-	/**
-	 * Checks the existing games for duplicates.
-	 * @param newGameName The proposed new name for the game.
-	 * @return true if the newGameName is unique, false otherwise.
-	 */
-	public static boolean isGameNameUnique(String newGameName) {
-		for (ServerGameStartController game : waitingGameList) {
-			if (game.getGameName().equals(newGameName))
-				return false;
-		}
-		for (ServerGameController game : runningGameList) {
-			if (game.getGameName().equals(newGameName))
-				return false;
-		}
-		return true;
-	}
 }
 
 /**

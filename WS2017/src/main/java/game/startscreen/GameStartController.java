@@ -11,15 +11,30 @@ import java.util.HashSet;
  */
 public abstract class GameStartController {
 	
+	
 	/**
 	 * The users waiting for the game to start and the string representing their chosen characters.
 	 */
 	HashMap<User, String> waitingUsers;
 	
 	/**
+	 * @return A shallow copy of {@link #waitingUsers}.
+	 */
+	public HashMap<User, String> getAllWaitingUsers() {
+		return (HashMap<User, String>) waitingUsers.clone();
+	}
+	
+	/**
 	 * The users still choosing their characters. When all users have chosen their Characters the game begins.
 	 */
 	HashSet<User> choosingUsers;
+	
+	/**
+	 * @return A shallow copy of {@link #choosingUsers}.
+	 */
+	public HashSet<User> getAllChoosingUsers() {
+		return choosingUsers;
+	}
 	
 	/**
 	 * The unique name of the game.
@@ -37,6 +52,13 @@ public abstract class GameStartController {
 	 * The points to spend on the starting team.
 	 */
 	final int startingPoints;
+	
+	/**
+	 * @return {@link #startingPoints}.
+	 */
+	public int getStartingPoints() {
+		return startingPoints;
+	}
 	
 	public GameStartController(HashMap<User, String> waitingUsers, HashSet<User> choosingUsers, String gameName, int startingPoints) {
 		this.waitingUsers = waitingUsers;

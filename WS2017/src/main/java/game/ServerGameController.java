@@ -3,6 +3,8 @@ package game;
 import game.startscreen.ClientGameStartController;
 import serverclient.User;
 
+import java.util.HashSet;
+
 /**
  * The {@link ClientGameController} on the server side.
  *
@@ -10,6 +12,10 @@ import serverclient.User;
  */
 public class ServerGameController extends GameController {
 	
+	
+	public ServerGameController(HashSet<User> users, String gameName) {
+		super(users, gameName);
+	}
 	
 	/**
 	 * This starts a new game on the server with the given players after everyone selected a Team in the StartScreen.

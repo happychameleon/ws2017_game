@@ -4,7 +4,11 @@ import client.Client;
 
 import java.util.ArrayList;
 
+
 /**
+ * The answer to the client's cgetu request where the server informs this Client about the currently logged in Users.
+ * After the answer is processed, and all users are registered, the Client asks the server, about the current games.
+ *
  * Created by flavia on 26.03.17.
  */
 public class ClientCgetuHandler extends CommandHandler {
@@ -19,6 +23,7 @@ public class ClientCgetuHandler extends CommandHandler {
 	public void handleAnswer(String argument, boolean isOK) {
 		if (isOK) {
 			parseAllUsernames(argument.toCharArray());
+			Client.sendMessageToServer("cgetg");
 		}
 	}
 	

@@ -2,6 +2,7 @@ package client.clientgui;
 
 import client.Client;
 import client.ClientUser;
+import game.ClientGameController;
 import game.startscreen.ClientGameStartController;
 
 import javax.swing.*;
@@ -40,7 +41,7 @@ public class Chat implements ActionListener, KeyListener {
 	/**
 	 * The Panel where the main Chat is in.
 	 */
-	JPanel mainChatPanel;
+	JPanel mainPanel;
 	
 	JFrame chatFrame = new JFrame("Chat");
 	JTextField chatInput = new JTextField(15);
@@ -57,10 +58,31 @@ public class Chat implements ActionListener, KeyListener {
 	 */
 	JList<ClientGameStartController> openGameList = new JList<>(openGameListModel);
 	
-	JButton newGameButton = new JButton("Create Game");
+	/**
+	 * Join the selected game from the {@link #openGameList}.
+	 */
 	JButton joinGameButton = new JButton("Join Game");
 	
-	// The Dialog Window for creating a new game.
+	
+	DefaultListModel<ClientGameController> runningGameListModel = new DefaultListModel<>();
+	/**
+	 * All the currently running games where this client can watch, but not join anymore.
+	 */
+	JList<ClientGameController> runningGameList = new JList<>(runningGameListModel);
+	
+	/**
+	 * This Button is used to open a window for the selected {@link #runningGameList} (where this client isn't a player) to watch it.
+	 */
+	JButton watchGameButton = new JButton("Watch Game (TODO)");
+	
+	/**
+	 * Opens the {@link NewGameDialog} to create a new Game.
+	 */
+	JButton newGameButton = new JButton("Create Game");
+	
+	/**
+	 * The Dialog Window for creating a new game.
+	 */
 	NewGameDialog newGameDialog;
 	
 	
@@ -81,12 +103,12 @@ public class Chat implements ActionListener, KeyListener {
 	 */
 	public void frame() {
 		// modify JFrame component layout
-		chatFrame.setSize(700, 700);
+		chatFrame.setSize(700, 600);
 		chatFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		chatInput.setFont(new Font("Courier New", Font.ITALIC, 50));
-		usernameChangeInput.setFont(new Font("Courier New", Font.ITALIC, 50));
-		sendChatButton.setPreferredSize(new Dimension(100, 50));
-		usernameChangeButton.setPreferredSize(new Dimension(200,50));
+		chatInput.setFont(new Font("Courier New", Font.ITALIC, 30));
+		usernameChangeInput.setFont(new Font("Courier New", Font.ITALIC, 30));
+		//sendChatButton.setPreferredSize(new Dimension(100, 50));
+		//usernameChangeButton.setPreferredSize(new Dimension(200,50));
 		
 		// Make scrolling possible:
 		chatText.setEditable(false);
@@ -98,27 +120,38 @@ public class Chat implements ActionListener, KeyListener {
 		//scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
 		// Create main Panel for the chat
-		mainChatPanel = new JPanel(new BorderLayout());
-		mainChatPanel.add(scroll, BorderLayout.CENTER);
+		mainPanel = new JPanel(new BorderLayout(20, 10));
 		
+		// The middle contains the Chat Panel
+		JPanel chatPanel = new JPanel();
+		chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.Y_AXIS));
+		chatPanel.add(new JLabel("MAIN CHAT"));
+		chatPanel.add(scroll);
 		// The Panel with the text input for the chat and username change
 		JPanel textInputPanel = new JPanel(new GridLayout(2,2));
 		textInputPanel.add(chatInput);
 		textInputPanel.add(sendChatButton);
 		textInputPanel.add(usernameChangeInput);
 		textInputPanel.add(usernameChangeButton);
-		mainChatPanel.add(textInputPanel, BorderLayout.PAGE_END);
+		chatPanel.add(textInputPanel);
+		mainPanel.add(chatPanel);
 		
 		// The left panel with the game selection and new game creation.
 		JPanel gameCreationPanel = new JPanel();
 		gameCreationPanel.setLayout(new BoxLayout(gameCreationPanel, BoxLayout.Y_AXIS));
+		gameCreationPanel.add(newGameButton, Component.RIGHT_ALIGNMENT);
+		gameCreationPanel.add(new JLabel("Open Games:"));
 		JScrollPane openGameListScroller = new JScrollPane(openGameList);
 		gameCreationPanel.add(openGameListScroller);
 		gameCreationPanel.add(joinGameButton);
-		gameCreationPanel.add(newGameButton);
-		mainChatPanel.add(gameCreationPanel, BorderLayout.LINE_START);
+		gameCreationPanel.add(new JLabel("Running Games:"));
+		JScrollPane runningGameListScroller = new JScrollPane(runningGameList);
+		gameCreationPanel.add(runningGameListScroller);
+		gameCreationPanel.add(watchGameButton);
+		mainPanel.add(gameCreationPanel, BorderLayout.LINE_START);
 		
-		chatFrame.add(mainChatPanel);
+		// Add the main Panel to the JFrame.
+		chatFrame.add(mainPanel);
 		
 		
 		// Non-Layout specific configurations for the ui elements
@@ -233,7 +266,10 @@ public class Chat implements ActionListener, KeyListener {
 	
 	public void addNewGameToList(ClientGameStartController cgsc) {
 		openGameListModel.addElement(cgsc);
-		displayInfo("A new game called " + cgsc.getGameName() + " has been created.");
+	}
+	
+	public void addRunningGameToList(ClientGameController cgc) {
+		runningGameListModel.addElement(cgc);
 	}
 	
 	public void removeGameFromList(ClientGameStartController cgsc) {
@@ -348,7 +384,6 @@ public class Chat implements ActionListener, KeyListener {
 	public void keyReleased(KeyEvent e) {
 	
 	}
-	
 	
 }
 

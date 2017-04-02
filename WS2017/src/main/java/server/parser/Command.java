@@ -13,6 +13,7 @@ public enum Command {
 	chatm(new ChatmHandler()),
 	uname(new UnameHandler()),
 	cgetu(new CgetuHandler()),
+	cgetg(new CgetgHandler()),
 	newgm(new NewgmHandler()),
 	joing(new JoingHandler()),
 	leavg(new LeavgHandler()),

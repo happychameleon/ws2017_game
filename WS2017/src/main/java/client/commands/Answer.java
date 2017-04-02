@@ -13,7 +13,8 @@ public enum Answer {
 	cgetu(new ClientCgetuHandler()),
 	uname(new ClientUnameHandler()),
 	chatm(new ClientChatmHandler()),
-	newgm(new ClientNewgmHandler());
+	newgm(new ClientNewgmHandler()),
+	cgetg(new ClientCgetgHandler());
 	
 	/**
 	 * The correct CommandHandler which processes the answer.

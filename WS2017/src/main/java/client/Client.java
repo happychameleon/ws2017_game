@@ -105,6 +105,9 @@ public class Client {
 		users.add(new ClientUser(username));
 	}
 	
+	/**
+	 * Adds this user to the list and opens the login window.
+	 */
 	public static void startClient () {
 		
 		users.add(thisUser);
@@ -219,10 +222,10 @@ public class Client {
             ClientThread th = new ClientThread(serverSocket);
             th.start();
             startClient();
-            BufferedReader comandlinInput = new BufferedReader(new InputStreamReader(System.in));
+            BufferedReader commandlineInput = new BufferedReader(new InputStreamReader(System.in));
             String line = "";
             while (true){
-                line = comandlinInput.readLine();
+                line = commandlineInput.readLine();
                 serverOutputStream.write(line.getBytes());
                 serverOutputStream.write('\r');
                 serverOutputStream.write('\n');
