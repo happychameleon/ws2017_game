@@ -24,9 +24,7 @@ public class ClientNewgmHandler extends CommandHandler {
 		
 		Client.getChatWindow().addNewGameToList(newGame);
 		
-		// TODO: Add the game to a list of games on the main chat window instead and open it when selected.
-		// There this client can join the game. No need to keep all the games in the client.
-		// Client.addNewWaitingGame(newGame);
+		
 	}
 	
 	@Override

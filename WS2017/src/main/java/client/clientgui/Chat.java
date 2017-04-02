@@ -233,10 +233,12 @@ public class Chat implements ActionListener, KeyListener {
 	
 	public void addNewGameToList(ClientGameStartController cgsc) {
 		openGameListModel.addElement(cgsc);
+		displayInfo("A new game called " + cgsc.getGameName() + " has been created.");
 	}
 	
 	public void removeGameFromList(ClientGameStartController cgsc) {
 		openGameListModel.removeElement(cgsc);
+		displayInfo("The game " + cgsc.getGameName() + " has been removed, because there were no players left.");
 	}
 	
 	/**
