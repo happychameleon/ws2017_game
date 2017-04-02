@@ -108,7 +108,7 @@ public class Chat implements ActionListener, KeyListener {
 	 */
 	public void frame() {
 		// modify JFrame component layout
-		chatFrame.setSize(700, 600);
+		chatFrame.setSize(1000, 700);
 		chatFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		chatInput.setFont(new Font("Courier New", Font.ITALIC, 30));
 		usernameChangeInput.setFont(new Font("Courier New", Font.ITALIC, 30));
