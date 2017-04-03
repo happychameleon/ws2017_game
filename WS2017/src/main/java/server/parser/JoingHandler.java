@@ -14,7 +14,7 @@ public class JoingHandler extends CommandHandler {
 	
 	
 	@Override
-	public void handleCommand(String argument) {
+	public void handleCommand() {
 		String gameName = argument.substring(0, argument.indexOf(" "));
 		String username = argument.substring(argument.indexOf(" ") + 1);
 		User joinedUser = Server.getUserByName(username);

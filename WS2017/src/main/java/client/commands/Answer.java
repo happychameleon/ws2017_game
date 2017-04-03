@@ -27,7 +27,8 @@ public enum Answer {
 	
 	public void handleAnswer(ClientCommandParser commandParser, String argument, boolean isOK) {
 		commandHandler.setCommandParser(commandParser);
-		commandHandler.handleAnswer(argument, isOK);
+		commandHandler.setArgument(argument);
+		commandHandler.handleAnswer(isOK);
 	}
 	
 }

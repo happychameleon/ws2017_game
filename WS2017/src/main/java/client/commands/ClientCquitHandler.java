@@ -10,9 +10,8 @@ public class ClientCquitHandler extends CommandHandler {
 	
 	/**
 	 * Handles the cquit command from the server telling this client that the client specified in the argument has logged off.
-	 * @param argument the command argument containing the logged of client's name.
 	 */
-	public void handleCommand(String argument) {
+	public void handleCommand() {
 		if (Client.isLoggedIn() == false)
 			return;
 		
@@ -29,7 +28,7 @@ public class ClientCquitHandler extends CommandHandler {
 	}
 	
 	@Override
-	public void handleAnswer(String argument, boolean isOK) {
+	public void handleAnswer(boolean isOK) {
 		// NOT CURRENTLY NEEDED
 	}
 	

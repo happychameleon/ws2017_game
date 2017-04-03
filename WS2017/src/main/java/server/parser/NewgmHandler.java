@@ -18,7 +18,7 @@ public class NewgmHandler extends CommandHandler {
 	
 	
 	@Override
-	public void handleCommand(String argument) {
+	public void handleCommand() {
 		int maxPoints = Integer.parseInt(argument.substring(0, argument.indexOf(" ")));
 		String gameName = argument.substring(argument.indexOf(" ") + 1, argument.length());
 		

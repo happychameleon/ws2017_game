@@ -32,4 +32,11 @@ public class ServerGameStartController extends GameStartController {
 			Server.writeToAllClients(String.format("leavg %s %s", gameName, user.getName()));
 		}
 	}
+	
+	@Override
+	public void moveUserToWaiting(User user, String characterString) {
+		super.moveUserToWaiting(user, characterString);
+		
+		// TODO Check if game should start and if so start game.
+	}
 }

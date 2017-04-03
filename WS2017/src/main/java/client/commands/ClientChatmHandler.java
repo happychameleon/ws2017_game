@@ -9,14 +9,14 @@ public class ClientChatmHandler extends CommandHandler {
 	
 	
 	@Override
-	public void handleCommand(String argument) {
+	public void handleCommand() {
 		if (Client.isLoggedIn() && Client.getChatWindow() != null) {
 			Client.getChatWindow().receiveMessage(argument);
 		}
 	}
 	
 	@Override
-	public void handleAnswer(String argument, boolean isOK) {
+	public void handleAnswer(boolean isOK) {
 		// NOT CURRENTLY USED
 	}
 }

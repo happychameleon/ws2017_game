@@ -6,7 +6,7 @@ package server.parser;
 public class CquitHandler extends CommandHandler {
     
     @Override
-    public void handleCommand(String argument) {
+    public void handleCommand() {
         if (argument != null && argument.length() != 0) {
             commandParser.writeBackToClient("-ERR cquit command takes no argument(s)!");
             return;

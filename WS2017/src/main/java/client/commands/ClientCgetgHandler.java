@@ -13,22 +13,19 @@ import java.util.HashSet;
  */
 public class ClientCgetgHandler extends CommandHandler {
 	
-	private String argument;
-	
 	@Override
-	public void handleCommand(String argument) {
-		this.argument = argument;
+	public void handleCommand() {
+	
 	}
 	
 	
 	@Override
-	public void handleAnswer(String argument, boolean isOK) {
-		this.argument = argument;
+	public void handleAnswer(boolean isOK) {
 		if (argument.startsWith("waiting ")) {
-			getAndRemoveNextWord();
+			getAndRemoveNextArgumentWord();
 			parseWaitingGameAnswer();
 		} else if (argument.startsWith("running ")) {
-			getAndRemoveNextWord();
+			getAndRemoveNextArgumentWord();
 			parseRunningGameAnswer();
 			// TODO: Parse Running Games.
 		} else {
@@ -37,9 +34,9 @@ public class ClientCgetgHandler extends CommandHandler {
 	}
 	
 	private void parseRunningGameAnswer() {
-		String gameName = getAndRemoveNextWord();
+		String gameName = getAndRemoveNextArgumentWord();
 		HashSet<User> users = new HashSet<>();
-		String nextUser = getAndRemoveNextWord();
+		String nextUser = getAndRemoveNextArgumentWord();
 		while (nextUser.isEmpty() == false) {
 			User user = Client.getUserByName(nextUser);
 			if (user != null) {
@@ -47,7 +44,7 @@ public class ClientCgetgHandler extends CommandHandler {
 			} else {
 				System.err.println("User with name '" + nextUser + "' is not registered!");
 			}
-			nextUser = getAndRemoveNextWord();
+			nextUser = getAndRemoveNextArgumentWord();
 		}
 		
 		ClientGameController game = new ClientGameController(users, gameName);
@@ -61,13 +58,13 @@ public class ClientCgetgHandler extends CommandHandler {
 		String gameName;
 		int maxPoints;
 		
-		gameName = getAndRemoveNextWord();
-		maxPoints = Integer.parseInt(getAndRemoveNextWord());
+		gameName = getAndRemoveNextArgumentWord();
+		maxPoints = Integer.parseInt(getAndRemoveNextArgumentWord());
 		
-		String nextUsername = getAndRemoveNextWord();
+		String nextUsername = getAndRemoveNextArgumentWord();
 		while (nextUsername.isEmpty() == false) {
 			User user = Client.getUserByName(nextUsername);
-			if (getAndRemoveNextWord().equals("ready")) {
+			if (getAndRemoveNextArgumentWord().equals("ready")) {
 				// User is ready and has a characterString following
 				String characterString = getAndRemoveCharacterString();
 				waitingUsers.put(user, characterString);
@@ -75,7 +72,7 @@ public class ClientCgetgHandler extends CommandHandler {
 				// User is still choosing and hasn't got a characterString yet.
 				choosingUsers.add(user);
 			}
-			nextUsername = getAndRemoveNextWord();
+			nextUsername = getAndRemoveNextArgumentWord();
 		}
 		
 		
@@ -84,22 +81,7 @@ public class ClientCgetgHandler extends CommandHandler {
 		Client.getChatWindow().addNewGameToList(game);
 	}
 	
-	/**
-	 * Takes the next Word (substring from 0 to indexOf(" ")), removes it from the string and returns it.
-	 */
-	private String getAndRemoveNextWord() {
-		if (argument.contains(" ")) {
-			String firstWord = argument.substring(0, argument.indexOf(" "));
-			argument = argument.substring(argument.indexOf(" ") + 1);
-			return firstWord;
-		} else if (argument.isEmpty()) {
-			return "";
-		} else {
-			String lastWord = argument;
-			argument = "";
-			return lastWord;
-		}
-	}
+	
 	
 	private String getAndRemoveCharacterString() {
 		if (argument.charAt(0) != '[') {

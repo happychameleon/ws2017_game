@@ -36,6 +36,7 @@ public class ClientGameStartController extends GameStartController {
 	 * Asks the server to join the game.
 	 */
 	public void joinGame() {
+		
 		String userJoinMessage = "joing " + gameName + " " + Client.getThisUser().getName();
 		Client.sendMessageToServer(userJoinMessage);
 	}
@@ -46,6 +47,7 @@ public class ClientGameStartController extends GameStartController {
 	 */
 	@Override
 	public void addUserToGame(User joinedUser) {
+		
 		choosingUsers.add(joinedUser);
 		if (Client.getThisUser() == joinedUser) {
 			startScreen = new StartScreen(this, startingPoints);
@@ -57,10 +59,26 @@ public class ClientGameStartController extends GameStartController {
 	 * This is called by the StartScreen window and tells the server that this client is ready to play.
 	 */
 	public void clientIsReady (String characterString) {
+		System.out.println("ClientGameStartController#clientIsReady");
 		
-		String message = String.format("ready %s %s", Client.getThisUser().getName(), characterString);
+		String message = String.format("ready %s %s %s", Client.getThisUser().getName(), gameName, characterString);
 		Client.sendMessageToServer(message);
 	}
 	
-	
+	/**
+	 * Moves the user to the waitingUsers list and if it is this user, it opens the
+	 */
+	@Override
+	public void moveUserToWaiting(User user, String characterString) {
+		super.moveUserToWaiting(user, characterString);
+		
+		if (Client.getThisUser() == user) {
+			System.out.println("ClientGameStartController#moveUserToWaiting - It's this user");
+			startScreen.dispose();
+			
+			// TODO: Open Lobby window here!
+		} else {
+			System.out.println("ClientGameStartController#moveUserToWaiting - It's not this user");
+		}
+	}
 }

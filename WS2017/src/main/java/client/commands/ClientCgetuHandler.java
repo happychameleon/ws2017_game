@@ -15,12 +15,12 @@ public class ClientCgetuHandler extends CommandHandler {
 	
 	
 	@Override
-	public void handleCommand(String argument) {
+	public void handleCommand() {
 		// NOT NEEDED CURRENTLY
 	}
 	
 	@Override
-	public void handleAnswer(String argument, boolean isOK) {
+	public void handleAnswer(boolean isOK) {
 		if (isOK) {
 			parseAllUsernames(argument.toCharArray());
 			Client.sendMessageToServer("cgetg");

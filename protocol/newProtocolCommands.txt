@@ -25,7 +25,7 @@ joing <gamename> <username>
 	The Server informs the user that there is no place left in the game.
 
 
-ready <username> [<characterstring>]
+ready <username> <gamename> [<characterstring>]
 	Client to Server:
 		The Client tells the server that it is ready and has chosen the specified characters.
 	Server to Client:

@@ -10,10 +10,9 @@ public class ClientCpingHandler extends CommandHandler {
 	/**
 	 * Handles the cping by sending cpong back.
 	 * For testing also prints all the currently registered user by this client.
-	 * @param argument empty argument.
 	 */
 	@Override
-	public void handleCommand(String argument) {
+	public void handleCommand() {
 		//System.out.println();
 		commandParser.getClientCpongSender();
 		
@@ -25,7 +24,7 @@ public class ClientCpingHandler extends CommandHandler {
 	}
 	
 	@Override
-	public void handleAnswer(String argument, boolean isOK) {
+	public void handleAnswer(boolean isOK) {
 		// NOT CURRENTLY USED
 	}
 	

@@ -11,7 +11,7 @@ import serverclient.User;
 public class ClientLeavgHandler extends CommandHandler {
 	
 	@Override
-	public void handleCommand(String argument) {
+	public void handleCommand() {
 		String gameName = argument.substring(0, argument.indexOf(" "));
 		String username = argument.substring(argument.indexOf(" ") + 1);
 		
@@ -35,7 +35,7 @@ public class ClientLeavgHandler extends CommandHandler {
 	}
 	
 	@Override
-	public void handleAnswer(String argument, boolean isOK) {
+	public void handleAnswer(boolean isOK) {
 	
 	}
 	

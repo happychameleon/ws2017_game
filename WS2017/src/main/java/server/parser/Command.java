@@ -29,6 +29,7 @@ public enum Command {
 	
 	public void handleArgument(CommandParser commandParser, String argument) {
 		commandHandler.setCommandParser(commandParser);
-		commandHandler.handleCommand(argument);
+		commandHandler.setArgument(argument);
+		commandHandler.handleCommand();
 	}
 }

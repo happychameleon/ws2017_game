@@ -12,7 +12,7 @@ public class ClientRmgamHandler extends CommandHandler {
 	
 	
 	@Override
-	public void handleCommand(String argument) {
+	public void handleCommand() {
 		if (Client.isLoggedIn() == false)
 			return;
 		
@@ -26,7 +26,7 @@ public class ClientRmgamHandler extends CommandHandler {
 	}
 	
 	@Override
-	public void handleAnswer(String argument, boolean isOK) {
+	public void handleAnswer(boolean isOK) {
 	
 	}
 	

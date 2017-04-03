@@ -8,12 +8,12 @@ import client.Client;
 public class ClientUnameHandler extends CommandHandler {
 	
 	@Override
-	public void handleCommand(String argument) {
+	public void handleCommand() {
 		// NOT CURRENTLY NEEDED
 	}
 	
 	@Override
-	public void handleAnswer(String argument, boolean isOK) {
+	public void handleAnswer(boolean isOK) {
 		if (isOK && argument.startsWith("you are ")) {
 			String username = argument.substring(8);
 			Client.setUsername(username);

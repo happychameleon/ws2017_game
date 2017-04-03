@@ -16,7 +16,7 @@ public class UnameHandler extends CommandHandler {
 	
 	
 	@Override
-	public void handleCommand(String argument) {
+	public void handleCommand() {
 		if (validateArgument(argument) == false) {
 			return;
 		}

@@ -96,6 +96,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 		buttonsBox.add(cancelButton);
 		cancelButton.addActionListener(this);
 		buttonsBox.add(acceptSelectionButton);
+		acceptSelectionButton.addActionListener(this);
 		pageEndBox.add(buttonsBox);
 		this.add(pageEndBox, BorderLayout.PAGE_END);
 		
@@ -122,6 +123,8 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 			}
 		} else if (i.equals(cancelButton)) {
 			leaveGame();
+		} else {
+			System.out.println("StartScreen#actionPerformed - different button clicked");
 		}
 	}
 	
@@ -133,6 +136,13 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	private void leaveGame() {
 		String message = "leavg " + clientGameStartController.getGameName() + " " + Client.getThisUser().getName();
 		Client.sendMessageToServer(message);
+		window.dispose();
+	}
+	
+	/**
+	 * Closes the window without leaving the game.
+	 */
+	public void dispose() {
 		window.dispose();
 	}
 	
@@ -201,7 +211,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 				characters += name + " " + weaponName + " ";
 			}
 		}
-		characters.substring(0, characters.length() - 1); // To remove last space
+		characters = characters.trim(); // To remove last space
 		characters += "]";
 		return characters;
 	}
@@ -213,11 +223,17 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	
 	}
 	
+	/**
+	 * Called when the user tries to close the window
+	 */
 	@Override
 	public void windowClosing(WindowEvent e) {
 		leaveGame();
 	}
 	
+	/**
+	 * Called when the window actually closed (e.g. via dispose()).
+	 */
 	@Override
 	public void windowClosed(WindowEvent e) {
 	

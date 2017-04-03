@@ -1,14 +1,13 @@
-package server.parser;
+package client.commands;
 
-
-import game.startscreen.ServerGameStartController;
-import server.Server;
-import server.ServerUser;
+import client.Client;
+import client.ClientUser;
+import game.startscreen.ClientGameStartController;
 
 /**
- * Created by flavia on 31.03.17.
+ * Created by flavia on 03.04.17.
  */
-public class ReadyHandler extends CommandHandler {
+public class ClientReadyHandler extends CommandHandler {
 	
 	@Override
 	public void handleCommand() {
@@ -21,13 +20,13 @@ public class ReadyHandler extends CommandHandler {
 			return;
 		}
 		
-		ServerGameStartController waitingGameByName = Server.getWaitingGameByName(gameName);
+		ClientGameStartController waitingGameByName = Client.getChatWindow().getWaitingGameByName(gameName);
 		if (waitingGameByName == null) {
 			System.err.println("ReadyHandler#handleCommand - No game found with name: " + gameName);
 			return;
 		}
 		
-		ServerUser user = Server.getUserByName(username);
+		ClientUser user = Client.getUserByName(username);
 		if (user == null) {
 			System.err.println("ReadyHandler#handleCommand - No user found with name: " + username);
 			return;
@@ -35,10 +34,14 @@ public class ReadyHandler extends CommandHandler {
 		
 		waitingGameByName.moveUserToWaiting(user, characterString);
 		
-		String message = String.format("ready %s %s %s", username, gameName, characterString);
-		Server.writeToAllClients(message);
-		System.out.println("ReadyHandler#handleCommand - Done");
+		
 	}
+	
+	@Override
+	public void handleAnswer(boolean isOK) {
+	
+	}
+	
 	
 	private String getCharacterString() {
 		

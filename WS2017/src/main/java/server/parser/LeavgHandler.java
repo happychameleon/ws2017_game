@@ -12,8 +12,9 @@ import serverclient.User;
  * Created by flavia on 01.04.17.
  */
 public class LeavgHandler extends CommandHandler {
+	
 	@Override
-	public void handleCommand(String argument) {
+	public void handleCommand() {
 		String gameName = argument.substring(0, argument.indexOf(" "));
 		String username = argument.substring(argument.indexOf(" ") + 1);
 		
@@ -37,4 +38,5 @@ public class LeavgHandler extends CommandHandler {
 		
 		System.err.println("leavg: Game Name doesn't exist: " + gameName);
 	}
+	
 }

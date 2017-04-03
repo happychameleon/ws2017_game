@@ -16,7 +16,8 @@ public enum Command {
 	newgm(new ClientNewgmHandler()),
 	joing(new ClientJoingHandler()),
 	leavg(new ClientLeavgHandler()),
-	rmgam(new ClientRmgamHandler());
+	rmgam(new ClientRmgamHandler()),
+	ready(new ClientReadyHandler());
 	
 	/**
 	 * The correct CommandHandler which processes the command.
@@ -33,6 +34,7 @@ public enum Command {
 	 */
 	public void handleCommand(ClientCommandParser commandParser, String argument) {
 		commandHandler.setCommandParser(commandParser);
-		commandHandler.handleCommand(argument);
+		commandHandler.setArgument(argument);
+		commandHandler.handleCommand();
 	}
 }

@@ -12,7 +12,7 @@ import serverclient.User;
 public class CgetgHandler extends CommandHandler {
 	
 	@Override
-	public void handleCommand(String argument) {
+	public void handleCommand() {
 		if (argument.isEmpty() == false) {
 			System.err.println("cgetg should not have an argument!");
 		}

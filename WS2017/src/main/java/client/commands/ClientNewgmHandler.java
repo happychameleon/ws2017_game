@@ -16,7 +16,7 @@ public class ClientNewgmHandler extends CommandHandler {
 	
 	
 	@Override
-	public void handleCommand(String argument) {
+	public void handleCommand() {
 		int maxPoints = Integer.parseInt(argument.substring(0, argument.indexOf(" ")));
 		String gameName = argument.substring(argument.indexOf(" ") + 1, argument.length());
 		
@@ -29,7 +29,7 @@ public class ClientNewgmHandler extends CommandHandler {
 	}
 	
 	@Override
-	public void handleAnswer(String argument, boolean isOK) {
+	public void handleAnswer(boolean isOK) {
 		if (isOK == false && argument.startsWith("game name taken")) {
 			Client.getChatWindow().displayError("The name for the new Game already exists. Please choose a new one!");
 		}

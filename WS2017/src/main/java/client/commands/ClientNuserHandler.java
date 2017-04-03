@@ -12,7 +12,7 @@ public class ClientNuserHandler extends CommandHandler {
 	 * Handles the nuser command by adding the new user to the userlist IF this user is already logged in.
 	 */
 	@Override
-	public void handleCommand(String argument) {
+	public void handleCommand() {
 		if (Client.isLoggedIn() == false) {
 			// Ignore this new user, because we get all user once we log in.
 			return;
@@ -27,7 +27,7 @@ public class ClientNuserHandler extends CommandHandler {
 	}
 	
 	@Override
-	public void handleAnswer(String argument, boolean isOK) {
+	public void handleAnswer(boolean isOK) {
 		if(isOK) {
 			nameChange(argument);
 		}

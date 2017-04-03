@@ -12,7 +12,7 @@ import server.ServerUser;
 public class CgetuHandler extends CommandHandler {
 	
 	@Override
-	public void handleCommand(String argument) {
+	public void handleCommand() {
 		if (argument.isEmpty() == false) {
 			System.err.println("cgetu should not have an argument!");
 		}

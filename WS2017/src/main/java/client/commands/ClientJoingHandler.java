@@ -10,7 +10,7 @@ import serverclient.User;
 public class ClientJoingHandler extends CommandHandler {
 	
 	@Override
-	public void handleCommand(String argument) {
+	public void handleCommand() {
 		String gameName = argument.substring(0, argument.indexOf(" "));
 		String username = argument.substring(argument.indexOf(" ") + 1);
 		User joinedUser = Client.getUserByName(username);
@@ -25,7 +25,7 @@ public class ClientJoingHandler extends CommandHandler {
 	}
 	
 	@Override
-	public void handleAnswer(String argument, boolean isOK) {
+	public void handleAnswer(boolean isOK) {
 	
 	}
 	
