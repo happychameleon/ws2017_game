@@ -90,6 +90,8 @@ public class Chat implements ActionListener, KeyListener {
 	NewGameDialog newGameDialog;
 	
 	
+	//JList<User> userList = new JList<>(//TODO);
+	
 	
 	
 	/**
@@ -138,7 +140,7 @@ public class Chat implements ActionListener, KeyListener {
 		textInputPanel.add(usernameChangeInput);
 		textInputPanel.add(usernameChangeButton);
 		chatPanel.add(textInputPanel);
-		mainPanel.add(chatPanel);
+		mainPanel.add(chatPanel, BorderLayout.CENTER);
 		
 		// The left panel with the game selection and new game creation.
 		Box gameCreationBox = Box.createVerticalBox();

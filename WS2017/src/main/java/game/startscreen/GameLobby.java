@@ -9,7 +9,7 @@ import javax.swing.*;
  * TODO
  * Created by flavia on 01.04.17.
  */
-public class GameLobby {
+public class GameLobby extends JPanel {
 
 	private JFrame window;
 	private JButton leaveGameButton = new JButton("Leave Game");
