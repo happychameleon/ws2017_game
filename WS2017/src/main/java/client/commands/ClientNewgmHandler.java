@@ -9,6 +9,7 @@ import java.util.HashSet;
 /**
  * This command is received when a client has opened a new game.
  * It is added to the list of games to choose from where this client can now join it.
+ * It also handles the Answer for when a proposed name for a new game is already taken.
  *
  * Created by flavia on 31.03.17.
  */

@@ -28,9 +28,9 @@ public class ClientCommandParser {
     /**
      * TODO: write a good comment for javadoc
      * @param serverSocket
-     * @param stopreaquest
+     * @param stopRequest
      */
-    public ClientCommandParser(Socket serverSocket, boolean stopreaquest) {
+    public ClientCommandParser(Socket serverSocket, boolean stopRequest) {
         this.serverSocket = serverSocket;
 
         try {
@@ -45,20 +45,20 @@ public class ClientCommandParser {
             e.printStackTrace();
         }
 
-        this.stopreaquest = stopreaquest;
+        this.stopreaquest = stopRequest;
         validateCommand();
     }
-
+    
     public void getClientCpongSender(){
         cpongSender.sendCpong();
     }
 
     /**
      * TODO: write a good comment for javadoc
-     * @param stopreaquest
+     * @param stoprequest
      */
-    public void stopValidatingCommand(boolean stopreaquest){
-        this.stopreaquest = stopreaquest;
+    public void stopValidatingCommand(boolean stoprequest){
+        this.stopreaquest = stoprequest;
     }
 
     /**

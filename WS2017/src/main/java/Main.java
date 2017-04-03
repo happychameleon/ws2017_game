@@ -2,6 +2,10 @@ import client.Client;
 import server.Server;
 
 /**
+ * Reads in the command line arguments and Starts the whole application.
+ * When specified in the command line arguments it starts either the server or the client.
+ * If no arguments are present it starts the server on the default port.
+ *
  * Created by flavia on 27.03.17.
  */
 public class Main {

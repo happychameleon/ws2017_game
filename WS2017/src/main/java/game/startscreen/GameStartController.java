@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 /**
+ * Represents the game before it started, where users can still choose their team.
+ *
  * Created by flavia on 31.03.17.
  */
 public abstract class GameStartController {

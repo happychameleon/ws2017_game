@@ -19,7 +19,7 @@ public class ClientCpongSender {
     }
 
     /**
-     * function is called if a ping has been received from the server.
+     * Function is called if a ping has been received from the server.
      */
     public void sendCpong(){
         newTimeoutThread.interrupt();

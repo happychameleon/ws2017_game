@@ -6,7 +6,7 @@ import serverclient.User;
 import java.util.HashSet;
 
 /**
- * The {@link ClientGameController} on the server side.
+ * The {@link GameController} on the server side.
  *
  * Created by flavia on 30.03.17.
  */

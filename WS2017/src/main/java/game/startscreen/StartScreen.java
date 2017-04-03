@@ -12,8 +12,6 @@ import java.awt.event.WindowListener;
 /**
  * Handles the selection of the team at the start of the game.
  *
- * FIXME: When closing the window or selecting cancel the leavg command should tell the server that this user left the game.
- *
  * Created by flavia on 28.03.17.
  */
 public class StartScreen extends JPanel implements ActionListener, WindowListener {

@@ -5,6 +5,8 @@ import server.Server;
 import server.ServerUser;
 
 /**
+ * Handles an incoming chat message and sends it to the correct Client(s).
+ *
  * Created by m on 3/21/17.
  */
 public class ChatmHandler extends CommandHandler {

@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
+ * This handles the connection between a game and the server or client.
+ * For each game there is one GameController per Client/Server.
+ *
+ * All the game commands are sent to the game via this controller.
+ *
  * Created by flavia on 31.03.17.
  */
 public abstract class GameController {

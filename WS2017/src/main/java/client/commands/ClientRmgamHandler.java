@@ -4,7 +4,7 @@ import client.Client;
 import game.startscreen.ClientGameStartController;
 
 /**
- * Removes the game because every user has left it.
+ * Removes the game (because every user has left it).
  *
  * Created by flavia on 31.03.17.
  */

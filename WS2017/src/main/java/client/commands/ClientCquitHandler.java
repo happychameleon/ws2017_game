@@ -4,6 +4,8 @@ import client.Client;
 import client.ClientUser;
 
 /**
+ * Handles the cquit command from the server telling this client that the client specified in the argument has logged off.
+ *
  * Created by flavia on 25.03.17.
  */
 public class ClientCquitHandler extends CommandHandler {

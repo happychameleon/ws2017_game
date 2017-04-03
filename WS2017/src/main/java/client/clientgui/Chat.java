@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * The general Chat window where all users can chat with each other and name changes can be requested.
@@ -223,7 +222,7 @@ public class Chat implements ActionListener, KeyListener {
 	 * Adds a {@link ChatMessage} to the chat and displays it properly.
 	 * @param chatMessage the message to display
 	 */
-	private void addNewMessage(ChatMessage chatMessage) {
+	public void addNewMessage(ChatMessage chatMessage) {
 		String textToAppend = "";
 		if (getLastMessage() != null && chatMessage.getSender() != getLastMessage().getSender()) {
 			// If the last message was from a different person add a bigger gap between.
@@ -237,39 +236,6 @@ public class Chat implements ActionListener, KeyListener {
 		lastMessageIsInfo = false;
 	}
 	
-	/**
-	 * This is called when the server sends a new message with the chatm command.
-	 * @param argument the argument from the server.
-	 */
-	public void receiveMessage(String argument) {
-		char[] argumentChars = argument.toCharArray();
-		String senderName = "";
-		String receiverName = "";
-		String message = "";
-		int argumentNr = 1;
-		// split the whole argument into the three argument parts
-		for (char c : argumentChars) {
-			if (argumentNr < 3 && c == ' ') {
-				argumentNr++;
-				continue;
-			}
-			if (argumentNr == 1)
-				senderName += c;
-			else if (argumentNr == 2)
-				receiverName +=c;
-			else
-				message += c;
-		}
-		ClientUser sender = Client.getUserByName(senderName);
-		ClientUser receiver = Client.getUserByName(receiverName);
-		if (receiver != Client.getThisUser()) {
-			System.err.println("WARNIGN: This message isn't intended for this client! Or did someone miss a namechange?");
-		}
-		// To get rid of the '
-		message = message.substring(1, message.length() - 1);
-		
-		addNewMessage(new ChatMessage(message, sender, new ArrayList<>(Arrays.asList(receiver))));
-	}
 	
 	
 	public void addNewGameToList(ClientGameStartController cgsc) {
@@ -319,22 +285,9 @@ public class Chat implements ActionListener, KeyListener {
 		}
 	}
 	
-	/**
-	 * Tries to create a new game from the input entered into the {@link #newGameDialog}.
-	 */
-	protected void tryCreateGame(String gameName, int maxPoints) {
-		
-		if (maxPoints <= 0) {
-			displayError("MaxPoints must be positive!");
-			return;
-		}
-		// Now we know the input is valid
-		Client.sendMessageToServer("newgm " + maxPoints + " " + gameName);
-
-	}
 	
 	private void openNewGameInputWindow() {
-		newGameDialog = new NewGameDialog(chatFrame, this);
+		newGameDialog = new NewGameDialog(chatFrame);
 	}
 	
 	

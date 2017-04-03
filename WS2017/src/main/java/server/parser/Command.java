@@ -4,6 +4,8 @@ package server.parser;
 import server.CommandParser;
 
 /**
+ * The different command keywords. They all have their CommandHandler stored to send the argument to process.
+ *
  * Created by flavia on 26.03.17.
  */
 public enum Command {
@@ -19,14 +21,19 @@ public enum Command {
 	leavg(new LeavgHandler()),
 	ready(new ReadyHandler());
 	
-	
+	/**
+	 * The correct CommandHandler which processes the command.
+	 */
 	private final CommandHandler commandHandler;
 	
 	Command(CommandHandler commandHandler) {
 		this.commandHandler = commandHandler;
 	}
 	
-	
+	/**
+	 * First sets the commandParser and the argument and then handles the Command.
+	 * @see #commandHandler#handleCommand(CommandParser, String)
+	 */
 	public void handleArgument(CommandParser commandParser, String argument) {
 		commandHandler.setCommandParser(commandParser);
 		commandHandler.setArgument(argument);

@@ -12,10 +12,12 @@ import java.net.Socket;
  * Created by m on 3/14/17.
  */
 public class CommandParser {
+	
 	/**
 	 * The receivingUser from which this CommandParser reads in the commands.
 	 */
 	private final ServerUser receivingUser;
+	
 	/**
 	 * The {@link InputStream} of this {@link #receivingUser}
 	 */
@@ -39,6 +41,9 @@ public class CommandParser {
     private String keyword = "";
     private String argument = "";
 	
+	/**
+	 * TODO: write a good comment for javadoc
+	 */
 	private CpingSender cpingSender;
 	
 	public CpingSender getCpingSender() {

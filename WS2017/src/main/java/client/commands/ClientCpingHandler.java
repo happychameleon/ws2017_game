@@ -1,7 +1,7 @@
 package client.commands;
 
 /**
- * TODO: write a good comment for javadoc
+ * Handles the cping by sending cpong back.
  *
  * Created by m on 3/23/17.
  */
@@ -9,7 +9,6 @@ public class ClientCpingHandler extends CommandHandler {
 	
 	/**
 	 * Handles the cping by sending cpong back.
-	 * For testing also prints all the currently registered user by this client.
 	 */
 	@Override
 	public void handleCommand() {

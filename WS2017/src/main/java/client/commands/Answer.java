@@ -25,6 +25,12 @@ public enum Answer {
 		this.commandHandler = commandHandler;
 	}
 	
+	/**
+	 * This triggers the {@link #commandHandler}'s handleAnswer method with the given parameters
+	 * @param commandParser The correct CommandHandler
+	 * @param argument The argument from the answer
+	 * @param isOK If the answer is a positive (+OK) or negative (-ERR) answer.
+	 */
 	public void handleAnswer(ClientCommandParser commandParser, String argument, boolean isOK) {
 		commandHandler.setCommandParser(commandParser);
 		commandHandler.setArgument(argument);

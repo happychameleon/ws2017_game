@@ -6,6 +6,8 @@ import server.Server;
 import server.ServerUser;
 
 /**
+ * Calls the {@link ServerGameStartController#moveUserToWaiting} method of the specified game.
+ *
  * Created by flavia on 31.03.17.
  */
 public class ReadyHandler extends CommandHandler {
@@ -21,8 +23,8 @@ public class ReadyHandler extends CommandHandler {
 			return;
 		}
 		
-		ServerGameStartController waitingGameByName = Server.getWaitingGameByName(gameName);
-		if (waitingGameByName == null) {
+		ServerGameStartController waitingGame = Server.getWaitingGameByName(gameName);
+		if (waitingGame == null) {
 			System.err.println("ReadyHandler#handleCommand - No game found with name: " + gameName);
 			return;
 		}
@@ -33,13 +35,16 @@ public class ReadyHandler extends CommandHandler {
 			return;
 		}
 		
-		waitingGameByName.moveUserToWaiting(user, characterString);
+		waitingGame.moveUserToWaiting(user, characterString);
 		
 		String message = String.format("ready %s %s %s", username, gameName, characterString);
 		Server.writeToAllClients(message);
 		System.out.println("ReadyHandler#handleCommand - Done");
 	}
 	
+	/**
+	 * @return the characterString from the argument.
+	 */
 	private String getCharacterString() {
 		
 		int index = argument.indexOf("[");

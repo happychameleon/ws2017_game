@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 /**
- *
+ * The {@link GameStartController} on the Client side
  *
  * Created by flavia on 27.03.17.
  */

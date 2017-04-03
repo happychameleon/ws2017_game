@@ -1,5 +1,7 @@
 package client.clientgui;
 
+import client.Client;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,16 +14,21 @@ import java.awt.event.KeyListener;
  */
 public class NewGameDialog extends JDialog implements ActionListener, KeyListener {
 	
-	JTextField gameNameTF = new JTextField("Name");
-	JTextField maxPointsTF = new JTextField("MaxPoints");
-	JButton createGameButton = new JButton("Create Game");
-	JButton cancelGameCreationButton = new JButton("Cancel");
+	private JTextField gameNameTF = new JTextField("Name");
+	private JTextField maxPointsTF = new JTextField("MaxPoints");
+	private JButton createGameButton = new JButton("Create Game");
+	private JButton cancelGameCreationButton = new JButton("Cancel");
 	
-	Chat chat;
+	private Chat getChat() {
+		return Client.getChatWindow();
+	}
 	
-	public NewGameDialog(Frame owner, Chat chat) {
+	/**
+	 * Opens and displays a Dialog Window where the Client can set the parameters for the new Game.
+	 * @param owner The frame this belongs to.
+	 */
+	public NewGameDialog(Frame owner) {
 		super(owner);
-		this.chat = chat;
 		
 		JLabel gameNameLabel = new JLabel("gameName");
 		gameNameTF = new JTextField("GameName");
@@ -74,26 +81,39 @@ public class NewGameDialog extends JDialog implements ActionListener, KeyListene
 		
 	}
 	
+	/**
+	 * Disposes the window when the Client hits enter or cancel.
+	 */
 	private void closeWindow() {
 		this.dispose();
-		chat.newGameDialog = null;
+		getChat().newGameDialog = null;
 	}
 	
+	/**
+	 * Sends a message to the server with the parameters of the proposed new Game.
+	 */
 	private void tryCreateGame() {
 		
 		String gameName = gameNameTF.getText();
 		if (gameName.contains(" ") || gameName.contains("'") || gameName.isEmpty()) {
-			chat.displayError("New Game Name Contains Invalid Characters or is empty");
+			getChat().displayError("New Game Name Contains Invalid Characters or is empty");
 			return;
 		}
 		int maxPoints;
 		try {
 			maxPoints = Integer.parseInt(maxPointsTF.getText());
 		} catch (NumberFormatException nfe) {
-			chat.displayError("MaxPoints must be entered as a valid number.");
+			getChat().displayError("MaxPoints must be entered as a valid number.");
 			return;
 		}
-		chat.tryCreateGame(gameName, maxPoints);
+		
+		if (maxPoints <= 0) {
+			getChat().displayError("MaxPoints must be positive!");
+			return;
+		}
+		
+		// Now we know the input is valid
+		Client.sendMessageToServer("newgm " + maxPoints + " " + gameName);
 		
 	}
 	

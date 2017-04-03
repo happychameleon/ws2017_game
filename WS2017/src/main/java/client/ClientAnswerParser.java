@@ -3,9 +3,12 @@ package client;
 import client.commands.Answer;
 
 /**
+ * Gets the answer and after checking it for validity it sends the answer to the correct {@link client.commands.CommandHandler} (via {@link Answer}.
+ *
  * Created by flavia on 26.03.17.
  */
 public class ClientAnswerParser {
+	
 	private final ClientCommandParser commandParser;
 	private final boolean isOK;
 	private String keyword = "";
@@ -33,8 +36,6 @@ public class ClientAnswerParser {
 	
 	/**
 	 * Separates the answer argument into the keyword and the actual argument.
-	 * @param argument
-	 * @param keyword
 	 */
 	private void separateAnswer(String argument, String keyword) {
 		if (argument.contains(" ") == false) {
@@ -46,9 +47,7 @@ public class ClientAnswerParser {
 			this.keyword = argument.substring(0, 5);
 			this.argument = argument.substring(6);
 		} else {
-			if (Client.getChatWindow() != null) {
-				Client.getChatWindow().displayError("Answer formatted incorrectly: '" + keyword + " " + argument + "'");
-			}
+			System.err.println("ClientAnswerParser#separateAnswer - Answer formatted incorrectly: '" + keyword + " " + argument + "'");
 		}
 	}
 	

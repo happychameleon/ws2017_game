@@ -1,6 +1,8 @@
 package server.parser;
 
 /**
+ * Receives the
+ *
  * Created by m on 3/20/17.
  */
 public class CquitHandler extends CommandHandler {
@@ -8,7 +10,7 @@ public class CquitHandler extends CommandHandler {
     @Override
     public void handleCommand() {
         if (argument != null && argument.length() != 0) {
-            commandParser.writeBackToClient("-ERR cquit command takes no argument(s)!");
+	        System.err.println("CquitHandler#handleCommand - cquit command takes no argument(s)!");
             return;
         }
         commandParser.writeBackToClient("+OK cquit terminating tasks and disconnecting");

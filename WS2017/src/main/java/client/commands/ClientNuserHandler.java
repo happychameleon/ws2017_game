@@ -4,6 +4,9 @@ import client.Client;
 import client.ClientUser;
 
 /**
+ * Handles the nuser command by adding the new user to the userlist IF this user is already logged in.
+ * Also receives and handles the answer to a name change request from another user.
+ *
  * Created by flavia on 24.03.17.
  */
 public class ClientNuserHandler extends CommandHandler {
@@ -35,7 +38,6 @@ public class ClientNuserHandler extends CommandHandler {
 	
 	/**
 	 * Receives and handles the answer to a name change request from another user.
-	 * @param argument the argument of the answer, starting with "nuser ".
 	 */
 	private void nameChange(String argument) {
 		String usernameSeparator = " ";

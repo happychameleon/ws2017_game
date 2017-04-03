@@ -5,6 +5,8 @@ import game.startscreen.ClientGameStartController;
 import serverclient.User;
 
 /**
+ * Adds the joined user to the game on the client side when the server informs this Client about the newly joined user.
+ *
  * Created by flavia on 31.03.17.
  */
 public class ClientJoingHandler extends CommandHandler {

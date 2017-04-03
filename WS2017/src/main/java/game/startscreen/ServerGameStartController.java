@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 /**
+ * The {@link GameStartController} on the Server side
+ *
  * Created by flavia on 31.03.17.
  */
 public class ServerGameStartController extends GameStartController {

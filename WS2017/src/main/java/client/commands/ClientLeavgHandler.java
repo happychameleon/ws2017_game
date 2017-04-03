@@ -6,6 +6,8 @@ import game.startscreen.ClientGameStartController;
 import serverclient.User;
 
 /**
+ * Removes the user from the game on the Client side (opposite of {@link ClientJoingHandler}).
+ *
  * Created by flavia on 01.04.17.
  */
 public class ClientLeavgHandler extends CommandHandler {
@@ -32,6 +34,8 @@ public class ClientLeavgHandler extends CommandHandler {
 			runningGame.removeUser(user);
 			return;
 		}
+		
+		System.err.println("ClientLeavgHandler#handleCommand - gamename doesn't exist: " + gameName);
 	}
 	
 	@Override

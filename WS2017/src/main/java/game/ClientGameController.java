@@ -6,10 +6,7 @@ import serverclient.User;
 import java.util.HashSet;
 
 /**
- * This handles the connection between a game and the server or client.
- * For each game there is one ClientGameStartController per Client.
- *
- * All the game commands are sent to this controller which handles them.
+ * The {@link GameController} on the Client side.
  *
  * Created by flavia on 30.03.17.
  */

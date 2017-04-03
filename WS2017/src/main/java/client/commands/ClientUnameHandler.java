@@ -3,6 +3,10 @@ package client.commands;
 import client.Client;
 
 /**
+ * Reads in the answer from the server about the proposed username
+ * and (if +OK) loggs the Client in
+ * or (if -ERR) proposes the suggested username from the Server.
+ *
  * Created by flavia on 26.03.17.
  */
 public class ClientUnameHandler extends CommandHandler {

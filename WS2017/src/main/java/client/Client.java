@@ -9,6 +9,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
+ * The main class for this Client.
+ * Everything is static since there is only one Client.
+ *
  * Created by m on 3/10/17.
  */
 
@@ -57,6 +60,9 @@ public class Client {
 	 */
 	private static final ClientUser thisUser = new ClientUser(null);
 	
+	/**
+	 * @return {@link #thisUser}
+	 */
 	public static ClientUser getThisUser() {
 		return thisUser;
 	}
@@ -249,6 +255,9 @@ public class Client {
 }
 
 
+/**
+ * TODO: write a good comment for javadoc
+ */
 class ClientThread extends Thread{
 	Socket serverSocket;
     InputStream in;

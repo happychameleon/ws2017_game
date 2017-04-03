@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 /**
+ * Reads the answer from the Server after sending the cgetg request.
+ * Creates all the currently existing games on the server.
+ *
  * Created by flavia on 02.04.17.
  */
 public class ClientCgetgHandler extends CommandHandler {
@@ -33,6 +36,9 @@ public class ClientCgetgHandler extends CommandHandler {
 		}
 	}
 	
+	/**
+	 * If the game is already running, this reads in the needed info and creates the {@link ClientGameController}
+	 */
 	private void parseRunningGameAnswer() {
 		String gameName = getAndRemoveNextArgumentWord();
 		HashSet<User> users = new HashSet<>();
@@ -52,6 +58,9 @@ public class ClientCgetgHandler extends CommandHandler {
 		Client.getChatWindow().addRunningGameToList(game);
 	}
 	
+	/**
+	 * If the game is not yet running, this reads in the needed info and creates the {@link ClientGameStartController}
+	 */
 	private void parseWaitingGameAnswer() {
 		HashMap<User, String> waitingUsers = new HashMap<>();
 		HashSet<User> choosingUsers = new HashSet<>();
@@ -82,7 +91,11 @@ public class ClientCgetgHandler extends CommandHandler {
 	}
 	
 	
-	
+	/**
+	 * Separates the characterString from the Argument.
+	 * The characterString has to begin at index 0 of the argument (meaning the values before must already be read)
+	 * @return the characterString.
+	 */
 	private String getAndRemoveCharacterString() {
 		if (argument.charAt(0) != '[') {
 			System.err.println("ClientCgetgHandler#getAndRemoveCharacterString - There was no characterString beginning where one should have been.");

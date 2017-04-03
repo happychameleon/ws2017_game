@@ -5,6 +5,8 @@ import client.ClientUser;
 import game.startscreen.ClientGameStartController;
 
 /**
+ * Informs the ClientGameStartController from the given game about the given user which has chosen their team.
+ *
  * Created by flavia on 03.04.17.
  */
 public class ClientReadyHandler extends CommandHandler {
@@ -42,7 +44,10 @@ public class ClientReadyHandler extends CommandHandler {
 	
 	}
 	
-	
+	/**
+	 * Separates the characterString from the argument.
+	 * @return the characterString.
+	 */
 	private String getCharacterString() {
 		
 		int index = argument.indexOf("[");
