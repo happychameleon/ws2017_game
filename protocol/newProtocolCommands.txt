@@ -31,7 +31,7 @@ ready <username> <gamename> [<characterstring>]
 	Server to Client:
 		The Server tells the Clients (including sender) that the Client is now ready.
 	[<characterstring>] is formated as following (with any number of characters > 0):
-		[<character1name> <weapon1name> <character2name> <weapon2name>]
+		[<character1name> '<weapon1name>' <character2name> '<weapon2name>']
 
 
 cgetg

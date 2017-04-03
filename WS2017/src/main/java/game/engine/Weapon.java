@@ -120,16 +120,13 @@ public class Weapon {
 	
 	/**
 	 * {@link #addWeaponPrototype(String, int, int, int, int, int)} but with {@link #areaOfEffect} set to 0;
-	 * @param name The name of the weapon (spaces are removed).
+	 * @param name The name of the weapon
 	 * @param pointCost
 	 * @param range
 	 * @param actionPointPerShot
 	 * @param damage
 	 */
 	public static void addWeaponPrototype(String name, int pointCost, int range, int actionPointPerShot, int damage) {
-		if (name.contains(" ")) {
-			name = name.replaceAll(" ", "");
-		}
 		
 		addWeaponPrototype(name, pointCost , damage, actionPointPerShot, 0, range);
 	}

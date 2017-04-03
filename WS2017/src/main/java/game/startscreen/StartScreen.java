@@ -208,7 +208,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 				ChildPanel childPanel = ((ChildPanel) component);
 				String name = childPanel.getCharacterName();
 				String weaponName = childPanel.getCharacterWeapon().getName();
-				characters += name + " " + weaponName + " ";
+				characters += name + " '" + weaponName + "' ";
 			}
 		}
 		characters = characters.trim(); // To remove last space
