@@ -53,7 +53,7 @@ task mainTask {
     check.execute()
     build.execute()
 
-    // javadoc.execute()
+    javadoc.execute()
 }
 
 
