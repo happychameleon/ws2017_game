@@ -3,5 +3,9 @@ client
 client.clientgui
 client.commands
 game
+game.engine
+game.gamegui
+game.startscreen
 server
 server.parser
+serverclient
