@@ -1,6 +1,6 @@
 package client.clientgui;
 
-import serverclient.User;
+import client.ClientUser;
 
 import javax.swing.*;
 
@@ -9,7 +9,7 @@ import javax.swing.*;
  */
 public class WhisperTab extends JPanel {
 	
-	public WhisperTab(User user) {
+	public WhisperTab(ClientUser user) {
 	
 	}
 	

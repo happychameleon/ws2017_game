@@ -24,5 +24,12 @@ public class ClientGameController extends GameController {
 		super.removeUser(user);
 		//TODO!
 	}
+	
+	/**
+	 * TODO: Ability to watch a game.
+	 */
+	public void watchGame() {
+	
+	}
 
 }

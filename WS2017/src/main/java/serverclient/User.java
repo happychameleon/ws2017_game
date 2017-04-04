@@ -24,4 +24,14 @@ public class User {
 	public User(String name) {
 		this.name = name;
 	}
+	
+	
+	
+	/**
+	 * @return the name of this user.
+	 */
+	@Override
+	public String toString() {
+		return name;
+	}
 }

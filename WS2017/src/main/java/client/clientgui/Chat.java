@@ -7,10 +7,7 @@ import game.startscreen.ClientGameStartController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +15,7 @@ import java.util.ArrayList;
  * TODO Meilenstein 3: In future milestones there will also be the possibility to start a game with selected people and to privately chat
  * TODO: Separate this Chat Class into two classes, one for only the main Chat stuff and one for the whole window and keeping track of the game.
  */
-public class Chat implements ActionListener, KeyListener {
+public class Chat implements ActionListener, KeyListener, MouseListener {
 	
 	/**
 	 * All the messages in this chat. A message should ALWAYS be added via {@link #addNewMessage(ChatMessage)}!
@@ -36,11 +33,10 @@ public class Chat implements ActionListener, KeyListener {
 		}
 		return messages.get(messages.size() - 1);
 	}
-    
-    
-    JTabbedPane tab = new JTabbedPane(JTabbedPane.TOP);
-    
-    
+	
+	
+	JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+	
 	
 	/**
 	 * The Panel where the main Chat is in.
@@ -52,7 +48,7 @@ public class Chat implements ActionListener, KeyListener {
 	JTextField usernameChangeInput = new JTextField(15);
 	JButton sendChatButton = new JButton("Send");
 	JButton usernameChangeButton = new JButton("Change Username");
-	JTextArea chatText = new JTextArea(30,50);
+	JTextArea chatText = new JTextArea(30, 50);
 	JScrollPane scroll;
 	
 	
@@ -90,8 +86,16 @@ public class Chat implements ActionListener, KeyListener {
 	NewGameDialog newGameDialog;
 	
 	
-	//JList<User> userList = new JList<>(//TODO);
+	DefaultListModel<ClientUser> userListModel = new DefaultListModel<>();
+	/**
+	 * A list of all the logged in users.
+	 */
+	JList<ClientUser> userList = new JList<>(userListModel);
 	
+	/**
+	 * Opens a chat with the selected user from {@link #userList}.
+	 */
+	JButton whisperButton = new JButton("Open Chat");
 	
 	
 	/**
@@ -118,7 +122,7 @@ public class Chat implements ActionListener, KeyListener {
 		
 		// Make scrolling possible:
 		chatText.setEditable(false);
-		scroll = new JScrollPane (chatText);
+		scroll = new JScrollPane(chatText);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		// Either set lineWrap to true or make horizontal scrolling available. Just change the commented line to get the other option.
 		// One of them has to be active or long text will be cut.
@@ -134,7 +138,7 @@ public class Chat implements ActionListener, KeyListener {
 		//chatPanel.add(new JLabel("MAIN CHAT")); Already existing in Tab
 		chatPanel.add(scroll);
 		// The Panel with the text input for the chat and username change
-		JPanel textInputPanel = new JPanel(new GridLayout(2,2));
+		JPanel textInputPanel = new JPanel(new GridLayout(2, 2));
 		textInputPanel.add(chatInput);
 		textInputPanel.add(sendChatButton);
 		textInputPanel.add(usernameChangeInput);
@@ -155,12 +159,17 @@ public class Chat implements ActionListener, KeyListener {
 		gameCreationBox.add(watchGameButton);
 		mainPanel.add(gameCreationBox, BorderLayout.LINE_START);
 		
-        
-		// Add the main Panel as a Tab to the tabbedPanel.
-        tab.addTab("Main Chat", mainPanel);
-        // Add the tabbedPanel to the main frame
-		chatFrame.add(tab);
+		// The right panel with the user list and the ability to create whisper chats
+		Box userOverviewBox = Box.createVerticalBox();
+		JScrollPane userListScroller = new JScrollPane(userList);
+		userOverviewBox.add(userListScroller);
+		userOverviewBox.add(whisperButton);
+		mainPanel.add(userOverviewBox, BorderLayout.LINE_END);
 		
+		// Add the main Panel as a Tab to the tabbedPanel.
+		tabbedPane.addTab("Main Chat", mainPanel);
+		// Add the tabbedPanel to the main frame
+		chatFrame.add(tabbedPane);
 		
 		
 		// Non-Layout specific configurations for the ui elements
@@ -173,10 +182,17 @@ public class Chat implements ActionListener, KeyListener {
 		
 		newGameButton.addActionListener(this);
 		joinGameButton.addActionListener(this);
+		openGameList.addMouseListener(this);
+		watchGameButton.addActionListener(this);
+		runningGameList.addMouseListener(this);
 		
 		openGameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		openGameList.setLayoutOrientation(JList.VERTICAL);
+		runningGameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		runningGameList.setLayoutOrientation(JList.VERTICAL);
 		
+		userList.addMouseListener(this);
+		whisperButton.addActionListener(this);
 		
 		chatFrame.setVisible(true);
 		
@@ -188,6 +204,7 @@ public class Chat implements ActionListener, KeyListener {
 	
 	/**
 	 * Sets the Title of the Chat Window.
+	 *
 	 * @param newTitle
 	 */
 	public void setTitle(String newTitle) {
@@ -196,6 +213,7 @@ public class Chat implements ActionListener, KeyListener {
 	
 	/**
 	 * Takes the proposed username and puts it in the textfield. It's called when the chosen username is already taken.
+	 *
 	 * @param proposedUsername the proposed username (with a number at the end)
 	 */
 	public void proposeUsername(String proposedUsername) {
@@ -204,6 +222,7 @@ public class Chat implements ActionListener, KeyListener {
 	
 	/**
 	 * This is to display info like when a new user joins or when a user changes their name.
+	 *
 	 * @param info the info text to display.
 	 */
 	public void displayInfo(String info) {
@@ -222,6 +241,7 @@ public class Chat implements ActionListener, KeyListener {
 	
 	/**
 	 * Adds a {@link ChatMessage} to the chat and displays it properly.
+	 *
 	 * @param chatMessage the message to display
 	 */
 	public void addNewMessage(ChatMessage chatMessage) {
@@ -239,7 +259,6 @@ public class Chat implements ActionListener, KeyListener {
 	}
 	
 	
-	
 	public void addNewGameToList(ClientGameStartController cgsc) {
 		openGameListModel.addElement(cgsc);
 	}
@@ -255,6 +274,7 @@ public class Chat implements ActionListener, KeyListener {
 	
 	/**
 	 * Gets the Game with the specified name from the List of games.
+	 *
 	 * @return The ClientGameStartController or null if the name doesn't exist.
 	 */
 	public ClientGameStartController getWaitingGameByName(String gameName) {
@@ -266,6 +286,11 @@ public class Chat implements ActionListener, KeyListener {
 		return null;
 	}
 	
+	/**
+	 * Invoked when an action occurs.
+	 *
+	 * @param e The ActionEvent
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -273,26 +298,29 @@ public class Chat implements ActionListener, KeyListener {
 			sendChangeUsernameRequest();
 			
 		} else if (e.getSource() == sendChatButton) {
-			// TODO Meilenstein 3: add possibility (maybe different chat windows?) to send to specific user.
 			sendMessage();
 			
 		} else if (e.getSource() == newGameButton) {
 			openNewGameInputWindow();
 			
 		} else if (e.getSource() == joinGameButton) {
-			ClientGameStartController cgsc = openGameList.getSelectedValue();
-			if (cgsc != null)
-				cgsc.joinGame();
+			joinGameAtIndex(openGameList.getSelectedIndex());
 			
+		} else if (e.getSource() == runningGameList) {
+			watchGameAtIndex(runningGameList.getSelectedIndex());
+			
+		} else if (e.getSource() == whisperButton) {
+			openWhisperChat(userList.getSelectedIndex());
 		}
 	}
 	
-	
-	private void openNewGameInputWindow() {
-		newGameDialog = new NewGameDialog(chatFrame);
-	}
-	
-	
+	/**
+	 * Invoked when a key has been pressed.
+	 * See the class description for {@link KeyEvent} for a definition of
+	 * a key pressed event.
+	 *
+	 * @param e The KeyEvent.
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
@@ -306,6 +334,64 @@ public class Chat implements ActionListener, KeyListener {
 			default:
 				break;
 		}
+	}
+	
+	/**
+	 * Invoked when the mouse button has been clicked (pressed
+	 * and released) on a component.
+	 *
+	 * @param e The MouseEvent
+	 */
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (e.getSource() == userList) {
+			if (e.getClickCount() == 2) {
+				int index = userList.locationToIndex(e.getPoint());
+				openWhisperChat(index);
+			}
+			
+		} else if (e.getSource() == openGameList) {
+			if (e.getClickCount() == 2) {
+				int index = openGameList.locationToIndex(e.getPoint());
+				joinGameAtIndex(index);
+			}
+			
+		} else if (e.getSource() == runningGameList) {
+			if (e.getClickCount() == 2) {
+				int index = runningGameList.locationToIndex(e.getPoint());
+				watchGameAtIndex(index);
+			}
+			
+		}
+	}
+	
+	
+	/**
+	 * Opens the {@link #newGameDialog}.
+	 */
+	private void openNewGameInputWindow() {
+		newGameDialog = new NewGameDialog(chatFrame);
+	}
+	
+	/**
+	 * Calls the {@link ClientGameStartController#joinGame()} method of the game at the given position of the {@link #openGameList}.
+	 * @param index the given position at the openGameList.
+	 */
+	private void joinGameAtIndex(int index) {
+		ClientGameStartController cgsc = openGameListModel.elementAt(index);
+		if (cgsc != null)
+			cgsc.joinGame();
+	}
+	
+	
+	/**
+	 * Calls the {@link ClientGameController#watchGame()} method of the game at the given position of the {@link #runningGameList}.
+	 * @param index the given position at the runningGameList.
+	 */
+	private void watchGameAtIndex(int index) {
+		ClientGameController cgc = runningGameListModel.elementAt(index);
+		if (cgc != null)
+			cgc.watchGame();
 	}
 	
 	/**
@@ -336,6 +422,64 @@ public class Chat implements ActionListener, KeyListener {
 		usernameChangeInput.setText("");
 	}
 	
+	/**
+	 * Opens a whisper chat tab with the selected user from {@link #userList}.
+	 *
+	 * @param index The index from the userList where the desired user is at.
+	 */
+	private void openWhisperChat(int index) {
+		ClientUser user = userListModel.elementAt(index);
+		// CHeck if there is already a tab open with that user.
+		for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+			if (tabbedPane.getTitleAt(i).equals(user.getName())) {
+				displayInfo("You already have a chat with that user");
+				return;
+			}
+		}
+		WhisperTab whisperTab = new WhisperTab(user);
+		tabbedPane.addTab(user.getName(), whisperTab);
+	}
+	
+	/**
+	 * Adds the user to the list when they logged in.
+	 * @param user the new user.
+	 */
+	public void addUserToUserlist(ClientUser user) {
+		if (user == Client.getThisUser())
+			System.err.println("Chat#addUserToUserlist - trying to add this user to the list!");
+		userListModel.addElement(user);
+	}
+	
+	/**
+	 * Removes the user from the list, when they logged of.
+	 * @param user the user to remove.
+	 */
+	public void removeUserFromUserlist(ClientUser user) {
+		userListModel.removeElement(user);
+	}
+	
+	/**
+	 * Renames the user at the user list and the tab of the user.
+	 * TODO Needed?
+	 */
+	public void renamedUser(String oldName, String newName, ClientUser user) {
+		
+		// Update userList
+		int userListIndex = userListModel.indexOf(user);
+		userListModel.set(userListIndex, user);
+		
+		// Update tabbedPane
+		boolean userFound = false;
+		for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+			if (tabbedPane.getTitleAt(i).equals(oldName)) {
+				tabbedPane.setTitleAt(i, newName);
+				userFound = true;
+			}
+		}
+		if (userFound == false) {
+			System.err.println("Chat#renamedUser - No user found with oldName: " + oldName);
+		}
+	}
 	
 	
 	@Override
@@ -348,5 +492,27 @@ public class Chat implements ActionListener, KeyListener {
 	
 	}
 	
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+	
+	}
+	
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+	
+	}
+	
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	
+	}
+	
+	@Override
+	public void mouseExited(MouseEvent e) {
+	
+	}
 }
 

@@ -53,6 +53,7 @@ public class ClientNuserHandler extends CommandHandler {
 		if (user != null) {
 			user.setName(newName);
 			if (Client.isLoggedIn() && Client.getChatWindow() != null) {
+				Client.getChatWindow().renamedUser(oldName, newName, user);
 				Client.getChatWindow().displayInfo( oldName + " changed their name to " + newName );
 			}
 		} else {

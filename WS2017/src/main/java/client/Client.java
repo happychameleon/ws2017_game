@@ -99,7 +99,9 @@ public class Client {
 	 * @param user The user to delete.
 	 */
 	public static void removeUser(ClientUser user) {
+		
 		users.remove(user);
+		chatWindow.removeUserFromUserlist(user);
 	}
 	
 	
@@ -108,7 +110,10 @@ public class Client {
 	 * @param username the username of the new user.
 	 */
 	public static void addNewUser(String username) {
-		users.add(new ClientUser(username));
+		
+		ClientUser newUser = new ClientUser(username);
+		users.add(newUser);
+		chatWindow.addUserToUserlist(newUser);
 	}
 	
 	/**
@@ -161,6 +166,12 @@ public class Client {
 	 * @param usernames
 	 */
 	public static void readInAllUsernames(ArrayList<String> usernames) {
+		if (chatWindow != null) {
+			System.err.println("Chat Window should be null before receiving all usernames!");
+		}
+		isLoggedIn = true;
+		chatWindow = new Chat();
+		
 		for (String username : usernames) {
 			if (username.equals(thisUser.getName())) {
 				// We already added ourselves at the start.
@@ -169,12 +180,9 @@ public class Client {
 			}
 			ClientUser user = new ClientUser(username);
 			users.add(user);
+			chatWindow.addUserToUserlist(user);
 		}
-		if (chatWindow != null) {
-			System.err.println("Chat Window should be null before receiving all usernames!");
-		}
-		isLoggedIn = true;
-		chatWindow = new Chat();
+		
 	}
 	
 	/**
