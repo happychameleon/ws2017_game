@@ -3,7 +3,7 @@ package client;
 import client.commands.Command;
 
 /**
- * TODO: write a good comment for javadoc
+ * Compares keywords and if invalid returns an error
  *
  * Created by m on 3/23/17.
  */
