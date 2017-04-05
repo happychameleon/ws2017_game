@@ -1,41 +1,16 @@
 package client.commands;
 
-import client.Client;
 import client.ClientCommandParser;
 import java.io.IOException;
 
 /**
- * Class sends pong to server, if server does not respond
- * before timeout the Client closes socket and shuts down.
+ * TimeoutThread is started by the class ClientPongSender when ping is received.
+ * If the thread is not interrupted in time by another ping the client closes its
+ * socket and shuts down.
  *
- * Created by m on 3/26/17.
+ * Created by m on 04/04/17.
  */
-public class ClientCpongSender {
-    ClientCommandParser commandParser;
-    TimeoutThread newTimeoutThread = new TimeoutThread(commandParser);
 
-    public ClientCpongSender(ClientCommandParser commandParser){
-        this.commandParser = commandParser;
-    }
-
-    /**
-     * Function is called if a ping has been received from the server.
-     */
-    public void sendCpong(){
-        newTimeoutThread.interrupt();
-        Client.sendMessageToServer("cpong");
-        newTimeoutThread = new TimeoutThread(commandParser);
-        newTimeoutThread.start();
-    }
-}
-
-
-
-
-
-/**
- * TODO: write a good comment for javadoc
- */
 class TimeoutThread extends Thread{
     ClientCommandParser commandParser;
     public TimeoutThread(ClientCommandParser commandParser){

@@ -207,31 +207,3 @@ public class Server {
     }
 }
 
-/**
- * TODO: write a good comment for javadoc
- */
-class GameClientThread extends Thread{
-    private int connectedGameClient;
-    private Socket socket;
-    public GameClientThread(int connectedGameClient, ArrayList userList, Socket socket){
-        this.connectedGameClient = connectedGameClient;
-        this.socket = socket;
-    }
-    public void run() {
-        System.out.println("gameserver connected to client " + connectedGameClient);
-        try {
-            OutputStream out = socket.getOutputStream();
-            //out.write(("+OK gameserver connected to client " + connectedGameClient + " \r\n").getBytes());
-            ServerUser user = new ServerUser(null, socket);
-            Server.addUserToList(user);
-            CommandParser gameProtocol = new CommandParser(socket, user);
-            gameProtocol.validateProtocol();
-            System.out.println("connection to client " + connectedGameClient + " is being terminated");
-            Server.removeUserFromList(user);
-            Server.writeToAllClients("cquit " + user.getName());
-            socket.close();
-        } catch (IOException e) {
-            System.err.println(e.toString());
-        }
-    }
-}

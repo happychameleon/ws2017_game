@@ -261,32 +261,3 @@ public class Client {
     }
 	
 }
-
-
-/**
- * TODO: write a good comment for javadoc
- */
-class ClientThread extends Thread{
-	Socket serverSocket;
-    InputStream in;
-    OutputStream out;
-    boolean stopreaquest;
-    public ClientThread(Socket serverSocket){
-        super();
-        this.serverSocket = serverSocket;
-		stopreaquest = false;
-    }
-	
-	/**
-	 * TODO: write a good comment for javadoc
-	 */
-	public synchronized void requestStop(){
-        stopreaquest = true;
-    }
-
-
-    public void run(){
-        ClientCommandParser commandParser = new ClientCommandParser(serverSocket, stopreaquest);
-	    commandParser.stopValidatingCommand(stopreaquest);
-    }
-}

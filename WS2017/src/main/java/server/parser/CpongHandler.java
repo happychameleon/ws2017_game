@@ -1,7 +1,8 @@
 package server.parser;
 
 /**
- * TODO: write a good javadoc
+ * When pong is received from client CpongHandler calls pingConfirmation() function
+ * PingSender
  *
  * Created by flavia on 26.03.17.
  */
@@ -10,6 +11,6 @@ public class CpongHandler extends CommandHandler {
 	
 	@Override
 	public void handleCommand() {
-		commandParser.getCpingSender().pingConfirmation();
+		commandParser.getPingSender().pingConfirmation();
 	}
 }
