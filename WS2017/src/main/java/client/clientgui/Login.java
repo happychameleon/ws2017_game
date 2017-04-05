@@ -14,13 +14,29 @@ import java.awt.event.KeyListener;
  */
 public class Login implements ActionListener, KeyListener {
 	
-	
+	/**
+	 * The login window.
+	 */
 	JFrame userFrame = new JFrame("User Login");
+	
+	/**
+	 * The label to indicate where to enter the Username.
+	 */
 	JLabel userLabel = new JLabel("Username:");
+	
+	/**
+	 * The Text Field where the username can be entered.
+	 */
 	JTextField userNameText = new JTextField(20);
+	
+	/**
+	 * The button with which the username can be sent to the server.
+	 */
 	JButton loginButton = new JButton("Login");
 	
-	
+	/**
+	 * Opens the login window.
+	 */
 	public Login() {
 		
 		frame();
