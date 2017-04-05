@@ -98,6 +98,66 @@ recipient:
 > s: chatm &lt;sender\_name&gt; &lt;recipient\_name&gt; ’&lt;message&gt;’
 > c: chatr &lt;sender\_name&gt; &lt;recipient\_name&gt;
 
+Games State
+-----------
+
+### Game Creation and Destruction
+
+The Client tells the server that they created a new game.
+Client to Server:
+
+> newgm &lt;points&gt; &lt;gamename&gt;
+
+If name is Taken, Server writes back to client. Server informs the Client that the chosen game name is already taken.
+Server to Client:
+
+> -ERR game name taken
+
+Else the Server tells then all the Clients about the new game (including creator). The Server informs the Clients about the new game which can now be joined.
+Informs all the clients that this game was deleted (because every player left it). The game could either be already playing or still be in the starting phase.
+Server to all Clients:
+
+> rmgam &lt;gamename&gt;
+
+The Client informs the Server that they want to join the game.
+Client to Server:
+
+> joing &lt;gamename&gt; &lt;username&gt;
+
+The Server informs all the Clients, that the client has joined this game.
+The Server informs the user that there is no place left in the game.
+Server to Client:
+
+> -ERR joing game already full
+
+The Client tells the server that it is ready and has chosen the specified characters.
+Client to Server:
+
+> ready &lt;username&gt; &lt;gamename&gt; \[&lt;characterstring&gt;\]
+
+The Server tells the Clients (including sender) that the Client is now ready. Server to Client:
+
+> \[&lt;characterstring&gt;\] is formated as following (with any number of characters &gt; 0):
+> \[&lt;character1name&gt; ’&lt;weapon1name&gt;’ &lt;character2name&gt; ’&lt;weapon2name&gt;’\]
+
+Client asks about all open games (similar to cgetu).
+Client to Server:
+
+> cgetg
+
+Client asks when getting the answer for the cgetu command, after registering all usernames (to make sure they are registered). Server responds with a response for each game (waiting = not yet started; running = already playing):
+
+> +OK cgetg waiting &lt;gameName&gt; &lt;maxPoints&gt; &lt;username1&gt; (ready \[&lt;characterstring&gt;\]|choosing) &lt;username2&gt; (ready \[&lt;characterstring&gt;\]|choosing)
+> +OK cgetg running &lt;gameName&gt; &lt;username1&gt; &lt;username2&gt;
+
+The Client informs the server that they left the game.
+Client to Server:
+
+> leavg &lt;gamename&gt; &lt;username&gt;
+
+The Server informs all the Clients, that the Client has left the game.
+Server to Client:
+
 UPDATE State Commands
 =====================
 

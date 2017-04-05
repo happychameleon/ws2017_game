@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="Gruppe-04-WS2017_main" target="1.8" />
+      <module name="Gruppe-04-WS2017_test" target="1.8" />
       <module name="WS2017_main" target="1.8" />
       <module name="WS2017_test" target="1.8" />
     </bytecodeTargetLevel>

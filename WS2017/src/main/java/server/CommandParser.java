@@ -7,7 +7,9 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 /**
- * TODO: write a good comment for javadoc
+ * CommandParser parses the bytestream sent by a client and parses commands from it and separates
+ * the commands in keywords and argument. The CommandParser can also write back to a client connected
+ * to the server.
  *
  * Created by m on 3/14/17.
  */
@@ -42,16 +44,18 @@ public class CommandParser {
     private String argument = "";
 	
 	/**
-	 * TODO: write a good comment for javadoc
+	 * Creates a new PingSender so that a ping can be sent as soon as the validateProtocol
+	 * function is called.
 	 */
-	private CpingSender cpingSender;
+	private PingSender pingSender;
 	
-	public CpingSender getCpingSender() {
-		return cpingSender;
+	public PingSender getPingSender() {
+		return pingSender;
 	}
 	
 	/**
-	 * Whenever the client should quit after a command (e.g. via the cquit command) this variable has to be set to true.
+	 * Whenever the client should quit after a command (e.g. via the cquit command)
+	 * this variable has to be set to true.
 	 */
 	public boolean shouldQuit = false;
 
@@ -84,8 +88,8 @@ public class CommandParser {
 	 * Calls necessary functions to validate and execute commands.
 	 */
     public void validateProtocol(){
-        cpingSender = new CpingSender(this);
-        cpingSender.sendPing();
+        pingSender = new PingSender(this);
+        pingSender.sendPing();
 	    int c;
 	    try {
 		    c = in.read();
@@ -101,7 +105,7 @@ public class CommandParser {
 
             inputToCommandArgument();
 
-            KeywordParser keywordParser = new KeywordParser(keyword, argument, cpingSender, this);
+            KeywordParser keywordParser = new KeywordParser(keyword, argument, pingSender, this);
 
             if(isValidCommand()){
                 keywordParser.compareKeyword();
@@ -118,7 +122,7 @@ public class CommandParser {
             	c = -1;
             }
         }
-        cpingSender.terminatePingThread();
+        pingSender.terminatePingThread();
 		    
     }
 	

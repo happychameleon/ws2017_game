@@ -1,6 +1,6 @@
 package client;
 
-import client.commands.ClientCpongSender;
+import client.commands.ClientPongSender;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +9,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 /**
- * TODO: write a good comment for javadoc
+ * ClientCommandParser parses the bytestream sent by the server, parses commands from it and separates
+ * the commands in keywords and argument.
  *
  * Created by m on 3/23/17
  */
@@ -23,10 +24,10 @@ public class ClientCommandParser {
     private String keyword = "";
     private String argument = "";
 
-    private ClientCpongSender cpongSender = new ClientCpongSender(this);
+    private ClientPongSender cpongSender = new ClientPongSender(this);
 
     /**
-     * TODO: write a good comment for javadoc
+     * Constructor for ClientCommandParser creates an inputstream and outputstream from the serversocket.
      * @param serverSocket
      * @param stopRequest
      */
@@ -54,7 +55,8 @@ public class ClientCommandParser {
     }
 
     /**
-     * TODO: write a good comment for javadoc
+     * stopValidatingCommand can stop the while loop in validateCommand() by setting stoprequest to true
+     * which causes the ClientThread to stop.
      * @param stoprequest
      */
     public void stopValidatingCommand(boolean stoprequest){
@@ -62,7 +64,7 @@ public class ClientCommandParser {
     }
 
     /**
-     * TODO: write a good comment for javadoc
+     * validateCommand() is called by ClientThread to parse and validate input from the server.
      */
     private void validateCommand() {
         int len;
@@ -74,7 +76,7 @@ public class ClientCommandParser {
                         break;
                     }
                     inputTranslate(in, len);
-                    inputToCommandArgument();
+                    inputToKeywordArgument();
                     if(isValidCommand()){
                         ClientKeywordParser keywordParser = new ClientKeywordParser(keyword, argument, this);
                         keywordParser.compareKeyword();
@@ -82,6 +84,7 @@ public class ClientCommandParser {
                         ClientAnswerParser answerParser = new ClientAnswerParser(keyword, argument, this);
 		                answerParser.compareAnswer();
                     }
+                    //prints all commands from server except cping
                     if (keyword.equals("cping") == false)
 	                    System.out.println(command.toString());
                     //clears all global variables
@@ -99,7 +102,8 @@ public class ClientCommandParser {
     }
 
     /**
-     * TODO: write a good comment for javadoc
+     * Takes the InputStream from the server and buffers it in the command StringBuffer till the
+     * function reads the terminating signal for a command.
      * @param in
      * @param c
      */
@@ -128,9 +132,9 @@ public class ClientCommandParser {
     }
 
     /**
-     * TODO: write a good comment for javadoc
+     * inputToKeywordArgument splits the command in to the keyword and the argument.
      */
-    private void inputToCommandArgument() {
+    private void inputToKeywordArgument() {
         //checks for space between keyword and argument in command string
         int keywordEnd = command.indexOf(" ");
         if(keywordEnd > 0){
