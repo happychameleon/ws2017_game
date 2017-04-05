@@ -1,5 +1,6 @@
 package client.clientgui;
 
+import client.Client;
 import client.ClientUser;
 
 import javax.swing.*;
@@ -35,8 +36,22 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 		return messages.get(messages.size() - 1);
 	}
 	
-	
+	/**
+	 * All the users of this chat.
+	 */
 	private final ArrayList<ClientUser> chatUsers;
+	
+	/**
+	 * @return A shallow copy of {@link #chatUsers}.
+	 */
+	public ArrayList<ClientUser> getChatUsers() {
+		return (ArrayList<ClientUser>) chatUsers.clone();
+	}
+	
+	/**
+	 * The command to send the chat message with (eg chatm or chatw).
+	 */
+	private final String chatCommand;
 	
 	
 	JTextField chatInputTextField = new JTextField(15);
@@ -47,9 +62,11 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 	/**
 	 * Creates a Chat Panel where users can Chat.
 	 * @param chatUsers The Users in this Chat.
+	 * @param chatCommand The command to send the chat message with (eg chatm or chatw).
 	 */
-	public ChatPanel(ArrayList<ClientUser> chatUsers) {
+	public ChatPanel(ArrayList<ClientUser> chatUsers, String chatCommand) {
 		this.chatUsers = chatUsers;
+		this.chatCommand = chatCommand;
 		
 		// Chat Text
 		chatTextArea.setEditable(false);
@@ -73,8 +90,6 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 		
 		
 	}
-	
-	
 	
 	
 	/**
@@ -118,14 +133,18 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 	 * Sends the text in the chat text field {@link #chatInputTextField} as a chat message to all the connected clients.
 	 */
 	private void sendMessage() {
-		if (chatInputTextField.getText().isEmpty())
+		String message = chatInputTextField.getText();
+		if (message.isEmpty())
 			return;
 		
 		ArrayList<ClientUser> receivers = new ArrayList<>();
 		for (ClientUser user : chatUsers) {
 			receivers.add(user);
 		}
-		new ChatMessage(chatInputTextField.getText(), receivers);
+		ClientUser sender = Client.getThisUser();
+		for (ClientUser receiver : receivers) {
+			Client.sendMessageToServer(chatCommand + " " + sender.getName() + " " + receiver.getName() + " '" + message + "'");
+		}
 		chatInputTextField.setText("");
 	}
 	

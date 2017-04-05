@@ -1,6 +1,5 @@
 package client.clientgui;
 
-import client.Client;
 import client.ClientUser;
 
 import java.util.ArrayList;
@@ -43,19 +42,5 @@ public class ChatMessage {
 		this.receivers = receivers;
 	}
 	
-	/**
-	 * This constructor is used to send new Messages to other users.
-	 * It creates the message and sends it via the server to the user(s).
-	 * @param message the message text.
-	 * @param receivers the users to receive the message.
-	 */
-	public ChatMessage(String message, ArrayList<ClientUser> receivers) {
-		this.message = message;
-		this.sender = Client.getThisUser();
-		this.receivers = receivers;
-		
-		for (ClientUser reveiver : receivers) {
-			Client.sendMessageToServer("chatm " + sender.getName() + " " + reveiver.getName() + " '" + message + "'");
-		}
-	}
+	
 }

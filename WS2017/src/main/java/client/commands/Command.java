@@ -12,6 +12,7 @@ public enum Command {
 	cping(new ClientCpingHandler()),
 	cquit(new ClientCquitHandler()),
 	chatm(new ClientChatmHandler()),
+	chatw(new ClientChatwHandler()),
 	nuser(new ClientNuserHandler()),
 	newgm(new ClientNewgmHandler()),
 	joing(new ClientJoingHandler()),

@@ -4,10 +4,12 @@ import client.Client;
 import client.ClientUser;
 import game.ClientGameController;
 import game.startscreen.ClientGameStartController;
+import serverclient.User;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 /**
  * The general Chat window where all users can chat with each other and name changes can be requested.
@@ -16,7 +18,7 @@ import java.awt.event.*;
  */
 public class MainChatWindow implements ActionListener, KeyListener, MouseListener {
 	
-	
+	//region Swing Components
 	/**
 	 * Contains the different tabs.
 	 */
@@ -42,11 +44,16 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 */
 	JButton usernameChangeButton = new JButton("Change Username");
 	
+	/**
+	 * The ChatPanel where this Client can chat with every logged in users.
+	 */
+	private ChatPanel mainChatPanel;
 	
-	private ChatPanel chatPanel;
-	
-	public ChatPanel getChatPanel() {
-		return chatPanel;
+	/**
+	 * @return {@link #mainChatPanel}.
+	 */
+	public ChatPanel getMainChatPanel() {
+		return mainChatPanel;
 	}
 	
 	DefaultListModel<ClientGameStartController> openGameListModel = new DefaultListModel<>();
@@ -93,8 +100,10 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 * Opens a chat with the selected user from {@link #userList}.
 	 */
 	JButton whisperButton = new JButton("Open Chat");
+	//endregion
 	
 	
+	//region Initializing and GUI-Layout
 	/**
 	 * Opens the main Chat window.
 	 */
@@ -113,7 +122,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		mainFrame.setSize(1000, 700);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		usernameChangeInput.setFont(new Font("Courier New", Font.ITALIC, 30));
+		//usernameChangeInput.setFont(new Font("Courier New", Font.ITALIC, 30));
 		//sendChatButton.setPreferredSize(new Dimension(100, 50));
 		//usernameChangeButton.setPreferredSize(new Dimension(200,50));
 		
@@ -121,10 +130,13 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		// Create main Panel for the chat
 		mainPanel = new JPanel(new BorderLayout(20, 10));
 		
-		// The middle contains the MainChatWindow Panel
-		chatPanel = new ChatPanel(Client.getAllUsers());
-		chatPanel.setPreferredSize(new Dimension(500, 700));
-		mainPanel.add(chatPanel, BorderLayout.CENTER);
+		// The middle contains the tabbedPane with the Main Chat and future Whisper Chats
+		mainChatPanel = new ChatPanel(Client.getAllUsers(), "chatm");
+		mainChatPanel.setPreferredSize(new Dimension(500, 700));
+		tabbedPane.addTab("Main Chat", mainChatPanel);
+		JPanel middlePanel = new JPanel(new BorderLayout(20, 10));
+		middlePanel.add(tabbedPane, BorderLayout.CENTER);
+		mainPanel.add(middlePanel, BorderLayout.CENTER);
 		
 		// The left panel with the game selection and new game creation.
 		Box gameCreationBox = Box.createVerticalBox();
@@ -148,16 +160,13 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		
 		// Username change at the bottom (TODO Better place for this)
 		JPanel usernameChangePanel = new JPanel(new GridLayout(1,2));
+		usernameChangePanel.setPreferredSize(new Dimension(200, 50));
 		usernameChangePanel.add(usernameChangeInput);
 		usernameChangePanel.add(usernameChangeButton);
-		mainPanel.add(usernameChangePanel, BorderLayout.PAGE_END);
+		middlePanel.add(usernameChangePanel, BorderLayout.PAGE_END);
 		
-		
-		// Add the main Panel as a Tab to the tabbedPanel.
-		tabbedPane.addTab("Main Chat", mainPanel);
-		// Add the tabbedPanel to the main frame
-		mainFrame.add(tabbedPane);
-		
+		// Add the mainPanel to the main frame
+		mainFrame.add(mainPanel);
 		
 		
 		// Non-Layout specific configurations for the ui elements
@@ -184,39 +193,34 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		usernameChangeButton.addActionListener(this);
 		
 	}
+	//endregion
 	
 	
+	//region Methods
+	//region GameList Methods
 	/**
-	 * Sets the Title of the Main Window.
-	 *
-	 * @param newTitle the new Title for the Main Window.
+	 * Adds a new game to the list of open games.
+	 * @param cgsc the new game.
 	 */
-	public void setTitle(String newTitle) {
-		mainFrame.setTitle(newTitle);
-	}
-	
-	/**
-	 * Takes the proposed username and puts it in the {@link #usernameChangeInput}. It's called when the chosen username is already taken.
-	 *
-	 * @param proposedUsername the proposed username (with a number at the end)
-	 */
-	public void proposeUsername(String proposedUsername) {
-		usernameChangeInput.setText(proposedUsername);
-	}
-	
-	
-	
 	public void addNewGameToList(ClientGameStartController cgsc) {
 		openGameListModel.addElement(cgsc);
 	}
 	
+	/**
+	 * Adds a game to the list of running games.
+	 * @param cgc the running game.
+	 */
 	public void addRunningGameToList(ClientGameController cgc) {
 		runningGameListModel.addElement(cgc);
 	}
 	
+	/**
+	 * Removes a deleted game.
+	 * @param cgsc the deleted game.
+	 */
 	public void removeGameFromList(ClientGameStartController cgsc) {
 		openGameListModel.removeElement(cgsc);
-		chatPanel.displayInfo("The game " + cgsc.getGameName() + " has been removed, because there were no players left.");
+		mainChatPanel.displayInfo("The game " + cgsc.getGameName() + " has been removed, because there were no players left.");
 	}
 	
 	/**
@@ -233,6 +237,158 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		return null;
 	}
 	
+	/**
+	 * Opens the {@link #newGameDialog}.
+	 */
+	private void openNewGameInputWindow() {
+		newGameDialog = new NewGameDialog(mainFrame);
+	}
+	
+	/**
+	 * Calls the {@link ClientGameStartController#joinGame()} method of the game at the given position of the {@link #openGameList}.
+	 * @param index the given position at the openGameList.
+	 */
+	private void joinGameAtIndex(int index) {
+		ClientGameStartController cgsc = openGameListModel.elementAt(index);
+		if (cgsc != null)
+			cgsc.joinGame();
+	}
+	
+	/**
+	 * Calls the {@link ClientGameController#watchGame()} method of the game at the given position of the {@link #runningGameList}.
+	 * @param index the given position at the runningGameList.
+	 */
+	private void watchGameAtIndex(int index) {
+		ClientGameController cgc = runningGameListModel.elementAt(index);
+		if (cgc != null)
+			cgc.watchGame();
+	}
+	//endregion
+	
+	//region Username Change Methods
+	/**
+	 * Takes the proposed username and puts it in the {@link #usernameChangeInput}. It's called when the chosen username is already taken.
+	 *
+	 * @param proposedUsername the proposed username (with a number at the end)
+	 */
+	public void proposeUsername(String proposedUsername) {
+		usernameChangeInput.setText(proposedUsername);
+	}
+	
+	/**
+	 * Sends a message to the server requesting to change the username.
+	 */
+	private void sendChangeUsernameRequest() {
+		String username = usernameChangeInput.getText();
+		if (username.isEmpty() || username.contains(" ") || username.contains("'"))
+			return;
+		Client.sendMessageToServer("uname " + username);
+		usernameChangeInput.setText("");
+	}
+	//endregion
+	
+	//region UserList and Chat Methods
+	/**
+	 * Opens a whisper chat tab with the selected user from {@link #userList}.
+	 *
+	 * @param user The user to chat with.
+	 */
+	public ChatPanel openWhisperChat(ClientUser user) {
+		// Check if there is already a tab open with that user.
+		if (getWhisperChatForUser(user) != null) {
+			mainChatPanel.displayInfo("You already have a chat with that user");
+			return null;
+		}
+		ArrayList<ClientUser> whisperUsers = new ArrayList<>();
+		whisperUsers.add(user);
+		ChatPanel whisperTab = new ChatPanel(whisperUsers, "chatw");
+		tabbedPane.addTab(user.getName(), whisperTab);
+		tabbedPane.setSelectedComponent(whisperTab);
+		return whisperTab;
+	}
+	
+	/**
+	 * Returns the whisper chat tab of the given user.
+	 * @param user the given user
+	 * @return the whisper ChatPanel of the user.
+	 */
+	public ChatPanel getWhisperChatForUser(User user) {
+		if (user == Client.getThisUser()) {
+			System.err.println("MainChatWindow#getWhisperChatForUser - Should never get it for the own user.");
+			return null;
+		}
+		for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+			ArrayList<ClientUser> chatUsers = ((ChatPanel) tabbedPane.getComponentAt(i)).getChatUsers();
+			if (chatUsers.size() == 1 && chatUsers.get(0) == user) {
+				return (ChatPanel) tabbedPane.getComponentAt(i);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Adds the user to the list when they logged in and to the main chat.
+	 *
+	 * @param user the new user.
+	 */
+	public void addUserToUserlist(ClientUser user) {
+		if (user == Client.getThisUser())
+			System.err.println("MainChatWindow#addUserToUserlist - trying to add this user to the list!");
+		userListModel.addElement(user);
+		mainChatPanel.addChatUser(user);
+	}
+	
+	/**
+	 * Removes the user from the list and the main chat, when they logged of.
+	 * Also closes the whisper chat with the user if one is open.
+	 *
+	 * @param user the user to remove.
+	 */
+	public void removeUserFromUserlist(ClientUser user) {
+		userListModel.removeElement(user);
+		mainChatPanel.removeChatUser(user);
+		tabbedPane.remove(getWhisperChatForUser(user));
+	}
+	
+	/**
+	 * Renames the user in the user list and the tab of the user (not this user itself).
+	 *
+	 * @param oldName The user's old name.
+	 * @param newName The user's new name.
+	 * @param user The user.
+	 */
+	public void renamedUser(String oldName, String newName, ClientUser user) {
+		// Update userList
+		int userListIndex = userListModel.indexOf(user);
+		userListModel.set(userListIndex, user);
+		
+		// Update tabbedPane
+		ChatPanel chatPanel = getWhisperChatForUser(user);
+		if (chatPanel != null) {
+			int i = tabbedPane.indexOfComponent(chatPanel);
+			tabbedPane.setTitleAt(i, newName);
+		} else {
+			System.err.println("MainChatWindow#renamedUser - No user found with oldName: " + oldName);
+		}
+		
+		chatPanel.displayInfo( oldName + " changed their name to " + newName );
+	}
+	//endregion
+	
+	//region Misc Methods
+	/**
+	 * Sets the Title of the Main Window.
+	 *
+	 * @param newTitle the new Title for the Main Window.
+	 */
+	public void setTitle(String newTitle) {
+		mainFrame.setTitle(newTitle);
+	}
+	//endregion
+	//endregion
+	
+	
+	//region Listeners
 	/**
 	 * Invoked when an action occurs.
 	 *
@@ -254,7 +410,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 			watchGameAtIndex(runningGameList.getSelectedIndex());
 			
 		} else if (e.getSource() == whisperButton) {
-			openWhisperChat(userList.getSelectedIndex());
+			openWhisperChat(userListModel.elementAt(userList.getSelectedIndex()));
 		}
 	}
 	
@@ -288,8 +444,8 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == userList) {
 			if (e.getClickCount() == 2) {
-				int index = userList.locationToIndex(e.getPoint());
-				openWhisperChat(index);
+				ClientUser user = userListModel.elementAt(userList.locationToIndex(e.getPoint()));
+				openWhisperChat(user);
 			}
 			
 		} else if (e.getSource() == openGameList) {
@@ -306,116 +462,9 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 			
 		}
 	}
+	//endregion
 	
 	
-	/**
-	 * Opens the {@link #newGameDialog}.
-	 */
-	private void openNewGameInputWindow() {
-		newGameDialog = new NewGameDialog(mainFrame);
-	}
-	
-	/**
-	 * Calls the {@link ClientGameStartController#joinGame()} method of the game at the given position of the {@link #openGameList}.
-	 * @param index the given position at the openGameList.
-	 */
-	private void joinGameAtIndex(int index) {
-		ClientGameStartController cgsc = openGameListModel.elementAt(index);
-		if (cgsc != null)
-			cgsc.joinGame();
-	}
-	
-	
-	/**
-	 * Calls the {@link ClientGameController#watchGame()} method of the game at the given position of the {@link #runningGameList}.
-	 * @param index the given position at the runningGameList.
-	 */
-	private void watchGameAtIndex(int index) {
-		ClientGameController cgc = runningGameListModel.elementAt(index);
-		if (cgc != null)
-			cgc.watchGame();
-	}
-	
-	
-	
-	/**
-	 * Sends a message to the server requesting to change the username.
-	 */
-	private void sendChangeUsernameRequest() {
-		String username = usernameChangeInput.getText();
-		if (username.isEmpty() || username.contains(" ") || username.contains("'"))
-			return;
-		Client.sendMessageToServer("uname " + username);
-		usernameChangeInput.setText("");
-	}
-	
-	/**
-	 * Opens a whisper chat tab with the selected user from {@link #userList}.
-	 *
-	 * @param index The index from the userList where the desired user is at.
-	 */
-	private void openWhisperChat(int index) {
-		ClientUser user = userListModel.elementAt(index);
-		// CHeck if there is already a tab open with that user.
-		for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-			if (tabbedPane.getTitleAt(i).equals(user.getName())) {
-				chatPanel.displayInfo("You already have a chat with that user");
-				return;
-			}
-		}
-		WhisperTab whisperTab = new WhisperTab(user);
-		tabbedPane.addTab(user.getName(), whisperTab);
-	}
-	
-	/**
-	 * Adds the user to the list when they logged in and to the main chat.
-	 *
-	 * @param user the new user.
-	 */
-	public void addUserToUserlist(ClientUser user) {
-		if (user == Client.getThisUser())
-			System.err.println("MainChatWindow#addUserToUserlist - trying to add this user to the list!");
-		userListModel.addElement(user);
-		chatPanel.addChatUser(user);
-	}
-	
-	/**
-	 * Removes the user from the list and the chat, when they logged of.
-	 *
-	 * @param user the user to remove.
-	 */
-	public void removeUserFromUserlist(ClientUser user) {
-		userListModel.removeElement(user);
-		chatPanel.removeChatUser(user);
-	}
-	
-	/**
-	 * Renames the user in the user list and the tab of the user.
-	 *
-	 * @param oldName The users old name.
-	 * @param newName The users new name.
-	 * @param user The user.
-	 */
-	public void renamedUser(String oldName, String newName, ClientUser user) {
-		
-		// Update userList
-		int userListIndex = userListModel.indexOf(user);
-		userListModel.set(userListIndex, user);
-		
-		// Update tabbedPane
-		boolean userFound = false;
-		for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-			if (tabbedPane.getTitleAt(i).equals(oldName)) {
-				tabbedPane.setTitleAt(i, newName);
-				userFound = true;
-			}
-		}
-		if (userFound == false) {
-			System.err.println("MainChatWindow#renamedUser - No user found with oldName: " + oldName);
-		}
-		
-		chatPanel.displayInfo( oldName + " changed their name to " + newName );
-	}
 	
 	//region unused interface methods
 	@Override
@@ -443,4 +492,3 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	}
 	//endregion
 }
-

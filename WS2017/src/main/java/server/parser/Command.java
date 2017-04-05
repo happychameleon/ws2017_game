@@ -13,6 +13,7 @@ public enum Command {
 	cpong(new CpongHandler()),
 	cquit(new CquitHandler()),
 	chatm(new ChatmHandler()),
+	chatw(new ChatwHandler()),
 	uname(new UnameHandler()),
 	cgetu(new CgetuHandler()),
 	cgetg(new CgetgHandler()),

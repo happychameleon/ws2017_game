@@ -22,7 +22,7 @@ public class ClientNuserHandler extends CommandHandler {
 		}
 		Client.addNewUser(argument);
 		if (Client.getChatWindow() != null) {
-			Client.getChatWindow().getChatPanel().displayInfo(argument + " has logged in and joined the chat!");
+			Client.getChatWindow().getMainChatPanel().displayInfo(argument + " has logged in and joined the chat!");
 		} else {
 			System.err.println("Client is logged in but no MainChatWindow Window open!");
 		}
