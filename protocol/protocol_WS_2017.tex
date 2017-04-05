@@ -112,21 +112,35 @@ To be able to send a message or find to an other user one needs to know the name
   s: +OK cgetu <user0> <user2> <user2> ...
 \end{quote} 
 
-\subsection{Chat}
-When chatting, the server acts as a relay between two clients. When the message arrives at the destination client, the recipient automatically sends back a message (with the chatr command) to the server that then relays a message to the sending client that the message was received.\\\\
+\subsection{Main Chat}
+When chatting, the server acts as a relay between two clients. When the message arrives at the server, the server sends the message to the recipient. To ensure that the message was sent properly, the client also sends the message to itself. The client sends the messages to every client as a separate message.\\\\
 
 \noindent
 sender:
 \begin{quote}
-  c: chatm '<sender\_name>' '<recipient\_name>' '<message>'\\ %% chatm = chat message
-  s: +OK chatm 'message relayed'
+  c: chatm <sender\_name> <recipient\_name> '<message>'\\ %% chatm = chat message
 \end{quote}
 
 \noindent
-recipient:
+server to recipient:
 \begin{quote}
-  s: chatm <sender\_name> <recipient\_name> '<message>'\\
-  c: chatr <sender\_name> <recipient\_name>%%chat response tells the server that client got message from chat partner
+  s: chatm <sender\_name> <recipient\_name> '<message>'\\ %% sent to the recipient
+\end{quote}
+
+
+\subsection{Whisper Chat}
+When sending a whisper message the server sends the message both to the recipient and the sender. The second for the sender to know the message has been delivered.\\\\
+
+\noindent
+sender:
+\begin{quote}
+  c: chatw <sender\_name> <recipient\_name> '<message>'\\
+\end{quote}
+
+\noindent
+server to recipient and sender:
+\begin{quote}
+  c: chatw <sender\_name> <recipient\_name> '<message>'\\
 \end{quote}
 \clearpage
 \subsection{Games State}
