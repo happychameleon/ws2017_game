@@ -22,9 +22,9 @@ public class ClientNuserHandler extends CommandHandler {
 		}
 		Client.addNewUser(argument);
 		if (Client.getChatWindow() != null) {
-			Client.getChatWindow().displayInfo(argument + " has logged in and joined the chat!");
+			Client.getChatWindow().getChatPanel().displayInfo(argument + " has logged in and joined the chat!");
 		} else {
-			System.err.println("Client is logged in but no Chat Window open!");
+			System.err.println("Client is logged in but no MainChatWindow Window open!");
 		}
 		
 	}
@@ -54,7 +54,6 @@ public class ClientNuserHandler extends CommandHandler {
 			user.setName(newName);
 			if (Client.isLoggedIn() && Client.getChatWindow() != null) {
 				Client.getChatWindow().renamedUser(oldName, newName, user);
-				Client.getChatWindow().displayInfo( oldName + " changed their name to " + newName );
 			}
 		} else {
 			System.err.println("User who changed their name wasn't registered!");

@@ -19,7 +19,7 @@ public class NewGameDialog extends JDialog implements ActionListener, KeyListene
 	private JButton createGameButton = new JButton("Create Game");
 	private JButton cancelGameCreationButton = new JButton("Cancel");
 	
-	private Chat getChat() {
+	private MainChatWindow getChat() {
 		return Client.getChatWindow();
 	}
 	
@@ -96,19 +96,19 @@ public class NewGameDialog extends JDialog implements ActionListener, KeyListene
 		
 		String gameName = gameNameTF.getText();
 		if (gameName.contains(" ") || gameName.contains("'") || gameName.isEmpty()) {
-			getChat().displayError("New Game Name Contains Invalid Characters or is empty");
+			getChat().getChatPanel().displayError("New Game Name Contains Invalid Characters or is empty");
 			return;
 		}
 		int maxPoints;
 		try {
 			maxPoints = Integer.parseInt(maxPointsTF.getText());
 		} catch (NumberFormatException nfe) {
-			getChat().displayError("MaxPoints must be entered as a valid number.");
+			getChat().getChatPanel().displayError("MaxPoints must be entered as a valid number.");
 			return;
 		}
 		
 		if (maxPoints <= 0) {
-			getChat().displayError("MaxPoints must be positive!");
+			getChat().getChatPanel().displayError("MaxPoints must be positive!");
 			return;
 		}
 		

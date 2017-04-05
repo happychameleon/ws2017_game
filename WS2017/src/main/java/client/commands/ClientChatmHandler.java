@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Parses the command and displays the newly received Message on the Chat Window.
+ * Parses the command and displays the newly received Message on the MainChatWindow Window.
  *
  * Created by flavia on 26.03.17.
  */
@@ -19,7 +19,7 @@ public class ClientChatmHandler extends CommandHandler {
 	public void handleCommand() {
 		if (Client.isLoggedIn() && Client.getChatWindow() != null) {
 			ChatMessage chatMessage = getChatMessageFromArgument();
-			Client.getChatWindow().addNewMessage(chatMessage);
+			Client.getChatWindow().getChatPanel().addNewMessage(chatMessage);
 		}
 	}
 	

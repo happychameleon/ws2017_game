@@ -8,49 +8,46 @@ import game.startscreen.ClientGameStartController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 /**
  * The general Chat window where all users can chat with each other and name changes can be requested.
  * TODO Meilenstein 3: In future milestones there will also be the possibility to start a game with selected people and to privately chat
- * TODO: Separate this Chat Class into two classes, one for only the main Chat stuff and one for the whole window and keeping track of the game.
+ * TODO: Separate this Chat Class into two classes, one for only the main MainChatWindow stuff and one for the whole window and keeping track of the game.
  */
-public class Chat implements ActionListener, KeyListener, MouseListener {
+public class MainChatWindow implements ActionListener, KeyListener, MouseListener {
+	
 	
 	/**
-	 * All the messages in this chat. A message should ALWAYS be added via {@link #addNewMessage(ChatMessage)}!
+	 * Contains the different tabs.
 	 */
-	private ArrayList<ChatMessage> messages = new ArrayList<>();
-	
-	private boolean lastMessageIsInfo = false;
+	private JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	
 	/**
-	 * @return The last message that was displayed in this chat. Null if there was no message yet or the last entry was an Info.
-	 */
-	private ChatMessage getLastMessage() {
-		if (lastMessageIsInfo || messages.isEmpty()) {
-			return null;
-		}
-		return messages.get(messages.size() - 1);
-	}
-	
-	
-	JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-	
-	
-	/**
-	 * The Panel where the main Chat is in.
+	 * The Panel where the everything is in.
 	 */
 	JPanel mainPanel;
 	
-	JFrame chatFrame = new JFrame("Chat");
-	JTextField chatInput = new JTextField(15);
-	JTextField usernameChangeInput = new JTextField(15);
-	JButton sendChatButton = new JButton("Send");
-	JButton usernameChangeButton = new JButton("Change Username");
-	JTextArea chatText = new JTextArea(30, 50);
-	JScrollPane scroll;
+	/**
+	 * The main window
+	 */
+	JFrame mainFrame = new JFrame("Chat");
 	
+	/**
+	 * The input to change the username.
+	 */
+	JTextField usernameChangeInput = new JTextField(15);
+	
+	/**
+	 * The button to send the new username in {@link #usernameChangeInput} to the server.
+	 */
+	JButton usernameChangeButton = new JButton("Change Username");
+	
+	
+	private ChatPanel chatPanel;
+	
+	public ChatPanel getChatPanel() {
+		return chatPanel;
+	}
 	
 	DefaultListModel<ClientGameStartController> openGameListModel = new DefaultListModel<>();
 	/**
@@ -101,49 +98,32 @@ public class Chat implements ActionListener, KeyListener, MouseListener {
 	/**
 	 * Opens the main Chat window.
 	 */
-	public Chat() {
+	public MainChatWindow() {
 		
-		chatFrame.setTitle("Username: " + Client.getThisUser().getName());
+		mainFrame.setTitle("Username: " + Client.getThisUser().getName());
 		
 		frame();
 	}
 	
 	/**
-	 * Opens and displays the Chat Window.
+	 * Opens and displays the MainChatWindow Window.
 	 */
 	public void frame() {
 		// modify JFrame component layout
-		chatFrame.setSize(1000, 700);
-		chatFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		chatInput.setFont(new Font("Courier New", Font.ITALIC, 30));
+		mainFrame.setSize(1000, 700);
+		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		usernameChangeInput.setFont(new Font("Courier New", Font.ITALIC, 30));
 		//sendChatButton.setPreferredSize(new Dimension(100, 50));
 		//usernameChangeButton.setPreferredSize(new Dimension(200,50));
 		
-		// Make scrolling possible:
-		chatText.setEditable(false);
-		scroll = new JScrollPane(chatText);
-		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		// Either set lineWrap to true or make horizontal scrolling available. Just change the commented line to get the other option.
-		// One of them has to be active or long text will be cut.
-		chatText.setLineWrap(true);
-		//scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
 		// Create main Panel for the chat
 		mainPanel = new JPanel(new BorderLayout(20, 10));
 		
-		// The middle contains the Chat Panel
-		JPanel chatPanel = new JPanel();
-		chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.Y_AXIS));
-		//chatPanel.add(new JLabel("MAIN CHAT")); Already existing in Tab
-		chatPanel.add(scroll);
-		// The Panel with the text input for the chat and username change
-		JPanel textInputPanel = new JPanel(new GridLayout(2, 2));
-		textInputPanel.add(chatInput);
-		textInputPanel.add(sendChatButton);
-		textInputPanel.add(usernameChangeInput);
-		textInputPanel.add(usernameChangeButton);
-		chatPanel.add(textInputPanel);
+		// The middle contains the MainChatWindow Panel
+		chatPanel = new ChatPanel(Client.getAllUsers());
+		chatPanel.setPreferredSize(new Dimension(500, 700));
 		mainPanel.add(chatPanel, BorderLayout.CENTER);
 		
 		// The left panel with the game selection and new game creation.
@@ -166,19 +146,24 @@ public class Chat implements ActionListener, KeyListener, MouseListener {
 		userOverviewBox.add(whisperButton);
 		mainPanel.add(userOverviewBox, BorderLayout.LINE_END);
 		
+		// Username change at the bottom (TODO Better place for this)
+		JPanel usernameChangePanel = new JPanel(new GridLayout(1,2));
+		usernameChangePanel.add(usernameChangeInput);
+		usernameChangePanel.add(usernameChangeButton);
+		mainPanel.add(usernameChangePanel, BorderLayout.PAGE_END);
+		
+		
 		// Add the main Panel as a Tab to the tabbedPanel.
 		tabbedPane.addTab("Main Chat", mainPanel);
 		// Add the tabbedPanel to the main frame
-		chatFrame.add(tabbedPane);
+		mainFrame.add(tabbedPane);
+		
 		
 		
 		// Non-Layout specific configurations for the ui elements
 		
 		usernameChangeInput.addKeyListener(this);
 		usernameChangeInput.setFocusable(true);
-		
-		chatInput.addKeyListener(this);
-		chatInput.setFocusable(true);
 		
 		newGameButton.addActionListener(this);
 		joinGameButton.addActionListener(this);
@@ -194,25 +179,24 @@ public class Chat implements ActionListener, KeyListener, MouseListener {
 		userList.addMouseListener(this);
 		whisperButton.addActionListener(this);
 		
-		chatFrame.setVisible(true);
+		mainFrame.setVisible(true);
 		
-		sendChatButton.addActionListener(this);
 		usernameChangeButton.addActionListener(this);
 		
 	}
 	
 	
 	/**
-	 * Sets the Title of the Chat Window.
+	 * Sets the Title of the Main Window.
 	 *
-	 * @param newTitle
+	 * @param newTitle the new Title for the Main Window.
 	 */
 	public void setTitle(String newTitle) {
-		chatFrame.setTitle(newTitle);
+		mainFrame.setTitle(newTitle);
 	}
 	
 	/**
-	 * Takes the proposed username and puts it in the textfield. It's called when the chosen username is already taken.
+	 * Takes the proposed username and puts it in the {@link #usernameChangeInput}. It's called when the chosen username is already taken.
 	 *
 	 * @param proposedUsername the proposed username (with a number at the end)
 	 */
@@ -220,43 +204,6 @@ public class Chat implements ActionListener, KeyListener, MouseListener {
 		usernameChangeInput.setText(proposedUsername);
 	}
 	
-	/**
-	 * This is to display info like when a new user joins or when a user changes their name.
-	 *
-	 * @param info the info text to display.
-	 */
-	public void displayInfo(String info) {
-		String infoMessage = "";
-		if (lastMessageIsInfo == false)
-			infoMessage += "\n";
-		infoMessage += ">>>" + info + "\n\n";
-		chatText.append(infoMessage);
-		lastMessageIsInfo = true;
-	}
-	
-	public void displayError(String errorMessage) {
-		// TODO Meilenstein 3: separate Error message format than Info.
-		displayInfo("ERROR: " + errorMessage);
-	}
-	
-	/**
-	 * Adds a {@link ChatMessage} to the chat and displays it properly.
-	 *
-	 * @param chatMessage the message to display
-	 */
-	public void addNewMessage(ChatMessage chatMessage) {
-		String textToAppend = "";
-		if (getLastMessage() != null && chatMessage.getSender() != getLastMessage().getSender()) {
-			// If the last message was from a different person add a bigger gap between.
-			System.out.println("ADD GAP");
-			textToAppend += "\n";
-		}
-		textToAppend += chatMessage.getSender().getName() + ": " + chatMessage.getMessage() + "\n";
-		chatText.append(textToAppend);
-		
-		messages.add(chatMessage);
-		lastMessageIsInfo = false;
-	}
 	
 	
 	public void addNewGameToList(ClientGameStartController cgsc) {
@@ -269,7 +216,7 @@ public class Chat implements ActionListener, KeyListener, MouseListener {
 	
 	public void removeGameFromList(ClientGameStartController cgsc) {
 		openGameListModel.removeElement(cgsc);
-		displayInfo("The game " + cgsc.getGameName() + " has been removed, because there were no players left.");
+		chatPanel.displayInfo("The game " + cgsc.getGameName() + " has been removed, because there were no players left.");
 	}
 	
 	/**
@@ -297,9 +244,6 @@ public class Chat implements ActionListener, KeyListener, MouseListener {
 		if (e.getSource() == usernameChangeButton) {
 			sendChangeUsernameRequest();
 			
-		} else if (e.getSource() == sendChatButton) {
-			sendMessage();
-			
 		} else if (e.getSource() == newGameButton) {
 			openNewGameInputWindow();
 			
@@ -325,9 +269,7 @@ public class Chat implements ActionListener, KeyListener, MouseListener {
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_ENTER:
-				if (chatInput.isFocusOwner()) {
-					sendMessage();
-				} else if (usernameChangeInput.isFocusOwner()) {
+				if (usernameChangeInput.isFocusOwner()) {
 					sendChangeUsernameRequest();
 				}
 				break;
@@ -370,7 +312,7 @@ public class Chat implements ActionListener, KeyListener, MouseListener {
 	 * Opens the {@link #newGameDialog}.
 	 */
 	private void openNewGameInputWindow() {
-		newGameDialog = new NewGameDialog(chatFrame);
+		newGameDialog = new NewGameDialog(mainFrame);
 	}
 	
 	/**
@@ -394,22 +336,7 @@ public class Chat implements ActionListener, KeyListener, MouseListener {
 			cgc.watchGame();
 	}
 	
-	/**
-	 * Sends the text in the chat text field {@link #chatInput} as a chat message to all the connected clients.
-	 */
-	private void sendMessage() {
-		if (chatInput.getText().isEmpty())
-			return;
-		
-		ArrayList<ClientUser> receivers = new ArrayList<>();
-		for (ClientUser user : Client.getAllUsers()) {
-			if (user != Client.getThisUser()) {
-				receivers.add(user);
-			}
-		}
-		addNewMessage(new ChatMessage(chatInput.getText(), receivers));
-		chatInput.setText("");
-	}
+	
 	
 	/**
 	 * Sends a message to the server requesting to change the username.
@@ -432,7 +359,7 @@ public class Chat implements ActionListener, KeyListener, MouseListener {
 		// CHeck if there is already a tab open with that user.
 		for (int i = 0; i < tabbedPane.getTabCount(); i++) {
 			if (tabbedPane.getTitleAt(i).equals(user.getName())) {
-				displayInfo("You already have a chat with that user");
+				chatPanel.displayInfo("You already have a chat with that user");
 				return;
 			}
 		}
@@ -441,26 +368,33 @@ public class Chat implements ActionListener, KeyListener, MouseListener {
 	}
 	
 	/**
-	 * Adds the user to the list when they logged in.
+	 * Adds the user to the list when they logged in and to the main chat.
+	 *
 	 * @param user the new user.
 	 */
 	public void addUserToUserlist(ClientUser user) {
 		if (user == Client.getThisUser())
-			System.err.println("Chat#addUserToUserlist - trying to add this user to the list!");
+			System.err.println("MainChatWindow#addUserToUserlist - trying to add this user to the list!");
 		userListModel.addElement(user);
+		chatPanel.addChatUser(user);
 	}
 	
 	/**
-	 * Removes the user from the list, when they logged of.
+	 * Removes the user from the list and the chat, when they logged of.
+	 *
 	 * @param user the user to remove.
 	 */
 	public void removeUserFromUserlist(ClientUser user) {
 		userListModel.removeElement(user);
+		chatPanel.removeChatUser(user);
 	}
 	
 	/**
-	 * Renames the user at the user list and the tab of the user.
-	 * TODO Needed?
+	 * Renames the user in the user list and the tab of the user.
+	 *
+	 * @param oldName The users old name.
+	 * @param newName The users new name.
+	 * @param user The user.
 	 */
 	public void renamedUser(String oldName, String newName, ClientUser user) {
 		
@@ -477,42 +411,36 @@ public class Chat implements ActionListener, KeyListener, MouseListener {
 			}
 		}
 		if (userFound == false) {
-			System.err.println("Chat#renamedUser - No user found with oldName: " + oldName);
+			System.err.println("MainChatWindow#renamedUser - No user found with oldName: " + oldName);
 		}
+		
+		chatPanel.displayInfo( oldName + " changed their name to " + newName );
 	}
 	
-	
+	//region unused interface methods
 	@Override
 	public void keyTyped(KeyEvent e) {
-	
 	}
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
-	
 	}
-	
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-	
 	}
-	
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {
-	
 	}
-	
 	
 	@Override
 	public void mouseEntered(MouseEvent e) {
-	
 	}
 	
 	@Override
 	public void mouseExited(MouseEvent e) {
-	
 	}
+	//endregion
 }
 

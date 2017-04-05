@@ -25,14 +25,14 @@ public class ClientNewgmHandler extends CommandHandler {
 		
 		Client.getChatWindow().addNewGameToList(newGame);
 		
-		Client.getChatWindow().displayInfo("A new game called " + newGame.getGameName() + " has been created.");
+		Client.getChatWindow().getChatPanel().displayInfo("A new game called " + newGame.getGameName() + " has been created.");
 		
 	}
 	
 	@Override
 	public void handleAnswer(boolean isOK) {
 		if (isOK == false && argument.startsWith("game name taken")) {
-			Client.getChatWindow().displayError("The name for the new Game already exists. Please choose a new one!");
+			Client.getChatWindow().getChatPanel().displayError("The name for the new Game already exists. Please choose a new one!");
 		}
 	}
 	

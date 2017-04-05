@@ -1,6 +1,6 @@
 package client;
 
-import client.clientgui.Chat;
+import client.clientgui.MainChatWindow;
 import client.clientgui.Login;
 import game.ClientGameController;
 
@@ -23,9 +23,9 @@ public class Client {
 	 * The main chat window. Here every logged in client can read everything.
 	 * TODO Meilenstein 3: possibility for private chats (different windows).
 	 */
-	private static Chat chatWindow;
+	private static MainChatWindow chatWindow;
 	
-	public static Chat getChatWindow() {
+	public static MainChatWindow getChatWindow() {
 		return chatWindow;
 	}
 	
@@ -167,10 +167,10 @@ public class Client {
 	 */
 	public static void readInAllUsernames(ArrayList<String> usernames) {
 		if (chatWindow != null) {
-			System.err.println("Chat Window should be null before receiving all usernames!");
+			System.err.println("MainChatWindow Window should be null before receiving all usernames!");
 		}
 		isLoggedIn = true;
-		chatWindow = new Chat();
+		chatWindow = new MainChatWindow();
 		
 		for (String username : usernames) {
 			if (username.equals(thisUser.getName())) {
