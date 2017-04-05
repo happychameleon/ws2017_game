@@ -1,6 +1,7 @@
 package game.startscreen;
 
 import client.Client;
+import client.ClientUser;
 import serverclient.User;
 
 import java.util.HashMap;
@@ -36,8 +37,13 @@ public class ClientGameStartController extends GameStartController {
 	 * Asks the server to join the game.
 	 */
 	public void joinGame() {
+		ClientUser thisUser = Client.getThisUser();
+		if (choosingUsers.contains(thisUser) || waitingUsers.containsKey(thisUser)) {
+			Client.getChatWindow().getMainChatPanel().displayInfo("You've already joined this game.");
+			return;
+		}
 		
-		String userJoinMessage = "joing " + gameName + " " + Client.getThisUser().getName();
+		String userJoinMessage = "joing " + gameName + " " + thisUser.getName();
 		Client.sendMessageToServer(userJoinMessage);
 	}
 	

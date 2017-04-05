@@ -15,7 +15,7 @@ import java.util.HashSet;
  */
 public abstract class GameController {
 	
-	private final HashSet<User> users;
+	protected final HashSet<User> users;
 	
 	/**
 	 * @return A shallow copy of {@link #users}.

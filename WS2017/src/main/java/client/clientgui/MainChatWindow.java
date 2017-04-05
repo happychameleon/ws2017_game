@@ -77,7 +77,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	/**
 	 * This Button is used to open a window for the selected {@link #runningGameList} (where this client isn't a player) to watch it.
 	 */
-	JButton watchGameButton = new JButton("Watch Game (TODO)");
+	JButton watchGameButton = new JButton("Watch Game (UNDONE)");
 	
 	/**
 	 * Opens the {@link NewGameDialog} to create a new Game.
@@ -141,11 +141,11 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		// The left panel with the game selection and new game creation.
 		Box gameCreationBox = Box.createVerticalBox();
 		gameCreationBox.add(newGameButton);
-		gameCreationBox.add(new JLabel("Open Games:"));
+		gameCreationBox.add(new JLabel("New Games:"));
 		JScrollPane openGameListScroller = new JScrollPane(openGameList);
 		gameCreationBox.add(openGameListScroller);
 		gameCreationBox.add(joinGameButton);
-		gameCreationBox.add(new JLabel("Running Games:"));
+		gameCreationBox.add(new JLabel("Games already playing:"));
 		JScrollPane runningGameListScroller = new JScrollPane(runningGameList);
 		gameCreationBox.add(runningGameListScroller);
 		gameCreationBox.add(watchGameButton);
@@ -158,7 +158,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		userOverviewBox.add(whisperButton);
 		mainPanel.add(userOverviewBox, BorderLayout.LINE_END);
 		
-		// Username change at the bottom (TODO Better place for this)
+		// Username change at the bottom
 		JPanel usernameChangePanel = new JPanel(new GridLayout(1,2));
 		usernameChangePanel.setPreferredSize(new Dimension(200, 50));
 		usernameChangePanel.add(usernameChangeInput);

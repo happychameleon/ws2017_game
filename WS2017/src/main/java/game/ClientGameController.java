@@ -1,5 +1,7 @@
 package game;
 
+import client.Client;
+import client.ClientUser;
 import game.gamegui.Window;
 import serverclient.User;
 
@@ -29,7 +31,11 @@ public class ClientGameController extends GameController {
 	 * TODO: Ability to watch a game.
 	 */
 	public void watchGame() {
-	
+		ClientUser thisUser = Client.getThisUser();
+		if (users.contains(thisUser)) {
+			Client.getChatWindow().getMainChatPanel().displayInfo("You're already watching this game.");
+			return;
+		}
 	}
 
 }
