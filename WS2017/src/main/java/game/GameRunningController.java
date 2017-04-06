@@ -13,7 +13,7 @@ import java.util.HashSet;
  *
  * Created by flavia on 31.03.17.
  */
-public abstract class GameController {
+public abstract class GameRunningController extends GameController {
 	
 	protected final HashSet<User> users;
 	
@@ -24,21 +24,9 @@ public abstract class GameController {
 		return (ArrayList<User>) users.clone();
 	}
 	
-	/**
-	 * The unique name of the game.
-	 */
-	String gameName;
-	
-	/**
-	 * @return {@link #gameName}.
-	 */
-	public String getGameName() {
-		return gameName;
-	}
 	
 	
-	
-	public GameController(HashSet<User> users, String gameName) {
+	public GameRunningController(HashSet<User> users, String gameName) {
 		this.users = users;
 		this.gameName = gameName;
 	}
