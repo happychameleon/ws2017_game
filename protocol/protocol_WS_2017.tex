@@ -111,8 +111,10 @@ To be able to send a message or find to an other user one needs to know the name
   c: cgetu\\
   s: +OK cgetu <user0> <user2> <user2> ...
 \end{quote} 
+\clearpage
+\subsection{Chat}
 
-\subsection{Main Chat}
+\subsubsection{Main Chat}
 When chatting, the server acts as a relay between two clients. When the message arrives at the server, the server sends the message to the recipient. To ensure that the message was sent properly, the client also sends the message to itself. The client sends the messages to every client as a separate message.\\\\
 
 \noindent
@@ -128,7 +130,7 @@ server to recipient:
 \end{quote}
 
 
-\subsection{Whisper Chat}
+\subsubsection{Whisper Chat}
 When sending a whisper message the server sends the message both to the recipient and the sender. The second for the sender to know the message has been delivered.\\\\
 
 \noindent
@@ -140,7 +142,7 @@ sender:
 \noindent
 server to recipient and sender:
 \begin{quote}
-  c: chatw <sender\_name> <recipient\_name> '<message>'\\
+  s: chatw <sender\_name> <recipient\_name> '<message>'\\
 \end{quote}
 \clearpage
 \subsection{Games State}
@@ -245,7 +247,7 @@ When the client attacks an other user the attack intensity is transmitted to the
 If the child has reached complete wetness the server, changes the high score of the attacking user and also sends all clients the old position and returns instead of the new position a "null".\\
 Client to Server:
 \begin{quote}
-  chatt <user\_name\_attacker> <user\_name\_attacked> <attacked\_child\_position: x,y> <attack\_intensity>
+  chatt <user\_name\_attacker> <user\_name\_attacked> <attacked\_child\_position: x,y> <attacker\_child\_position: x,y> <attack\_intensity>
 \end{quote}
 \noindent
 Server to Client:
