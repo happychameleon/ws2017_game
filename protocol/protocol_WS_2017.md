@@ -84,19 +84,29 @@ To be able to send a message or find to an other user one needs to know the name
 > c: cgetu
 > s: +OK cgetu &lt;user0&gt; &lt;user2&gt; &lt;user2&gt; ...
 
-Chat
-----
+Main Chat
+---------
 
-When chatting, the server acts as a relay between two clients. When the message arrives at the destination client, the recipient automatically sends back a message (with the chatr command) to the server that then relays a message to the sending client that the message was received.
+When chatting, the server acts as a relay between two clients. When the message arrives at the server, the server sends the message to the recipient. To ensure that the message was sent properly, the client also sends the message to itself. The client sends the messages to every client as a separate message.
 sender:
 
-> c: chatm ’&lt;sender\_name&gt;’ ’&lt;recipient\_name&gt;’ ’&lt;message&gt;’
-> s: +OK chatm ’message relayed’
+> c: chatm &lt;sender\_name&gt; &lt;recipient\_name&gt; ’&lt;message&gt;’
 
-recipient:
+server to recipient:
 
 > s: chatm &lt;sender\_name&gt; &lt;recipient\_name&gt; ’&lt;message&gt;’
-> c: chatr &lt;sender\_name&gt; &lt;recipient\_name&gt;
+
+Whisper Chat
+------------
+
+When sending a whisper message the server sends the message both to the recipient and the sender. The second for the sender to know the message has been delivered.
+sender:
+
+> c: chatw &lt;sender\_name&gt; &lt;recipient\_name&gt; ’&lt;message&gt;’
+
+server to recipient and sender:
+
+> c: chatw &lt;sender\_name&gt; &lt;recipient\_name&gt; ’&lt;message&gt;’
 
 Games State
 -----------
@@ -157,6 +167,61 @@ Client to Server:
 
 The Server informs all the Clients, that the Client has left the game.
 Server to Client:
+
+### Player Position
+
+Client Sends position of children by using the chpos command. The server validates the
+Client to Server:
+
+> chpos &lt;user\_name&gt; &lt;old\_child\_position: x,y&gt; &lt;new\_child\_position: x,y&gt;
+
+Server to Clients:
+
+> +OK chpos &lt;user\_name&gt; &lt;old\_child\_position: x,y&gt; &lt;new\_child\_position: x,y&gt;
+
+### Damage
+
+When the client attacks an other user the attack intensity is transmitted to the server, which then calculates the new level of wetness of the attacked and transmittes it to all clients.
+If the child has reached complete wetness the server, changes the high score of the attacking user and also sends all clients the old position and returns instead of the new position a “null”.
+Client to Server:
+
+> chatt &lt;user\_name\_attacker&gt; &lt;user\_name\_attacked&gt; &lt;attacked\_child\_position: x,y&gt; &lt;attack\_intensity&gt;
+
+Server to Client:
+
+> +OK chatt &lt;user\_name\_attacked&gt; &lt;attacked\_child\_position: x,y&gt; &lt;wetness\_value&gt;
+
+If Child completely wet, Server to Clients:
+
+> +OK chpos &lt;user\_name&gt; &lt;old\_child\_position: x,y&gt; &lt;new\_child\_position: “null”&gt;
+
+### Weapons Change during Game
+
+During the game a player can change their weapon, this is done by transmitting the chwea command to the server.
+Client to Server:
+
+> chwea &lt;user\_name&gt; &lt;child\_position: x,y&gt; &lt;new\_weapon&gt;
+
+Server to sending Client:
+
+> +OK chwea &lt;user\_name&gt; &lt;child\_position: x,y&gt; &lt;new\_weapon&gt;
+
+### Power-Ups
+
+When a client finds a power-up the server sends the client a chpow command, with the powered up child position and the power-up.
+Server to Client:
+
+> chpow &lt;user\_name&gt; &lt;child\_position: x,y&gt; &lt;power\_up&gt;
+
+Client to Server:
+
+> +OK chpow
+
+### High Score
+
+As soon as there is a winner, the server calculates the high score of all players and returns the high score back to all clients. The Server also saves the high score in an xml file to be able to recall the previous high score. Server to Clients:
+
+> uhigh &lt;user\_name&gt; &lt;score&gt; &lt;user\_name&gt; &lt;score&gt; ......
 
 UPDATE State Commands
 =====================

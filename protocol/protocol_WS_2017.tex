@@ -226,7 +226,70 @@ Client to Server:
 The Server informs all the Clients, that the Client has left the game.\\
 Server to Client:
 %\subsubsection{Map}
-%\subsubsection{Player Position}
+
+
+\subsubsection{Player Position}
+Client Sends position of children by using the chpos command. The server validates the \\
+Client to Server:
+\begin{quote}
+  chpos <user\_name> <old\_child\_position: x,y> <new\_child\_position: x,y>
+\end{quote}
+\noindent
+Server to Clients:
+\begin{quote}
+  +OK chpos <user\_name> <old\_child\_position: x,y> <new\_child\_position: x,y>
+\end{quote}
+\clearpage  
+\subsubsection{Damage}
+When the client attacks an other user the attack intensity is transmitted to the server, which then calculates the new level of wetness of the attacked and transmittes it to all clients.\\
+If the child has reached complete wetness the server, changes the high score of the attacking user and also sends all clients the old position and returns instead of the new position a "null".\\
+Client to Server:
+\begin{quote}
+  chatt <user\_name\_attacker> <user\_name\_attacked> <attacked\_child\_position: x,y> <attack\_intensity>
+\end{quote}
+\noindent
+Server to Client:
+\begin{quote}
+  +OK chatt <user\_name\_attacked> <attacked\_child\_position: x,y> <wetness\_value>
+\end{quote}
+\noindent
+If Child  completely wet, Server to Clients:
+\begin{quote}
+  +OK chpos <user\_name> <old\_child\_position: x,y> <new\_child\_position: "null">
+\end{quote}
+
+
+\subsubsection{Weapons Change during Game}
+During the game a player can change their weapon, this is done by transmitting the chwea command to the server.\\
+Client to Server:
+\begin{quote}
+  chwea <user\_name> <child\_position: x,y> <new\_weapon>
+\end{quote}
+\noindent
+Server to sending Client:
+\begin{quote}
+  +OK chwea <user\_name> <child\_position: x,y> <new\_weapon>
+\end{quote}
+
+\subsubsection{Power-Ups}
+When a client finds a power-up the server sends the client a chpow command, with the powered up child position and the power-up.\\
+Server to Client:
+\begin{quote}
+  chpow <user\_name> <child\_position: x,y> <power\_up>
+\end{quote}
+\noindent
+Client to Server:
+\begin{quote}
+  +OK chpow
+\end{quote}
+
+\subsubsection{High Score}
+As soon as there is a winner, the server calculates the high score of all players and returns the high score back to all clients. The Server also saves the high score in an xml file to be able to recall the previous high score.
+Server to Clients:
+\begin{quote}
+  uhigh <user\_name> <score> <user\_name> <score> ......
+\end{quote} 
+
 
 \clearpage
 \section{UPDATE State Commands}
