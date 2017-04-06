@@ -39,7 +39,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 	/**
 	 * All the users of this chat.
 	 */
-	private final ArrayList<ClientUser> chatUsers;
+	protected final ArrayList<ClientUser> chatUsers;
 	
 	/**
 	 * @return A shallow copy of {@link #chatUsers}.
@@ -51,7 +51,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 	/**
 	 * The command to send the chat message with (eg chatm or chatw).
 	 */
-	private final String chatCommand;
+	protected final String chatCommand;
 	
 	
 	JTextField chatInputTextField = new JTextField(15);
@@ -132,7 +132,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 	/**
 	 * Sends the text in the chat text field {@link #chatInputTextField} as a chat message to all the connected clients.
 	 */
-	private void sendMessage() {
+	protected void sendMessage() {
 		String message = chatInputTextField.getText();
 		if (message.isEmpty())
 			return;

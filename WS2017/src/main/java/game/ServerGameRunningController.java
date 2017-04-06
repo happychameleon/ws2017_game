@@ -6,14 +6,14 @@ import serverclient.User;
 import java.util.HashSet;
 
 /**
- * The {@link GameController} on the server side.
+ * The {@link GameRunningController} on the server side.
  *
  * Created by flavia on 30.03.17.
  */
-public class ServerGameController extends GameController {
+public class ServerGameRunningController extends GameRunningController {
 	
 	
-	public ServerGameController(HashSet<User> users, String gameName) {
+	public ServerGameRunningController(HashSet<User> users, String gameName) {
 		super(users, gameName);
 	}
 	

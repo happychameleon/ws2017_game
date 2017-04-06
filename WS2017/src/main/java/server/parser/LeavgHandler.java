@@ -1,6 +1,6 @@
 package server.parser;
 
-import game.ServerGameController;
+import game.ServerGameRunningController;
 import game.startscreen.ServerGameStartController;
 import server.Server;
 import serverclient.User;
@@ -30,7 +30,7 @@ public class LeavgHandler extends CommandHandler {
 			return;
 		}
 		
-		ServerGameController runningGame = Server.getRunningGameByName(gameName);
+		ServerGameRunningController runningGame = Server.getRunningGameByName(gameName);
 		if (runningGame != null) {
 			runningGame.removeUser(user);
 			return;

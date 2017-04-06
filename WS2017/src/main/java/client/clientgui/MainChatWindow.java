@@ -2,7 +2,7 @@ package client.clientgui;
 
 import client.Client;
 import client.ClientUser;
-import game.ClientGameController;
+import game.ClientGameRunningController;
 import game.startscreen.ClientGameStartController;
 import serverclient.User;
 
@@ -68,11 +68,11 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	JButton joinGameButton = new JButton("Join Game");
 	
 	
-	DefaultListModel<ClientGameController> runningGameListModel = new DefaultListModel<>();
+	DefaultListModel<ClientGameRunningController> runningGameListModel = new DefaultListModel<>();
 	/**
 	 * All the currently running games where this client can watch, but not join anymore.
 	 */
-	JList<ClientGameController> runningGameList = new JList<>(runningGameListModel);
+	JList<ClientGameRunningController> runningGameList = new JList<>(runningGameListModel);
 	
 	/**
 	 * This Button is used to open a window for the selected {@link #runningGameList} (where this client isn't a player) to watch it.
@@ -210,7 +210,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 * Adds a game to the list of running games.
 	 * @param cgc the running game.
 	 */
-	public void addRunningGameToList(ClientGameController cgc) {
+	public void addRunningGameToList(ClientGameRunningController cgc) {
 		runningGameListModel.addElement(cgc);
 	}
 	
@@ -255,11 +255,11 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	}
 	
 	/**
-	 * Calls the {@link ClientGameController#watchGame()} method of the game at the given position of the {@link #runningGameList}.
+	 * Calls the {@link ClientGameRunningController#watchGame()} method of the game at the given position of the {@link #runningGameList}.
 	 * @param index the given position at the runningGameList.
 	 */
 	private void watchGameAtIndex(int index) {
-		ClientGameController cgc = runningGameListModel.elementAt(index);
+		ClientGameRunningController cgc = runningGameListModel.elementAt(index);
 		if (cgc != null)
 			cgc.watchGame();
 	}

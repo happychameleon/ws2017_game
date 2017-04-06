@@ -22,7 +22,7 @@ public class ClientReadyHandler extends CommandHandler {
 			return;
 		}
 		
-		ClientGameStartController waitingGameByName = Client.getChatWindow().getWaitingGameByName(gameName);
+		ClientGameStartController waitingGameByName = Client.getMainChatWindow().getWaitingGameByName(gameName);
 		if (waitingGameByName == null) {
 			System.err.println("ReadyHandler#handleCommand - No game found with name: " + gameName);
 			return;

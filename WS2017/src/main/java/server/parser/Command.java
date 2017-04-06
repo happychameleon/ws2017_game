@@ -14,6 +14,7 @@ public enum Command {
 	cquit(new CquitHandler()),
 	chatm(new ChatmHandler()),
 	chatw(new ChatwHandler()),
+	chatl(new ChatlHandler()),
 	uname(new UnameHandler()),
 	cgetu(new CgetuHandler()),
 	cgetg(new CgetgHandler()),

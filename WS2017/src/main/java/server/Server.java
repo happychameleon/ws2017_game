@@ -1,6 +1,6 @@
 package server;
 
-import game.ServerGameController;
+import game.ServerGameRunningController;
 import game.startscreen.ServerGameStartController;
 import serverclient.User;
 
@@ -31,7 +31,7 @@ public class Server {
 	/**
 	 * The games which are currently playing and can't be joined anymore.
 	 */
-	private static ArrayList<ServerGameController> runningGameList = new ArrayList<>();
+	private static ArrayList<ServerGameRunningController> runningGameList = new ArrayList<>();
 	
 	/**
 	 * A list of all the connected users.
@@ -67,7 +67,7 @@ public class Server {
 			}
 		}
 		for (int i = 0; i < runningGameList.size(); i++) {
-			ServerGameController sgc = runningGameList.get(i);
+			ServerGameRunningController sgc = runningGameList.get(i);
 			for (User u : sgc.getAllUsers()) {
 				if (user == u) {
 					sgc.removeUser(user);
@@ -105,12 +105,12 @@ public class Server {
 	}
 	
 	/**
-	 * Gets the ServerGameController for the specific gamename.
+	 * Gets the ServerGameRunningController for the specific gamename.
 	 * @param name The game's name.
 	 * @return The ServerGameStartController. Can be null if username doesn't exist!
 	 */
-	public static ServerGameController getRunningGameByName(String name) {
-		for (ServerGameController sgsc : runningGameList) {
+	public static ServerGameRunningController getRunningGameByName(String name) {
+		for (ServerGameRunningController sgsc : runningGameList) {
 			if (sgsc.getGameName().equals(name))
 				return sgsc;
 		}
@@ -151,7 +151,7 @@ public class Server {
 	 * Adds the newly started game to the running game list.
 	 * The corresponding waitingGame should be removed before calling this via {@link #removeWaitingGame(ServerGameStartController)}.
 	 */
-	public static void addNewRunningGame(ServerGameController newRunningGame) {
+	public static void addNewRunningGame(ServerGameRunningController newRunningGame) {
 		runningGameList.add(newRunningGame);
 	}
 	
@@ -166,7 +166,7 @@ public class Server {
 			if (game.getGameName().equals(newGameName))
 				return false;
 		}
-		for (ServerGameController game : runningGameList) {
+		for (ServerGameRunningController game : runningGameList) {
 			if (game.getGameName().equals(newGameName))
 				return false;
 		}

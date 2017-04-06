@@ -17,9 +17,9 @@ public class ClientChatmHandler extends CommandHandler {
 	
 	@Override
 	public void handleCommand() {
-		if (Client.isLoggedIn() && Client.getChatWindow() != null) {
+		if (Client.isLoggedIn() && Client.getMainChatWindow() != null) {
 			ChatMessage chatMessage = getChatMessageFromArgument();
-			Client.getChatWindow().getMainChatPanel().addNewMessage(chatMessage);
+			Client.getMainChatWindow().getMainChatPanel().addNewMessage(chatMessage);
 		}
 	}
 	
@@ -29,29 +29,13 @@ public class ClientChatmHandler extends CommandHandler {
 	 * @return the new ChatMessage
 	 */
 	protected ChatMessage getChatMessageFromArgument() {
-		char[] argumentChars = argument.toCharArray();
-		String senderName = "";
-		String receiverName = "";
-		String message = "";
-		int argumentNr = 1;
-		// split the whole argument into the three argument parts
-		for (char c : argumentChars) {
-			if (argumentNr < 3 && c == ' ') {
-				argumentNr++;
-				continue;
-			}
-			if (argumentNr == 1)
-				senderName += c;
-			else if (argumentNr == 2)
-				receiverName +=c;
-			else
-				message += c;
-		}
+		String senderName = getAndRemoveNextArgumentWord();
+		String receiverName = getAndRemoveNextArgumentWord();
+		String message = argument;
+		
 		ClientUser sender = Client.getUserByName(senderName);
 		ClientUser receiver = Client.getUserByName(receiverName);
-		if (receiver != Client.getThisUser()) {
-			System.err.println("WARNING: This message isn't intended for this client! Or did someone miss a namechange?");
-		}
+		
 		// To get rid of the '
 		message = message.substring(1, message.length() - 1);
 		
