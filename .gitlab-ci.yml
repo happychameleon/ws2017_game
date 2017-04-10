@@ -13,3 +13,4 @@ job1:
   stage: build
   script:
     - "./gradlew jar"
+    - "./gradlew"
