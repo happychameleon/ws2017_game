@@ -85,8 +85,5 @@ public class UnameHandler extends CommandHandler {
 			commandParser.writeBackToClient("+OK uname you are " + newName);
 			commandParser.writeToAllOtherClients("nuser " + newName);
 		}
-		
 	}
-	
-	
 }

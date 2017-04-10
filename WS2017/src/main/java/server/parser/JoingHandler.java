@@ -29,5 +29,4 @@ public class JoingHandler extends CommandHandler {
 		
 		game.addUserToGame(joinedUser);
 	}
-	
 }
