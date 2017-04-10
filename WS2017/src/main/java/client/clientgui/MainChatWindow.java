@@ -56,6 +56,9 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		return mainChatPanel;
 	}
 	
+	/**
+	 * The model for the {@link #openGameList}.
+	 */
 	DefaultListModel<ClientGameStartController> openGameListModel = new DefaultListModel<>();
 	/**
 	 * All the currently open games where this client can join.
@@ -67,7 +70,9 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 */
 	JButton joinGameButton = new JButton("Join Game");
 	
-	
+	/**
+	 * The model for the {@link #runningGameList}.
+	 */
 	DefaultListModel<ClientGameRunningController> runningGameListModel = new DefaultListModel<>();
 	/**
 	 * All the currently running games where this client can watch, but not join anymore.
@@ -90,6 +95,11 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	NewGameDialog newGameDialog;
 	
 	
+	/**
+	 * The label for displaying thi users username.
+	 */
+	JLabel usernameLabel = new JLabel("Your username: " + Client.getThisUser().getName());
+	
 	DefaultListModel<ClientUser> userListModel = new DefaultListModel<>();
 	/**
 	 * A list of all the logged in users.
@@ -109,7 +119,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 */
 	public MainChatWindow() {
 		
-		mainFrame.setTitle("Username: " + Client.getThisUser().getName());
+		mainFrame.setTitle("Wasserschlacht Simulator 2017");
 		
 		frame();
 	}
@@ -153,6 +163,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		
 		// The right panel with the user list and the ability to create whisper chats
 		Box userOverviewBox = Box.createVerticalBox();
+		userOverviewBox.add(usernameLabel);
 		JScrollPane userListScroller = new JScrollPane(userList);
 		userOverviewBox.add(userListScroller);
 		userOverviewBox.add(whisperButton);
@@ -376,13 +387,14 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	//endregion
 	
 	//region Misc Methods
+	
 	/**
-	 * Sets the Title of the Main Window.
+	 * Sets the label of the username with the newly chosen username.
 	 *
-	 * @param newTitle the new Title for the Main Window.
+	 * @param username the new username
 	 */
-	public void setTitle(String newTitle) {
-		mainFrame.setTitle(newTitle);
+	public void setUsername(String username) {
+		usernameLabel.setText("Your username: " + username);
 	}
 	//endregion
 	//endregion

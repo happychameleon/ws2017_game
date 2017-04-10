@@ -149,7 +149,7 @@ public class Client {
 			}
 		}
 		if (mainChatWindow != null) {
-			mainChatWindow.setTitle("Username: " + username);
+			mainChatWindow.setUsername(username);
 		}
 	}
 	

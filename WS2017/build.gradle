@@ -21,6 +21,10 @@ mainClassName = "Main"
 
 defaultTasks 'mainTask'
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     // Use JUnit test framework
     testCompile 'junit:junit:4.12'
