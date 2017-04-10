@@ -22,6 +22,8 @@ public class GameLobby extends JPanel implements ActionListener {
 	
 	private JFrame window;
 	private JButton leaveGameButton = new JButton("Leave Game (TODO)");
+	private JButton startGameButton = new JButton("Start Game (TODO)");
+	
 	
 	
 	private DefaultListModel<ClientUser> choosingUsersModel = new DefaultListModel<>();
@@ -60,8 +62,12 @@ public class GameLobby extends JPanel implements ActionListener {
 		userOverviewBox.add(choosingUsersScroll);
 		userOverviewBox.add(new JLabel("Users ready"));
 		userOverviewBox.add(waitingUsersScroll);
-		userOverviewBox.add(leaveGameButton);
+		JPanel buttons = new JPanel(new GridLayout(1, 2));
+		buttons.add(leaveGameButton);
+		buttons.add(startGameButton);
+		userOverviewBox.add(buttons);
 		leaveGameButton.addActionListener(this);
+		startGameButton.addActionListener(this);
 		this.add(userOverviewBox, BorderLayout.LINE_START);
 		
 		// The center with the Chat.
