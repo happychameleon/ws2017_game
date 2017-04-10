@@ -2,7 +2,7 @@ package client.clientgui;
 
 import client.Client;
 import client.ClientUser;
-import game.ClientGameController;
+import game.ClientGameRunningController;
 import game.startscreen.ClientGameStartController;
 import serverclient.User;
 
@@ -56,6 +56,9 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		return mainChatPanel;
 	}
 	
+	/**
+	 * The model for the {@link #openGameList}.
+	 */
 	DefaultListModel<ClientGameStartController> openGameListModel = new DefaultListModel<>();
 	/**
 	 * All the currently open games where this client can join.
@@ -67,12 +70,14 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 */
 	JButton joinGameButton = new JButton("Join Game");
 	
-	
-	DefaultListModel<ClientGameController> runningGameListModel = new DefaultListModel<>();
+	/**
+	 * The model for the {@link #runningGameList}.
+	 */
+	DefaultListModel<ClientGameRunningController> runningGameListModel = new DefaultListModel<>();
 	/**
 	 * All the currently running games where this client can watch, but not join anymore.
 	 */
-	JList<ClientGameController> runningGameList = new JList<>(runningGameListModel);
+	JList<ClientGameRunningController> runningGameList = new JList<>(runningGameListModel);
 	
 	/**
 	 * This Button is used to open a window for the selected {@link #runningGameList} (where this client isn't a player) to watch it.
@@ -89,6 +94,11 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 */
 	NewGameDialog newGameDialog;
 	
+	
+	/**
+	 * The label for displaying thi users username.
+	 */
+	JLabel usernameLabel = new JLabel("Your username: " + Client.getThisUser().getName());
 	
 	DefaultListModel<ClientUser> userListModel = new DefaultListModel<>();
 	/**
@@ -109,7 +119,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 */
 	public MainChatWindow() {
 		
-		mainFrame.setTitle("Username: " + Client.getThisUser().getName());
+		mainFrame.setTitle("Wasserschlacht Simulator 2017");
 		
 		frame();
 	}
@@ -153,6 +163,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		
 		// The right panel with the user list and the ability to create whisper chats
 		Box userOverviewBox = Box.createVerticalBox();
+		userOverviewBox.add(usernameLabel);
 		JScrollPane userListScroller = new JScrollPane(userList);
 		userOverviewBox.add(userListScroller);
 		userOverviewBox.add(whisperButton);
@@ -210,7 +221,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 * Adds a game to the list of running games.
 	 * @param cgc the running game.
 	 */
-	public void addRunningGameToList(ClientGameController cgc) {
+	public void addRunningGameToList(ClientGameRunningController cgc) {
 		runningGameListModel.addElement(cgc);
 	}
 	
@@ -255,11 +266,11 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	}
 	
 	/**
-	 * Calls the {@link ClientGameController#watchGame()} method of the game at the given position of the {@link #runningGameList}.
+	 * Calls the {@link ClientGameRunningController#watchGame()} method of the game at the given position of the {@link #runningGameList}.
 	 * @param index the given position at the runningGameList.
 	 */
 	private void watchGameAtIndex(int index) {
-		ClientGameController cgc = runningGameListModel.elementAt(index);
+		ClientGameRunningController cgc = runningGameListModel.elementAt(index);
 		if (cgc != null)
 			cgc.watchGame();
 	}
@@ -376,13 +387,14 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	//endregion
 	
 	//region Misc Methods
+	
 	/**
-	 * Sets the Title of the Main Window.
+	 * Sets the label of the username with the newly chosen username.
 	 *
-	 * @param newTitle the new Title for the Main Window.
+	 * @param username the new username
 	 */
-	public void setTitle(String newTitle) {
-		mainFrame.setTitle(newTitle);
+	public void setUsername(String username) {
+		usernameLabel.setText("Your username: " + username);
 	}
 	//endregion
 	//endregion

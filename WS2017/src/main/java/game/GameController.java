@@ -1,33 +1,48 @@
 package game;
 
+import game.startscreen.GameLobby;
+import game.startscreen.GameStartController;
 import serverclient.User;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
- * This handles the connection between a game and the server or client.
- * For each game there is one GameController per Client/Server.
+ * The abstract class for the game controllers of the running and the open games
+ * @see game.startscreen.GameStartController
+ * @see GameRunningController
  *
- * All the game commands are sent to the game via this controller.
- *
- * Created by flavia on 31.03.17.
+ * Created by flavia on 06.04.17.
  */
 public abstract class GameController {
 	
-	protected final HashSet<User> users;
+	/**
+	 * The Lobby of this ClientGameStartController.
+	 */
+	protected GameLobby gameLobby;
 	
 	/**
-	 * @return A shallow copy of {@link #users}.
+	 * @return {@link #gameLobby}.
 	 */
-	public ArrayList<User> getAllUsers() {
-		return (ArrayList<User>) users.clone();
+	public GameLobby getGameLobby() {
+		return gameLobby;
+	}
+	
+	/**
+	 * The points to spend on the starting team.
+	 */
+	protected int startingPoints;
+	
+	/**
+	 * @return {@link #startingPoints}.
+	 */
+	public int getStartingPoints() {
+		return startingPoints;
 	}
 	
 	/**
 	 * The unique name of the game.
 	 */
-	String gameName;
+	protected String gameName;
 	
 	/**
 	 * @return {@link #gameName}.
@@ -37,38 +52,16 @@ public abstract class GameController {
 	}
 	
 	
-	
-	public GameController(HashSet<User> users, String gameName) {
-		this.users = users;
-		this.gameName = gameName;
-	}
-	
+	public abstract ArrayList<User> getAllUsers();
 	
 	/**
-	 * Removes the user from the list.
+	 * TODO!
+	 * @param startController
+	 * @return
 	 */
-	public void removeUser(User user) {
-		users.remove(user);
-		// TODO: What should happen when a user leaves?
+	public static GameRunningController createRunningControllerFromStartController (GameStartController startController) {
+		return null;
 	}
 	
-	@Override
-	public String toString() {
-		
-		StringBuffer s = new StringBuffer(gameName);
-		s.append(" (");
-		
-		for (User user : users) {
-			s.append(user.getName());
-			s.append(" ");
-		}
-		// Remove the last " " if there is one.
-		if (s.charAt(s.length() - 1) == ' ')
-			s.deleteCharAt(s.length() - 1);
-		
-		s.append(")");
-		
-		return s.toString();
-	}
 	
 }

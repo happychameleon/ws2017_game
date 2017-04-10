@@ -1,8 +1,9 @@
 package client;
 
-import client.clientgui.MainChatWindow;
 import client.clientgui.Login;
-import game.ClientGameController;
+import client.clientgui.MainChatWindow;
+import game.ClientGameRunningController;
+import game.GameController;
 
 import java.io.*;
 import java.net.Socket;
@@ -23,10 +24,10 @@ public class Client {
 	 * The main chat window. Here every logged in client can read everything.
 	 * TODO Meilenstein 3: possibility for private chats (different windows).
 	 */
-	private static MainChatWindow chatWindow;
+	private static MainChatWindow mainChatWindow;
 	
-	public static MainChatWindow getChatWindow() {
-		return chatWindow;
+	public static MainChatWindow getMainChatWindow() {
+		return mainChatWindow;
 	}
 	
 	/**
@@ -81,6 +82,11 @@ public class Client {
 	}
 	
 	/**
+	 * A list of all the running games.
+	 */
+	private static ArrayList<ClientGameRunningController> runningGameList = new ArrayList<>();
+	
+	/**
 	 * Gets the User for the specific username.
 	 * @param name The username.
 	 * @return The User. Can be null if username doesn't exist!
@@ -101,7 +107,7 @@ public class Client {
 	public static void removeUser(ClientUser user) {
 		
 		users.remove(user);
-		chatWindow.removeUserFromUserlist(user);
+		mainChatWindow.removeUserFromUserlist(user);
 	}
 	
 	
@@ -113,7 +119,7 @@ public class Client {
 		
 		ClientUser newUser = new ClientUser(username);
 		users.add(newUser);
-		chatWindow.addUserToUserlist(newUser);
+		mainChatWindow.addUserToUserlist(newUser);
 	}
 	
 	/**
@@ -138,12 +144,12 @@ public class Client {
 		if (loginWindow != null) {
 			loginWindow.closeWindow();
 			loginWindow = null;
-			if (chatWindow == null) {
+			if (mainChatWindow == null) {
 				sendMessageToServer("cgetu");
 			}
 		}
-		if (chatWindow != null) {
-			chatWindow.setTitle("Username: " + username);
+		if (mainChatWindow != null) {
+			mainChatWindow.setUsername(username);
 		}
 	}
 	
@@ -154,8 +160,8 @@ public class Client {
 	public static void proposeUsername(String proposedUsername) {
 		if (loginWindow != null) {
 			loginWindow.proposeUsername(proposedUsername);
-		} else if (chatWindow != null) {
-			chatWindow.proposeUsername(proposedUsername);
+		} else if (mainChatWindow != null) {
+			mainChatWindow.proposeUsername(proposedUsername);
 		} else {
 			System.err.println("Why is there no window open?");
 		}
@@ -166,11 +172,11 @@ public class Client {
 	 * @param usernames
 	 */
 	public static void readInAllUsernames(ArrayList<String> usernames) {
-		if (chatWindow != null) {
+		if (mainChatWindow != null) {
 			System.err.println("MainChatWindow Window should be null before receiving all usernames!");
 		}
 		isLoggedIn = true;
-		chatWindow = new MainChatWindow();
+		mainChatWindow = new MainChatWindow();
 		
 		for (String username : usernames) {
 			if (username.equals(thisUser.getName())) {
@@ -180,15 +186,33 @@ public class Client {
 			}
 			ClientUser user = new ClientUser(username);
 			users.add(user);
-			chatWindow.addUserToUserlist(user);
+			mainChatWindow.addUserToUserlist(user);
 		}
 		
 	}
 	
 	/**
+	 * Returns the game with the given name if it exists, otherwise null.
+	 * @param gameName The name of the game.
+	 * @return the GameController or null.
+	 */
+	public static GameController getGameByName(String gameName) {
+		for (int i = 0; i < runningGameList.size(); i++) {
+			if (runningGameList.get(i).getGameName().equals(gameName)) {
+				return runningGameList.get(i);
+			}
+		}
+		GameController waitingGame = mainChatWindow.getWaitingGameByName(gameName);
+		if (waitingGame != null) {
+			return waitingGame;
+		}
+		return null;
+	}
+	
+	/**
 	 * TODO: Gets the Game from the list of running Games(also todo).
 	 */
-	public static ClientGameController getRunningGameByName(String gameName) {
+	public static ClientGameRunningController getRunningGameByName(String gameName) {
 		return null;
 	}
 	
@@ -259,5 +283,6 @@ public class Client {
             System.exit(1);
         }
     }
+	
 	
 }

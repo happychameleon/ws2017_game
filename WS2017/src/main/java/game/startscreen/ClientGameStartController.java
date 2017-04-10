@@ -20,7 +20,6 @@ public class ClientGameStartController extends GameStartController {
 	private StartScreen startScreen;
 	
 	
-	
 	/**
 	 * Opens the Window to choose the team from.
 	 * Is called when the server gives the ok for creating or joining a game.
@@ -39,7 +38,7 @@ public class ClientGameStartController extends GameStartController {
 	public void joinGame() {
 		ClientUser thisUser = Client.getThisUser();
 		if (choosingUsers.contains(thisUser) || waitingUsers.containsKey(thisUser)) {
-			Client.getChatWindow().getMainChatPanel().displayInfo("You've already joined this game.");
+			Client.getMainChatWindow().getMainChatPanel().displayInfo("You've already joined this game.");
 			return;
 		}
 		
@@ -57,7 +56,9 @@ public class ClientGameStartController extends GameStartController {
 		choosingUsers.add(joinedUser);
 		if (Client.getThisUser() == joinedUser) {
 			startScreen = new StartScreen(this, startingPoints);
+			gameLobby = new GameLobby(this);
 		}
+		gameLobby.addUserToChoosing((ClientUser) joinedUser);
 	}
 	
 	
@@ -82,9 +83,20 @@ public class ClientGameStartController extends GameStartController {
 			System.out.println("ClientGameStartController#moveUserToWaiting - It's this user");
 			startScreen.dispose();
 			
-			// TODO: Open Lobby window here!
+			gameLobby.removeUser((ClientUser) user);
+			gameLobby.addUserToWaiting((ClientUser) user);
 		} else {
 			System.out.println("ClientGameStartController#moveUserToWaiting - It's not this user");
 		}
 	}
+	
+	/**
+	 * Removes the user from the lobby window.
+	 * @param user the user to remove.
+	 */
+	public void removeUser(ClientUser user) {
+		super.removeUser(user);
+		gameLobby.removeUser(user);
+	}
+	
 }

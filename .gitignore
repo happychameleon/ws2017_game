@@ -39,6 +39,7 @@ local.properties
 /**/.idea/**/workspace.xml
 /**/.idea/**/tasks.xml
 /**/.idea/dictionaries
+/**/.idea/**/modules.xml
 
 
 # Sensitive or high-churn files:
@@ -88,7 +89,7 @@ fabric.properties
 
 
 # Gradle
-/**/.gradle
+/**/.gradle/**
 /**/build/
 
 # Ignore Gradle GUI config

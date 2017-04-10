@@ -1,7 +1,7 @@
 package client.commands;
 
 import client.Client;
-import game.ClientGameController;
+import game.ClientGameRunningController;
 import game.startscreen.ClientGameStartController;
 import serverclient.User;
 
@@ -23,13 +23,13 @@ public class ClientLeavgHandler extends CommandHandler {
 			return;
 		}
 		
-		ClientGameStartController waitingGame = Client.getChatWindow().getWaitingGameByName(gameName);
+		ClientGameStartController waitingGame = Client.getMainChatWindow().getWaitingGameByName(gameName);
 		if (waitingGame != null) {
 			waitingGame.removeUser(user);
 			return;
 		}
 		
-		ClientGameController runningGame = Client.getRunningGameByName(gameName);
+		ClientGameRunningController runningGame = Client.getRunningGameByName(gameName);
 		if (runningGame != null) {
 			runningGame.removeUser(user);
 			return;

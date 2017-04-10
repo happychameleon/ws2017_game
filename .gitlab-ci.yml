@@ -1,0 +1,15 @@
+image: kaiwinter/docker-java8-maven
+
+before_script:
+  - "chmod +x WS2017/gradlew"
+  - "apt-get -y install fakeroot"
+  - "cd WS2017"
+  - "./gradlew clean"
+
+stages:
+  - build
+
+job1:
+  stage: build
+  script:
+    - "./gradlew jar"

@@ -1,5 +1,6 @@
 package game.startscreen;
 
+import game.GameController;
 import serverclient.User;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.HashSet;
  *
  * Created by flavia on 31.03.17.
  */
-public abstract class GameStartController {
+public abstract class GameStartController extends GameController {
 	
 	
 	/**
@@ -36,30 +37,6 @@ public abstract class GameStartController {
 	 */
 	public HashSet<User> getAllChoosingUsers() {
 		return choosingUsers;
-	}
-	
-	/**
-	 * The unique name of the game.
-	 */
-	String gameName;
-	
-	/**
-	 * @return {@link #gameName}.
-	 */
-	public String getGameName() {
-		return gameName;
-	}
-	
-	/**
-	 * The points to spend on the starting team.
-	 */
-	final int startingPoints;
-	
-	/**
-	 * @return {@link #startingPoints}.
-	 */
-	public int getStartingPoints() {
-		return startingPoints;
 	}
 	
 	public GameStartController(HashMap<User, String> waitingUsers, HashSet<User> choosingUsers, String gameName, int startingPoints) {

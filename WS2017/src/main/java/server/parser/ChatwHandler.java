@@ -24,9 +24,11 @@ public class ChatwHandler extends ChatmHandler {
 	 */
 	@Override
 	void handleChatMessage() {
+		
+		String wholeArgument = argument;
 		super.handleChatMessage();
 		
-		String message = command + " " + argument;
+		String message = command + " " + wholeArgument;
 		commandParser.writeToSpecificClient(message, senderName);
 	}
 }

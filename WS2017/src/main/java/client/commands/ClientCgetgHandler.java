@@ -1,7 +1,7 @@
 package client.commands;
 
 import client.Client;
-import game.ClientGameController;
+import game.ClientGameRunningController;
 import game.startscreen.ClientGameStartController;
 import serverclient.User;
 
@@ -37,7 +37,7 @@ public class ClientCgetgHandler extends CommandHandler {
 	}
 	
 	/**
-	 * If the game is already running, this reads in the needed info and creates the {@link ClientGameController}
+	 * If the game is already running, this reads in the needed info and creates the {@link ClientGameRunningController}
 	 */
 	private void parseRunningGameAnswer() {
 		String gameName = getAndRemoveNextArgumentWord();
@@ -53,9 +53,9 @@ public class ClientCgetgHandler extends CommandHandler {
 			nextUser = getAndRemoveNextArgumentWord();
 		}
 		
-		ClientGameController game = new ClientGameController(users, gameName);
+		ClientGameRunningController game = new ClientGameRunningController(users, gameName);
 		
-		Client.getChatWindow().addRunningGameToList(game);
+		Client.getMainChatWindow().addRunningGameToList(game);
 	}
 	
 	/**
@@ -87,7 +87,7 @@ public class ClientCgetgHandler extends CommandHandler {
 		
 		ClientGameStartController game = new ClientGameStartController(waitingUsers, choosingUsers, gameName, maxPoints);
 		
-		Client.getChatWindow().addNewGameToList(game);
+		Client.getMainChatWindow().addNewGameToList(game);
 	}
 	
 	
