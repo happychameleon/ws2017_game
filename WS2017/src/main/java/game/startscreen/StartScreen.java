@@ -1,7 +1,5 @@
 package game.startscreen;
 
-import client.Client;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -131,10 +129,10 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	 * (when a user quits it is registered by the server automatically)
 	 * TODO: When the window is closed, this also has to be called!
 	 */
-	private void leaveGame() {
-		String message = "leavg " + clientGameStartController.getGameName() + " " + Client.getThisUser().getName();
-		Client.sendMessageToServer(message);
-		window.dispose();
+	protected void leaveGame() {
+		clientGameStartController.leaveGame();
+		
+		//window.dispose(); Not needed because the answer to the leavg command should close it.
 	}
 	
 	/**
@@ -226,7 +224,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	 */
 	@Override
 	public void windowClosing(WindowEvent e) {
-		//leaveGame();
+		leaveGame();
 	}
 	
 	/**

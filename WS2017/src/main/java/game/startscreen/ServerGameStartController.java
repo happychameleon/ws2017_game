@@ -27,11 +27,12 @@ public class ServerGameStartController extends GameStartController {
 	public void removeUser(User user) {
 		super.removeUser(user);
 		
+		Server.writeToAllClients(String.format("leavg %s %s", gameName, user.getName()));
+		
 		if (getAllUsers().isEmpty()) {
 			Server.removeWaitingGame(this);
 			Server.writeToAllClients("rmgam " + gameName);
 		} else {
-			Server.writeToAllClients(String.format("leavg %s %s", gameName, user.getName()));
 		}
 	}
 	

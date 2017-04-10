@@ -148,7 +148,7 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 		for (int x = 0; x < world.getMapWidth(); x++) {
 			for (int y = 0; y < world.getMapHeight(); y++) {
 				Tile tile = world.getTileAt(x, y);
-				if (tile.needsGraphicsUpdate()) {
+				if (tile.getNeedsGraphicsUpdate()) {
 					paintOneTile(g2d, tile); // Update this Tile, if something has changed on it.
 					tile.setNeedsGraphicsUpdate(false);
 				}

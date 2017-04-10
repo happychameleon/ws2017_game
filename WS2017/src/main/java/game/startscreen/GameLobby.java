@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +19,7 @@ import java.util.ArrayList;
  *
  * Created by flavia on 01.04.17.
  */
-public class GameLobby extends JPanel implements ActionListener {
+public class GameLobby extends JPanel implements ActionListener, WindowListener {
 	
 	private final GameController game;
 	
@@ -87,7 +89,8 @@ public class GameLobby extends JPanel implements ActionListener {
 		// Add the Game Lobby to it's window
 		window.add(this);
 		
-		
+		window.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		window.addWindowListener(this);
 		
 		
 		window.pack();
@@ -116,7 +119,11 @@ public class GameLobby extends JPanel implements ActionListener {
 		lobbyChat.addChatUser(user);
 	}
 	
-	
+	private void leaveGame() {
+		if (game instanceof ClientGameStartController) {
+			((ClientGameStartController) game).leaveGame();
+		}
+	}
 	
 	/**
 	 * Invoked when an action occurs.
@@ -125,7 +132,96 @@ public class GameLobby extends JPanel implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == leaveGameButton) {
+			leaveGame();
+		}
+	}
+	
+	
+	/**
+	 * Invoked the first time a window is made visible.
+	 *
+	 * @param e
+	 */
+	@Override
+	public void windowOpened(WindowEvent e) {
 	
 	}
 	
+	/**
+	 * Invoked when the user attempts to close the window
+	 * from the window's system menu.
+	 *
+	 * @param e Window Event
+	 */
+	@Override
+	public void windowClosing(WindowEvent e) {
+		leaveGame();
+	}
+	
+	/**
+	 * Invoked when a window has been closed as the result
+	 * of calling dispose on the window.
+	 *
+	 * @param e
+	 */
+	@Override
+	public void windowClosed(WindowEvent e) {
+	
+	}
+	
+	/**
+	 * Invoked when a window is changed from a normal to a
+	 * minimized state. For many platforms, a minimized window
+	 * is displayed as the icon specified in the window's
+	 * iconImage property.
+	 *
+	 * @param e
+	 * @see Frame#setIconImage
+	 */
+	@Override
+	public void windowIconified(WindowEvent e) {
+	
+	}
+	
+	/**
+	 * Invoked when a window is changed from a minimized
+	 * to a normal state.
+	 *
+	 * @param e
+	 */
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+	
+	}
+	
+	/**
+	 * Invoked when the Window is set to be the active Window. Only a Frame or
+	 * a Dialog can be the active Window. The native windowing system may
+	 * denote the active Window or its children with special decorations, such
+	 * as a highlighted title bar. The active Window is always either the
+	 * focused Window, or the first Frame or Dialog that is an owner of the
+	 * focused Window.
+	 *
+	 * @param e
+	 */
+	@Override
+	public void windowActivated(WindowEvent e) {
+	
+	}
+	
+	/**
+	 * Invoked when a Window is no longer the active Window. Only a Frame or a
+	 * Dialog can be the active Window. The native windowing system may denote
+	 * the active Window or its children with special decorations, such as a
+	 * highlighted title bar. The active Window is always either the focused
+	 * Window, or the first Frame or Dialog that is an owner of the focused
+	 * Window.
+	 *
+	 * @param e
+	 */
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+	
+	}
 }

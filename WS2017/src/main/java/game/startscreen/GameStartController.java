@@ -1,6 +1,5 @@
 package game.startscreen;
 
-import client.ClientUser;
 import game.GameController;
 import serverclient.User;
 
@@ -77,9 +76,7 @@ public abstract class GameStartController extends GameController {
 		else if (choosingUsers.contains(user))
 			choosingUsers.remove(user);
 		
-		if (gameLobby != null) {
-			gameLobby.removeUser((ClientUser) user);
-		}
+		
 	}
 	
 	/**

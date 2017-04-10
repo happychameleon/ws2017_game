@@ -9,7 +9,10 @@ import serverclient.User;
  */
 public class ClientUser extends User {
 	
-	
+	/**
+	 * Creates a ClientUser with the given name
+	 * @param name The new name
+	 */
 	public ClientUser (String name) {
 		super(name);
 	}

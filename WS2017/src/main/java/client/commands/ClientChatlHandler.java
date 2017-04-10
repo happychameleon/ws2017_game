@@ -9,6 +9,12 @@ import game.GameController;
  */
 public class ClientChatlHandler extends ClientChatmHandler {
 	
+	/**
+	 * Handles the chatl command similar to the chatm command.
+	 * Adds the chat message to the correct lobby chat instead of the main chat.
+	 *
+	 * @see ClientChatmHandler
+	 */
 	@Override
 	public void handleCommand() {
 		if (Client.isLoggedIn()) {

@@ -48,6 +48,9 @@ public class Client {
 	 */
 	protected static String commandLineUsername = "";
 	
+	/**
+	 * @return {@link #commandLineUsername}.
+	 */
 	public static String getCommandLineUsername() {
 		return commandLineUsername;
 	}

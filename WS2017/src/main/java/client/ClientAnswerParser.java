@@ -10,8 +10,20 @@ import client.commands.Answer;
 public class ClientAnswerParser {
 	
 	private final ClientCommandParser commandParser;
+	
+	/**
+	 * Whether the answer was positive or negative.
+	 */
 	private final boolean isOK;
+	
+	/**
+	 * The command used this answer is intended for.
+	 */
 	private String keyword = "";
+	
+	/**
+	 * The argument to the answer. Could be empty.
+	 */
 	private String argument = "";
 	
 	

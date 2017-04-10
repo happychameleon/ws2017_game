@@ -10,17 +10,29 @@ import java.util.HashMap;
 public class Tile {
 	
 	//region TileData
-	
+	/**
+	 * Whether the Tile Graphic needs an update because something changed.
+	 */
 	private boolean needsGraphicsUpdate;
 	
-	public boolean needsGraphicsUpdate() {
+	/**
+	 * @return {@link #needsGraphicsUpdate}
+	 */
+	public boolean getNeedsGraphicsUpdate() {
 		return needsGraphicsUpdate;
 	}
 	
+	/**
+	 * Sets {@link #needsGraphicsUpdate} to true.
+	 */
 	public void setNeedsGraphicsUpdate() {
 		this.needsGraphicsUpdate = true;
 	}
 	
+	/**
+	 * Sets {@link #needsGraphicsUpdate} to the given value.
+	 * @param b the given value.
+	 */
 	public void setNeedsGraphicsUpdate(boolean b) {
 		this.needsGraphicsUpdate = b;
 	}
@@ -41,6 +53,9 @@ public class Tile {
 		return y;
 	}
 	
+	/**
+	 * The {@link TileType} of this Tile.
+	 */
 	private TileType tileType;
 	
 	public TileType getTileType() {
@@ -74,14 +89,18 @@ public class Tile {
 	    }
     	return tileType.isWalkable();
     }
-
+	
+	/**
+	 * All walkable tiles can be shot through,
+	 * most non-walkable Tiles can't be shot through (like Trees, Walls)
+	 * but some can (like Water).
+	 */
     private boolean canShootThrough = true;
-    /**
-     * All walkable tiles can be shot through,
-     * most non-walkable Tiles can't be shot through (like Trees, Walls)
-     * but some can (like Water).
-     */
-    public boolean canShootThrough() {
+	
+	/**
+	 * @return {@link #canShootThrough}
+	 */
+	public boolean getCanShootThrough() {
         return canShootThrough;
     }
 	
@@ -90,6 +109,9 @@ public class Tile {
 	 */
     private Character character;
 	
+	/**
+	 * @return {@link #character}
+	 */
 	public Character getCharacter() { return character; }
 	
 	public void setCharacter(Character character) {

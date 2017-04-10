@@ -19,6 +19,12 @@ public class ClientGameStartController extends GameStartController {
 	 */
 	private StartScreen startScreen;
 	
+	/**
+	 * @return {@link #startScreen}.
+	 */
+	public StartScreen getStartScreen() {
+		return startScreen;
+	}
 	
 	/**
 	 * Opens the Window to choose the team from.
@@ -88,4 +94,30 @@ public class ClientGameStartController extends GameStartController {
 		}
 	}
 	
+	/**
+	 * Removes the user from the game.
+	 *
+	 * @param user
+	 */
+	@Override
+	public void removeUser(User user) {
+		System.out.println("ClientGameStartController#removeUser");
+		super.removeUser(user);
+		
+		if (user == Client.getThisUser()) {
+			System.out.println("ClientGameStartController#removeUser removing this user");
+			gameLobby.removeUser((ClientUser) user);
+			//if (startScreen != null) {
+				startScreen.dispose();
+			//}
+		}
+	}
+	
+	/**
+	 * Sends a message to the server to tell it this client wants to leave the game.
+	 */
+	public void leaveGame() {
+		String message = "leavg " + getGameName() + " " + Client.getThisUser().getName();
+		Client.sendMessageToServer(message);
+	}
 }
