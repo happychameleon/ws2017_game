@@ -11,6 +11,12 @@ import server.ServerUser;
  */
 public class ChatmHandler extends CommandHandler {
 	
+	/**
+	 * The argument at the start before we separate it into pieces.
+	 * Used to send the argument to the clients.
+	 */
+	String wholeArgument;
+	
 	protected String senderName = "";
 	protected String recipientName = "";
 	
@@ -29,7 +35,7 @@ public class ChatmHandler extends CommandHandler {
 	 * Sends the chat message along to the receiver.
 	 */
 	void handleChatMessage() {
-		String wholeArgument = argument;
+		wholeArgument = argument;
 		
 		separateArgument();
 		if (senderName.isEmpty() || recipientName.isEmpty()) {
