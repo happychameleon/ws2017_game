@@ -1,7 +1,7 @@
 package server.parser;
 
 /**
- * Receives the
+ * Receives the cquit command and terminates the client thread in a meaningful way
  *
  * Created by m on 3/20/17.
  */

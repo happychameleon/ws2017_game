@@ -20,7 +20,13 @@ public enum Command {
 	newgm(new NewgmHandler()),
 	joing(new JoingHandler()),
 	leavg(new LeavgHandler()),
-	ready(new ReadyHandler());
+	ready(new ReadyHandler()),
+	chatt(new ChattHandler()),
+	chpos(new ChposHandler()),
+	chpow(new ChpowHandler()),
+	chwea(new ChweaHandler()),
+	rmgam(new RmgamHandler()),
+	uhigh(new UhighHandler());
 	
 	/**
 	 * The correct CommandHandler which processes the command.
