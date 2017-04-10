@@ -1,5 +1,6 @@
 package game.startscreen;
 
+import client.Client;
 import client.ClientUser;
 import client.clientgui.LobbyChatPanel;
 import game.GameController;
@@ -26,10 +27,9 @@ public class GameLobby extends JPanel implements ActionListener {
 	
 	
 	
-	private DefaultListModel<ClientUser> choosingUsersModel = new DefaultListModel<>();
-	private JList<ClientUser> choosingUsersList = new JList<>(choosingUsersModel);
-	private DefaultListModel<ClientUser> waitingUsersModel = new DefaultListModel<>();
-	private JList<ClientUser> waitingUsersList = new JList<>(waitingUsersModel);
+	private DefaultListModel<ClientUser> userListModel = new DefaultListModel<>();
+	private JList<ClientUser> userList = new JList<>(userListModel);
+
 	
 	/**
 	 * The Chat panel of this lobby
@@ -56,12 +56,9 @@ public class GameLobby extends JPanel implements ActionListener {
 		
 		// The left side with the overview of all the users
 		Box userOverviewBox = Box.createVerticalBox();
-		JScrollPane choosingUsersScroll = new JScrollPane(choosingUsersList);
-		JScrollPane waitingUsersScroll = new JScrollPane(waitingUsersList);
-		userOverviewBox.add(new JLabel("Users choosing"));
+		JScrollPane choosingUsersScroll = new JScrollPane(userList);
+		userOverviewBox.add(new JLabel("Players"));
 		userOverviewBox.add(choosingUsersScroll);
-		userOverviewBox.add(new JLabel("Users ready"));
-		userOverviewBox.add(waitingUsersScroll);
 		JPanel buttons = new JPanel(new GridLayout(1, 2));
 		buttons.add(leaveGameButton);
 		buttons.add(startGameButton);
@@ -73,15 +70,25 @@ public class GameLobby extends JPanel implements ActionListener {
 		// The center with the Chat.
 		Box chatBox = Box.createHorizontalBox();
 		ArrayList<ClientUser> users = new ArrayList<>();
+		// Add already existing users to the chat and the user list. This user will be added like a new user therefore is ignored here..
 		for (User user : game.getAllUsers()) {
+			if (user == Client.getThisUser()) {
+				continue;
+			}
 			users.add((ClientUser) user);
+			userListModel.addElement((ClientUser) user);
 		}
 		lobbyChat = new LobbyChatPanel(users, "chatl", game);
+		
+		
 		chatBox.add(lobbyChat);
 		this.add(chatBox);
 		
-		
+		// Add the Game Lobby to it's window
 		window.add(this);
+		
+		
+		
 		
 		window.pack();
 		window.setVisible(true);
@@ -89,28 +96,24 @@ public class GameLobby extends JPanel implements ActionListener {
 	
 	
 	/**
-	 * Removes the user from all the list of users
+	 * Removes the user from the list of users
 	 * @param user the user to remove
 	 */
 	public void removeUser(ClientUser user) {
-		choosingUsersModel.removeElement(user);
-		waitingUsersModel.removeElement(user);
+		userListModel.removeElement(user);
+		if (user == Client.getThisUser()) {
+			window.dispose();
+			game.removeGameLobby();
+		}
 	}
 	
 	/**
-	 * Adds the user to the waiting users list.
+	 * Adds the user to the lobby user list and the chat.
 	 * @param user the user to add.
 	 */
-	public void addUserToWaiting(ClientUser user) {
-		waitingUsersModel.addElement(user);
-	}
-	
-	/**
-	 * Adds the user to the choosing users list.
-	 * @param user the user to add.
-	 */
-	public void addUserToChoosing(ClientUser user) {
-		choosingUsersModel.addElement(user);
+	public void addUserToLobby(ClientUser user) {
+		userListModel.addElement(user);
+		lobbyChat.addChatUser(user);
 	}
 	
 	

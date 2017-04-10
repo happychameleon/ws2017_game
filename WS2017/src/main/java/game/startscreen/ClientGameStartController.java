@@ -58,7 +58,7 @@ public class ClientGameStartController extends GameStartController {
 			startScreen = new StartScreen(this, startingPoints);
 			gameLobby = new GameLobby(this);
 		}
-		gameLobby.addUserToChoosing((ClientUser) joinedUser);
+		gameLobby.addUserToLobby((ClientUser) joinedUser);
 	}
 	
 	
@@ -83,20 +83,9 @@ public class ClientGameStartController extends GameStartController {
 			System.out.println("ClientGameStartController#moveUserToWaiting - It's this user");
 			startScreen.dispose();
 			
-			gameLobby.removeUser((ClientUser) user);
-			gameLobby.addUserToWaiting((ClientUser) user);
 		} else {
 			System.out.println("ClientGameStartController#moveUserToWaiting - It's not this user");
 		}
-	}
-	
-	/**
-	 * Removes the user from the lobby window.
-	 * @param user the user to remove.
-	 */
-	public void removeUser(ClientUser user) {
-		super.removeUser(user);
-		gameLobby.removeUser(user);
 	}
 	
 }

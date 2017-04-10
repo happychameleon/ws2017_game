@@ -28,6 +28,13 @@ public abstract class GameController {
 	}
 	
 	/**
+	 * Sets the gameLobby to null. Used by the gameLobby itself if it closes.
+	 */
+	public void removeGameLobby() {
+		gameLobby = null;
+	}
+	
+	/**
 	 * The points to spend on the starting team.
 	 */
 	protected int startingPoints;
@@ -56,12 +63,12 @@ public abstract class GameController {
 	
 	/**
 	 * TODO!
+	 *
 	 * @param startController
 	 * @return
 	 */
-	public static GameRunningController createRunningControllerFromStartController (GameStartController startController) {
+	public static GameRunningController createRunningControllerFromStartController(GameStartController startController) {
 		return null;
 	}
-	
 	
 }

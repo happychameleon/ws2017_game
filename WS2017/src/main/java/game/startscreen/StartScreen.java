@@ -226,7 +226,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	 */
 	@Override
 	public void windowClosing(WindowEvent e) {
-		leaveGame();
+		//leaveGame();
 	}
 	
 	/**
