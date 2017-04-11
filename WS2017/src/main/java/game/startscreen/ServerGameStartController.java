@@ -31,7 +31,7 @@ public class ServerGameStartController extends GameStartController {
 		
 		if (getAllUsers().isEmpty()) {
 			Server.removeWaitingGame(this);
-			Server.writeToAllClients("rmgam " + gameName);
+			Server.writeToAllClients(String.format("rmgam %s", gameName));
 		} else {
 		}
 	}

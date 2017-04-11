@@ -24,8 +24,7 @@ public class JoingHandler extends CommandHandler {
 			System.err.println("USER OR GAME DOESN'T EXIST!");
 		}
 		
-		String message = "joing " + argument;
-		Server.writeToAllClients(message);
+		Server.writeToAllClients(String.format("joing %s", argument));
 		
 		game.addUserToGame(joinedUser);
 	}

@@ -31,7 +31,7 @@ class GameClientThread extends Thread{
             gameProtocol.validateProtocol();
             System.out.println("connection to client " + connectedGameClient + " is being terminated");
             Server.removeUserFromList(user);
-            Server.writeToAllClients("cquit " + user.getName());
+            Server.writeToAllClients(String.format("cquit %s", user.getName()));
             socket.close();
         } catch (IOException e) {
             System.err.println(e.toString());

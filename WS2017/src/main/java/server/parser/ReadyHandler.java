@@ -37,9 +37,7 @@ public class ReadyHandler extends CommandHandler {
 		
 		waitingGame.moveUserToWaiting(user, characterString);
 		
-		String message = String.format("ready %s %s %s", username, gameName, characterString);
-		Server.writeToAllClients(message);
-		System.out.println("ReadyHandler#handleCommand - Done");
+		Server.writeToAllClients(String.format("ready %s %s %s", username, gameName, characterString));
 	}
 	
 	/**

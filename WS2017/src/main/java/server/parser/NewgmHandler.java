@@ -32,9 +32,7 @@ public class NewgmHandler extends CommandHandler {
 		Server.addNewWaitingGame(newGame);
 		
 		// Tell all the clients that a new game has opened.
-		String newGameMessage = "newgm " + argument;
-		Server.writeToAllClients(newGameMessage);
-		System.out.println("Sent to clients: " + newGameMessage);
+		Server.writeToAllClients(String.format("newgm %s", argument));
 	}
 	
 	
