@@ -227,6 +227,24 @@ Client to Server:
 \noindent
 The Server informs all the Clients, that the Client has left the game.\\
 Server to Client:
+\begin{quote}
+  leavg <gamename> <username>
+\end{quote}
+
+\noindent
+The Client tells the server that they want to start the game.
+Client to Server:
+\begin{quote}
+  stgam <gamename> <username>
+\end{quote}
+
+\noindent
+The server then forwards the command to all the Clients to inform them about the start of the game and which user triggered the game start.
+Server to Client:
+\begin{quote}
+  stgam <gamename> <username>
+\end{quote}
+
 %\subsubsection{Map}
 
 

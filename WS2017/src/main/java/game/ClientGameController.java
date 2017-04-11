@@ -4,6 +4,7 @@ import client.Client;
 import client.ClientUser;
 import client.commands.ClientJoingHandler;
 import client.commands.ClientLeavgHandler;
+import client.commands.ClientStgamHandler;
 import game.startscreen.GameLobby;
 import game.startscreen.StartScreen;
 import serverclient.User;
@@ -117,7 +118,25 @@ public class ClientGameController extends GameController {
 		
 	}
 	
-	
+	/**
+	 * Sends a message telling the server to start the game via {@link ClientStgamHandler#sendStartGame}.
+	 */
+	public void sendStartGame() {
+		if (getAllChoosingUsers().isEmpty()) {
+			if (getAllUsers().size() >= 2) {
+				ClientStgamHandler.sendStartGame(gameName);
+				
+			} else {
+				gameLobby.getLobbyChat().displayInfo("Please wait for another user to start the game!");
+			}
+		} else {
+			String choosingUserNames = "";
+			for (User user : getAllChoosingUsers()) {
+				choosingUserNames += " " + user.getName();
+			}
+			gameLobby.getLobbyChat().displayInfo("Please wait for following users to select their team:" + choosingUserNames);
+		}
+	}
 	//endregion
 	
 	//region General Methods

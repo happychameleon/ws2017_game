@@ -46,7 +46,7 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 	}
 	
 	/**
-	 * Creates a new GameLobby of the specified game.
+	 * Creates a new GameLobby of the specified game and opens it.
 	 */
 	public GameLobby(ClientGameController game) {
 		
@@ -119,9 +119,30 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 		lobbyChat.addChatUser(user);
 	}
 	
+	/**
+	 * Calls the game's method {@link ClientGameController#askToLeaveGame}.
+	 */
 	private void leaveGame() {
 		game.askToLeaveGame();
 	}
+	
+	
+	/**
+	 * Checks whether all users are ready (have chosen their team) and if so tells the game to start.
+	 * Otherwise tells the user which users still have to choose their character.
+	 */
+	private void startGame() {
+		if (game.getAllChoosingUsers().isEmpty()) {
+			game.sendStartGame();
+		} else {
+			String choosingUserNames = "";
+			for (User user : game.getAllChoosingUsers()) {
+				choosingUserNames += " " + user.getName();
+			}
+			lobbyChat.displayInfo("Please wait for following users to select their team:" + choosingUserNames);
+		}
+	}
+	
 	
 	/**
 	 * Invoked when an action occurs.
@@ -132,19 +153,13 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == leaveGameButton) {
 			leaveGame();
+			
+		} else if (e.getSource() == startGameButton) {
+			startGame();
 		}
 	}
 	
 	
-	/**
-	 * Invoked the first time a window is made visible.
-	 *
-	 * @param e
-	 */
-	@Override
-	public void windowOpened(WindowEvent e) {
-	
-	}
 	
 	/**
 	 * Invoked when the user attempts to close the window
@@ -159,7 +174,15 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 	
 	
 	
+	/**
+	 * Invoked the first time a window is made visible.
+	 *
+	 * @param e The Window Event
+	 */
+	@Override
+	public void windowOpened(WindowEvent e) {
 	
+	}
 	
 	/**
 	 * Invoked when a window has been closed as the result

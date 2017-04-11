@@ -41,9 +41,9 @@ public abstract class GameController {
 	}
 	
 	/**
-	 * The unique name of the game.
+	 * The unique name of the game. Can't be changed once chosen.
 	 */
-	protected String gameName;
+	protected final String gameName;
 	
 	/**
 	 * @return {@link #gameName}.
