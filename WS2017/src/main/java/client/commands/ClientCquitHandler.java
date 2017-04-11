@@ -23,7 +23,7 @@ public class ClientCquitHandler extends CommandHandler {
 		}
 		if (user != null) {
 			Client.removeUser(user);
-			Client.getMainChatWindow().getMainChatPanel().displayInfo(user.getName() + " has logged off!");
+			Client.getMainWindow().getMainChatPanel().displayInfo(user.getName() + " has logged off!");
 		} else {
 			System.err.println("cquit used with a non-exisitng username!");
 		}

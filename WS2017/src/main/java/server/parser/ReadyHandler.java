@@ -1,12 +1,12 @@
 package server.parser;
 
 
-import game.startscreen.ServerGameStartController;
+import game.ServerGameController;
 import server.Server;
 import server.ServerUser;
 
 /**
- * Calls the {@link ServerGameStartController#moveUserToWaiting} method of the specified game.
+ * Calls the {@link ServerGameController#setUserAsWaiting} method of the specified game.
  *
  * Created by flavia on 31.03.17.
  */
@@ -23,7 +23,7 @@ public class ReadyHandler extends CommandHandler {
 			return;
 		}
 		
-		ServerGameStartController waitingGame = Server.getWaitingGameByName(gameName);
+		ServerGameController waitingGame = Server.getGameByName(gameName);
 		if (waitingGame == null) {
 			System.err.println("ReadyHandler#handleCommand - No game found with name: " + gameName);
 			return;
@@ -35,7 +35,7 @@ public class ReadyHandler extends CommandHandler {
 			return;
 		}
 		
-		waitingGame.moveUserToWaiting(user, characterString);
+		waitingGame.setUserAsWaiting(user, characterString);
 		
 		Server.writeToAllClients(String.format("ready %s %s %s", username, gameName, characterString));
 	}

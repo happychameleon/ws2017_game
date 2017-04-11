@@ -3,7 +3,7 @@ package game.startscreen;
 import client.Client;
 import client.ClientUser;
 import client.clientgui.LobbyChatPanel;
-import game.GameController;
+import game.ClientGameController;
 import serverclient.User;
 
 import javax.swing.*;
@@ -21,10 +21,10 @@ import java.util.ArrayList;
  */
 public class GameLobby extends JPanel implements ActionListener, WindowListener {
 	
-	private final GameController game;
+	private final ClientGameController game;
 	
 	private JFrame window;
-	private JButton leaveGameButton = new JButton("Leave Game (TODO)");
+	private JButton leaveGameButton = new JButton("Leave Game");
 	private JButton startGameButton = new JButton("Start Game (TODO)");
 	
 	
@@ -48,7 +48,7 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 	/**
 	 * Creates a new GameLobby of the specified game.
 	 */
-	public GameLobby(GameController game) {
+	public GameLobby(ClientGameController game) {
 		
 		this.game = game;
 		
@@ -120,9 +120,7 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 	}
 	
 	private void leaveGame() {
-		if (game instanceof ClientGameStartController) {
-			((ClientGameStartController) game).leaveGame();
-		}
+		game.askToLeaveGame();
 	}
 	
 	/**
@@ -159,11 +157,15 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 		leaveGame();
 	}
 	
+	
+	
+	
+	
 	/**
 	 * Invoked when a window has been closed as the result
 	 * of calling dispose on the window.
 	 *
-	 * @param e
+	 * @param e The WindowEvent.
 	 */
 	@Override
 	public void windowClosed(WindowEvent e) {
@@ -176,7 +178,7 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 	 * is displayed as the icon specified in the window's
 	 * iconImage property.
 	 *
-	 * @param e
+	 * @param e The WindowEvent.
 	 * @see Frame#setIconImage
 	 */
 	@Override
@@ -188,7 +190,7 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 	 * Invoked when a window is changed from a minimized
 	 * to a normal state.
 	 *
-	 * @param e
+	 * @param e The WindowEvent.
 	 */
 	@Override
 	public void windowDeiconified(WindowEvent e) {
@@ -203,7 +205,7 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 	 * focused Window, or the first Frame or Dialog that is an owner of the
 	 * focused Window.
 	 *
-	 * @param e
+	 * @param e The WindowEvent.
 	 */
 	@Override
 	public void windowActivated(WindowEvent e) {
@@ -218,7 +220,7 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 	 * Window, or the first Frame or Dialog that is an owner of the focused
 	 * Window.
 	 *
-	 * @param e
+	 * @param e The WindowEvent.
 	 */
 	@Override
 	public void windowDeactivated(WindowEvent e) {

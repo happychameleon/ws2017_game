@@ -1,6 +1,6 @@
 package server.parser;
 
-import game.startscreen.ServerGameStartController;
+import game.ServerGameController;
 import server.Server;
 import serverclient.User;
 
@@ -17,8 +17,12 @@ public class CgetgHandler extends CommandHandler {
 			System.err.println("cgetg should not have an argument!");
 		}
 		
-		for (ServerGameStartController sgsc : Server.getAllWaitingGames()) {
-			sendWaitingGameAnswer(sgsc);
+		for (ServerGameController sgc : Server.getStartingGames()) {
+			sendWaitingGameAnswer(sgc);
+		}
+		
+		for (ServerGameController sgc : Server.getRunningGames()) {
+			sendRunningGameAnswer(sgc);
 		}
 		
 	}
@@ -27,27 +31,33 @@ public class CgetgHandler extends CommandHandler {
 	 * Sends the waiting game info back as
 	 * +OK cgetg waiting <gameName> <maxPoints> <username1> (ready [<characterstring>]|choosing) <username2> (ready [<characterstring>]|choosing)
 	 */
-	private void sendWaitingGameAnswer(ServerGameStartController sgsc) {
+	private void sendWaitingGameAnswer(ServerGameController sgc) {
 		
-		String answer = "+OK cgetg ";
-		answer += "waiting ";
-		answer += sgsc.getGameName() + " " + sgsc.getStartingPoints();
+		String users = "";
 		// Add choosing user as <username1> choosing
-		for (User user : sgsc.getAllChoosingUsers()) {
-			answer += " ";
-			answer += user.getName();
-			answer += " choosing";
+		for (User user : sgc.getAllChoosingUsers()) {
+			users += " ";
+			users += user.getName();
+			users += " choosing";
 		}
 		// Add waiting user as <username1> ready [<characterstring>]
-		for (User user : sgsc.getAllWaitingUsers().keySet()) {
-			answer += " ";
-			answer += user.getName();
-			answer += " ready ";
-			answer += sgsc.getAllWaitingUsers().get(user);
+		for (User user : sgc.getAllWaitingUsers().keySet()) {
+			users += " ";
+			users += user.getName();
+			users += " ready ";
+			users += sgc.getAllWaitingUsers().get(user);
 		}
 		
-		commandParser.writeBackToClient(answer);
+		commandParser.writeBackToClient(String.format("+OK cgetg waiting %s %d %s", sgc.getGameName(), sgc.getStartingPoints(), users));
 		
+	}
+	
+	/**
+	 * Sends the running game info back as
+	 * +OK cgetg running <gameName> <maxPoints> <username1> <username2>
+	 */
+	private void sendRunningGameAnswer(ServerGameController sgc) {
+		//TODO send the running game answer.
 	}
 	
 }

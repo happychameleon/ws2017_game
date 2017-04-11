@@ -37,8 +37,8 @@ public class ClientAnswerParser {
 				break;
 			default:
 				isOK = false;
-				if (Client.getMainChatWindow() != null) {
-					Client.getMainChatWindow().getMainChatPanel().displayError("Answer wrongly formatted!");
+				if (Client.getMainWindow() != null) {
+					Client.getMainWindow().getMainChatPanel().displayError("Answer wrongly formatted!");
 				}
 				break;
 		}
@@ -76,8 +76,8 @@ public class ClientAnswerParser {
 		try {
 			answer = Enum.valueOf(Answer.class, keyword);
 		} catch (IllegalArgumentException iae) {
-			if (Client.getMainChatWindow() != null) {
-				Client.getMainChatWindow().getMainChatPanel().displayError("Received answer does not exist!");
+			if (Client.getMainWindow() != null) {
+				Client.getMainWindow().getMainChatPanel().displayError("Received answer does not exist!");
 			} else {
 				System.err.println("Received answer does not exist!");
 			}

@@ -20,7 +20,7 @@ public class NewGameDialog extends JDialog implements ActionListener, KeyListene
 	private JButton cancelGameCreationButton = new JButton("Cancel");
 	
 	private MainChatWindow getChat() {
-		return Client.getMainChatWindow();
+		return Client.getMainWindow();
 	}
 	
 	/**

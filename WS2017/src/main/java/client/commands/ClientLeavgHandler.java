@@ -1,8 +1,7 @@
 package client.commands;
 
 import client.Client;
-import game.ClientGameRunningController;
-import game.startscreen.ClientGameStartController;
+import game.ClientGameController;
 import serverclient.User;
 
 /**
@@ -23,15 +22,9 @@ public class ClientLeavgHandler extends CommandHandler {
 			return;
 		}
 		
-		ClientGameStartController waitingGame = Client.getMainChatWindow().getWaitingGameByName(gameName);
-		if (waitingGame != null) {
-			waitingGame.removeUser(user);
-			return;
-		}
-		
-		ClientGameRunningController runningGame = Client.getRunningGameByName(gameName);
-		if (runningGame != null) {
-			runningGame.removeUser(user);
+		ClientGameController game = Client.getGameByName(gameName);
+		if (game != null) {
+			game.removeUser(user);
 			return;
 		}
 		
@@ -43,4 +36,11 @@ public class ClientLeavgHandler extends CommandHandler {
 	
 	}
 	
+	/**
+	 * Sends a message to the server to tell it this client wants to leave the game.
+	 * @param gameName The name of the game to leave.
+	 */
+	public static void sendLeavgRequest(String gameName) {
+		Client.sendMessageToServer(String.format("leavg %s %s", gameName, Client.getThisUser().getName()));
+	}
 }

@@ -1,5 +1,7 @@
 package game.startscreen;
 
+import game.ClientGameController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,7 +19,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	/**
 	 * The ClientGameStartController for this game.
 	 */
-	private final ClientGameStartController clientGameStartController;
+	private final ClientGameController clientGameStartController;
 	
 	/**
 	 * The amount of points to spend for Children and Equipment.
@@ -67,7 +69,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	 * @param gameStartController
 	 * @param startingPoints The max amount of points to choose the team from.
 	 */
-	public StartScreen(ClientGameStartController gameStartController, int startingPoints) {
+	public StartScreen(ClientGameController gameStartController, int startingPoints) {
 		this.clientGameStartController = gameStartController;
 		this.startingPoints = startingPoints;
 		
@@ -113,7 +115,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 		else if (i.equals(acceptSelectionButton)) {
 			recalculatePoints(); // Just to be sure an update to the points went missing.
 			if (currentPoints <= startingPoints) {
-				clientGameStartController.clientIsReady(getAllChildrenAsString());
+				clientGameStartController.thisClientIsReady(getAllChildrenAsString());
 			} else {
 				System.err.println("The acceptSelectionButton wasn't disabled but the currentPoints > startingPoints!");
 			}
@@ -130,7 +132,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	 * TODO: When the window is closed, this also has to be called!
 	 */
 	protected void leaveGame() {
-		clientGameStartController.leaveGame();
+		clientGameStartController.askToLeaveGame();
 		
 		//window.dispose(); Not needed because the answer to the leavg command should close it.
 	}

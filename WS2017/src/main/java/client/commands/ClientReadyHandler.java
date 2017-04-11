@@ -2,7 +2,7 @@ package client.commands;
 
 import client.Client;
 import client.ClientUser;
-import game.startscreen.ClientGameStartController;
+import game.ClientGameController;
 
 /**
  * Informs the ClientGameStartController from the given game about the given user which has chosen their team.
@@ -22,7 +22,7 @@ public class ClientReadyHandler extends CommandHandler {
 			return;
 		}
 		
-		ClientGameStartController waitingGameByName = Client.getMainChatWindow().getWaitingGameByName(gameName);
+		ClientGameController waitingGameByName = Client.getMainWindow().getWaitingGameByName(gameName);
 		if (waitingGameByName == null) {
 			System.err.println("ReadyHandler#handleCommand - No game found with name: " + gameName);
 			return;
@@ -34,7 +34,7 @@ public class ClientReadyHandler extends CommandHandler {
 			return;
 		}
 		
-		waitingGameByName.moveUserToWaiting(user, characterString);
+		waitingGameByName.setUserAsWaiting(user, characterString);
 		
 		
 	}

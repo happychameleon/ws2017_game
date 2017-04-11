@@ -17,9 +17,9 @@ public class ClientChatmHandler extends CommandHandler {
 	
 	@Override
 	public void handleCommand() {
-		if (Client.isLoggedIn() && Client.getMainChatWindow() != null) {
+		if (Client.isLoggedIn() && Client.getMainWindow() != null) {
 			ChatMessage chatMessage = getChatMessageFromArgument();
-			Client.getMainChatWindow().getMainChatPanel().addNewMessage(chatMessage);
+			Client.getMainWindow().getMainChatPanel().addNewMessage(chatMessage);
 		}
 	}
 	

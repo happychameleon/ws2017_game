@@ -1,10 +1,10 @@
 package client.commands;
 
 import client.Client;
-import game.startscreen.ClientGameStartController;
+import game.ClientGameController;
+import game.GameState;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * This command is received when a client has opened a new game.
@@ -21,18 +21,18 @@ public class ClientNewgmHandler extends CommandHandler {
 		int maxPoints = Integer.parseInt(argument.substring(0, argument.indexOf(" ")));
 		String gameName = argument.substring(argument.indexOf(" ") + 1, argument.length());
 		
-		ClientGameStartController newGame = new ClientGameStartController(new HashMap<>(), new HashSet<>(), gameName, maxPoints);
+		ClientGameController newGame = new ClientGameController(GameState.STARTING, maxPoints, gameName, new HashMap<>());
 		
-		Client.getMainChatWindow().addNewGameToList(newGame);
+		Client.getMainWindow().addGameToList(newGame);
 		
-		Client.getMainChatWindow().getMainChatPanel().displayInfo("A new game called " + newGame.getGameName() + " has been created.");
+		Client.getMainWindow().getMainChatPanel().displayInfo("A new game called " + newGame.getGameName() + " has been created.");
 		
 	}
 	
 	@Override
 	public void handleAnswer(boolean isOK) {
 		if (isOK == false && argument.startsWith("game name taken")) {
-			Client.getMainChatWindow().getMainChatPanel().displayError("The name for the new Game already exists. Please choose a new one!");
+			Client.getMainWindow().getMainChatPanel().displayError("The name for the new Game already exists. Please choose a new one!");
 		}
 	}
 	

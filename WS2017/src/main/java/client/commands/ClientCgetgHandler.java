@@ -1,12 +1,11 @@
 package client.commands;
 
 import client.Client;
-import game.ClientGameRunningController;
-import game.startscreen.ClientGameStartController;
+import game.ClientGameController;
+import game.GameState;
 import serverclient.User;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * Reads the answer from the Server after sending the cgetg request.
@@ -37,33 +36,34 @@ public class ClientCgetgHandler extends CommandHandler {
 	}
 	
 	/**
-	 * If the game is already running, this reads in the needed info and creates the {@link ClientGameRunningController}
+	 * If the game is already running, this reads in the needed info and creates the {@link ClientGameController}
 	 */
 	private void parseRunningGameAnswer() {
+		
 		String gameName = getAndRemoveNextArgumentWord();
-		HashSet<User> users = new HashSet<>();
+		int startingPoints = Integer.parseInt(getAndRemoveNextArgumentWord());
+		HashMap<User, String> users = new HashMap<>();
 		String nextUser = getAndRemoveNextArgumentWord();
 		while (nextUser.isEmpty() == false) {
 			User user = Client.getUserByName(nextUser);
 			if (user != null) {
-				users.add(user);
+				users.put(user, null);
 			} else {
 				System.err.println("User with name '" + nextUser + "' is not registered!");
 			}
 			nextUser = getAndRemoveNextArgumentWord();
 		}
 		
-		ClientGameRunningController game = new ClientGameRunningController(users, gameName);
+		ClientGameController game = new ClientGameController(GameState.RUNNING, startingPoints, gameName, users);
 		
-		Client.getMainChatWindow().addRunningGameToList(game);
+		Client.getMainWindow().addGameToList(game);
 	}
 	
 	/**
-	 * If the game is not yet running, this reads in the needed info and creates the {@link ClientGameStartController}
+	 * If the game is not yet running, this reads in the needed info and creates the {@link ClientGameController}
 	 */
 	private void parseWaitingGameAnswer() {
-		HashMap<User, String> waitingUsers = new HashMap<>();
-		HashSet<User> choosingUsers = new HashSet<>();
+		HashMap<User, String> users = new HashMap<>();
 		String gameName;
 		int maxPoints;
 		
@@ -76,18 +76,17 @@ public class ClientCgetgHandler extends CommandHandler {
 			if (getAndRemoveNextArgumentWord().equals("ready")) {
 				// User is ready and has a characterString following
 				String characterString = getAndRemoveCharacterString();
-				waitingUsers.put(user, characterString);
+				users.put(user, characterString);
 			} else {
 				// User is still choosing and hasn't got a characterString yet.
-				choosingUsers.add(user);
+				users.put(user, null);
 			}
 			nextUsername = getAndRemoveNextArgumentWord();
 		}
 		
+		ClientGameController game = new ClientGameController(GameState.STARTING, maxPoints, gameName, users);
 		
-		ClientGameStartController game = new ClientGameStartController(waitingUsers, choosingUsers, gameName, maxPoints);
-		
-		Client.getMainChatWindow().addNewGameToList(game);
+		Client.getMainWindow().addGameToList(game);
 	}
 	
 	

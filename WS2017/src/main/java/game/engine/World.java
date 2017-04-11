@@ -1,6 +1,6 @@
 package game.engine;
 
-import game.GameRunningController;
+import game.GameController;
 import game.gamegui.SelectionType;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class World {
 	/**
 	 * The gameController of this World. All the server-client communication goes over this GameRunningController.
 	 */
-	private final GameRunningController gameController;
+	private final GameController gameController;
 	
 	/**
      * All the Tiles on the current Map. Tile (0/0) is at the top left corner!
@@ -111,7 +111,7 @@ public class World {
 	
 	
 	//region World Creation
-	public World (int width, int height, GameRunningController gameController) {
+	public World (int width, int height, GameController gameController) {
 		this.gameController = gameController;
 		
         tiles = new Tile[width][height];

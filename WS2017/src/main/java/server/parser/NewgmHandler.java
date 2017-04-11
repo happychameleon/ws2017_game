@@ -1,11 +1,11 @@
 package server.parser;
 
 
-import game.startscreen.ServerGameStartController;
+import game.GameState;
+import game.ServerGameController;
 import server.Server;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 
 /**
@@ -28,8 +28,8 @@ public class NewgmHandler extends CommandHandler {
 			return;
 		}
 		
-		ServerGameStartController newGame = new ServerGameStartController(new HashMap<>(), new HashSet<>(), gameName, maxPoints);
-		Server.addNewWaitingGame(newGame);
+		ServerGameController newGame = new ServerGameController(GameState.STARTING, maxPoints, gameName, new HashMap<>());
+		Server.addNewGame(newGame);
 		
 		// Tell all the clients that a new game has opened.
 		Server.writeToAllClients(String.format("newgm %s", argument));

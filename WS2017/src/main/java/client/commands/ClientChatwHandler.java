@@ -16,7 +16,7 @@ public class ClientChatwHandler extends ClientChatmHandler {
 	
 	@Override
 	public void handleCommand() {
-		if (Client.isLoggedIn() && Client.getMainChatWindow() != null) {
+		if (Client.isLoggedIn() && Client.getMainWindow() != null) {
 			
 			handleWhisperChat();
 			
@@ -29,7 +29,7 @@ public class ClientChatwHandler extends ClientChatmHandler {
 	 */
 	private void handleWhisperChat() {
 		ChatMessage chatMessage = getChatMessageFromArgument();
-		MainChatWindow mainChatWindow = Client.getMainChatWindow();
+		MainChatWindow mainChatWindow = Client.getMainWindow();
 		
 		ChatPanel whisperChatForUser = null;
 		if (chatMessage.getSender() != Client.getThisUser()) {
