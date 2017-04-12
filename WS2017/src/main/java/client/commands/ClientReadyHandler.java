@@ -13,6 +13,9 @@ public class ClientReadyHandler extends CommandHandler {
 	
 	@Override
 	public void handleCommand() {
+		if (Client.isLoggedIn() == false)
+			return;
+		
 		String username = getAndRemoveNextArgumentWord();
 		String gameName = getAndRemoveNextArgumentWord();
 		String characterString = getCharacterString();

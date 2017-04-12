@@ -54,13 +54,16 @@ public class NewGameDialog extends JDialog implements ActionListener, KeyListene
 		gameInputPanel.add(maxPointsLabel);
 		gameInputPanel.add(maxPointsTF);
 		
+		
 		JPanel gameButtonsPanel = new JPanel(new GridLayout(1, 2));
 		gameButtonsPanel.add(cancelGameCreationButton);
 		gameButtonsPanel.add(createGameButton);
 		
 		mainBox.add(gameInputPanel);
+		mainBox.add(new JLabel("Map:"));
 		mainBox.add(new JScrollPane(mapList));
 		mainBox.add(gameButtonsPanel);
+		
 		this.add(mainBox);
 		
 		this.pack();

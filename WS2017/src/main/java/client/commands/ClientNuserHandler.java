@@ -20,6 +20,7 @@ public class ClientNuserHandler extends CommandHandler {
 			// Ignore this new user, because we get all user once we log in.
 			return;
 		}
+		
 		Client.addNewUser(argument);
 		if (Client.getMainWindow() != null) {
 			Client.getMainWindow().getMainChatPanel().displayInfo(argument + " has logged in and joined the chat!");

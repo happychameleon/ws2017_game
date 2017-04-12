@@ -16,13 +16,15 @@ public class ClientStgamHandler extends CommandHandler {
 	 */
 	@Override
 	public void handleCommand() {
+		if (Client.isLoggedIn() == false)
+			return;
+		
 		String gameName = getAndRemoveNextArgumentWord();
 		String username = getAndRemoveNextArgumentWord();
 		ClientGameController gameController = Client.getGameByName(gameName);
 		User user = Client.getUserByName(username);
 		
-		gameController.startGame();
-		gameController.getGameLobby().getLobbyChat().displayInfo(String.format("%s has started the Game!", user));
+		gameController.startGame(user);
 		
 		//TODO stgam
 	}

@@ -13,6 +13,9 @@ public class ClientLeavgHandler extends CommandHandler {
 	
 	@Override
 	public void handleCommand() {
+		if (Client.isLoggedIn() == false)
+			return;
+		
 		String gameName = argument.substring(0, argument.indexOf(" "));
 		String username = argument.substring(argument.indexOf(" ") + 1);
 		

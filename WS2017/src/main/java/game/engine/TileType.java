@@ -51,11 +51,10 @@ public enum TileType {
 	
 	/**
 	 * Gets the correct TileType for the char from the MapFile.
-	 * @param c the char.
-	 * @return the TileType.
+	 * @param c The char representing a TileType.
+	 * @return The TileType.
 	 */
 	public static TileType getTypeForChar(char c) {
-		System.out.println("TileType#getTypeForChar - char: " + c);
 		for (TileType tileType : values()) {
 			if (tileType.charRepresentation == c) {
 				return tileType;

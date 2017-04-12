@@ -150,10 +150,13 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 	
 	/**
 	 * Called by the ClientGameController to tell the lobby that the game has started and the startGameButton can be removed.
+	 * @param user The user who has started the game.
 	 */
-	public void gameHasStarted() {
+	public void gameHasStarted(User user) {
 		buttons.remove(startGameButton);
 		window.pack();
+		
+		getLobbyChat().displayInfo(String.format("%s has started the Game!", user));
 	}
 	
 	

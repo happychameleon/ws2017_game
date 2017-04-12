@@ -160,13 +160,18 @@ public class ClientGameController extends GameController {
 	
 	/**
 	 * Starts the game as a copy to the one on the server.
+	 * @param user The user who has started the game.
 	 */
-	public void startGame() {
-		world = new World(gameMap, this);
+	public void startGame(User user) {
+		super.startGame();
 		
-		window = new Window(world, gameName);
-		
-		gameLobby.gameHasStarted();
+		if (users.keySet().contains(Client.getThisUser())) {
+			world = new World(gameMap, this);
+			
+			window = new Window(world, gameName);
+			
+			gameLobby.gameHasStarted(user);
+		}
 	}
 	//endregion
 	

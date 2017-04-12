@@ -14,7 +14,7 @@ public class ServerGameController extends GameController {
 	
 	/**
 	 * Creates the Game Controller in the given state.
-	 *  @param gameState      {@link #gameState}.
+	 * @param gameState      {@link #gameState}.
 	 * @param startingPoints {@link #startingPoints}.
 	 * @param gameName       {@link #gameName}.
 	 * @param users          {@link #users}.
@@ -48,7 +48,9 @@ public class ServerGameController extends GameController {
 	/**
 	 * Starts the game on the server. Called by a Client with the stgam command.
 	 */
+	@Override
 	public void startGame() {
+		super.startGame();
 		
 		world = new World(gameMap, this);
 	}

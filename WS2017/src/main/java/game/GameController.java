@@ -175,7 +175,7 @@ public abstract class GameController {
 		
 		switch (gameState) {
 			case STARTING:
-				return gameName + " (" + startingPoints + "Pts)";
+				return String.format("%s (%s %dPts)", gameName, gameMap.getName(), startingPoints);
 				
 			case RUNNING:
 				StringBuffer s = new StringBuffer(gameName);
@@ -212,6 +212,13 @@ public abstract class GameController {
 	 */
 	public String getCharacterStringForUser(User user) {
 		return users.get(user);
+	}
+	
+	/**
+	 * Sets the game state to the correct state.
+	 */
+	public void startGame() {
+		gameState = GameState.RUNNING;
 	}
 	//endregion
 }

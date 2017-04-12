@@ -21,6 +21,7 @@ public class ClientNewgmHandler extends CommandHandler {
 	public void handleCommand() {
 		if (Client.isLoggedIn() == false)
 			return;
+		
 		int maxPoints = Integer.parseInt(getAndRemoveNextArgumentWord());
 		String gameName = getAndRemoveNextArgumentWord();
 		String mapName = getAndRemoveNextArgumentWord();
