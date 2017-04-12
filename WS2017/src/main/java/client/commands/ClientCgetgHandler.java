@@ -2,6 +2,7 @@ package client.commands;
 
 import client.Client;
 import game.ClientGameController;
+import game.GameMap;
 import game.GameState;
 import serverclient.User;
 
@@ -42,6 +43,9 @@ public class ClientCgetgHandler extends CommandHandler {
 		
 		String gameName = getAndRemoveNextArgumentWord();
 		int startingPoints = Integer.parseInt(getAndRemoveNextArgumentWord());
+		String mapName = getAndRemoveNextArgumentWord();
+		GameMap map = GameMap.getMapForName(mapName);
+		
 		HashMap<User, String> users = new HashMap<>();
 		String nextUser = getAndRemoveNextArgumentWord();
 		while (nextUser.isEmpty() == false) {
@@ -54,7 +58,7 @@ public class ClientCgetgHandler extends CommandHandler {
 			nextUser = getAndRemoveNextArgumentWord();
 		}
 		
-		ClientGameController game = new ClientGameController(GameState.RUNNING, startingPoints, gameName, users);
+		ClientGameController game = new ClientGameController(GameState.RUNNING, startingPoints, gameName, users, map);
 		
 		Client.getMainWindow().addGameToList(game);
 	}
@@ -63,13 +67,13 @@ public class ClientCgetgHandler extends CommandHandler {
 	 * If the game is not yet running, this reads in the needed info and creates the {@link ClientGameController}
 	 */
 	private void parseWaitingGameAnswer() {
+		
+		String gameName = getAndRemoveNextArgumentWord();
+		int maxPoints = Integer.parseInt(getAndRemoveNextArgumentWord());
+		String mapName = getAndRemoveNextArgumentWord();
+		GameMap map = GameMap.getMapForName(mapName);
+		
 		HashMap<User, String> users = new HashMap<>();
-		String gameName;
-		int maxPoints;
-		
-		gameName = getAndRemoveNextArgumentWord();
-		maxPoints = Integer.parseInt(getAndRemoveNextArgumentWord());
-		
 		String nextUsername = getAndRemoveNextArgumentWord();
 		while (nextUsername.isEmpty() == false) {
 			User user = Client.getUserByName(nextUsername);
@@ -84,7 +88,7 @@ public class ClientCgetgHandler extends CommandHandler {
 			nextUsername = getAndRemoveNextArgumentWord();
 		}
 		
-		ClientGameController game = new ClientGameController(GameState.STARTING, maxPoints, gameName, users);
+		ClientGameController game = new ClientGameController(GameState.STARTING, maxPoints, gameName, users, map);
 		
 		Client.getMainWindow().addGameToList(game);
 	}
@@ -101,7 +105,9 @@ public class ClientCgetgHandler extends CommandHandler {
 			return null;
 		}
 		String characterString = argument.substring(0, argument.indexOf("]"));
-		argument = argument.substring(argument.indexOf("]") + 1 + 1); // One for "]", one for " ".
+		argument = argument.substring(argument.indexOf("]") + 1); // remove up to the ]
+		if (argument.isEmpty() == false)
+			argument = argument.substring(1); // remove the space if the argument continues.
 		return characterString;
 	}
 	

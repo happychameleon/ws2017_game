@@ -5,6 +5,8 @@ import client.ClientUser;
 import client.commands.ClientJoingHandler;
 import client.commands.ClientLeavgHandler;
 import client.commands.ClientStgamHandler;
+import game.engine.World;
+import game.gamegui.Window;
 import game.startscreen.GameLobby;
 import game.startscreen.StartScreen;
 import serverclient.User;
@@ -35,6 +37,18 @@ public class ClientGameController extends GameController {
 	public void removeGameLobby() {
 		gameLobby = null;
 	}
+	
+	/**
+	 * The window displaying the game.
+	 */
+	private Window window;
+	
+	/**
+	 * @return {@link #window}.
+	 */
+	public Window getWindow() {
+		return window;
+	}
 	//endregion
 	
 	//region GameStart Data
@@ -55,14 +69,14 @@ public class ClientGameController extends GameController {
 	
 	/**
 	 * Creates the Game Controller in the given state.
-	 *
 	 * @param gameState      {@link #gameState}.
 	 * @param startingPoints {@link #startingPoints}.
 	 * @param gameName       {@link #gameName}.
 	 * @param users          {@link #users}.
+	 * @param map            {@link #gameMap}
 	 */
-	public ClientGameController(GameState gameState, int startingPoints, String gameName, HashMap<User, String> users) {
-		super(gameState, startingPoints, gameName, users);
+	public ClientGameController(GameState gameState, int startingPoints, String gameName, HashMap<User, String> users, GameMap map) {
+		super(gameState, startingPoints, gameName, users, map);
 	}
 	
 	
@@ -92,7 +106,9 @@ public class ClientGameController extends GameController {
 			startScreen = new StartScreen(this, startingPoints);
 			gameLobby = new GameLobby(this);
 		}
-		gameLobby.addUserToLobby((ClientUser) joinedUser);
+		if (gameLobby != null) {
+			gameLobby.addUserToLobby((ClientUser) joinedUser);
+		}
 	}
 	
 	/**
@@ -123,9 +139,13 @@ public class ClientGameController extends GameController {
 	 */
 	public void sendStartGame() {
 		if (getAllChoosingUsers().isEmpty()) {
-			if (getAllUsers().size() >= 2) {
-				ClientStgamHandler.sendStartGame(gameName);
-				
+			if (getAllUsers().size() >= 1) { // TODO: set back to 2, 1 is only for testing!
+				if (gameState == GameState.STARTING) {
+					ClientStgamHandler.sendStartGame(gameName);
+					
+				} else {
+					System.err.println("ClientGameController#sendStartGame - Can't start game twice!");
+				}
 			} else {
 				gameLobby.getLobbyChat().displayInfo("Please wait for another user to start the game!");
 			}
@@ -136,6 +156,17 @@ public class ClientGameController extends GameController {
 			}
 			gameLobby.getLobbyChat().displayInfo("Please wait for following users to select their team:" + choosingUserNames);
 		}
+	}
+	
+	/**
+	 * Starts the game as a copy to the one on the server.
+	 */
+	public void startGame() {
+		world = new World(gameMap, this);
+		
+		window = new Window(world, gameName);
+		
+		gameLobby.gameHasStarted();
 	}
 	//endregion
 	
@@ -149,11 +180,11 @@ public class ClientGameController extends GameController {
 	public void removeUser(User user) {
 		super.removeUser(user);
 		
-		if (user == Client.getThisUser()) {
+		if (gameLobby != null)
 			gameLobby.removeUser((ClientUser) user);
-			if (startScreen != null) {
-				startScreen.dispose();
-			}
+		
+		if (user == Client.getThisUser() || startScreen != null) {
+			startScreen.dispose();
 		}
 	}
 	

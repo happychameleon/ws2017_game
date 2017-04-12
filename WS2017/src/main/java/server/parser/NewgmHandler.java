@@ -1,6 +1,7 @@
 package server.parser;
 
 
+import game.GameMap;
 import game.GameState;
 import game.ServerGameController;
 import server.Server;
@@ -19,20 +20,27 @@ public class NewgmHandler extends CommandHandler {
 	
 	@Override
 	public void handleCommand() {
-		int maxPoints = Integer.parseInt(argument.substring(0, argument.indexOf(" ")));
-		String gameName = argument.substring(argument.indexOf(" ") + 1, argument.length());
+		String wholeArgument = argument;
+		int maxPoints = Integer.parseInt(getAndRemoveNextArgumentWord());
+		String gameName = getAndRemoveNextArgumentWord();
+		String mapName = getAndRemoveNextArgumentWord();
+		GameMap map = GameMap.getMapForName(mapName);
 		
 		if (Server.isGameNameUnique(gameName) == false) {
 			String errNameTakenMessage = "-ERR newgm game name taken";
 			commandParser.writeBackToClient(errNameTakenMessage);
 			return;
 		}
+		if (map == null) {
+			System.err.println("Map name " + mapName + " doesn't exist.");
+			return;
+		}
 		
-		ServerGameController newGame = new ServerGameController(GameState.STARTING, maxPoints, gameName, new HashMap<>());
+		ServerGameController newGame = new ServerGameController(GameState.STARTING, maxPoints, gameName, new HashMap<>(), map);
 		Server.addNewGame(newGame);
 		
 		// Tell all the clients that a new game has opened.
-		Server.writeToAllClients(String.format("newgm %s", argument));
+		Server.writeToAllClients(String.format("newgm %s", wholeArgument));
 	}
 	
 	

@@ -47,14 +47,17 @@ public class CgetgHandler extends CommandHandler {
 			users += " ready ";
 			users += sgc.getAllWaitingUsers().get(user);
 		}
+		if (users.isEmpty() == false) {
+			users = users.substring(1); // To remove the first space char.
+		}
 		
-		commandParser.writeBackToClient(String.format("+OK cgetg waiting %s %d %s", sgc.getGameName(), sgc.getStartingPoints(), users));
+		commandParser.writeBackToClient(String.format("+OK cgetg waiting %s %d %s %s", sgc.getGameName(), sgc.getStartingPoints(), sgc.getGameMap(), users));
 		
 	}
 	
 	/**
 	 * Sends the running game info back as
-	 * +OK cgetg running <gameName> <maxPoints> <username1> <username2>
+	 * +OK cgetg running <gameName> <maxPoints> <mapName> <username1> <username2>
 	 */
 	private void sendRunningGameAnswer(ServerGameController sgc) {
 		//TODO send the running game answer.

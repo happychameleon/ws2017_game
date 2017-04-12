@@ -5,6 +5,8 @@ import java.util.ArrayList;
 /**
  * Represents one Team consisting of one or more Players.
  *
+ * TODO? Currently unused, maybe add possibility to play in same team.
+ *
  * Created by flavia on 09.03.17.
  */
 public class Team {

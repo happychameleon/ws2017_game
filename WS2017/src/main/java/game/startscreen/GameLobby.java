@@ -24,8 +24,13 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 	private final ClientGameController game;
 	
 	private JFrame window;
+	
+	/**
+	 * Holds the {@link #startGameButton} and the {@link #leaveGameButton}.
+	 */
+	JPanel buttons;
 	private JButton leaveGameButton = new JButton("Leave Game");
-	private JButton startGameButton = new JButton("Start Game (TODO)");
+	private JButton startGameButton = new JButton("Start Game");
 	
 	
 	
@@ -61,7 +66,7 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 		JScrollPane choosingUsersScroll = new JScrollPane(userList);
 		userOverviewBox.add(new JLabel("Players"));
 		userOverviewBox.add(choosingUsersScroll);
-		JPanel buttons = new JPanel(new GridLayout(1, 2));
+		buttons = new JPanel(new GridLayout(1, 2));
 		buttons.add(leaveGameButton);
 		buttons.add(startGameButton);
 		userOverviewBox.add(buttons);
@@ -141,6 +146,14 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 			}
 			lobbyChat.displayInfo("Please wait for following users to select their team:" + choosingUserNames);
 		}
+	}
+	
+	/**
+	 * Called by the ClientGameController to tell the lobby that the game has started and the startGameButton can be removed.
+	 */
+	public void gameHasStarted() {
+		buttons.remove(startGameButton);
+		window.pack();
 	}
 	
 	

@@ -1,5 +1,6 @@
 package game;
 
+import game.engine.World;
 import serverclient.User;
 
 import java.util.HashMap;
@@ -19,7 +20,7 @@ public abstract class GameController {
 	/**
 	 * The {@link GameState} of this game.
 	 */
-	private GameState gameState;
+	protected GameState gameState;
 	
 	/**
 	 * @return {@link #gameState}.
@@ -50,6 +51,18 @@ public abstract class GameController {
 	 */
 	public String getGameName() {
 		return gameName;
+	}
+	
+	/**
+	 * The map on which this game is playing.
+	 */
+	protected final GameMap gameMap;
+	
+	/**
+	 * @return {@link #gameMap}.
+	 */
+	public GameMap getGameMap() {
+		return gameMap;
 	}
 	
 	/**
@@ -100,19 +113,24 @@ public abstract class GameController {
 	}
 	//endregion
 	
+	//region Running Game
+	protected World world;
+	//endregion
+	
 	/**
 	 * Creates the Game Controller in the given state.
-	 *
-	 * @param gameState {@link #gameState}.
+	 *  @param gameState {@link #gameState}.
 	 * @param startingPoints {@link #startingPoints}.
 	 * @param gameName {@link #gameName}.
 	 * @param users {@link #users}.
+	 * @param gameMap {@link #gameMap}.
 	 */
-	public GameController(GameState gameState, int startingPoints, String gameName, HashMap<User, String> users) {
+	public GameController(GameState gameState, int startingPoints, String gameName, HashMap<User, String> users, GameMap gameMap) {
 		this.gameState = gameState;
 		this.startingPoints = startingPoints;
 		this.gameName = gameName;
 		this.users = users;
+		this.gameMap = gameMap;
 	}
 	
 	
@@ -139,7 +157,13 @@ public abstract class GameController {
 		// TODO: What should happen when a user leaves?
 	}
 	
-	
+	/**
+	 * TODO: Gets the map as a String to send to the clients.
+	 * @return The map String.
+	 */
+	public String getMapString() {
+		return "TODO";
+	}
 	
 	/**
 	 * The name of the game is differently displayed depending on the {@link #gameState}.
@@ -179,4 +203,15 @@ public abstract class GameController {
 	}
 	//endregion
 	
+	//region Game Start Methods
+	
+	/**
+	 * Gets the characterString for the given User.
+	 * @param user The given user.
+	 * @return The characterString
+	 */
+	public String getCharacterStringForUser(User user) {
+		return users.get(user);
+	}
+	//endregion
 }

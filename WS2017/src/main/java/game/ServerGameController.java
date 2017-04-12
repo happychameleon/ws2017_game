@@ -1,5 +1,6 @@
 package game;
 
+import game.engine.World;
 import server.Server;
 import serverclient.User;
 
@@ -11,17 +12,16 @@ import java.util.HashMap;
 public class ServerGameController extends GameController {
 	
 	
-	
 	/**
 	 * Creates the Game Controller in the given state.
-	 *
-	 * @param gameState      {@link #gameState}.
+	 *  @param gameState      {@link #gameState}.
 	 * @param startingPoints {@link #startingPoints}.
 	 * @param gameName       {@link #gameName}.
 	 * @param users          {@link #users}.
+	 * @param map
 	 */
-	public ServerGameController(GameState gameState, int startingPoints, String gameName, HashMap<User, String> users) {
-		super(gameState, startingPoints, gameName, users);
+	public ServerGameController(GameState gameState, int startingPoints, String gameName, HashMap<User, String> users, GameMap map) {
+		super(gameState, startingPoints, gameName, users, map);
 	}
 	
 	
@@ -44,5 +44,13 @@ public class ServerGameController extends GameController {
 		}
 	}
 	
+	
+	/**
+	 * Starts the game on the server. Called by a Client with the stgam command.
+	 */
+	public void startGame() {
+		
+		world = new World(gameMap, this);
+	}
 	
 }

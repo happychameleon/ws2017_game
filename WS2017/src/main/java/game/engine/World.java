@@ -1,10 +1,13 @@
 package game.engine;
 
+import game.ClientGameController;
 import game.GameController;
+import game.GameMap;
+import game.ServerGameController;
 import game.gamegui.SelectionType;
+import serverclient.User;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * The World holds all the game data.
@@ -24,8 +27,8 @@ public class World {
      * Get a specific Tile with {@link #getTileAt(int, int)}.
      */
     private Tile[][] tiles;
-    
-    /**
+	
+	/**
      * @return The map width in Tiles.
      */
     public int getMapWidth() {
@@ -111,80 +114,91 @@ public class World {
 	
 	
 	//region World Creation
-	public World (int width, int height, GameController gameController) {
+	/**
+	 * The constructor for the Server.
+	 * Used to easily build things differently on the Server and the Client in the future.
+	 * @param gameMap The map to build the Tiles from.
+	 * @param gameController The ServerGameController.
+	 */
+	public World(GameMap gameMap, ServerGameController gameController) {
+		this(gameMap.getHeight(), gameMap.getWidth(), gameMap.getTiles(), gameController);
+		
+	}
+	
+	/**
+	 * The constructor for the Client.
+	 * Used to easily build things differently on the Server and the Client in the future.
+	 * @param gameMap The map to build the Tiles from.
+	 * @param gameController The ClientGameController.
+	 */
+	public World(GameMap gameMap, ClientGameController gameController) {
+		this(gameMap.getHeight(), gameMap.getWidth(), gameMap.getTiles(), gameController);
+		
+	}
+	
+	/**
+	 * This constructor is used by both the Server and the Client constructor.
+	 * @param height {@link #getMapHeight}
+	 * @param width {@link #getMapWidth}
+	 * @param tileChars the char[][] to create the Tiles from.
+	 * @param gameController the {@link GameController} of this game.
+	 */
+	private World(int height, int width, char[][] tileChars, GameController gameController) {
 		this.gameController = gameController;
 		
         tiles = new Tile[width][height];
-        Random random = new Random();
-        // Generate all the Tiles and randomly set the tileType.
+        // Generate all the Tiles from the given map's tileChars.
         for (int x = 0; x < width; x++) {
 	        for (int y = 0; y < height; y++) {
-		        int type = random.nextInt(4);
-		        TileType tileType;
-		        switch (type) {
-			        case 0:
-			        case 1:
-			        case 2:
-				        tileType = TileType.GRASS;
-				        break;
-			        case 3:
-				        tileType = TileType.WATER;
-				        break;
-			        default:
-				        tileType = TileType.GRASS;
-		        }
+	        	
+		        TileType tileType = TileType.getTypeForChar(tileChars[y][x]);
 		        tiles[x][y] = new Tile(this, x, y, tileType);
+		        
 	        }
         }
         
-        // TODO: Give the users to the turn controller to create the players from.
-        turnController = new TurnController(4, this);
+        turnController = new TurnController(gameController.getAllUsers(), this);
 		
 		characters = new ArrayList<>();
+		for (Player player : turnController.getPlayers()) {
+			User user = player.getUser();
+			String characterString = gameController.getCharacterStringForUser(user);
+			characters = parseCharacterString(characterString, player);
+		}
 		// TODO: Parse the Character Array and create all the characters for the correct player.
 		
 	}
 	
-	private void createWeaponPrototypes() {
-		//TODO: (maybe) instead of hardcoding the weapons here we could read them in from a file.
-		Weapon.addWeaponPrototype("Medium Water Gun", 5, 4, 3, 25);
-		Weapon.addWeaponPrototype("Heavy Water Gun", 4, 2, 4, 60);
+	/**
+	 * Takes the characterString and parses it into the characters.
+	 * @param characterString The characterString to parse.
+	 * @param player The player this characterString belongs to.
+	 * @return the Characters from the string.
+	 */
+	private ArrayList<Character> parseCharacterString(String characterString, Player player) {
+		ArrayList<Character> characters = new ArrayList<>();
+		if (characterString.charAt(0) == '[')
+			characterString = characterString.substring(1);
 		
-		//TODO: Add more weapons.
-	}
-	
-	/**
-	 * JUST FOR TESTING!
-	 */
-	private void CreateNewRandomCharacter(Player player) {
-    	Tile tile = getRandomTile(true);
-    	Weapon weapon = getRandomWeapon();
-    	
-    	Character character = new Character(this, "Jane", player, weapon);
-    	characters.add(character);
-	}
-	
-	/**
-	 * JUST FOR TESTING!
-	 */
-	private Tile getRandomTile(boolean walkable) {
-    	// TODO: add randomness (for testing).
-		Tile tile = getTileAt(0, 0);
-		while(tile.isWalkable(true) == false) {
-			tile = getTileAt(tile.getXPosition() + 1, tile.getYPosition());
+		String characterName;
+		String weaponName;
+		while (characterString.isEmpty() == false) {
+			int spaceIndex = characterString.indexOf(" ");
+			characterName = characterString.substring(0, spaceIndex);
+			characterString = characterString.substring(spaceIndex + 2);
+			int apostropheIndex = characterString.indexOf("'");
+			weaponName = characterString.substring(0, apostropheIndex);
+			characterString = characterString.substring(apostropheIndex + 2); // It should be empty when we read in the last character.
+			if (Weapon.getWeaponForName(weaponName) == null) {
+				System.err.println("World#parseCharacterString - weaponname wrong");
+				return null;
+			}
+			characters.add(new Character(this, characterName, player, Weapon.getWeaponForName(weaponName)));
 		}
-    	return tile;
+		return characters;
 	}
 	
-	/**
-	 * JUST FOR TESTING!
-	 */
-	private Weapon getRandomWeapon() {
-		//TODO add randomness (for testing).
-		Random r = new Random();
-		Weapon prototype = Weapon.getWeaponPrototypes().get(r.nextInt(Weapon.getWeaponPrototypes().size()));
-		return new Weapon(prototype);
-	}
+	
 	//endregion
 	
 	/**
@@ -195,11 +209,11 @@ public class World {
 	 */
 	public Tile getTileAt(int x, int y) {
         if (x < 0 || x >= getMapWidth()) {
-            //System.out.println("ERROR: Requested Tile out of Map range!");
+            //System.out.println("ERROR: Requested Tile out of GameMap range!");
             return null;
         }
         if (y < 0 || y >= getMapHeight()) {
-            //System.out.println("ERROR: Requested Tile out of Map range!");
+            //System.out.println("ERROR: Requested Tile out of GameMap range!");
             return null;
         }
         return tiles[x][y];

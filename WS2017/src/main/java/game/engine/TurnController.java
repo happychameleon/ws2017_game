@@ -1,6 +1,9 @@
 package game.engine;
 
+import serverclient.User;
+
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Created by flavia on 09.03.17.
@@ -48,20 +51,26 @@ public class TurnController {
 	//endregion
 	
 	
-	public TurnController(int playerCount, World world) {
+	public TurnController(Set<User> userSet, World world) {
 		this.world = world;
 		
-		if (playerCount > 4) {
-			playerCount = 4;
-			System.out.println("Maximum 4 Players!");
+		User[] users = new User[userSet.size()];
+		int j = 0;
+		for (User user : userSet) {
+			users[j] = user;
+			j++;
 		}
 		
-		players = new ArrayList<>(playerCount);
+		if (users.length > 4) {
+			System.err.println("TurnController#TurnController - There should never be more than 4 Players!");
+		}
 		
-		// TODO: Add the real Players instead of just generic ones.
-		for (int i = 0; i < playerCount; i++) {
-			Team newTeam = new Team("Team " + (i + 1));
-			Player newPlayer = new Player(newTeam, "Player " + (i + 1), world);
+		players = new ArrayList<>();
+		for (int i = 0; i < users.length; i++) {
+			User user = users[i];
+			Team newTeam = new Team("Team " + (players.size() + 1));
+			PlayerColor color = PlayerColor.values()[i];
+			Player newPlayer = new Player(newTeam, user, color, world);
 			players.add(newPlayer);
 			newTeam.addPlayerToTeam(newPlayer);
 		}

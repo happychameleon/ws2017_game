@@ -1,6 +1,6 @@
 package game.engine;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * The Colors available to the players.

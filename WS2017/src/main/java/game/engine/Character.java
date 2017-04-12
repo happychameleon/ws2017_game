@@ -190,20 +190,15 @@ public class Character {
         this.weapon = weapon;
         
         this.actionPoints = maximumActionPoints;
-        
-        if (tile != null && tile.getCharacter() != null) {
-            System.out.println("ERROR: new Character placed on a Tile where there is already one!");
-        } else {
-            tile.setCharacter(this);
-        }
 		
-        String imageString = "/images/characters/character__topDown_" + owner.getColor() + ".png";
+        String imageString = "/images/characters/character__topDown_" + owner.getColor().name().toLowerCase() + ".png";
 		
 		try {
 			sprite = ImageIO.read(getClass().getResource(imageString));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
     
     /**
@@ -222,7 +217,7 @@ public class Character {
     	if (weapon != null)
 		    s += ", Weapon: " + weapon.toString();
     	if (owner != null)
-    		s+= ", Owner: " + owner.name;
+    		s+= ", Owner: " + owner.getName();
     	s += ", Wetness: " + wetness + "%";
     	return s;
     }
@@ -246,6 +241,7 @@ public class Character {
 	 * @param direction The direction (N==0; E==1; S==2; W==3) where to move.
 	 * @return Whether the move was successful <code>true</code> or not <code>false</code> (e.g. blocked by sth).
 	 */
+	@Deprecated
 	public boolean moveCharacter (int direction) {
 		if (direction > 3 || direction < 0) {
 			System.out.println("moveCharacter - ERROR: No valid direction");

@@ -2,6 +2,7 @@ package client.commands;
 
 import client.Client;
 import game.ClientGameController;
+import game.GameMap;
 import game.GameState;
 
 import java.util.HashMap;
@@ -18,10 +19,16 @@ public class ClientNewgmHandler extends CommandHandler {
 	
 	@Override
 	public void handleCommand() {
-		int maxPoints = Integer.parseInt(argument.substring(0, argument.indexOf(" ")));
-		String gameName = argument.substring(argument.indexOf(" ") + 1, argument.length());
+		if (Client.isLoggedIn() == false)
+			return;
+		int maxPoints = Integer.parseInt(getAndRemoveNextArgumentWord());
+		String gameName = getAndRemoveNextArgumentWord();
+		String mapName = getAndRemoveNextArgumentWord();
+		System.out.printf("maxPoints: %d gameName: %s mapName: %s%n", maxPoints, gameName, mapName);
 		
-		ClientGameController newGame = new ClientGameController(GameState.STARTING, maxPoints, gameName, new HashMap<>());
+		GameMap map = GameMap.getMapForName(mapName);
+		
+		ClientGameController newGame = new ClientGameController(GameState.STARTING, maxPoints, gameName, new HashMap<>(), map);
 		
 		Client.getMainWindow().addGameToList(newGame);
 		
@@ -36,5 +43,14 @@ public class ClientNewgmHandler extends CommandHandler {
 		}
 	}
 	
-	
+	/**
+	 * Sends the message to ask the server to create the game.
+	 * @param maxPoints The max points to choose the team from.
+	 * @param gameName The name of the game.
+	 * @param gameMap The map of the game.
+	 */
+	public static void sendGameCreationMessage(int maxPoints, String gameName, GameMap gameMap) {
+		Client.sendMessageToServer(String.format("newgm %d %s %s", maxPoints, gameName, gameMap.getName()));
+		
+	}
 }

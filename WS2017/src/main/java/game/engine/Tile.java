@@ -87,7 +87,7 @@ public class Tile {
 	    if (considerCharacters && getCharacter() != null) {
 	    	return false;
 	    }
-    	return tileType.isWalkable();
+    	return tileType.getIsWalkable();
     }
 	
 	/**

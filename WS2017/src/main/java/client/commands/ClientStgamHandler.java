@@ -1,27 +1,36 @@
 package client.commands;
 
 import client.Client;
+import game.ClientGameController;
+import serverclient.User;
 
 /**
+ * Starts the game after the server has started the game and informed this and all other Clients with this command.
+ *
  * Created by flavia on 11.04.17.
  */
 public class ClientStgamHandler extends CommandHandler {
+	
 	/**
 	 * Executes the command from the server.
 	 */
 	@Override
 	public void handleCommand() {
+		String gameName = getAndRemoveNextArgumentWord();
+		String username = getAndRemoveNextArgumentWord();
+		ClientGameController gameController = Client.getGameByName(gameName);
+		User user = Client.getUserByName(username);
+		
+		gameController.startGame();
+		gameController.getGameLobby().getLobbyChat().displayInfo(String.format("%s has started the Game!", user));
+		
 		//TODO stgam
 	}
 	
-	/**
-	 * Executes the answer received from the server to the specific command this class is for.
-	 *
-	 * @param isOK <code>true</code> if the answer started with "+OK", <code>false</code> otherwise (answer started with "-ERR").
-	 */
+	
 	@Override
 	public void handleAnswer(boolean isOK) {
-		//TODO stgam answer
+	
 	}
 	
 	/**
@@ -31,4 +40,5 @@ public class ClientStgamHandler extends CommandHandler {
 	public static void sendStartGame(String gameName) {
 		Client.sendMessageToServer(String.format("stgam %s %s", gameName, Client.getThisUser().getName()));
 	}
+	
 }
