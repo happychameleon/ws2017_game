@@ -259,12 +259,10 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 		
 		switch (e.getButton()) {
 			case MouseEvent.BUTTON1:
-				System.out.println("left mouseClicked!");
 				selectTile(tileUnderMouse);
 				repaintImage();
 				break;
 			case MouseEvent.BUTTON3:
-				System.out.println("right mouseClicked!");
 				switch (world.getSelectionType()) {
 					case CHARACTER:
 						// We have currently selected a Tile with a Character on it. RMB now moves the Character if possible.
@@ -412,7 +410,6 @@ public class Window extends JFrame implements MouseInputListener, KeyListener {
 		
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_SPACE:
-				System.out.println("SPACE typed!");
 				if (world.getSelectedTile() != null && world.getSelectedTile().getCharacter() != null) {
 					if (world.getSelectionType() == SelectionType.CHARACTER
 							&& world.getSelectedTile().getCharacter().getWeapon() != null) {

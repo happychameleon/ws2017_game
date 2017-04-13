@@ -61,7 +61,7 @@ public class Character {
 	 * This is only used by the Character themselves to move.
 	 */
 	private void setTile(Tile newTile) {
-    	if (newTile.isWalkable(true)) {
+    	if (newTile.isWalkable(true) == false) {
     		System.err.println("Character#setTile - Tile already occupied!");
     		return;
 	    }

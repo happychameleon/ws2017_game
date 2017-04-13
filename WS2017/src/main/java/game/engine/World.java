@@ -8,6 +8,7 @@ import game.gamegui.SelectionType;
 import serverclient.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * The World holds all the game data.
@@ -106,11 +107,17 @@ public class World {
 	
 	public void addCharacter(Character character) {
 		if (characters.contains(character)) {
-			System.out.println("World::addCharacter - ERROR: Character already in characters!");
+			System.out.println("World#addCharacter - ERROR: Character already in characters!");
 		}
 		characters.add(character);
 	}
-    //endregion
+	
+	/**
+	 * All the Tiles where each {@link Player}'s {@link Character}s can start.
+	 *
+	 */
+	HashMap<Player, ArrayList<Tile>> startingTiles;
+	//endregion
 	
 	
 	//region World Creation
@@ -121,7 +128,7 @@ public class World {
 	 * @param gameController The ServerGameController.
 	 */
 	public World(GameMap gameMap, ServerGameController gameController) {
-		this(gameMap.getHeight(), gameMap.getWidth(), gameMap.getTiles(), gameController);
+		this(gameMap.getHeight(), gameMap.getWidth(), gameMap.getTilesAsChars(), gameController);
 		
 	}
 	
@@ -132,7 +139,7 @@ public class World {
 	 * @param gameController The ClientGameController.
 	 */
 	public World(GameMap gameMap, ClientGameController gameController) {
-		this(gameMap.getHeight(), gameMap.getWidth(), gameMap.getTiles(), gameController);
+		this(gameMap.getHeight(), gameMap.getWidth(), gameMap.getTilesAsChars(), gameController);
 		
 	}
 	
@@ -156,9 +163,13 @@ public class World {
 		        
 	        }
         }
-        
+		
         turnController = new TurnController(gameController.getAllUsers(), this);
 		
+		System.out.println("World#World - getting all starting tiles");
+		getAllStartingTiles();
+		
+		System.out.println("World#World - reading in characters");
 		characters = new ArrayList<>();
 		for (Player player : turnController.getPlayers()) {
 			User user = player.getUser();
@@ -193,12 +204,47 @@ public class World {
 				System.err.println("World#parseCharacterString - weaponname wrong");
 				return null;
 			}
-			characters.add(new Character(this, characterName, player, Weapon.getWeaponForName(weaponName)));
+			Character character = new Character(this, characterName, player, Weapon.getWeaponForName(weaponName));
+			characters.add(character);
+			character.setStartingTile(getCorrectStartingTileForCharacter(character));
 		}
 		return characters;
 	}
 	
+	/**
+	 * This returns the correct Tile for a character
+	 * @param character The Character.
+	 * @return The Tile for this Character.
+	 */
+	private Tile getCorrectStartingTileForCharacter(Character character) {
+		ArrayList<Tile> playerStartingTiles = startingTiles.get(character.getOwner());
+		int i = 0;
+		while (playerStartingTiles.get(i).isWalkable(true) == false) {
+			i++;
+		}
+		return playerStartingTiles.get(i);
+	}
 	
+	/**
+	 * @return A HashMap linking all Players to an ArrayList of their starting Tiles.
+	 */
+	private void getAllStartingTiles() {
+		startingTiles = new HashMap<>();
+		for (Player player : turnController.getPlayers()) {
+			startingTiles.put(player, new ArrayList<>());
+		}
+		// Foreach Tile add it to the correct player's list in startingTiles.
+		for (int x = 0; x < getMapWidth(); x++) {
+			for (int y = 0; y < getMapHeight(); y++) {
+				int playerNumber = java.lang.Character.digit(gameController.getGameMap().getTilesAsChars()[y][x], 10);
+				if (playerNumber < 1 || playerNumber > startingTiles.size())
+					continue;
+				System.out.println("World#getAllStartingTiles - playerNumber: " + playerNumber);
+				Player player = turnController.getPlayers().get(playerNumber - 1);
+				startingTiles.get(player).add(getTileAt(x, y));
+			}
+		}
+	}
 	//endregion
 	
 	/**

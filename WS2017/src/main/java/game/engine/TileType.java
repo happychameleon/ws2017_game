@@ -51,6 +51,7 @@ public enum TileType {
 	
 	/**
 	 * Gets the correct TileType for the char from the MapFile.
+	 * The default TileType is grass if the char doesn't mach any. Used for special Tiles like eg CharacterStartingTiles which are represented as numbers for the team.
 	 * @param c The char representing a TileType.
 	 * @return The TileType.
 	 */
@@ -60,6 +61,6 @@ public enum TileType {
 				return tileType;
 			}
 		}
-		return null;
+		return GRASS;
 	}
 }

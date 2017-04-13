@@ -3,7 +3,6 @@ package game.engine;
 import serverclient.User;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * Created by flavia on 09.03.17.
@@ -16,10 +15,14 @@ public class TurnController {
 	/**
 	 * All the players Playing the game. The order of the Players in here represents the turn order
 	 * (players.get(0) is first, then players.get(1) etc.).
+	 * The players are sorted alphabetically by their names.
 	 * @see #getCurrentPlayer()
 	 */
 	private final ArrayList<Player> players;
 	
+	/**
+	 * @return {@link #players}.
+	 */
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
@@ -51,23 +54,16 @@ public class TurnController {
 	//endregion
 	
 	
-	public TurnController(Set<User> userSet, World world) {
+	public TurnController(ArrayList<User> users, World world) {
 		this.world = world;
 		
-		User[] users = new User[userSet.size()];
-		int j = 0;
-		for (User user : userSet) {
-			users[j] = user;
-			j++;
-		}
-		
-		if (users.length > 4) {
+		if (users.size() > 4) {
 			System.err.println("TurnController#TurnController - There should never be more than 4 Players!");
 		}
 		
 		players = new ArrayList<>();
-		for (int i = 0; i < users.length; i++) {
-			User user = users[i];
+		for (int i = 0; i < users.size(); i++) {
+			User user = users.get(i);
 			Team newTeam = new Team("Team " + (players.size() + 1));
 			PlayerColor color = PlayerColor.values()[i];
 			Player newPlayer = new Player(newTeam, user, color, world);

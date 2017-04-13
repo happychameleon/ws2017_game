@@ -28,13 +28,14 @@ public class GameMap {
 	
 	/**
 	 * The Tiles represented by chars.
+	 * The coordinates are stored as [y][x].
 	 */
 	private char[][] tiles;
 	
 	/**
 	 * @return A shallow copy of {@link #tiles}.
 	 */
-	public char[][] getTiles() {
+	public char[][] getTilesAsChars() {
 		return tiles.clone();
 	}
 	
@@ -117,7 +118,7 @@ public class GameMap {
 		
 		File[] allMapFiles = mapsFolder.listFiles();
 		for (File mapFile : allMapFiles) {
-			if (mapFile.isFile() == false)
+			if (mapFile.isFile() == false || mapFile.getName().endsWith(".txt") == false)
 				continue;
 			// First get the name of the map (== the file name)
 			String mapName = mapFile.getName();

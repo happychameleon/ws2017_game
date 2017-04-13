@@ -3,9 +3,7 @@ package game;
 import game.engine.World;
 import serverclient.User;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The abstract class for the game controllers of the running and the open games
@@ -76,10 +74,16 @@ public abstract class GameController {
 	protected HashMap<User, String> users = new HashMap<>();
 	
 	/**
-	 * @return all the users from {@link #users} as an {@link Set}.
+	 * @return all the users from {@link #users} as an {@link ArrayList} sorted alphabetically by their names.
 	 */
-	public Set<User> getAllUsers() {
-		return users.keySet();
+	public ArrayList<User> getAllUsers() {
+		Set<User> usersSet = users.keySet();
+		ArrayList<User> users = new ArrayList<>(usersSet.size());
+		for (User user : usersSet) users.add(user);
+		
+		Collections.sort(users, Comparator.comparing(User::getName));
+		
+		return users;
 	}
 	//endregion
 	
@@ -155,14 +159,6 @@ public abstract class GameController {
 	public void removeUser(User user) {
 		users.remove(user);
 		// TODO: What should happen when a user leaves?
-	}
-	
-	/**
-	 * TODO: Gets the map as a String to send to the clients.
-	 * @return The map String.
-	 */
-	public String getMapString() {
-		return "TODO";
 	}
 	
 	/**
