@@ -172,6 +172,7 @@ public class ClientGameController extends GameController {
 			
 			gameLobby.gameHasStarted(user);
 		}
+		Client.getMainWindow().moveGameToRunning(this);
 	}
 	//endregion
 	

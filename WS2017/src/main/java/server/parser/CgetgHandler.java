@@ -29,7 +29,7 @@ public class CgetgHandler extends CommandHandler {
 	
 	/**
 	 * Sends the waiting game info back as
-	 * +OK cgetg waiting <gameName> <maxPoints> <username1> (ready [<characterstring>]|choosing) <username2> (ready [<characterstring>]|choosing)
+	 * +OK cgetg waiting <gameName> <maxPoints> <mapName> <username1> (ready [<characterstring>]|choosing) <username2> (ready [<characterstring>]|choosing)
 	 */
 	private void sendWaitingGameAnswer(ServerGameController sgc) {
 		
@@ -51,7 +51,7 @@ public class CgetgHandler extends CommandHandler {
 			users = users.substring(1); // To remove the first space char.
 		}
 		
-		commandParser.writeBackToClient(String.format("+OK cgetg waiting %s %d %s %s", sgc.getGameName(), sgc.getStartingPoints(), sgc.getGameMap(), users));
+		commandParser.writeBackToClient(String.format("+OK cgetg waiting %s %d %s %s", sgc.getGameName(), sgc.getStartingPoints(), sgc.getGameMap().getName(), users));
 		
 	}
 	
@@ -60,7 +60,15 @@ public class CgetgHandler extends CommandHandler {
 	 * +OK cgetg running <gameName> <maxPoints> <mapName> <username1> <username2>
 	 */
 	private void sendRunningGameAnswer(ServerGameController sgc) {
-		//TODO send the running game answer.
+		String users = "";
+		for (User user : sgc.getAllUsers()) {
+			users += " ";
+			users += user.getName();
+		}
+		if (users.isEmpty() == false) {
+			users = users.substring(1); // To remove the first space char.
+		}
+		commandParser.writeBackToClient(String.format("+OK cgetg running %s %d %s %s", sgc.getGameName(), sgc.getStartingPoints(), sgc.getGameMap().getName(), users));//TODO send the running game answer.
 	}
 	
 }

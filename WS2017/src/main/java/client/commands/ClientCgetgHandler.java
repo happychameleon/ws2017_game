@@ -30,7 +30,6 @@ public class ClientCgetgHandler extends CommandHandler {
 		} else if (argument.startsWith("running ")) {
 			getAndRemoveNextArgumentWord();
 			parseRunningGameAnswer();
-			// TODO: Parse Running Games.
 		} else {
 			System.err.println("ClientCgetgHandler - argument wrongly formatted");
 		}

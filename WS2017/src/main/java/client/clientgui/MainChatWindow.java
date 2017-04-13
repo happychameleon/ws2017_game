@@ -307,6 +307,19 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	}
 	
 	/**
+	 * TODO: Moves the game from the {@link #waitingGameList} to the {@link #runningGameList}.
+	 * @param gameController The game to move
+	 */
+	public void moveGameToRunning(ClientGameController gameController) {
+		if (waitingGameListModel.removeElement(gameController) == false) {
+			System.err.println("MainChatWindow#moveGameToRunning - Game to move not in waiting games!");
+			if (runningGameListModel.contains(gameController))
+				return;
+		}
+		runningGameListModel.addElement(gameController);
+	}
+	
+	/**
 	 * Calls the {@link ClientGameController#watchGame()} method of the game at the given position of the {@link #runningGameList}.
 	 * @param index the given position at the runningGameList.
 	 */

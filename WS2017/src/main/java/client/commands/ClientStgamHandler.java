@@ -26,7 +26,6 @@ public class ClientStgamHandler extends CommandHandler {
 		
 		gameController.startGame(user);
 		
-		//TODO stgam
 	}
 	
 	
