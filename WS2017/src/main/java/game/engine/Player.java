@@ -1,6 +1,6 @@
 package game.engine;
 
-import java.util.ArrayList;
+import serverclient.User;
 
 /**
  * The Player represents the "Real Life" Person playing the game.
@@ -17,42 +17,42 @@ public class Player {
 		return team;
 	}
 	
-	final String name;
+	/**
+	 * The User representing this Player.
+	 */
+	private final User user;
 	
-	public String getName() {
-		return name;
+	/**
+	 * @return {@link #user}.
+	 */
+	public User getUser() {
+		return user;
 	}
 	
-	private String color;
+	/**
+	 * @return The name of the {@link #user}.
+	 */
+	public String getName() {
+		return user.getName();
+	}
 	
-	public String getColor() {
-		System.out.println("Color: " + color);
+	/**
+	 * The color of this player.
+	 */
+	private PlayerColor color;
+	
+	public PlayerColor getColor() {
 		return color;
 	}
 	
-	public void setAColor() {
-		if (availableColors.size() == 0) {
-			System.out.println("Player::setAColor - ERROR: Not enough Player Colors available!");
-			return;
-		}
-		color = availableColors.remove(0);
-	}
-	
-	// TODO: Replace with PlayerColor!
-	private static ArrayList<String> availableColors;
 	
 	
-	
-	public Player (Team team, String name, World world) {
+	public Player (Team team, User user, PlayerColor color, World world) {
 		this.team = team;
-		this.name = name;
+		this.user = user;
+		this.color = color;
 		this.world = world;
 		
-		if (availableColors == null) {
-			availableColors = new ArrayList<>();
-			availableColors.add("yellow"); availableColors.add("red"); availableColors.add("orange"); availableColors.add("pink");
-		}
-		setAColor();
 	}
 	
 	/**

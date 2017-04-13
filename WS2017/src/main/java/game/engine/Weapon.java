@@ -72,10 +72,22 @@ public class Weapon {
 	 */
 	private static ArrayList<Weapon> weaponPrototypes;
 	
+	public static Weapon getWeaponForName(String weaponName) {
+		for (Weapon weapon : weaponPrototypes) {
+			if (weapon.getName().equals(weaponName))
+				return weapon;
+		}
+		return null;
+	}
+	
 	/**
 	 * Creates all the prototype weapons.
 	 */
-	private static void createWeaponPrototypes() {
+	public static void createWeaponPrototypes() {
+		if (weaponPrototypes != null) {
+			System.err.println("Weapon#createWeaponPrototypes - Already created!");
+			return;
+		}
 		weaponPrototypes = new ArrayList<>();
 		
 		//TODO: (maybe) instead of hardcoding the weapons here we could read them in from a file.
@@ -89,8 +101,6 @@ public class Weapon {
 	 * @return A shallow copy of {@link #weaponPrototypes}.
 	 */
 	public static ArrayList<Weapon> getWeaponPrototypes() {
-		if (weaponPrototypes == null)
-			createWeaponPrototypes();
 		return (ArrayList<Weapon>) weaponPrototypes.clone();
 	}
 	
@@ -98,8 +108,6 @@ public class Weapon {
 	 * @return An Array with all the Weapons from {@link #weaponPrototypes}.
 	 */
 	public static Weapon[] getWeaponPrototypesArray() {
-		if (weaponPrototypes == null)
-			createWeaponPrototypes();
 		return weaponPrototypes.toArray(new Weapon[]{});
 	}
 	
@@ -173,4 +181,5 @@ public class Weapon {
 	public String getStartScreenString() {
 		return name + " (" + pointCost + "Pt)";
 	}
+	
 }

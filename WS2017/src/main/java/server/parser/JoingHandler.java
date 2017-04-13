@@ -1,6 +1,6 @@
 package server.parser;
 
-import game.startscreen.ServerGameStartController;
+import game.ServerGameController;
 import server.Server;
 import serverclient.User;
 
@@ -18,14 +18,13 @@ public class JoingHandler extends CommandHandler {
 		String gameName = argument.substring(0, argument.indexOf(" "));
 		String username = argument.substring(argument.indexOf(" ") + 1);
 		User joinedUser = Server.getUserByName(username);
-		ServerGameStartController game = Server.getWaitingGameByName(gameName);
+		ServerGameController game = Server.getGameByName(gameName);
 		
 		if (joinedUser == null || game == null) {
 			System.err.println("USER OR GAME DOESN'T EXIST!");
 		}
 		
-		String message = "joing " + argument;
-		Server.writeToAllClients(message);
+		Server.writeToAllClients(String.format("joing %s", argument));
 		
 		game.addUserToGame(joinedUser);
 	}

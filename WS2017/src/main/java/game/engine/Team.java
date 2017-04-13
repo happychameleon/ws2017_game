@@ -3,6 +3,10 @@ package game.engine;
 import java.util.ArrayList;
 
 /**
+ * Represents one Team consisting of one or more Players.
+ *
+ * TODO? Currently unused, maybe add possibility to play in same team.
+ *
  * Created by flavia on 09.03.17.
  */
 public class Team {
@@ -11,6 +15,10 @@ public class Team {
 	
 	private ArrayList<Player> members;
 	
+	/**
+	 * Adds a new Player to the team.
+	 * @param player the Player to add.
+	 */
 	public void addPlayerToTeam(Player player) {
 		members.add(player);
 	}

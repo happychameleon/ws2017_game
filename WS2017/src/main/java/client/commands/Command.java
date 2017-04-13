@@ -19,7 +19,8 @@ public enum Command {
 	joing(new ClientJoingHandler()),
 	leavg(new ClientLeavgHandler()),
 	rmgam(new ClientRmgamHandler()),
-	ready(new ClientReadyHandler());
+	ready(new ClientReadyHandler()),
+	stgam(new ClientStgamHandler());
 	
 	/**
 	 * The correct CommandHandler which processes the command.

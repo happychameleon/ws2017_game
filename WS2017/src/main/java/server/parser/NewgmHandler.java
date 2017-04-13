@@ -1,11 +1,12 @@
 package server.parser;
 
 
-import game.startscreen.ServerGameStartController;
+import game.GameMap;
+import game.GameState;
+import game.ServerGameController;
 import server.Server;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 
 /**
@@ -19,22 +20,27 @@ public class NewgmHandler extends CommandHandler {
 	
 	@Override
 	public void handleCommand() {
-		int maxPoints = Integer.parseInt(argument.substring(0, argument.indexOf(" ")));
-		String gameName = argument.substring(argument.indexOf(" ") + 1, argument.length());
+		String wholeArgument = argument;
+		int maxPoints = Integer.parseInt(getAndRemoveNextArgumentWord());
+		String gameName = getAndRemoveNextArgumentWord();
+		String mapName = getAndRemoveNextArgumentWord();
+		GameMap map = GameMap.getMapForName(mapName);
 		
 		if (Server.isGameNameUnique(gameName) == false) {
 			String errNameTakenMessage = "-ERR newgm game name taken";
 			commandParser.writeBackToClient(errNameTakenMessage);
 			return;
 		}
+		if (map == null) {
+			System.err.println("Map name " + mapName + " doesn't exist.");
+			return;
+		}
 		
-		ServerGameStartController newGame = new ServerGameStartController(new HashMap<>(), new HashSet<>(), gameName, maxPoints);
-		Server.addNewWaitingGame(newGame);
+		ServerGameController newGame = new ServerGameController(GameState.STARTING, maxPoints, gameName, new HashMap<>(), map);
+		Server.addNewGame(newGame);
 		
 		// Tell all the clients that a new game has opened.
-		String newGameMessage = "newgm " + argument;
-		Server.writeToAllClients(newGameMessage);
-		System.out.println("Sent to clients: " + newGameMessage);
+		Server.writeToAllClients(String.format("newgm %s", wholeArgument));
 	}
 	
 	

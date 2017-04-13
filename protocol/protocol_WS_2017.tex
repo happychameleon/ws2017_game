@@ -151,7 +151,7 @@ server to recipient and sender:
 The Client tells the server that they created a new game.\\
 Client to Server:
 \begin{quote}
-  newgm <points> <gamename>
+  newgm <points> <gamename> <mapname>
 \end{quote}
 
 \noindent
@@ -213,8 +213,8 @@ Client to Server:
 Client asks when getting the answer for the cgetu command, after registering all usernames (to make sure they are registered).
 Server responds with a response for each game (waiting = not yet started; running = already playing):
 \begin{quote}
-  +OK cgetg waiting <gameName> <maxPoints> <username1> (ready [<characterstring>]|choosing) <username2> (ready [<characterstring>]|choosing)\\
-  +OK cgetg running <gameName> <username1> <username2>
+  +OK cgetg waiting <gameName> <maxPoints> <mapName> <username1> (ready [<characterstring>]|choosing) <username2> (ready [<characterstring>]|choosing)\\
+  +OK cgetg running <gameName> <maxPoints> <mapName> <username1> <username2>
 \end{quote}
 
 \noindent
@@ -227,6 +227,24 @@ Client to Server:
 \noindent
 The Server informs all the Clients, that the Client has left the game.\\
 Server to Client:
+\begin{quote}
+  leavg <gamename> <username>
+\end{quote}
+
+\noindent
+The Client tells the server that they want to start the game.
+Client to Server:
+\begin{quote}
+  stgam <gamename> <username>
+\end{quote}
+
+\noindent
+The server then forwards the command to all the Clients to inform them about the start of the game and which user triggered the game start.
+Server to Client:
+\begin{quote}
+  stgam <gamename> <username>
+\end{quote}
+
 %\subsubsection{Map}
 
 

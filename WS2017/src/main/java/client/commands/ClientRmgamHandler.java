@@ -1,7 +1,7 @@
 package client.commands;
 
 import client.Client;
-import game.startscreen.ClientGameStartController;
+import game.ClientGameController;
 
 /**
  * Removes the game (because every user has left it).
@@ -16,10 +16,10 @@ public class ClientRmgamHandler extends CommandHandler {
 		if (Client.isLoggedIn() == false)
 			return;
 		
-		ClientGameStartController game = Client.getMainChatWindow().getWaitingGameByName(argument);
+		ClientGameController game = Client.getMainWindow().getWaitingGameByName(argument);
 		
 		if(game != null) {
-			Client.getMainChatWindow().removeGameFromList(game);
+			Client.getMainWindow().removeGameFromList(game);
 		} else {
 			System.err.println("Game to delete doesn't exist: " + argument);
 		}

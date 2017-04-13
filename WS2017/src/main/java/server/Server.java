@@ -1,8 +1,7 @@
 package server;
 
-import game.ServerGameRunningController;
-import game.startscreen.ServerGameStartController;
-import serverclient.User;
+import game.GameState;
+import game.ServerGameController;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,21 +21,19 @@ public class Server {
 	 * Users can still join them (if there are still places available, max 4)
 	 * They start when there are at least 2 users and all users are ready.
 	 */
-	private static ArrayList<ServerGameStartController> waitingGameList = new ArrayList<>();
-	
-	public static ArrayList<ServerGameStartController> getAllWaitingGames() {
-		return (ArrayList<ServerGameStartController>) waitingGameList.clone();
-	}
+	private static ArrayList<ServerGameController> gameList = new ArrayList<>();
 	
 	/**
-	 * The games which are currently playing and can't be joined anymore.
+	 * @return A shallow copy of {@link #gameList}.
 	 */
-	private static ArrayList<ServerGameRunningController> runningGameList = new ArrayList<>();
+	public static ArrayList<ServerGameController> getAllGames() {
+		return (ArrayList<ServerGameController>) gameList.clone();
+	}
 	
 	/**
 	 * A list of all the connected users.
 	 */
-	private static ArrayList <ServerUser> userList = new ArrayList<ServerUser>();
+	private static ArrayList <ServerUser> userList = new ArrayList<>();
 	
 	/**
 	 * @return A shallow clone of the {@link #userList}.
@@ -55,24 +52,14 @@ public class Server {
 	/**
 	 * Removes the user from all the lists they are in when the connection is terminated.
 	 * @see #userList
+	 * @param user The User to remove.
 	 */
 	static boolean removeUserFromList(ServerUser user) {
 		System.out.println("removeUserFromList");
-		for (int i = 0; i < waitingGameList.size(); i++) {
-			ServerGameStartController sgsc = waitingGameList.get(i);
-			for (User u : sgsc.getAllUsers()) {
-				if (user == u) {
-					sgsc.removeUser(user);
-				}
-			}
-		}
-		for (int i = 0; i < runningGameList.size(); i++) {
-			ServerGameRunningController sgc = runningGameList.get(i);
-			for (User u : sgc.getAllUsers()) {
-				if (user == u) {
-					sgc.removeUser(user);
-				}
-			}
+		for (int i = 0; i < gameList.size(); i++) {
+			ServerGameController sgc = gameList.get(i);
+			if (sgc.getAllUsers().contains(user))
+				sgc.removeUser(user);
 		}
 		return userList.remove(user);
 	}
@@ -92,30 +79,74 @@ public class Server {
     }
 	
 	/**
-	 * Gets the ServerGameStartController for the specific gamename.
+	 * Gets the ServerGameController for the specific gamename.
 	 * @param name The game's name.
-	 * @return The ServerGameStartController. Can be null if username doesn't exist!
+	 * @return The ServerGameController. Can be null if username doesn't exist!
 	 */
-	public static ServerGameStartController getWaitingGameByName(String name) {
-		for (ServerGameStartController sgsc : waitingGameList) {
-			if (sgsc.getGameName().equals(name))
-				return sgsc;
+	public static ServerGameController getGameByName(String name) {
+		for (ServerGameController sgc : gameList) {
+			if (sgc.getGameName().equals(name))
+				return sgc;
 		}
 		return null;
 	}
 	
 	/**
-	 * Gets the ServerGameRunningController for the specific gamename.
-	 * @param name The game's name.
-	 * @return The ServerGameStartController. Can be null if username doesn't exist!
+	 * @return An ArrayList of all games which have not yet started.
 	 */
-	public static ServerGameRunningController getRunningGameByName(String name) {
-		for (ServerGameRunningController sgsc : runningGameList) {
-			if (sgsc.getGameName().equals(name))
-				return sgsc;
+	public static ArrayList<ServerGameController> getStartingGames() {
+		ArrayList<ServerGameController> startingGames = new ArrayList<>();
+		for (ServerGameController sgc : getAllGames()) {
+			if (sgc.getGameState() == GameState.STARTING) {
+				startingGames.add(sgc);
+			}
 		}
-		return null;
+		return startingGames;
 	}
+	
+	/**
+	 * @return An ArrayList of all games which are currently being played.
+	 */
+	public static ArrayList<ServerGameController> getRunningGames() {
+		ArrayList<ServerGameController> runningGames = new ArrayList<>();
+		for (ServerGameController sgc : getAllGames()) {
+			if (sgc.getGameState() == GameState.RUNNING) {
+				runningGames.add(sgc);
+			}
+		}
+		return runningGames;
+	}
+	
+	
+	/**
+	 * Adds the newly created game (which is still in the game start phase) to the list of new games.
+	 * @see #gameList
+	 */
+	public static void addNewGame(ServerGameController newGame) {
+		gameList.add(newGame);
+	}
+	
+	/**
+	 * This removes the game from the waiting games, either because all players have left or because it has started.
+	 */
+	public static void removeGame(ServerGameController oldGame) {
+		gameList.remove(oldGame);
+	}
+	
+	/**
+	 * Checks the existing games for duplicates.
+	 * @param newGameName The proposed new name for the game.
+	 * @return true if the newGameName is unique, false otherwise.
+	 */
+	public static boolean isGameNameUnique(String newGameName) {
+		if (getGameByName(newGameName) == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
 	
 	/**
 	 * Writes the output message to all clients.
@@ -131,51 +162,6 @@ public class Server {
 			}
 		}
 	}
-	
-	/**
-	 * Adds the newly created game (which is still in the game start phase) to the list of new games.
-	 * @see #waitingGameList
-	 */
-	public static void addNewWaitingGame(ServerGameStartController newGame) {
-		waitingGameList.add(newGame);
-	}
-	
-	/**
-	 * This removes the game from the waiting games, either because all players have left or because it has started.
-	 */
-	public static void removeWaitingGame(ServerGameStartController oldGame) {
-		waitingGameList.remove(oldGame);
-	}
-	
-	/**
-	 * Adds the newly started game to the running game list.
-	 * The corresponding waitingGame should be removed before calling this via {@link #removeWaitingGame(ServerGameStartController)}.
-	 */
-	public static void addNewRunningGame(ServerGameRunningController newRunningGame) {
-		runningGameList.add(newRunningGame);
-	}
-	
-	
-	/**
-	 * Checks the existing games for duplicates.
-	 * @param newGameName The proposed new name for the game.
-	 * @return true if the newGameName is unique, false otherwise.
-	 */
-	public static boolean isGameNameUnique(String newGameName) {
-		for (ServerGameStartController game : waitingGameList) {
-			if (game.getGameName().equals(newGameName))
-				return false;
-		}
-		for (ServerGameRunningController game : runningGameList) {
-			if (game.getGameName().equals(newGameName))
-				return false;
-		}
-		return true;
-	}
-	
-	
-	
-	
 	
 	
 	
@@ -205,5 +191,7 @@ public class Server {
             System.exit(1);
         }
     }
+	
+	
 }
 

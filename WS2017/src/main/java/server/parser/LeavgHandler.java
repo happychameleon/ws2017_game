@@ -1,7 +1,6 @@
 package server.parser;
 
-import game.ServerGameRunningController;
-import game.startscreen.ServerGameStartController;
+import game.ServerGameController;
 import server.Server;
 import serverclient.User;
 
@@ -24,17 +23,12 @@ public class LeavgHandler extends CommandHandler {
 			return;
 		}
 		
-		ServerGameStartController waitingGame = Server.getWaitingGameByName(gameName);
+		ServerGameController waitingGame = Server.getGameByName(gameName);
 		if (waitingGame != null) {
 			waitingGame.removeUser(user);
 			return;
 		}
 		
-		ServerGameRunningController runningGame = Server.getRunningGameByName(gameName);
-		if (runningGame != null) {
-			runningGame.removeUser(user);
-			return;
-		}
 		
 		System.err.println("leavg: Game Name doesn't exist: " + gameName);
 	}

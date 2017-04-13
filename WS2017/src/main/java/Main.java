@@ -1,4 +1,6 @@
 import client.Client;
+import game.GameMap;
+import game.engine.Weapon;
 import server.Server;
 
 /**
@@ -11,6 +13,9 @@ import server.Server;
 public class Main {
 	
 	public static void main(String[] args) {
+		
+		doStartMethods();
+		
 		if (args.length == 0) {
 			// If no command arguments were entered we start the server with default port 1030.
 			Server.main(new String[] {"server"});
@@ -28,6 +33,16 @@ public class Main {
 					"'server'\t\t\t\t\t\t\t\tshortcut for 'server 1030'\n" +
 					"<empty>\t\t\t\t\t\t\t\t\tshortcut for 'server 1030'");
 		}
+	}
+	
+	/**
+	 * Does all the methods which need to run at the start of the application.
+	 */
+	private static void doStartMethods() {
+		
+		GameMap.readInAllMaps();
+		Weapon.createWeaponPrototypes();
+		
 	}
 	
 }

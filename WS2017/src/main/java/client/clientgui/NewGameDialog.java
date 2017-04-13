@@ -1,6 +1,8 @@
 package client.clientgui;
 
 import client.Client;
+import client.commands.ClientNewgmHandler;
+import game.GameMap;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,11 +18,15 @@ public class NewGameDialog extends JDialog implements ActionListener, KeyListene
 	
 	private JTextField gameNameTF = new JTextField("Name");
 	private JTextField maxPointsTF = new JTextField("MaxPoints");
+	
+	private DefaultListModel<GameMap> mapListModel = new DefaultListModel();
+	private JList<GameMap> mapList = new JList<>(mapListModel);
+	
 	private JButton createGameButton = new JButton("Create Game");
 	private JButton cancelGameCreationButton = new JButton("Cancel");
 	
 	private MainChatWindow getChat() {
-		return Client.getMainChatWindow();
+		return Client.getMainWindow();
 	}
 	
 	/**
@@ -40,16 +46,25 @@ public class NewGameDialog extends JDialog implements ActionListener, KeyListene
 		createGameButton.addActionListener(this);
 		cancelGameCreationButton.addActionListener(this);
 		
-		JPanel panel = new JPanel(new GridLayout(3,2));
+		Box mainBox = Box.createVerticalBox();
 		
-		panel.add(gameNameLabel);
-		panel.add(gameNameTF);
-		panel.add(maxPointsLabel);
-		panel.add(maxPointsTF);
-		panel.add(cancelGameCreationButton);
-		panel.add(createGameButton);
+		JPanel gameInputPanel = new JPanel(new GridLayout(2,2));
+		gameInputPanel.add(gameNameLabel);
+		gameInputPanel.add(gameNameTF);
+		gameInputPanel.add(maxPointsLabel);
+		gameInputPanel.add(maxPointsTF);
 		
-		this.add(panel);
+		
+		JPanel gameButtonsPanel = new JPanel(new GridLayout(1, 2));
+		gameButtonsPanel.add(cancelGameCreationButton);
+		gameButtonsPanel.add(createGameButton);
+		
+		mainBox.add(gameInputPanel);
+		mainBox.add(new JLabel("Map:"));
+		mainBox.add(new JScrollPane(mapList));
+		mainBox.add(gameButtonsPanel);
+		
+		this.add(mainBox);
 		
 		this.pack();
 		this.setVisible(true);
@@ -64,8 +79,16 @@ public class NewGameDialog extends JDialog implements ActionListener, KeyListene
 		cancelGameCreationButton.addKeyListener(this);
 		createGameButton.addKeyListener(this);
 		
+		for (GameMap map : GameMap.getAllMaps())
+			mapListModel.addElement(map);
+		mapList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		mapList.setSelectedIndex(0);
+		
 	}
 	
+	/**
+	 * @param e The ActionEvent
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == cancelGameCreationButton) {
@@ -106,15 +129,16 @@ public class NewGameDialog extends JDialog implements ActionListener, KeyListene
 			getChat().getMainChatPanel().displayError("MaxPoints must be entered as a valid number.");
 			return;
 		}
-		
 		if (maxPoints <= 0) {
 			getChat().getMainChatPanel().displayError("MaxPoints must be positive!");
 			return;
 		}
+		if (mapList.isSelectionEmpty()) {
+			getChat().getMainChatPanel().displayError("Please select a Map!");
+			return;
+		}
 		
-		// Now we know the input is valid
-		Client.sendMessageToServer("newgm " + maxPoints + " " + gameName);
-		
+		ClientNewgmHandler.sendGameCreationMessage(maxPoints, gameName, mapListModel.getElementAt(mapList.getSelectedIndex()));
 	}
 	
 	

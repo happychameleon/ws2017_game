@@ -1,5 +1,7 @@
 package game.engine;
 
+import serverclient.User;
+
 import java.util.ArrayList;
 
 /**
@@ -13,10 +15,14 @@ public class TurnController {
 	/**
 	 * All the players Playing the game. The order of the Players in here represents the turn order
 	 * (players.get(0) is first, then players.get(1) etc.).
+	 * The players are sorted alphabetically by their names.
 	 * @see #getCurrentPlayer()
 	 */
 	private final ArrayList<Player> players;
 	
+	/**
+	 * @return {@link #players}.
+	 */
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
@@ -48,20 +54,19 @@ public class TurnController {
 	//endregion
 	
 	
-	public TurnController(int playerCount, World world) {
+	public TurnController(ArrayList<User> users, World world) {
 		this.world = world;
 		
-		if (playerCount > 4) {
-			playerCount = 4;
-			System.out.println("Maximum 4 Players!");
+		if (users.size() > 4) {
+			System.err.println("TurnController#TurnController - There should never be more than 4 Players!");
 		}
 		
-		players = new ArrayList<>(playerCount);
-		
-		// TODO: Add the real Players instead of just generic ones.
-		for (int i = 0; i < playerCount; i++) {
-			Team newTeam = new Team("Team " + (i + 1));
-			Player newPlayer = new Player(newTeam, "Player " + (i + 1), world);
+		players = new ArrayList<>();
+		for (int i = 0; i < users.size(); i++) {
+			User user = users.get(i);
+			Team newTeam = new Team("Team " + (players.size() + 1));
+			PlayerColor color = PlayerColor.values()[i];
+			Player newPlayer = new Player(newTeam, user, color, world);
 			players.add(newPlayer);
 			newTeam.addPlayerToTeam(newPlayer);
 		}
