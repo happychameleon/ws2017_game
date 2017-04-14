@@ -5,6 +5,7 @@ import game.GameMap;
 import game.GameState;
 import game.ServerGameController;
 import server.Server;
+import server.parser.CommandHandler;
 
 import java.util.HashMap;
 

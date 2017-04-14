@@ -4,6 +4,7 @@ package server.parser;
 import game.ServerGameController;
 import server.Server;
 import server.ServerUser;
+import server.parser.CommandHandler;
 
 /**
  * Calls the {@link ServerGameController#setUserAsWaiting} method of the specified game.

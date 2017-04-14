@@ -4,25 +4,25 @@ package game.gamegui;
 /**
  * Responsible for moving around in the game.
  * Moves the position of the image on which the game is drawn around.
- * Only works while the window is smaller than the game itself (width and height separately)
+ * Only works while the mainGamePanel is smaller than the game itself (width and height separately)
  *
  * Created by flavia on 17.03.17.
  */
 public class Camera {
 	
 	/**
-	 * The window of which this class controls the camera.
-	 * (TODO) maybe the window can just give all the needed information in the methods and this can be deleted.
+	 * The mainGamePanel of which this class controls the camera.
+	 * (TODO) maybe the mainGamePanel can just give all the needed information in the methods and this can be deleted.
 	 */
-	private Window window;
+	private MainGamePanel mainGamePanel;
 	
 	/**
 	 * The amount of pixels one call to the scroll methods moves.
 	 */
-	private float scrollSpeed = 10f;
+	private float scrollSpeed = 15f;
 	
 	/**
-	 * The top end of the game map relative to the window.
+	 * The top end of the game map relative to the mainGamePanel.
 	 */
 	private float x;
 	
@@ -34,7 +34,7 @@ public class Camera {
 	}
 	
 	/**
-	 * The left end of the game map relative to the window.
+	 * The left end of the game map relative to the mainGamePanel.
 	 */
 	private float y;
 	
@@ -47,43 +47,43 @@ public class Camera {
 	
 	
 	
-	public Camera (Window window) {
-		this.window = window;
+	public Camera (MainGamePanel mainGamePanel) {
+		this.mainGamePanel = mainGamePanel;
 	}
 	
 	
 	
 	/**
-	 * Moves the whole map by {@link #scrollSpeed} pixels to the right, if the window's width is smaller than the map width.
-	 * If the map would move too far (the window background would be shown) it is set exactly to the end of the window.
+	 * Moves the whole map by {@link #scrollSpeed} pixels to the right, if the mainGamePanel's width is smaller than the map width.
+	 * If the map would move too far (the mainGamePanel background would be shown) it is set exactly to the end of the mainGamePanel.
 	 */
 	public void moveRight() {
-		if (window.getMapWidthInPixels() <= window.getWidth()) {
-			return; // Map fits (horizontally) inside the whole window. Ignore scrolling.
+		if (mainGamePanel.getMapWidthInPixels() <= mainGamePanel.getWidth()) {
+			return; // Map fits (horizontally) inside the whole mainGamePanel. Ignore scrolling.
 		}
 		x += scrollSpeed;
-		if (x > window.getMapWidthInPixels() - window.getWidth()) {
-			x = window.getMapWidthInPixels() - window.getWidth();
+		if (x > mainGamePanel.getMapWidthInPixels() - mainGamePanel.getWidth()) {
+			x = mainGamePanel.getMapWidthInPixels() - mainGamePanel.getWidth();
 		}
 	}
 	
 	/**
-	 * Moves the whole map by {@link #scrollSpeed} pixels down, if the window's height is smaller than the map height.
-	 * If the map would move too far (the window background would be shown) it is set exactly to the end of the window.
+	 * Moves the whole map by {@link #scrollSpeed} pixels down, if the mainGamePanel's height is smaller than the map height.
+	 * If the map would move too far (the mainGamePanel background would be shown) it is set exactly to the end of the mainGamePanel.
 	 */
 	public void moveDown() {
-		if (window.getMapHeightInPixels() <= window.getHeightWithoutTitlebar()) {
-			return; // Map fits (vertically) inside the whole window. Ignore scrolling.
+		if (mainGamePanel.getMapHeightInPixels() <= mainGamePanel.getHeight()) {
+			return; // Map fits (vertically) inside the whole mainGamePanel. Ignore scrolling.
 		}
 		y += scrollSpeed;
-		if (y > window.getMapHeightInPixels() - window.getHeightWithoutTitlebar()) {
-			y = window.getMapHeightInPixels() - window.getHeightWithoutTitlebar();
+		if (y > mainGamePanel.getMapHeightInPixels() - mainGamePanel.getHeight()) {
+			y = mainGamePanel.getMapHeightInPixels() - mainGamePanel.getHeight();
 		}
 	}
 	
 	/**
-	 * Moves the whole map by {@link #scrollSpeed} pixels to the left, if the window's width is smaller than the map width.
-	 * If the map would move too far (the window background would be shown) it is set exactly to the end of the window.
+	 * Moves the whole map by {@link #scrollSpeed} pixels to the left, if the mainGamePanel's width is smaller than the map width.
+	 * If the map would move too far (the mainGamePanel background would be shown) it is set exactly to the end of the mainGamePanel.
 	 */
 	public void moveLeft() {
 		x -= scrollSpeed;
@@ -93,8 +93,8 @@ public class Camera {
 	}
 	
 	/**
-	 * Moves the whole map by {@link #scrollSpeed} pixels up, if the window's height is smaller than the map height.
-	 * If the map would move too far (the window background would be shown) it is set exactly to the end of the window.
+	 * Moves the whole map by {@link #scrollSpeed} pixels up, if the mainGamePanel's height is smaller than the map height.
+	 * If the map would move too far (the mainGamePanel background would be shown) it is set exactly to the end of the mainGamePanel.
 	 */
 	public void moveUp() {
 		y -= scrollSpeed;

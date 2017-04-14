@@ -2,6 +2,7 @@ package server.parser;
 
 import game.ServerGameController;
 import server.Server;
+import server.parser.CommandHandler;
 import serverclient.User;
 
 /**

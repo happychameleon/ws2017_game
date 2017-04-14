@@ -1,9 +1,11 @@
 package server.parser;
 
+import server.parser.CommandHandler;
+
 /**
  * Created by m on 10/04/17.
  */
-public class ChattHandler extends CommandHandler{
+public class ChattHandler extends CommandHandler {
     @Override
     public void handleCommand() {
     }

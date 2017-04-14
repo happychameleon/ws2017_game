@@ -1,9 +1,11 @@
 package server.parser;
 
+import server.parser.CommandHandler;
+
 /**
  * Created by m on 10/04/17.
  */
-public class ChposHandler extends CommandHandler{
+public class ChposHandler extends CommandHandler {
     @Override
     public void handleCommand() {
     }
