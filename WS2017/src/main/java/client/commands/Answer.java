@@ -14,7 +14,8 @@ public enum Answer {
 	uname(new ClientUnameHandler()),
 	chatm(new ClientChatmHandler()),
 	newgm(new ClientNewgmHandler()),
-	cgetg(new ClientCgetgHandler());
+	cgetg(new ClientCgetgHandler()),
+	chpos(new ClientChposHandler());
 	
 	/**
 	 * The correct CommandHandler which processes the answer.

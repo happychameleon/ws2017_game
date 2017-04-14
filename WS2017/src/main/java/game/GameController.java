@@ -118,7 +118,17 @@ public abstract class GameController {
 	//endregion
 	
 	//region Running Game
+	/**
+	 * The world of this GameController.
+	 */
 	protected World world;
+	
+	/**
+	 * @return {@link #world}.
+	 */
+	public World getWorld() {
+		return world;
+	}
 	//endregion
 	
 	/**

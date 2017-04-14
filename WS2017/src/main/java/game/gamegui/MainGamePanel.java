@@ -1,5 +1,6 @@
 package game.gamegui;
 
+import client.commands.ClientChposHandler;
 import game.engine.Character;
 import game.engine.Tile;
 import game.engine.World;
@@ -161,7 +162,6 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		
 		Character character = tile.getCharacter();
 		if (character != null) {
-			System.out.println("MainGamePanel#paintOneTile - Drawing Character at Tile " + tile);
 			// Draw the Character on the Tile and show it's wetness.
 			g.drawImage(character.getSprite(), leftX, topY, tileSize, tileSize, null);
 			int imageIndex = character.getWetness()/10;
@@ -249,7 +249,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 				switch (world.getSelectionType()) {
 					case CHARACTER:
 						// We have currently selected a Tile with a Character on it. RMB now moves the Character if possible.
-						moveCharacter(tileUnderMouse);
+						askServerToMoveCharacter(tileUnderMouse);
 						break;
 					case OWNED_WEAPON:
 						attackCharacter(tileUnderMouse);
@@ -310,19 +310,27 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 	}
 	
 	/**
-	 * This method moves the selected Character to the given Tile, IF it is in range.
-	 * @param tileUnderMouse The destination Tile.
+	 * Calls the {@link ClientChposHandler#sendNewPositionToServer} command.
+	 * @param destinationTile The destination Tile.
 	 */
-	private void moveCharacter (Tile tileUnderMouse) {
-		if (window.getWalkRangeTiles() != null && window.getWalkRangeTiles().keySet().contains(tileUnderMouse)) {
-			System.out.println("Character should be moved.");
-			if (world.getSelectedTile().getCharacter().moveCharacterTo(tileUnderMouse, window.getWalkRangeTiles().get(tileUnderMouse))) {
-				window.setWalkRangeTiles(null);
-				world.setSelectedTile(null);
-			} else {
-				System.err.println("Window#mouseClicked - ERROR: Why can't we move the Character?");
-			}
-		}
+	private void askServerToMoveCharacter(Tile destinationTile) {
+		System.out.println("MainGamePanel#askServerToMoveCharacter");
+		if (destinationTile == null) return;
+		if (destinationTile.isWalkable(true) == false) return;
+		if (window.getWalkRangeTiles() == null || window.getWalkRangeTiles().keySet().contains(destinationTile) == false) return;
+		Character character = world.getSelectedTile().getCharacter();
+		if (character == null) return;
+		int distance = window.getWalkRangeTiles().get(destinationTile);
+		if (character.canRemoveActionPoints(distance * character.getMovementCostPerTile()) == false) return;
+		// Now we know we should be able to move.
+		
+		Tile oldTile = world.getSelectedTile().getCharacter().getTile();
+		
+		ClientChposHandler.sendNewPositionToServer(window.getClientGameController(), oldTile, destinationTile, window.getWalkRangeTiles().get(destinationTile));
+		
+		window.setWalkRangeTiles(null);
+		world.setSelectedTile(null);
+	
 	}
 	
 	/**

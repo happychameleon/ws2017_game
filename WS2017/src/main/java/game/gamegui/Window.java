@@ -26,12 +26,26 @@ public class Window extends JFrame implements WindowListener {
 	/**
 	 * The ClientGameController of this game.
 	 */
-	private final ClientGameController cGameController;
+	private final ClientGameController clientGameController;
+	
+	/**
+	 * @return {@link #clientGameController}.
+	 */
+	public ClientGameController getClientGameController() {
+		return clientGameController;
+	}
 	
 	/**
 	 * The World this Window displays.
 	 */
 	private World world;
+	
+	/**
+	 * @return {@link #world}.
+	 */
+	public World getWorld() {
+		return world;
+	}
 	
 	/**
 	 * These Tiles represent the movement Range if a Character is selected.
@@ -72,14 +86,28 @@ public class Window extends JFrame implements WindowListener {
 	private MainGamePanel mainGamePanel;
 	
 	/**
+	 * @return {@link #mainGamePanel}.
+	 */
+	public MainGamePanel getMainGamePanel() {
+		return mainGamePanel;
+	}
+	
+	/**
 	 * The {@link GameInfoPanel} of this Window.
 	 */
 	private GameInfoPanel gameInfoPanel;
+	
+	/**
+	 * @return {@link #gameInfoPanel}.
+	 */
+	public GameInfoPanel getGameInfoPanel() {
+		return gameInfoPanel;
+	}
 	//endregion
 	
 	
-	public Window(ClientGameController cGameController, World world, String title) {
-		this.cGameController = cGameController;
+	public Window(ClientGameController clientGameController, World world, String title) {
+		this.clientGameController = clientGameController;
 		this.world = world;
 		
 		this.setLayout(new BorderLayout());
@@ -133,7 +161,7 @@ public class Window extends JFrame implements WindowListener {
 	 */
 	@Override
 	public void windowClosing(WindowEvent e) {
-		cGameController.askToLeaveGame();
+		clientGameController.askToLeaveGame();
 	}
 	
 	

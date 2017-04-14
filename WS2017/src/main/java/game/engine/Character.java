@@ -34,7 +34,14 @@ public class Character {
 	/**
 	 * The movement Cost in {@link #actionPoints} per Tile moved.
 	 */
-	public static final int movementCostPerTile = 3;
+	private static final int movementCostPerTile = 3;
+	
+	/**
+	 * @return {@link #movementCostPerTile}.
+	 */
+	public static int getMovementCostPerTile() {
+		return movementCostPerTile;
+	}
 	
 	private Tile tile;
     /**
@@ -156,12 +163,27 @@ public class Character {
 	 * <code>false</code> if there weren't enough action points and the action could not be carried out.
 	 */
 	public boolean removeActionPoints (int actionPointsToRemove) {
-		if (actionPoints < actionPointsToRemove) {
-			System.out.println("Character.removeActionPoints - FAIL current actionPoints: " + actionPoints + "; actionPointsToRemove: " + actionPointsToRemove);
+		if (canRemoveActionPoints(actionPointsToRemove)) {
+			this.actionPoints -= actionPointsToRemove;
+			System.out.println("Character.removeActionPoints - SUCCESS current actionPoints: " + actionPoints + "; actionPointsToRemove: " + actionPointsToRemove);
+			return true;
+		} else {
 			return false;
 		}
-		this.actionPoints -= actionPointsToRemove;
-		System.out.println("Character.removeActionPoints - SUCCESS current actionPoints: " + actionPoints + "; actionPointsToRemove: " + actionPointsToRemove);
+	}
+	
+	/**
+	 * Checks whether there are enough actionPoints to remove for an action without removing them.
+	 * If necessary to check the remaining ActionPoints without removing them, use this method. Otherwise use {@link #removeActionPoints(int)}
+	 * @param actionPointsToRemove How much action points would be needed.
+	 * @return <code>true</code> if the action could be carried out,
+	 * <code>false</code> if there aren't enough action points and the action could not be carried out.
+	 */
+	public boolean canRemoveActionPoints(int actionPointsToRemove) {
+		if (actionPoints < actionPointsToRemove) {
+			System.out.println("Character.canRemoveActionPoints - FAIL current actionPoints: " + actionPoints + "; actionPointsToRemove: " + actionPointsToRemove);
+			return false;
+		}
 		return true;
 	}
 	
@@ -285,21 +307,16 @@ public class Character {
 	 * @return <code>true</code> if successful, <code>false</code> otherwise.
 	 */
 	public boolean moveCharacterTo(Tile destinationTile, int distance) {
-		if (destinationTile == null) {
-			return false;
-		}
 		
-		if (destinationTile.isWalkable(true)) {
-			if (this.removeActionPoints(distance * movementCostPerTile)) { // TODO: Check for action points!
+			if (this.removeActionPoints(distance * movementCostPerTile)) {
 				setTile(destinationTile);
 				System.out.println(this.toString() + " moved to " + destinationTile);
 				return true;
 			} else {
+				System.err.println("Character#moveCharacterTo - Couldn't remove action Points. Check has been forgotten.");
 				return false;
 			}
-		} else {
-			return false;
-		}
+		
     }
 	
 	public HashSet<Character> getAllEnemyCharactersInRange () {

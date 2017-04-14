@@ -252,12 +252,12 @@ Server to Client:
 Client Sends position of children by using the chpos command. The server validates the \\
 Client to Server:
 \begin{quote}
-  chpos <user\_name> <old\_child\_position: x,y> <new\_child\_position: x,y>
+  chpos <game\_name> <user\_name> <old\_child\_position: x,y> <new\_child\_position: x,y> <distance>
 \end{quote}
 \noindent
 Server to Clients:
 \begin{quote}
-  +OK chpos <user\_name> <old\_child\_position: x,y> <new\_child\_position: x,y>
+  +OK chpos <game\_name> <user\_name> <old\_child\_position: x,y> <new\_child\_position: x,y> <distance>
 \end{quote}
 \clearpage  
 \subsubsection{Damage}
