@@ -103,8 +103,8 @@ public class ClientGameController extends GameController {
 		
 		users.put(joinedUser, null);
 		if (Client.getThisUser() == joinedUser) {
-			startScreen = new StartScreen(this, startingPoints);
 			gameLobby = new GameLobby(this);
+			startScreen = new StartScreen(this, startingPoints);
 		}
 		if (gameLobby != null) {
 			gameLobby.addUserToLobby((ClientUser) joinedUser);

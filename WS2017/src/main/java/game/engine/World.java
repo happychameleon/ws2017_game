@@ -218,13 +218,13 @@ public class World {
 		
 		String characterName;
 		String weaponName;
-		while (characterString.isEmpty() == false) {
+		while (true) {
 			int spaceIndex = characterString.indexOf(" ");
 			characterName = characterString.substring(0, spaceIndex);
 			characterString = characterString.substring(spaceIndex + 2);
 			int apostropheIndex = characterString.indexOf("'");
 			weaponName = characterString.substring(0, apostropheIndex);
-			characterString = characterString.substring(apostropheIndex + 2); // It should be empty when we read in the last character.
+			characterString = characterString.substring(apostropheIndex + 1);
 			if (Weapon.getWeaponForName(weaponName) == null) {
 				System.err.println("World#parseCharacterString - weaponname wrong");
 				return null;
@@ -232,6 +232,12 @@ public class World {
 			Character character = new Character(this, characterName, player, Weapon.getWeaponForName(weaponName));
 			characters.add(character);
 			character.setStartingTile(getCorrectStartingTileForCharacter(character));
+			
+			if (characterString.isEmpty() || characterString.equals("]")) {
+				break;
+			} else {
+				characterString = characterString.substring(1); // For the space to the next Name.
+			}
 		}
 		return characters;
 	}
