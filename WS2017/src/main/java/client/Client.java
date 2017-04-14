@@ -190,6 +190,7 @@ public class Client {
 	
 	/**
 	 * Returns the game with the given name if it exists, otherwise null.
+	 * Gets starting and running games.
 	 * @param gameName The name of the game.
 	 * @return the ClientGameController or null.
 	 */

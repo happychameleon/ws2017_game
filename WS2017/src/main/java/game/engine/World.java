@@ -24,6 +24,13 @@ public class World {
 	private final GameController gameController;
 	
 	/**
+	 * @return {@link #gameController}.
+	 */
+	public GameController getGameController() {
+		return gameController;
+	}
+	
+	/**
      * All the Tiles on the current Map. Tile (0/0) is at the top left corner!
      * Get a specific Tile with {@link #getTileAt(int, int)}.
      */
@@ -81,7 +88,17 @@ public class World {
 	 */
 	public void setSelectionType(SelectionType selectionType) { this.selectionType = selectionType; }
 	
-	public final TurnController turnController;
+	/**
+	 * @return {@link #turnController}.
+	 */
+	public TurnController getTurnController() {
+		return turnController;
+	}
+	
+	/**
+	 * The {@link TurnController} of this world.
+	 */
+	private final TurnController turnController;
 	
 	public Player getCurrentPlayer() {
 		return turnController.getCurrentPlayer();
@@ -90,14 +107,22 @@ public class World {
 	public void endTurn() {
 		turnController.endTurn();
 	}
-    
-    private ArrayList<Character> characters;
 	
+	
+	private ArrayList<Character> characters;
+	
+	/**
+	 * Removes the given character for either being killed or when a user leaves the game.
+	 * Doesn't check winning conditions and other stuff.
+	 * @param character The Character to remove.
+	 */
 	public void removeCharacter(Character character) {
 		if (characters.contains(character) == false) {
 			System.out.println("World::removeCharacter - ERROR: Character not in characters!");
 		}
 		characters.remove(character);
+		character.getTile().setCharacter(null);
+		
 		if (selectedTile == character.getTile()) {
 			selectedTile = null;
 			setSelectionType(SelectionType.NOTHING);
@@ -239,7 +264,6 @@ public class World {
 				int playerNumber = java.lang.Character.digit(gameController.getGameMap().getTilesAsChars()[y][x], 10);
 				if (playerNumber < 1 || playerNumber > startingTiles.size())
 					continue;
-				System.out.println("World#getAllStartingTiles - playerNumber: " + playerNumber);
 				Player player = turnController.getPlayers().get(playerNumber - 1);
 				startingTiles.get(player).add(getTileAt(x, y));
 			}
@@ -273,7 +297,16 @@ public class World {
 	    }
 	    return charactersOfOwner;
     }
-
-
-
+	
+	/**
+	 * Prints a infoMessage to the gameLobby only IF this happens on the client side (so there is a gameLobby).
+	 * @param infoMessage The info to print
+	 */
+	public void printToGameLobby(String infoMessage) {
+		if (getGameController() instanceof ClientGameController) {
+			if (((ClientGameController) getGameController()).getGameLobby() != null) {
+				((ClientGameController) getGameController()).getGameLobby().getLobbyChat().displayInfo(infoMessage);
+			}
+		}
+	}
 }

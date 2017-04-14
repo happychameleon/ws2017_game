@@ -23,9 +23,9 @@ public class LeavgHandler extends CommandHandler {
 			return;
 		}
 		
-		ServerGameController waitingGame = Server.getGameByName(gameName);
-		if (waitingGame != null) {
-			waitingGame.removeUser(user);
+		ServerGameController gameController = Server.getGameByName(gameName);
+		if (gameController != null) {
+			gameController.removeUser(user);
 			return;
 		}
 		

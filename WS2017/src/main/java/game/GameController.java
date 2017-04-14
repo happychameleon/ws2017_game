@@ -158,7 +158,10 @@ public abstract class GameController {
 	 */
 	public void removeUser(User user) {
 		users.remove(user);
-		// TODO: What should happen when a user leaves?
+		if (world != null) {
+			world.getTurnController().removePlayer(user);
+		}
+		// TODO: What should happen when a user leaves a running game?
 	}
 	
 	/**

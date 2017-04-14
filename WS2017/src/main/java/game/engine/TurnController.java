@@ -40,16 +40,15 @@ public class TurnController {
 	}
 	
 	/**
-	 * The index of the Player from {@link #players} which's turn it is.
+	 * The Player which's turn it is.
 	 */
-	private int currentPlayerIndex = 0;
+	private Player currentPlayer;
 	
 	/**
-	 * This returns the Player from {@link #players} at index {@link #currentPlayerIndex}.
-	 * @return The player which's turn it is.
+	 * @return {@link #currentPlayer}.
 	 */
 	public Player getCurrentPlayer() {
-		return players.get(currentPlayerIndex);
+		return currentPlayer;
 	}
 	//endregion
 	
@@ -59,6 +58,8 @@ public class TurnController {
 		
 		if (users.size() > 4) {
 			System.err.println("TurnController#TurnController - There should never be more than 4 Players!");
+		} else if (users.size() < 1) {
+			System.err.println("TurnController#TurnController - There are no players?!");
 		}
 		
 		players = new ArrayList<>();
@@ -70,18 +71,57 @@ public class TurnController {
 			players.add(newPlayer);
 			newTeam.addPlayerToTeam(newPlayer);
 		}
+		currentPlayer = players.get(0);
 	}
-	
 	
 	public void endTurn () {
 		getCurrentPlayer().endCurrentTurn();
-		currentPlayerIndex++;
-		if (players.size() <= currentPlayerIndex) { // == should also work, but just to be sure.
-			turnCount++;
-			currentPlayerIndex = 0;
+		if (players.indexOf(currentPlayer) == players.size() - 1) {
+			currentPlayer = players.get(0);
+		} else {
+			currentPlayer = players.get(players.indexOf(currentPlayer) + 1);
 		}
-		System.out.println(getCurrentPlayer().getName() + " started their turn!");
+		
+		world.printToGameLobby(getCurrentPlayer().getName() + " started their turn!");
+		
 		getCurrentPlayer().startNewTurn();
+	}
+	
+	/**
+	 * TODO: Sends a message to the server telling it about this client's ended turn.
+	 */
+	public void askServerToEndTurn() {
+	
+	}
+	
+	/**
+	 * Removes the player representing the given user from the list of players.
+	 * @param user The user to remove from the game.
+	 */
+	public void removePlayer(User user) {
+		System.out.println("TurnController#removePlayer");
+		// Remove the player
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).getUser() == user) {
+				if (getCurrentPlayer() == players.get(i)) {
+					// Give up the turn (both on the server and client side. Doesn't need to be synchronised, since leavg is already synchronised.
+					endTurn();
+					// Set the currentPlayerIndex back one, because the players got one smaller.
+				}
+				// Remove all this player's characters if there are any.
+				if (players.get(i).hasCharactersLeft()) {
+					for (Character character : world.getAllCharacterOfOwner(players.get(i))) {
+						System.out.println("TurnController#removePlayer - Character Removed.");
+						world.removeCharacter(character);
+					}
+				}
+				// Remove Player
+				players.remove(players.get(i));
+				break;
+			}
+		}
+		// TODO: Check how many players are left and if someone has won.
+		
 	}
 	
 	

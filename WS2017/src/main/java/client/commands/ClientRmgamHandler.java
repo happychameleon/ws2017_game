@@ -16,12 +16,12 @@ public class ClientRmgamHandler extends CommandHandler {
 		if (Client.isLoggedIn() == false)
 			return;
 		
-		ClientGameController game = Client.getMainWindow().getWaitingGameByName(argument);
+		ClientGameController game = Client.getGameByName(argument);
 		
 		if(game != null) {
 			Client.getMainWindow().removeGameFromList(game);
 		} else {
-			System.err.println("Game to delete doesn't exist: " + argument);
+			System.err.println("ClientRmgamHandler#handleCommand - Game to delete doesn't exist: " + argument);
 		}
 	}
 	

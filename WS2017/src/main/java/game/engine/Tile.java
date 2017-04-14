@@ -112,11 +112,21 @@ public class Tile {
 	/**
 	 * @return {@link #character}
 	 */
-	public Character getCharacter() { return character; }
+	public Character getCharacter() {
+		return character;
+	}
 	
+	/**
+	 * Sets the character of this Tile.
+	 * @param character The new Character or null.
+	 */
 	public void setCharacter(Character character) {
 		this.character = character;
-		
+		if (character == null) {
+			System.out.println("Tile#setCharacter - Character on Tile " + this + " now: null");
+		} else {
+			System.out.println("Tile#setCharacter - Character on Tile " + this + " now: " + character);
+		}
 		this.setNeedsGraphicsUpdate();
 	}
 	//endregion
@@ -235,69 +245,5 @@ public class Tile {
 	}
 	//endregion
 	
-	
-//	//region Visualisation
-//	/**
-//	 * This method prepares the visualisation of this Tile.
-//	 */
-//	private void VisualisationStart() {
-//
-//    	currentPixels = new Color[tileSizeInPixels][tileSizeInPixels];
-//
-//		RecalculateCurrentPixels();
-//
-//	}
-//
-//	/**
-//	 * This is the size of one Tile in pixels for visualisation. It doesn't represent the pixels on the screen.
-//	 * These depend on the Zoom Level.
-//	 */
-//	public static final int tileSizeInPixels = 16;
-//
-//	/**
-//	 * This array represents the current Pixels of this Tile and how they should be displayed at the moment.
-//	 * It is recalculated every time something on this Tile changes.
-//	 */
-//	private Color[][] currentPixels;
-//
-//	public Color getCurrentPixelAt(int x, int y) {
-//		return currentPixels[x][y];
-//	}
-//
-//	/**
-//	 * This method updates the currentPixels.
-//	 * All the pixels for the base tile, item and Character are recalculated.
-//	 * It should be called every time something changed on the Tile.
-//	 */
-//	public void RecalculateCurrentPixels() {
-//		calculatePixelsBaseTile();
-//		calculatePixelsItem();
-//		calculatePixelsCharacter();
-//	}
-//
-//	private void calculatePixelsBaseTile() {
-//		for (int x = 0; x < tileSizeInPixels; x++) {
-//			for (int y = 0; y < tileSizeInPixels; y++) {
-//				currentPixels[x][y] = tileType.pixels[x][y];
-//			}
-//		}
-//	}
-//
-//	private void calculatePixelsItem() {
-//		//TODO: Item Visualisation.
-//	}
-//
-//	private void calculatePixelsCharacter() {
-//		if (character == null) {
-//			// There is no character on this Tile.
-//			return;
-//		}
-//		//TODO: Character visualisation.
-//	}
-//
-//
-//
-//
-//	//endregion
 	
 }

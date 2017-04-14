@@ -168,7 +168,7 @@ public class ClientGameController extends GameController {
 		if (users.keySet().contains(Client.getThisUser())) {
 			world = new World(gameMap, this);
 			
-			window = new Window(world, gameName);
+			window = new Window(this, world, gameName);
 			
 			gameLobby.gameHasStarted(user);
 		}
@@ -189,8 +189,13 @@ public class ClientGameController extends GameController {
 		if (gameLobby != null)
 			gameLobby.removeUser((ClientUser) user);
 		
-		if (user == Client.getThisUser() || startScreen != null) {
-			startScreen.dispose();
+		if (user == Client.getThisUser()) {
+			if (startScreen != null) {
+				startScreen.dispose();
+			}
+			if (window != null) {
+				window.dispose();
+			}
 		}
 	}
 	

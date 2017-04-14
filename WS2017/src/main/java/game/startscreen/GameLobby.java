@@ -112,6 +112,8 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 		if (user == Client.getThisUser()) {
 			window.dispose();
 			game.removeGameLobby();
+		} else {
+			lobbyChat.displayInfo(user.getName() + " has left the game!");
 		}
 	}
 	

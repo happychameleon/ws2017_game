@@ -2,6 +2,7 @@ package server;
 
 import game.GameState;
 import game.ServerGameController;
+import server.parser.CquitHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -51,6 +52,7 @@ public class Server {
 	
 	/**
 	 * Removes the user from all the lists they are in when the connection is terminated.
+	 * The ServerGameController(s) the User was in informs the other client's about the user leaving.
 	 * @see #userList
 	 * @param user The User to remove.
 	 */
@@ -58,9 +60,11 @@ public class Server {
 		System.out.println("removeUserFromList");
 		for (int i = 0; i < gameList.size(); i++) {
 			ServerGameController sgc = gameList.get(i);
-			if (sgc.getAllUsers().contains(user))
+			if (sgc.getAllUsers().contains(user)) {
 				sgc.removeUser(user);
+			}
 		}
+		CquitHandler.sendCQuitCommand(user);
 		return userList.remove(user);
 	}
 	

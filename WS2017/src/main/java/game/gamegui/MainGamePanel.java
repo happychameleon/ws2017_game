@@ -161,6 +161,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		
 		Character character = tile.getCharacter();
 		if (character != null) {
+			System.out.println("MainGamePanel#paintOneTile - Drawing Character at Tile " + tile);
 			// Draw the Character on the Tile and show it's wetness.
 			g.drawImage(character.getSprite(), leftX, topY, tileSize, tileSize, null);
 			int imageIndex = character.getWetness()/10;

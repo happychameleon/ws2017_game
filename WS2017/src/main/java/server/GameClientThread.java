@@ -1,5 +1,12 @@
 package server;
 
+
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
+
 /**
  * A GameClientThread is always spun up by the Server class when a new
  * client tries to connect to the server, so that each client has its
@@ -7,12 +14,6 @@ package server;
  *
  * Created by m on 04/04/17.
  */
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.util.ArrayList;
-
 class GameClientThread extends Thread{
     private int connectedGameClient;
     private Socket socket;
@@ -31,8 +32,6 @@ class GameClientThread extends Thread{
             gameProtocol.validateProtocol();
             System.out.println("connection to client " + connectedGameClient + " is being terminated");
             Server.removeUserFromList(user);
-            if (user.getName() != null)
-                Server.writeToAllClients(String.format("cquit %s", user.getName()));
             socket.close();
         } catch (IOException e) {
             System.err.println(e.toString());
