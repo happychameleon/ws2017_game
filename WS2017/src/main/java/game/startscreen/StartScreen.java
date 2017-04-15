@@ -19,7 +19,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	/**
 	 * The ClientGameStartController for this game.
 	 */
-	private final ClientGameController clientGameStartController;
+	private final ClientGameController clientGameController;
 	
 	/**
 	 * The amount of points to spend for Children and Equipment.
@@ -66,11 +66,11 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	
 	/**
 	 * Opens the Start Screen to choose the team.
-	 * @param gameStartController
+	 * @param clientGameController The gameController this belongs to.
 	 * @param startingPoints The max amount of points to choose the team from.
 	 */
-	public StartScreen(ClientGameController gameStartController, int startingPoints) {
-		this.clientGameStartController = gameStartController;
+	public StartScreen(ClientGameController clientGameController, int startingPoints) {
+		this.clientGameController = clientGameController;
 		this.startingPoints = startingPoints;
 		
 		window = new JFrame();
@@ -115,7 +115,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 		else if (i.equals(acceptSelectionButton)) {
 			recalculatePoints(); // Just to be sure an update to the points went missing.
 			if (currentPoints <= startingPoints) {
-				clientGameStartController.thisClientIsReady(getAllChildrenAsString());
+				clientGameController.thisClientIsReady(getAllChildrenAsString());
 			} else {
 				System.err.println("The acceptSelectionButton wasn't disabled but the currentPoints > startingPoints!");
 			}
@@ -132,7 +132,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	 * TODO: When the window is closed, this also has to be called!
 	 */
 	protected void leaveGame() {
-		clientGameStartController.askToLeaveGame();
+		clientGameController.askToLeaveGame();
 		
 		//window.dispose(); Not needed because the answer to the leavg command should close it.
 	}
@@ -157,7 +157,8 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	
 	/**
 	 * Removes the child from the {@link #childrenPanels} and recalculates the points.
-	 * @param childPanel the JPanel representing the Child to remove.
+	 * @param childPanel The JPanel representing the Child to remove.
+	 * @param separator The JSeparator belonging to the childPanel.
 	 */
 	protected void removeChild (ChildPanel childPanel, JSeparator separator) {
 		childrenPanels.remove(childPanel);

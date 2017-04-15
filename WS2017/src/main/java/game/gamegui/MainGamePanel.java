@@ -72,10 +72,11 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 	/**
 	 * Creates a new <code>JPanel</code> with a double buffer
 	 * and a flow layout.
+	 * @param window The window this is in.
 	 */
-	public MainGamePanel(World world, Window window) {
+	public MainGamePanel(Window window) {
 		this.camera = new Camera(this);
-		this.world = world;
+		this.world = window.getWorld();
 		this.window = window;
 		
 		try {
@@ -101,7 +102,6 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		
 		this.setPreferredSize(new Dimension(pixelSize * Tile.tileSizeInPixels * world.getMapWidth(), pixelSize * Tile.tileSizeInPixels * world.getMapHeight()));
 	}
-	
 	
 	
 	
@@ -233,6 +233,9 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 	//endregion
 	
 	
+	/**
+	 * @param e The MouseEvent
+	 */
 	//region Mouse
 	@Override
 	public void mouseClicked(MouseEvent e) {

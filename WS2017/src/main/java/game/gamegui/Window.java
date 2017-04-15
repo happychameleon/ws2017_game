@@ -112,7 +112,7 @@ public class Window extends JFrame implements WindowListener {
 		
 		this.setLayout(new BorderLayout());
 		
-		mainGamePanel = new MainGamePanel(world, this);
+		mainGamePanel = new MainGamePanel(this);
 		this.add(mainGamePanel, BorderLayout.CENTER);
 		
 		gameInfoPanel = new GameInfoPanel(world, this);

@@ -36,13 +36,21 @@ public enum Command {
 	 */
 	private final CommandHandler commandHandler;
 	
+	/**
+	 * Creates the Command.
+	 * @param commandHandler The CommandHandler belonging to this Command.
+	 */
 	Command(CommandHandler commandHandler) {
 		this.commandHandler = commandHandler;
 	}
 	
+	
 	/**
 	 * First sets the commandParser and the argument and then handles the Command.
 	 * @see CommandHandler#handleCommand()
+	 *
+	 * @param commandParser The CommandParser to set.
+	 * @param argument The argument given with the command.
 	 */
 	public void handleArgument(CommandParser commandParser, String argument) {
 		commandHandler.setCommandParser(commandParser);

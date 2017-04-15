@@ -323,7 +323,6 @@ public class World {
 	/**
 	 * Checks whether the WinningConditions are met and if so carries them out.
 	 * Only done on the Server. The Clients then get informed by the Server.
-	 * @return true if a Team has won and the game is over.
 	 */
 	public void checkWinningCondition() {
 		if (gameController instanceof ServerGameController) {

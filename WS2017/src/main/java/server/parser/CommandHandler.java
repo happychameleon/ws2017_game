@@ -38,6 +38,7 @@ public abstract class CommandHandler {
 	
 	/**
 	 * Takes the next Word (substring from 0 to indexOf(" ")), removes it from the string and returns it.
+	 * @return the next Word from the argument.
 	 */
 	protected String getAndRemoveNextArgumentWord() {
 		if (argument.contains(" ")) {

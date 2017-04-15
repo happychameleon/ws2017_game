@@ -113,6 +113,7 @@ public class ClientGameController extends GameController {
 	
 	/**
 	 * This is called by the StartScreen window and tells the server that this client is ready to play.
+	 * @param characterString The characterString for this user.
 	 */
 	public void thisClientIsReady(String characterString) {
 		System.out.println("ClientGameStartController#thisClientIsReady");

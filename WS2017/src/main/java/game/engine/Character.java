@@ -31,8 +31,14 @@ public class Character {
         return owner;
     }
 	
-    private BufferedImage sprite;
-    
+	/**
+	 * The Sprite for this Character.
+	 */
+	private BufferedImage sprite;
+	
+	/**
+	 * @return {@link #sprite}.
+	 */
 	public BufferedImage getSprite() {
 		return sprite;
 	}
@@ -49,9 +55,13 @@ public class Character {
 		return movementCostPerTile;
 	}
 	
+	/**
+	 * The Tile on which this Character is.
+	 */
 	private Tile tile;
+	
     /**
-     * The Tile on which this Character is.
+     * @return {@link #tile}.
      */
     public Tile getTile() {
         return tile;
@@ -59,6 +69,7 @@ public class Character {
 	
 	/**
 	 * Sets the Character on the specified Tile, only if the Character hadn't had a Tile before.
+	 * @param startingTile The Tile where this Character should start on.
 	 * @return true if it was successful, false if the character already had a Tile.
 	 */
 	public boolean setStartingTile(Tile startingTile) {
@@ -165,6 +176,46 @@ public class Character {
 	}
 	
 	/**
+	 * The name of this Character.
+	 */
+	private String name;
+	
+	public String getName() {
+		return name;
+	}
+	//endregion
+	
+	/**
+	 * Creates the Character and reads in the Sprite.
+	 * The StartPosition has to be set after this with {@link #setStartingTile(Tile)}.
+	 *
+	 * @param world {@link #world}.
+	 * @param name {@link #name}.
+	 * @param owner {@link #owner}.
+	 * @param weapon {@link #weapon}.
+	 */
+	public Character(World world, String name, Player owner, Weapon weapon) {
+		this.world = world;
+		this.name = name;
+		this.owner = owner;
+        this.weapon = weapon;
+        
+        this.actionPoints = maximumActionPoints;
+		
+        String imageString = "/images/characters/character__topDown_" + owner.getColor().name().toLowerCase() + ".png";
+		
+		try {
+			sprite = ImageIO.read(getClass().getResource(imageString));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	//region Methods
+	/**
 	 * Removes the given value from {@link #actionPoints} ONLY IF there are enough actionPoints left.
 	 * Called in an if statement before carrying out the action inside the if statement. In the else part optionally a
 	 * message can be displayed to the player (e.g. "not enough action points!").
@@ -202,35 +253,6 @@ public class Character {
 	 */
 	private void resetActionPoints() {
 		this.actionPoints = maximumActionPoints;
-	}
-	
-	/**
-	 * The name of this Character.
-	 */
-	private String name;
-	
-	public String getName() {
-		return name;
-	}
-	//endregion
-	
-	
-	public Character(World world, String name, Player owner, Weapon weapon) {
-		this.world = world;
-		this.name = name;
-		this.owner = owner;
-        this.weapon = weapon;
-        
-        this.actionPoints = maximumActionPoints;
-		
-        String imageString = "/images/characters/character__topDown_" + owner.getColor().name().toLowerCase() + ".png";
-		
-		try {
-			sprite = ImageIO.read(getClass().getResource(imageString));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 	}
     
     /**
@@ -366,4 +388,6 @@ public class Character {
 	public void resetForNewTurn () {
 		resetActionPoints();
 	}
+	//endregion
+	
 }

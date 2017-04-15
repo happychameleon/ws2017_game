@@ -37,17 +37,25 @@ public class Tile {
 		this.needsGraphicsUpdate = b;
 	}
 	
-	private final int x;
 	/**
-	 *  The X position on the game map.
+	 * The X position on the game map.
+	 */
+	private final int x;
+	
+	/**
+	 * @return {@link #x}
 	 */
 	public int getXPosition() {
 		return x;
 	}
 	
-	private final int y;
 	/**
-	 *  The Y position on the game map.
+	 * The Y position on the game map.
+	 */
+	private final int y;
+	
+	/**
+	 * @return {@link #y}
 	 */
 	public int getYPosition() {
 		return y;
@@ -58,12 +66,18 @@ public class Tile {
 	 */
 	private TileType tileType;
 	
+	/**
+	 * @return {@link #tileType}.
+	 */
 	public TileType getTileType() {
 		return tileType;
 	}
 	
+	/**
+	 * @return The correct Sprite for this Tile's {@link TileType}.
+	 */
 	public BufferedImage getSprite() {
-		return  tileType.getTileSprite();
+		return tileType.getTileSprite();
 	}
 	
 	/**
@@ -81,6 +95,7 @@ public class Tile {
      * Most Tiles are walkable. Others (e.g. Trees, Hedges, Walls etc.) aren't.
      * Whether they are walkable depends on the TileType (undone: and on whether something on the Tile is blocking it).
      * @param considerCharacters If <code>true</code> Tiles with a Character considered non-walkable.
+     * @return true if this Tile is walkable, otherwise false.
      */
     public boolean isWalkable(boolean considerCharacters) {
     	//TODO? (optionaly) Add check for stuff blocking the Tile.

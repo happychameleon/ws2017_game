@@ -389,6 +389,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 * Opens a whisper chat tab with the selected user from {@link #userList}.
 	 *
 	 * @param user The user to chat with.
+	 * @return the ChatPanel which opened.
 	 */
 	public ChatPanel openWhisperChat(ClientUser user) {
 		// Check if there is already a tab open with that user.

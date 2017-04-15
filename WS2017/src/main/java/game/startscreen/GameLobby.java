@@ -52,6 +52,7 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 	
 	/**
 	 * Creates a new GameLobby of the specified game and opens it.
+	 * @param game The specified game.
 	 */
 	public GameLobby(ClientGameController game) {
 		

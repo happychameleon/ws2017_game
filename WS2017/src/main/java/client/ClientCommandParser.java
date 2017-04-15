@@ -28,8 +28,8 @@ public class ClientCommandParser {
 
     /**
      * Constructor for ClientCommandParser creates an inputstream and outputstream from the serversocket.
-     * @param serverSocket
-     * @param stopRequest
+     * @param serverSocket The ServerSocket from which the input and output stream are taken.
+     * @param stopRequest The StopRequest.
      */
     public ClientCommandParser(Socket serverSocket, boolean stopRequest) {
         this.serverSocket = serverSocket;
@@ -57,7 +57,7 @@ public class ClientCommandParser {
     /**
      * stopValidatingCommand can stop the while loop in validateCommand() by setting stoprequest to true
      * which causes the ClientThread to stop.
-     * @param stoprequest
+     * @param stoprequest the StopRequest.
      */
     public void stopValidatingCommand(boolean stoprequest){
         this.stopreaquest = stoprequest;

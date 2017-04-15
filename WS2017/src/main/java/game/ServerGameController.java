@@ -21,7 +21,7 @@ public class ServerGameController extends GameController {
 	 * @param startingPoints {@link #startingPoints}.
 	 * @param gameName       {@link #gameName}.
 	 * @param users          {@link #users}.
-	 * @param map
+	 * @param map            {@link #gameMap}
 	 */
 	public ServerGameController(GameState gameState, int startingPoints, String gameName, HashMap<User, String> users, GameMap map) {
 		super(gameState, startingPoints, gameName, users, map);
@@ -79,8 +79,8 @@ public class ServerGameController extends GameController {
 	
 	/**
 	 * Ends the game and writes the highscore into a file.
-	 * @param playerScore
-	 * @param winningTeamName
+	 * @param playerScore Stores the player's names with their score.
+	 * @param winningTeamName The name of the winning Team.
 	 */
 	@Override
 	public void endGame(HashMap<String, Integer> playerScore, String winningTeamName) {

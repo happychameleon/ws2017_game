@@ -35,6 +35,9 @@ public enum Command {
 	/**
 	 * First sets the commandParser and the argument and then handles the Command.
 	 * @see CommandHandler#handleCommand()
+	 *
+	 * @param commandParser The ClientCommandParser to set.
+	 * @param argument The argument given with the command.
 	 */
 	public void handleCommand(ClientCommandParser commandParser, String argument) {
 		commandHandler.setCommandParser(commandParser);

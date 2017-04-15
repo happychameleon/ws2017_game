@@ -61,6 +61,8 @@ public class CommandParser {
 
     /**
      * Constructor, gives the class access to input and output to and from client.
+     * @param socket {@link #socket}.
+     * @param user {@link #receivingUser}.
      */
     public CommandParser(Socket socket, ServerUser user){
         try {
@@ -189,6 +191,7 @@ public class CommandParser {
 	
 	/**
 	 * This can be called to write directly to the client who sent the command.
+	 * @param output The message to write.
 	 */
     public void writeBackToClient(String output){
         try {
@@ -200,6 +203,7 @@ public class CommandParser {
 	
 	/**
 	 * This gets the User for the given username and calls {@link #writeToSpecificClient(String, ServerUser)}
+	 * @param output The message to write.
 	 * @param username The name to translate into the User. Check first if the username exists!
 	 */
 	public void writeToSpecificClient(String output, String username) {

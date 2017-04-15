@@ -125,6 +125,7 @@ public class Server {
 	/**
 	 * Adds the newly created game (which is still in the game start phase) to the list of new games.
 	 * @see #gameList
+	 * @param newGame The new game to add.
 	 */
 	public static void addNewGame(ServerGameController newGame) {
 		gameList.add(newGame);
@@ -132,6 +133,7 @@ public class Server {
 	
 	/**
 	 * This removes the game from the waiting games, either because all players have left or because it has started.
+	 * @param oldGame The game to remove.
 	 */
 	public static void removeGame(ServerGameController oldGame) {
 		gameList.remove(oldGame);

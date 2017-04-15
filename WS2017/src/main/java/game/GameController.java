@@ -133,7 +133,7 @@ public abstract class GameController {
 	
 	/**
 	 * Creates the Game Controller in the given state.
-	 *  @param gameState {@link #gameState}.
+	 * @param gameState {@link #gameState}.
 	 * @param startingPoints {@link #startingPoints}.
 	 * @param gameName {@link #gameName}.
 	 * @param users {@link #users}.
@@ -151,6 +151,7 @@ public abstract class GameController {
 	//region General Methods
 	/**
 	 * Adds the user to the game's user list.
+	 * @param user The User to add.
 	 */
 	public void addUserToGame(User user) {
 		users.put(user, null);
@@ -158,6 +159,8 @@ public abstract class GameController {
 	
 	/**
 	 * Sets the user to be ready. Only used when {@link #gameState} is {@link GameState#STARTING}.
+	 * @param user The user to set to ready.
+	 * @param characterString The user's characterString.
 	 */
 	public void setUserAsWaiting(User user, String characterString) {
 		users.put(user, characterString);
@@ -165,6 +168,7 @@ public abstract class GameController {
 	
 	/**
 	 * Removes the user from the list.
+	 * @param user The user to remove.
 	 */
 	public void removeUser(User user) {
 		if (world != null) {

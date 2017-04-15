@@ -43,6 +43,7 @@ public class ClientChposHandler extends CommandHandler {
 	/**
 	 * Reads the position from the string as 'x,y'
 	 * @param positionString the positionString formatted as x,y
+	 * @param gameController the gameController where the Tile is at.
 	 * @return The correct Tile.
 	 */
 	private Tile parsePosition(String positionString, GameController gameController) {
@@ -72,6 +73,7 @@ public class ClientChposHandler extends CommandHandler {
 	 * @param gameController The gameController of the character's game.
 	 * @param oldTile The Tile where the Character starts the movement.
 	 * @param newTile The Tile where the Character ends the movement.
+	 * @param distance The distance between oldTile and newTile in Tiles.
 	 */
 	public static void sendNewPositionToServer(ClientGameController gameController, Tile oldTile, Tile newTile, int distance) {
 	    String gameName = gameController.getGameName();
