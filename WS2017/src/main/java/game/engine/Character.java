@@ -1,7 +1,5 @@
 package game.engine;
 
-import com.sun.istack.internal.NotNull;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -21,7 +19,6 @@ public class Character {
 	/**
 	 * The Player who controls this Character.
 	 */
-	@NotNull
     private final Player owner;
 	
 	/**
@@ -89,8 +86,11 @@ public class Character {
 	 * The main Weapon held by this Character.
 	 */
 	private Weapon weapon;
-    
-    public Weapon getWeapon() { return weapon; }
+	
+	/**
+	 * @return {@link #weapon}.
+	 */
+	public Weapon getWeapon() { return weapon; }
 	
 	public void setWeapon(Weapon weapon) {
     	if (this.weapon != null) {
