@@ -350,7 +350,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 			if (attackingCharacter.getAllEnemyCharactersInRange().contains(targetedCharacter)) {
 				// The targeted Character is in range from the attacking Character
 				if (attackingCharacter.removeActionPoints(attackingCharacter.getWeapon().getActionPointPerShot())) {
-					targetedCharacter.changeWetness(attackingCharacter.getWeapon().getDamage());
+					targetedCharacter.changeWetness(attackingCharacter, attackingCharacter.getWeapon().getDamage());
 					System.out.println(attackingCharacter + " ATTACKED " + targetedCharacter + "!");
 				} else {
 					System.out.println("Not enough actionPoints for Attack! (ATTACKER: " + attackingCharacter + "; TARGET: " + targetedCharacter + ")");

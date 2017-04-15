@@ -29,6 +29,18 @@ public class TurnController {
 	}
 	
 	/**
+	 * All the Teams in this game.
+	 */
+	private final ArrayList<Team> teams;
+	
+	/**
+	 * @return {@link #teams}.
+	 */
+	public ArrayList<Team> getTeams() {
+		return teams;
+	}
+	
+	/**
 	 * The total number of played turns.
 	 */
 	private int turnCount = 1;
@@ -64,13 +76,15 @@ public class TurnController {
 		}
 		
 		players = new ArrayList<>();
+		teams = new ArrayList<>();
 		for (int i = 0; i < users.size(); i++) {
 			User user = users.get(i);
-			Team newTeam = new Team("Team " + (players.size() + 1));
+			Team newTeam = new Team("Team" + (players.size() + 1));
 			PlayerColor color = PlayerColor.values()[i];
 			Player newPlayer = new Player(newTeam, user, color, world);
 			players.add(newPlayer);
 			newTeam.addPlayerToTeam(newPlayer);
+			teams.add(newTeam);
 		}
 		currentPlayer = players.get(0);
 	}
@@ -116,27 +130,27 @@ public class TurnController {
 		System.out.println("TurnController#removePlayer");
 		// Remove the player
 		for (int i = 0; i < players.size(); i++) {
-			if (players.get(i).getUser() == userToRemove) {
+			Player player = players.get(i);
+			if (player.getUser() == userToRemove) {
 				// Remove all this player's characters if there are any.
-				if (players.get(i).hasCharactersLeft()) {
-					for (Character character : world.getAllCharacterOfOwner(players.get(i))) {
+				if (player.hasCharactersLeft()) {
+					for (Character character : world.getAllCharacterOfOwner(player)) {
 						System.out.println("TurnController#removePlayer - Character Removed.");
 						world.removeCharacter(character);
 					}
 				} else {
-					System.out.printf("TurnController#removePlayer - Player %s had no Characters left!%n", players.get(i).getName());
+					System.out.printf("TurnController#removePlayer - Player %s had no Characters left!%n", player.getName());
 				}
-				if (getCurrentPlayer() == players.get(i)) {
+				if (getCurrentPlayer() == player) {
 					// Give up the turn (both on the server and client side. Doesn't need to be synchronised, since leavg is already synchronised.
 					endTurn();
 				}
 				// Remove Player
-				players.remove(players.get(i));
+				player.getTeam().removePlayerFromTeam(player);
+				players.remove(player);
 				break;
 			}
 		}
-		// TODO: Check how many players are left and if someone has won.
-		
 	}
 	
 	

@@ -90,11 +90,12 @@ public class Weapon {
 		}
 		weaponPrototypes = new ArrayList<>();
 		
-		//TODO: (maybe) instead of hardcoding the weapons here we could read them in from a file.
+		// TODO? (maybe) instead of hardcoding the weapons here we could read them in from a file.
 		Weapon.addWeaponPrototype("Medium Water Gun", 5, 4, 3, 25);
 		Weapon.addWeaponPrototype("Heavy Water Gun", 4, 2, 4, 60);
+		// TODO? add more weapons.
 		
-		//TODO: Add more weapons.
+		Weapon.addWeaponPrototype("Totaly OP Weapon", 2, 20, 2, 300);
 	}
 	
 	/**

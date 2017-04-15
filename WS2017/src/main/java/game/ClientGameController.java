@@ -226,6 +226,39 @@ public class ClientGameController extends GameController {
 	}
 	//endregion
 	
+	//region Game Ending
+	
+	/**
+	 * Ends the game.
+	 * Removes the game from the running game list and displays it properly to the client if the client is playing the game.
+	 *
+	 * @param playerScore     The highscore of the winning players.
+	 * @param winningTeamName The name of the Team which has won.
+	 */
+	@Override
+	public void endGame(HashMap<String, Integer> playerScore, String winningTeamName) {
+		Client.getMainWindow().removeGameFromList(this); // must be called before super.endGame() because it must be removed as a running game.
+		
+		super.endGame(playerScore, winningTeamName);
+		
+		Client.getMainWindow().addGameToList(this);
+		
+		if (window != null) {
+			window.dispose();
+		}
+		
+		if (users.containsKey(Client.getThisUser())) { // TODO: (M5) Also check for watching users and display it to them.
+			// TODO: Display an info panel with the highscore.
+			gameLobby.getLobbyChat().displayInfo("Team " + winningTeamName + " has won!");
+			for (String username : playerScore.keySet()) {
+				gameLobby.getLobbyChat().displayInfo(String.format("Player %s has scored %d points", username, playerScore.get(username)));
+			}
+		}
+		
+	}
+	
+	//endregion
+	
 	
 	
 	

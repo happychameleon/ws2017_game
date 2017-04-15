@@ -4,6 +4,8 @@ import client.Client;
 import game.ClientGameController;
 import serverclient.User;
 
+import java.util.ArrayList;
+
 /**
  * The Player represents the "Real Life" Person playing the game.
  *
@@ -13,8 +15,14 @@ public class Player {
 	
 	private final World world;
 	
+	/**
+	 * This Player's Team.
+	 */
 	final Team team;
 	
+	/**
+	 * @return {@link #team}.
+	 */
 	public Team getTeam() {
 		return team;
 	}
@@ -32,6 +40,7 @@ public class Player {
 	}
 	
 	/**
+	 * This is preferred over directly calling Player.getUser().getName() to be more flexible (e.g. if we want users to have the ability to have separate names each game).
 	 * @return The name of the {@link #user}.
 	 */
 	public String getName() {
@@ -43,23 +52,76 @@ public class Player {
 	 */
 	private PlayerColor color;
 	
+	/**
+	 * @return {@link #color}
+	 */
 	public PlayerColor getColor() {
 		return color;
 	}
 	
 	
+	/**
+	 * Stores all the Names of the Characters this Player's Characters have 'killed'.
+	 */
+	private final ArrayList<String> killedCharacterNames;
 	
+	/**
+	 * Stores all the Names of the Characters of this Player who have been 'killed'.
+	 */
+	private final ArrayList<String> deathCharacterNames;
+	
+	/**
+	 * @return How many Characters were 'killed' by this Player.
+	 */
+	public int getKillCount() {
+		return killedCharacterNames.size();
+	}
+	
+	/**
+	 * @return How many Characters from this Player have been 'killed'.
+	 */
+	public int getDeathCount() {
+		return deathCharacterNames.size();
+	}
+	
+	/**
+	 * Called whenever this Player('s Character) kills another Team's Character.
+	 * @param name The name of the killed Character.
+	 */
+	public void addKilledCharacter(String name) {
+		killedCharacterNames.add(name);
+	}
+	
+	/**
+	 * Called whenever a Character of this Player has been killed.
+	 * @param name The name of the dead Character.
+	 */
+	public void addDeadCharacter(String name) {
+		deathCharacterNames.add(name);
+	}
+	
+	
+	/**
+	 * Generates a new Player with the given value.
+	 * @param team {@link #team}.
+	 * @param user {@link #user}.
+	 * @param color {@link #color}.
+	 * @param world {@link #world}.
+	 */
 	public Player (Team team, User user, PlayerColor color, World world) {
 		this.team = team;
 		this.user = user;
 		this.color = color;
 		this.world = world;
 		
+		killedCharacterNames = new ArrayList<>();
+		deathCharacterNames = new ArrayList<>();
 	}
 	
 	/**
 	 * This method is called by {@link TurnController} to inform the Player that it's their turn now.
-	 * TODO: It should restore all of the actionPoints of this Player's Characters, Process all effects that happen in this Player's turn etc.
+	 * Restores all of the actionPoints of this Player's Characters.
+	 * (Future): Process all effects that happen in this Player's turn.
 	 */
 	public void startNewTurn() {
 		for (Character character : world.getAllCharacterOfOwner(this)) {

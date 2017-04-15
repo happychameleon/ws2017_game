@@ -230,5 +230,14 @@ public abstract class GameController {
 	public void startGame() {
 		gameState = GameState.RUNNING;
 	}
+	
+	/**
+	 * Sets the game state to the correct state.
+	 * @param playerScore The highscore of the winning players.
+	 * @param winningTeamName The name of the Team which has won.
+	 */
+	public void endGame(HashMap<String, Integer> playerScore, String winningTeamName) {
+		gameState = GameState.FINISHED;
+	}
 	//endregion
 }

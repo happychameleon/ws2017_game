@@ -1,6 +1,8 @@
 package server.parser;
 
 /**
+ * Responsible for forwarding lobby chat messages to the correct Client.
+ *
  * Created by flavia on 06.04.17.
  */
 public class ChatlHandler extends ChatmHandler {

@@ -100,6 +100,9 @@ public class World {
 	 */
 	private final TurnController turnController;
 	
+	/**
+	 * @return the Player who's turn it is (via {@link TurnController#getCurrentPlayer()}).
+	 */
 	public Player getCurrentPlayer() {
 		return turnController.getCurrentPlayer();
 	}
@@ -118,36 +121,14 @@ public class World {
 	private final ArrayList<Character> characters;
 	
 	/**
-	 * Removes the given character for either being killed or when a user leaves the game.
-	 * Doesn't check winning conditions and other stuff.
-	 * @param character The Character to remove.
-	 */
-	public void removeCharacter(Character character) {
-		if (characters.contains(character) == false) {
-			System.out.println("World::removeCharacter - ERROR: Character not in characters!");
-		}
-		characters.remove(character);
-		character.getTile().setCharacter(null);
-		
-		if (selectedTile == character.getTile()) {
-			selectedTile = null;
-			setSelectionType(SelectionType.NOTHING);
-			//TODO: remove highlighted tiles.
-		}
-	}
-	
-	public void addCharacter(Character character) {
-		if (characters.contains(character)) {
-			System.out.println("World#addCharacter - ERROR: Character already in characters!");
-		}
-		characters.add(character);
-	}
-	
-	/**
 	 * All the Tiles where each {@link Player}'s {@link Character}s can start.
-	 *
 	 */
 	HashMap<Player, ArrayList<Tile>> startingTiles;
+	
+	/**
+	 * The conditions to win for this game.
+	 */
+	WinningCondition winningCondition;
 	//endregion
 	
 	
@@ -210,8 +191,8 @@ public class World {
 				characters.add(character);
 			}
 		}
-		// TODO: Parse the Character Array and create all the characters for the correct player.
 		
+		winningCondition = WinningCondition.LAST_TEAM_STANDING;
 	}
 	
 	/**
@@ -286,6 +267,7 @@ public class World {
 	}
 	//endregion
 	
+	//region Methods
 	/**
 	 * Get's the Tile at the specified coordinates.
 	 * @param x The x coordinate
@@ -304,6 +286,11 @@ public class World {
         return tiles[x][y];
     }
 	
+	/**
+	 * Returns an ArrayList of all the Characters of the given Player.
+	 * @param owner The given Player
+	 * @return An ArrayList of all the Characters of the given Player.
+	 */
 	public ArrayList<Character> getAllCharacterOfOwner (Player owner) {
 		ArrayList<Character> charactersOfOwner = new ArrayList<>();
 		for (Character character : characters) {
@@ -312,6 +299,43 @@ public class World {
 	    }
 		return charactersOfOwner;
     }
+	
+	/**
+	 * Removes the given character for either being killed or when a user leaves the game.
+	 * Doesn't check winning conditions and other stuff.
+	 * @param character The Character to remove.
+	 */
+	public void removeCharacter(Character character) {
+		if (characters.contains(character) == false) {
+			System.out.println("World::removeCharacter - ERROR: Character not in characters!");
+		}
+		characters.remove(character);
+		character.getTile().setCharacter(null);
+		
+		if (selectedTile == character.getTile()) {
+			selectedTile = null;
+			setSelectionType(SelectionType.NOTHING);
+			//TODO: remove highlighted tiles.
+		}
+		checkWinningCondition();
+	}
+	
+	/**
+	 * Checks whether the WinningConditions are met and if so carries them out.
+	 * Only done on the Server. The Clients then get informed by the Server.
+	 * @return true if a Team has won and the game is over.
+	 */
+	public void checkWinningCondition() {
+		if (gameController instanceof ServerGameController) {
+			System.out.println("World#checkWinningCondition - On Server");
+			
+			Team winningTeam = winningCondition.checkForWinningCondition(this);
+			
+			if (winningTeam != null) {
+				((ServerGameController) gameController).teamHasWon(winningTeam);
+			}
+		}
+	}
 	
 	/**
 	 * Prints a infoMessage to the gameLobby only IF this happens on the client side (so there is a gameLobby).
@@ -324,4 +348,5 @@ public class World {
 			}
 		}
 	}
+	//endregion
 }

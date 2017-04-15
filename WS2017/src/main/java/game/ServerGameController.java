@@ -1,7 +1,10 @@
 package game;
 
+import game.engine.Player;
+import game.engine.Team;
 import game.engine.World;
 import server.Server;
+import server.parser.UhighHandler;
 import serverclient.User;
 
 import java.util.HashMap;
@@ -34,9 +37,9 @@ public class ServerGameController extends GameController {
 	 */
 	@Override
 	public void removeUser(User user) {
-		super.removeUser(user);
-		
 		Server.writeToAllClients(String.format("leavg %s %s", gameName, user.getName()));
+		
+		super.removeUser(user);
 		
 		if (getAllUsers().isEmpty()) {
 			Server.removeGame(this);
@@ -55,4 +58,36 @@ public class ServerGameController extends GameController {
 		world = new World(gameMap, this);
 	}
 	
+	
+	/**
+	 * Called by {@link World#checkWinningCondition} when there is a Team which has won.
+	 * Calculates the Points of the Team members and tells the Clients.
+	 * Currently the points are just the KillCount. Could be changed.
+	 * @param winningTeam The Team which has won the Game.
+	 */
+	public void teamHasWon(Team winningTeam) {
+		System.out.println("ServerGameController#teamHasWon");
+		
+		HashMap<String, Integer> playerScore = new HashMap<>();
+		for (Player player : winningTeam.getMembers()) {
+			int score = player.getKillCount();
+			playerScore.put(player.getName(), score);
+		}
+		UhighHandler.sendHighscoresToPlayers(this, winningTeam.getName(), playerScore);
+		endGame(playerScore, winningTeam.getName());
+	}
+	
+	/**
+	 * Ends the game and writes the highscore into a file.
+	 * @param playerScore
+	 * @param winningTeamName
+	 */
+	@Override
+	public void endGame(HashMap<String, Integer> playerScore, String winningTeamName) {
+		super.endGame(playerScore, winningTeamName);
+
+		// TODO: writes the highscore into a file.
+		
+		Server.removeGame(this);
+	}
 }

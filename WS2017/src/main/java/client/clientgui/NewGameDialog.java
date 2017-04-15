@@ -118,10 +118,15 @@ public class NewGameDialog extends JDialog implements ActionListener, KeyListene
 	private void tryCreateGame() {
 		
 		String gameName = gameNameTF.getText();
-		if (gameName.contains(" ") || gameName.contains("'") || gameName.isEmpty()) {
-			getChat().getMainChatPanel().displayError("New Game Name Contains Invalid Characters or is empty");
+		
+		if (gameName.contains("'")) gameName = gameName.replaceAll("'", "");
+		if (gameName.contains(" ")) gameName = gameName.replaceAll(" ", "");
+		
+		if (gameName.isEmpty()) {
+			getChat().getMainChatPanel().displayError("New Game Name is empty");
 			return;
 		}
+		
 		int maxPoints;
 		try {
 			maxPoints = Integer.parseInt(maxPointsTF.getText());
@@ -144,7 +149,6 @@ public class NewGameDialog extends JDialog implements ActionListener, KeyListene
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println("Key pressed!");
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_ENTER:
 				if (cancelGameCreationButton.hasFocus() == false)

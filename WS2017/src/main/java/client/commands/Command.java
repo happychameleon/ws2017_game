@@ -20,7 +20,8 @@ public enum Command {
 	leavg(new ClientLeavgHandler()),
 	rmgam(new ClientRmgamHandler()),
 	ready(new ClientReadyHandler()),
-	stgam(new ClientStgamHandler());
+	stgam(new ClientStgamHandler()),
+	uhigh(new ClientUhighHandler());
 	
 	/**
 	 * The correct CommandHandler which processes the command.

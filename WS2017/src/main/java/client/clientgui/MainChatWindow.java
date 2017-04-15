@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * The general Chat window where all users can chat with each other and name changes can be requested.
@@ -92,6 +93,11 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 */
 	NewGameDialog newGameDialog;
 	
+	/**
+	 * Used to display the highscores for all the finished game.
+	 */
+	JButton viewHighscoreButton = new JButton("Show Highscores");
+	
 	
 	/**
 	 * The label for displaying thi users username.
@@ -109,6 +115,12 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 */
 	JButton whisperButton = new JButton("Open Chat");
 	//endregion
+	
+	
+	/**
+	 * All the games stored which have ended, but there's still a lobby open to chat.
+	 */
+	private HashSet<ClientGameController> endedGames = new HashSet<>();
 	
 	
 	//region Initializing and GUI-Layout
@@ -157,6 +169,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		JScrollPane runningGameListScroller = new JScrollPane(runningGameList);
 		gameCreationBox.add(runningGameListScroller);
 		gameCreationBox.add(watchGameButton);
+		gameCreationBox.add(viewHighscoreButton);
 		mainPanel.add(gameCreationBox, BorderLayout.LINE_START);
 		
 		// The right panel with the user list and the ability to create whisper chats
@@ -188,6 +201,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		waitingGameList.addMouseListener(this);
 		watchGameButton.addActionListener(this);
 		runningGameList.addMouseListener(this);
+		viewHighscoreButton.addActionListener(this);
 		
 		waitingGameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		waitingGameList.setLayoutOrientation(JList.VERTICAL);
@@ -222,7 +236,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 				break;
 				
 			case FINISHED:
-				// TODO where to add finished games?.
+				endedGames.add(game);
 				break;
 		}
 	}
@@ -243,7 +257,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 				break;
 				
 			case FINISHED:
-				System.err.println("MainChatWindow#removeGameFromList - Why did we delete a finished game?");
+				endedGames.remove(game);
 				break;
 		}
 		
@@ -252,6 +266,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	
 	/**
 	 * Gets the Game with the specified name from the List of open games.
+	 * @param gameName The name of the game.
 	 * @return The ClientGameController or null if the name doesn't exist.
 	 */
 	public ClientGameController getWaitingGameByName(String gameName) {
@@ -265,12 +280,27 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	
 	/**
 	 * Gets the Game with the specified name from the List of running games.
+	 * @param gameName The name of the game.
 	 * @return The ClientGameController or null if the name doesn't exist.
 	 */
 	public ClientGameController getRunningGameByName(String gameName) {
 		for (int i = 0; i < runningGameListModel.getSize(); i++) {
 			if (runningGameListModel.get(i).getGameName().equals(gameName)) {
 				return runningGameListModel.get(i);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Gets the Game with the specified name from {@link #endedGames}.
+	 * @param gameName The name of the game.
+	 * @return The ClientGameController or null if the name doesn't exist.
+	 */
+	public ClientGameController getEndedGameByName(String gameName) {
+		for (ClientGameController gameController : endedGames) {
+			if (gameController.getGameName().equals(gameName)) {
+				return gameController;
 			}
 		}
 		return null;
@@ -286,6 +316,8 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 			return getRunningGameByName(gameName);
 		if (getWaitingGameByName(gameName) != null)
 			return getWaitingGameByName(gameName);
+		if (getEndedGameByName(gameName) != null)
+			return getEndedGameByName(gameName);
 		return null;
 	}
 	
@@ -307,7 +339,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	}
 	
 	/**
-	 * TODO: Moves the game from the {@link #waitingGameList} to the {@link #runningGameList}.
+	 * Moves the game from the {@link #waitingGameList} to the {@link #runningGameList}.
 	 * @param gameController The game to move
 	 */
 	public void moveGameToRunning(ClientGameController gameController) {
@@ -477,6 +509,10 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 			
 		} else if (e.getSource() == whisperButton) {
 			openWhisperChat(userListModel.elementAt(userList.getSelectedIndex()));
+			
+		} else if (e.getSource() == viewHighscoreButton) {
+			// TODO: Send request to server to get all highscores (cgeth?).
+			
 		}
 	}
 	

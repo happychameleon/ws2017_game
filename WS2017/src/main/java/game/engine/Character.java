@@ -14,6 +14,9 @@ import java.util.Set;
 public class Character {
 
 	//region Data
+	/**
+	 * The World this Character is in.
+	 */
 	private World world;
 	
 	/**
@@ -111,15 +114,16 @@ public class Character {
 	
 	/**
 	 * This adds or removes wetness and checks whether the Character is still in the game.
+	 * @param attackingCharacter The Character who attacked this Character.
 	 * @param wetnessChange By how much the wetness changes. Can be negative to remove wetness.
 	 */
-	public void changeWetness(int wetnessChange) {
+	public void changeWetness(Character attackingCharacter, int wetnessChange) {
 		wetness += wetnessChange;
 		if (wetness < 0) {
 			wetness = 0;
 		}
 		if (wetness >= 100) {
-			KillCharacter();
+			KillCharacter(attackingCharacter);
 		}
 	}
 	
@@ -253,16 +257,24 @@ public class Character {
 	/**
 	 * UNDONE! This Method removes the Character from play and drops all their stuff on the ground.
 	 * It also checks the winning conditions and ends the game if necessary.
+	 * @param attackingCharacter The Character who killed this Character.
 	 */
-	public void KillCharacter() {
+	public void KillCharacter(Character attackingCharacter) {
 		if (tile != null) {
 			tile.setCharacter(null);
 		}
+    	// If more Lists with characters are implemented, remove them from there to!
+		Player killingPlayer = attackingCharacter.getOwner();
+		Player deadCharacterOwner = this.getOwner();
+		
+		System.out.println(this.toString() + " has been 'killed' by " + killingPlayer.getName() + "!");
+		
+		killingPlayer.addKilledCharacter(this.getName());
+		deadCharacterOwner.addDeadCharacter(this.getName());
+		
 		world.removeCharacter(this);
-    	// If more Lists with characters are implemented, remove them from there to! (E.g. Every Player will have a Character List.)
-		System.out.println(this.toString() + " has been \"killed\"!");
-		//TODO? Add to list of killed Characters for statistic or "kill" count or other info.
-    }
+		
+	}
 	
 	/**
 	 * Moves the Character by one Tile.

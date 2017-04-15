@@ -83,7 +83,7 @@ public class Tile {
      * @param considerCharacters If <code>true</code> Tiles with a Character considered non-walkable.
      */
     public boolean isWalkable(boolean considerCharacters) {
-    	//TODO: Add check for stuff blocking the Tile.
+    	//TODO? (optionaly) Add check for stuff blocking the Tile.
 	    if (considerCharacters && getCharacter() != null) {
 	    	return false;
 	    }
@@ -218,7 +218,7 @@ public class Tile {
             for (Tile n : t.getNeighbours(false)) {
                 if (n != null && (tilesInRange.containsKey(n) == false ||
                         tilesInRange.containsKey(n) && tilesInRange.get(n) > currentTileRange)) {
-                    if (withWalking && n.isWalkable(true) == false) //TODO: Should a Character be able to walk through Characters in the same Team?
+                    if (withWalking && n.isWalkable(true) == false)
                         continue;
                     tilesInRange.put(n, currentTileRange + 1);
                     tilesToCheck.add(n);

@@ -21,10 +21,12 @@ public class Client {
 	
 	/**
 	 * The main chat window. Here every logged in client can read everything.
-	 * TODO Meilenstein 3: possibility for private chats (different windows).
 	 */
 	private static MainChatWindow mainChatWindow;
 	
+	/**
+	 * @return {@link #mainChatWindow}.
+	 */
 	public static MainChatWindow getMainWindow() {
 		return mainChatWindow;
 	}
@@ -166,7 +168,7 @@ public class Client {
 	
 	/**
 	 * Reads in all the users from the cgetu command once we log in with a name.
-	 * @param usernames
+	 * @param usernames the given usernames.
 	 */
 	public static void readInAllUsernames(ArrayList<String> usernames) {
 		if (mainChatWindow != null) {
