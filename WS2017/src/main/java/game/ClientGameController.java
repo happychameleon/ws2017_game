@@ -179,7 +179,8 @@ public class ClientGameController extends GameController {
 	//region General Methods
 	/**
 	 * Removes the user from the game.
-	 *
+	 * Tells the world and the gameLobby about the user leaving.
+	 * If it was this user who left, it also closes all the windows belonging to this game.
 	 * @param user the user to remove
 	 */
 	@Override
