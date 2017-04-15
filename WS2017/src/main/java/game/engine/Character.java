@@ -1,5 +1,7 @@
 package game.engine;
 
+import com.sun.istack.internal.NotNull;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -19,8 +21,12 @@ public class Character {
 	/**
 	 * The Player who controls this Character.
 	 */
-    private Player owner;
+	@NotNull
+    private final Player owner;
 	
+	/**
+	 * @return {@link #owner}.
+	 */
 	public Player getOwner() {
         return owner;
     }

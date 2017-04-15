@@ -27,7 +27,7 @@ public class ClientNewgmHandler extends CommandHandler {
 		String mapName = getAndRemoveNextArgumentWord();
 		System.out.printf("maxPoints: %d gameName: %s mapName: %s%n", maxPoints, gameName, mapName);
 		
-		GameMap map = GameMap.getMapForName(mapName);
+		GameMap map = GameMap.getMapForName(mapName, true);
 		
 		ClientGameController newGame = new ClientGameController(GameState.STARTING, maxPoints, gameName, new HashMap<>(), map);
 		

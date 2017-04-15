@@ -256,9 +256,16 @@ Client to Server:
 \begin{quote}
   endtn <game\_name> <user\_name>
 \end{quote}
-Server to Client:
+\noindent
+Server to Clients:
 \begin{quote}
   +OK endtn <game\_name> <user\_name>
+\end{quote}
+\noindent
+If the user doesn't actually hold the turn (e.g. if the endtn command was sent twice before the server could answer) this message is sent back.
+Server to Client:
+\begin{quote}
+  -ERR endtn <game\_name> its not your turn
 \end{quote}
 
 \subsubsection{Player Position}

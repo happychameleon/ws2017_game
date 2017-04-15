@@ -5,7 +5,6 @@ import game.GameMap;
 import game.GameState;
 import game.ServerGameController;
 import server.Server;
-import server.parser.CommandHandler;
 
 import java.util.HashMap;
 
@@ -25,7 +24,7 @@ public class NewgmHandler extends CommandHandler {
 		int maxPoints = Integer.parseInt(getAndRemoveNextArgumentWord());
 		String gameName = getAndRemoveNextArgumentWord();
 		String mapName = getAndRemoveNextArgumentWord();
-		GameMap map = GameMap.getMapForName(mapName);
+		GameMap map = GameMap.getMapForName(mapName, true);
 		
 		if (Server.isGameNameUnique(gameName) == false) {
 			String errNameTakenMessage = "-ERR newgm game name taken";

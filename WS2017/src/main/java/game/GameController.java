@@ -167,10 +167,11 @@ public abstract class GameController {
 	 * Removes the user from the list.
 	 */
 	public void removeUser(User user) {
-		users.remove(user);
 		if (world != null) {
 			world.getTurnController().removePlayer(user);
 		}
+		users.remove(user);
+		
 		// TODO: What should happen when a user leaves a running game?
 	}
 	

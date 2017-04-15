@@ -23,6 +23,7 @@ public enum Command {
 	leavg(new LeavgHandler()),
 	ready(new ReadyHandler()),
 	stgam(new StgamHandler()),
+	endtn(new EndtnHandler()),
 	chatt(new ChattHandler()),
 	chpos(new ChposHandler()),
 	chpow(new ChpowHandler()),

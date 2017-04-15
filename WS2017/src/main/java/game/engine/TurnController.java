@@ -1,5 +1,6 @@
 package game.engine;
 
+import client.commands.ClientEndtnHandler;
 import serverclient.User;
 
 import java.util.ArrayList;
@@ -74,6 +75,12 @@ public class TurnController {
 		currentPlayer = players.get(0);
 	}
 	
+	/**
+	 * This is called when the server informs the client that the current player's turn has ended.
+	 * After endTurn the next Player in {@link #players} has the turn.
+	 * When the next user who's turn it is has no characters left, the turn is immediately passed on.
+	 * It is also called, when a user who left had the turn.
+	 */
 	public void endTurn () {
 		getCurrentPlayer().endCurrentTurn();
 		if (players.indexOf(currentPlayer) == players.size() - 1) {
@@ -85,35 +92,43 @@ public class TurnController {
 		world.printToGameLobby(getCurrentPlayer().getName() + " started their turn!");
 		
 		getCurrentPlayer().startNewTurn();
+		
+		if (world.getCurrentPlayer().hasCharactersLeft() == false && players.size() > 1) {
+			endTurn();
+		}
 	}
 	
 	/**
-	 * TODO: Sends a message to the server telling it about this client's ended turn.
+	 * Sends a message to the server telling it about this client's ended turn.
+	 * Only possible, when this client is actually holding the turn.
 	 */
 	public void askServerToEndTurn() {
-	
+		if (getCurrentPlayer().isThisClient()) {
+			ClientEndtnHandler.askServerToEndTurn(world.getGameController().getGameName());
+		}
 	}
 	
 	/**
 	 * Removes the player representing the given user from the list of players.
-	 * @param user The user to remove from the game.
+	 * @param userToRemove The user to remove from the game.
 	 */
-	public void removePlayer(User user) {
+	public void removePlayer(User userToRemove) {
 		System.out.println("TurnController#removePlayer");
 		// Remove the player
 		for (int i = 0; i < players.size(); i++) {
-			if (players.get(i).getUser() == user) {
-				if (getCurrentPlayer() == players.get(i)) {
-					// Give up the turn (both on the server and client side. Doesn't need to be synchronised, since leavg is already synchronised.
-					endTurn();
-					// Set the currentPlayerIndex back one, because the players got one smaller.
-				}
+			if (players.get(i).getUser() == userToRemove) {
 				// Remove all this player's characters if there are any.
 				if (players.get(i).hasCharactersLeft()) {
 					for (Character character : world.getAllCharacterOfOwner(players.get(i))) {
 						System.out.println("TurnController#removePlayer - Character Removed.");
 						world.removeCharacter(character);
 					}
+				} else {
+					System.out.printf("TurnController#removePlayer - Player %s had no Characters left!%n", players.get(i).getName());
+				}
+				if (getCurrentPlayer() == players.get(i)) {
+					// Give up the turn (both on the server and client side. Doesn't need to be synchronised, since leavg is already synchronised.
+					endTurn();
 				}
 				// Remove Player
 				players.remove(players.get(i));

@@ -417,9 +417,6 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 				world.setSelectionType(SelectionType.NOTHING);
 				world.setSelectedTile(null);
 				world.endTurn();
-				if (world.getCurrentPlayer().hasCharactersLeft() == false) {
-					world.endTurn();
-				}
 				repaintImage();
 				break;
 			case KeyEvent.VK_LEFT: case KeyEvent.VK_A:

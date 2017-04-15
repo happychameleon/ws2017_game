@@ -197,6 +197,10 @@ public class ClientGameController extends GameController {
 			if (window != null) {
 				window.dispose();
 			}
+		} else {
+			if (window != null) {
+				window.getMainGamePanel().repaintImage();
+			}
 		}
 	}
 	

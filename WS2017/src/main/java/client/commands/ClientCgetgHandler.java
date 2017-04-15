@@ -43,7 +43,7 @@ public class ClientCgetgHandler extends CommandHandler {
 		String gameName = getAndRemoveNextArgumentWord();
 		int startingPoints = Integer.parseInt(getAndRemoveNextArgumentWord());
 		String mapName = getAndRemoveNextArgumentWord();
-		GameMap map = GameMap.getMapForName(mapName);
+		GameMap map = GameMap.getMapForName(mapName, true);
 		
 		HashMap<User, String> users = new HashMap<>();
 		String nextUser = getAndRemoveNextArgumentWord();
@@ -70,7 +70,7 @@ public class ClientCgetgHandler extends CommandHandler {
 		String gameName = getAndRemoveNextArgumentWord();
 		int maxPoints = Integer.parseInt(getAndRemoveNextArgumentWord());
 		String mapName = getAndRemoveNextArgumentWord();
-		GameMap map = GameMap.getMapForName(mapName);
+		GameMap map = GameMap.getMapForName(mapName, true);
 		
 		HashMap<User, String> users = new HashMap<>();
 		String nextUsername = getAndRemoveNextArgumentWord();

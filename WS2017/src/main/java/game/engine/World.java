@@ -104,12 +104,18 @@ public class World {
 		return turnController.getCurrentPlayer();
 	}
 	
+	/**
+	 * Calls the {@link TurnController#askServerToEndTurn} method.
+	 * Is only processed when this Client actually has the turn.
+	 */
 	public void endTurn() {
-		turnController.endTurn();
+		turnController.askServerToEndTurn();
 	}
 	
-	
-	private ArrayList<Character> characters;
+	/**
+	 * All the {@link Character}s in the game.
+	 */
+	private final ArrayList<Character> characters;
 	
 	/**
 	 * Removes the given character for either being killed or when a user leaves the game.
@@ -199,7 +205,10 @@ public class World {
 		for (Player player : turnController.getPlayers()) {
 			User user = player.getUser();
 			String characterString = gameController.getCharacterStringForUser(user);
-			characters = parseCharacterString(characterString, player);
+			ArrayList<Character> newCharacters = parseCharacterString(characterString, player);
+			for (Character character : newCharacters) {
+				characters.add(character);
+			}
 		}
 		// TODO: Parse the Character Array and create all the characters for the correct player.
 		
@@ -297,11 +306,11 @@ public class World {
 	
 	public ArrayList<Character> getAllCharacterOfOwner (Player owner) {
 		ArrayList<Character> charactersOfOwner = new ArrayList<>();
-	    for (Character character : characters) {
-		    if (character.getOwner() == owner)
+		for (Character character : characters) {
+			if (character.getOwner() == owner)
 		    	charactersOfOwner.add(character);
 	    }
-	    return charactersOfOwner;
+		return charactersOfOwner;
     }
 	
 	/**

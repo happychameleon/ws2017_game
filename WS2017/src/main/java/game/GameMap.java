@@ -94,15 +94,22 @@ public class GameMap {
 	
 	/**
 	 * Gets the map with the same name as this map.
-	 * @param name the name of the map to get.
-	 * @return the map with the name or <code>null</code> if the given name doesn't exist.
+	 * @param name The name of the map to get.
+	 * @param readInMaps Whether the method should try to read in the maps again, in case the name doesn't exist.
+	 * @return The map with the name or <code>null</code> if the given name doesn't exist.
 	 */
-	public static GameMap getMapForName(String name) {
+	public static GameMap getMapForName(String name, boolean readInMaps) {
 		for (GameMap gameMap : gameMaps) {
 			if (gameMap.getName().equals(name))
 				return gameMap;
 		}
-		return null;
+		// name not found, maybe the maps were changed while the application was running. read in the maps and try again.
+		if (readInMaps) {
+			readInAllMaps();
+			return getMapForName(name, false);
+		} else {
+			return null;
+		}
 	}
 	
 	/**
