@@ -65,6 +65,7 @@ public abstract class CommandHandler {
 	/**
 	 * Reads the position from the positionString as 'x,y'
 	 * @param positionString the positionString formatted as x,y
+	 * @param gameController the gameController in which the Tile is in.
 	 * @return The correct Tile.
 	 */
 	protected Tile parsePosition(String positionString, GameController gameController) {
