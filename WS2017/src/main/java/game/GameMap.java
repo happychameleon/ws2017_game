@@ -118,7 +118,9 @@ public class GameMap {
 	
 	/**
 	 * Reads in all the gameMaps and stores them in {@link #gameMaps} at the start of the game.
-	 * With help from http://stackoverflow.com/questions/11012819/how-can-i-get-a-resource-folder-from-inside-my-jar-file
+	 * With help from:
+	 * http://cs.dvc.edu/HowTo_ReadJars.html
+	 * http://stackoverflow.com/questions/11012819/how-can-i-get-a-resource-folder-from-inside-my-jar-file
 	 */
 	public static void readInAllMaps() {
 		gameMaps = new ArrayList<>();
@@ -163,25 +165,6 @@ public class GameMap {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		/*InputStream[] inputStreams = new InputStream[3];
-		inputStreams[0] = ClassLoader.getSystemResourceAsStream("maps/SmallTestMap.txt");
-		inputStreams[1] = ClassLoader.getSystemResourceAsStream("maps/SmalLakes.txt");
-		inputStreams[2] = ClassLoader.getSystemResourceAsStream("maps/BigLake.txt");
-		BufferedReader bR = new BufferedReader(new InputStreamReader(inputStreams[1]));
-		try {
-			System.out.println(bR.readLine());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		URL mapFolderURL = ClassLoader.getSystemClassLoader().getResource("maps");
-		try {
-			mapsFolder = new File(mapFolderURL.toURI());
-			System.out.println("mapsFolder path: " + mapsFolder.getPath());
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}*/
 		
 		
 		

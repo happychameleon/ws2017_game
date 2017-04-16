@@ -113,6 +113,9 @@ public class CommandParser {
                 keywordParser.compareKeyword();
             }
             
+	        //prints all commands from server except cpong
+	        if (keyword.equals("cpong") == false)
+		        System.out.println(command.toString());
             //clears all global variables
             command.delete(0, command.length());
             keyword = "";

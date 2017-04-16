@@ -214,14 +214,11 @@ public class Client {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	public static void main(String[] args){
+	/**
+	 * Starts the Client and tries to connect to the server.
+	 * @param args The command line arguments.
+	 */
+	public static void clientMain(String[] args){
         try{
         	// default values
         	String hostIP = "127.0.0.1";
@@ -242,13 +239,13 @@ public class Client {
 	        serverInputStream = serverSocket.getInputStream();
 	        serverOutputStream = serverSocket.getOutputStream();
 	        serverSocket.setSoTimeout(200);
-            ClientThread th = new ClientThread(serverSocket);
+	        ClientThread th = new ClientThread(serverSocket);
             th.start();
             startClient();
-            BufferedReader commandlineInput = new BufferedReader(new InputStreamReader(System.in));
+	        BufferedReader commandlineInput = new BufferedReader(new InputStreamReader(System.in));
             String line = "";
             while (true){
-                line = commandlineInput.readLine();
+	            line = commandlineInput.readLine();
                 serverOutputStream.write(line.getBytes());
                 serverOutputStream.write('\r');
                 serverOutputStream.write('\n');

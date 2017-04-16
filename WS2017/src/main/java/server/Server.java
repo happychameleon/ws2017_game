@@ -174,7 +174,7 @@ public class Server {
 	
 	
 
-    public static void main(String[] args){
+    public static void serverMain(String[] args){
 	    int connectedGameClient = 1;
 	    int port = 1030;
 	    if (args.length > 1) {
