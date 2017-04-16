@@ -2,6 +2,10 @@ package game;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 /**
  * Holds the Data for preconstructed Maps read in from files.
@@ -113,32 +117,84 @@ public class GameMap {
 	}
 	
 	/**
-	 * The folder containing all the map Files.
-	 */
-	private static final File mapsFolder = new File("src/main/resources/maps");
-	
-	/**
 	 * Reads in all the gameMaps and stores them in {@link #gameMaps} at the start of the game.
+	 * With help from http://stackoverflow.com/questions/11012819/how-can-i-get-a-resource-folder-from-inside-my-jar-file
 	 */
 	public static void readInAllMaps() {
 		gameMaps = new ArrayList<>();
 		
-		File[] allMapFiles = mapsFolder.listFiles();
-		for (File mapFile : allMapFiles) {
-			if (mapFile.isFile() == false || mapFile.getName().endsWith(".txt") == false)
-				continue;
-			// First get the name of the map (== the file name)
-			String mapName = mapFile.getName();
-			if (mapName.contains(".")) {
-				mapName = mapName.substring(0, mapName.indexOf("."));
+		// All the mapname.txt files stored in the maps folder.
+		ArrayList<File> mapFiles = new ArrayList<>();
+		
+		// Mapnames stored as key, their InputStreams stored as values.
+		HashMap<String, InputStream> mapNameInputStreamMap = new HashMap<>();
+		
+		final String path = "maps/";
+		final File jarFile = new File(GameMap.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+		JarFile jar = null;
+		
+		try {
+			if (jarFile.isFile()) {  // Run with JAR file
+				System.out.println("GameMap#readInAllMaps - Run with JAR");
+				jar = new JarFile(jarFile);
+				final Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
+				while (entries.hasMoreElements()) {
+					final JarEntry jarEntry = entries.nextElement();
+					final String jarEntryName = jarEntry.getName();
+					//filter according to the path
+					if (jarEntryName.startsWith(path))
+						if (jarEntryName.endsWith(".txt")) {
+							String mapName = jarEntryName.substring(jarEntryName.lastIndexOf("/") + 1, jarEntryName.lastIndexOf("."));
+							InputStream inputStream = jar.getInputStream(jarEntry);
+							mapNameInputStreamMap.put(mapName, inputStream);
+						}
+				}
+			} else { // Run with IDE
+				File mapsFolder = new File("src/main/resources/maps");
+				System.out.println("GameMap#readInAllMaps - Run with IDE");
+				for (File mapFile : mapsFolder.listFiles())
+					if (mapFile.getName().endsWith(".txt")) {
+						String mapName = mapFile.getName().substring(mapFile.getName().lastIndexOf("/") + 1, mapFile.getName().lastIndexOf("."));
+						InputStream inputStream = new FileInputStream(mapFile);
+						mapNameInputStreamMap.put(mapName, inputStream);
+					}
+					
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		/*InputStream[] inputStreams = new InputStream[3];
+		inputStreams[0] = ClassLoader.getSystemResourceAsStream("maps/SmallTestMap.txt");
+		inputStreams[1] = ClassLoader.getSystemResourceAsStream("maps/SmalLakes.txt");
+		inputStreams[2] = ClassLoader.getSystemResourceAsStream("maps/BigLake.txt");
+		BufferedReader bR = new BufferedReader(new InputStreamReader(inputStreams[1]));
+		try {
+			System.out.println(bR.readLine());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		URL mapFolderURL = ClassLoader.getSystemClassLoader().getResource("maps");
+		try {
+			mapsFolder = new File(mapFolderURL.toURI());
+			System.out.println("mapsFolder path: " + mapsFolder.getPath());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}*/
+		
+		
+		
+		for (String mapName : mapNameInputStreamMap.keySet()) {
+			
 			
 			// Now read in the map file's data.
 			try {
-				BufferedReader bufferedReader = new BufferedReader(new FileReader(mapFile));
+				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(mapNameInputStreamMap.get(mapName)));
 				// Stores all the lines of the file in the Array List.
 				ArrayList<String> lines = new ArrayList<>();
 				String nextLine = bufferedReader.readLine();
+				System.out.println("GameMap#readInAllMaps - first line in " + mapName + ": " + nextLine);
 				while (nextLine != null) {
 					lines.add(nextLine);
 					nextLine = bufferedReader.readLine();
@@ -149,7 +205,7 @@ public class GameMap {
 				for (int i = 0; i < lines.size(); i++) {
 					String line = lines.get(i);
 					if (line.length() != lineSize)
-						System.err.println("Map wrongly formated (lines different length): " + mapFile.getName());
+						System.err.println("Map wrongly formated (lines different length): " + mapName);
 					mapChars[i] = line.toCharArray();
 				}
 				
@@ -167,6 +223,16 @@ public class GameMap {
 		} else {
 			System.out.println("Read in " + gameMaps.size() + " map(s).");
 		}
+		if (jar != null)
+			try {
+				jar.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
+	
+	private static void createDefaultMaps() {
+	
 	}
 	//endregion
 	
