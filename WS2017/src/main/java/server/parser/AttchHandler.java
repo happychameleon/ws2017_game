@@ -9,5 +9,5 @@ public class ChattHandler extends CommandHandler {
     @Override
     public void handleCommand() {
     }
-    //Todo: create ClientChattHandler
+    //Todo: create ClientAttchHandler
 }
