@@ -103,3 +103,4 @@ fabric.properties
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+WS2017/.gradle/3.4/taskHistory
