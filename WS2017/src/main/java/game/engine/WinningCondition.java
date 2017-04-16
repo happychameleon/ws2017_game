@@ -4,31 +4,45 @@ import java.util.ArrayList;
 
 /**
  * These are all the winning conditions. It checks whether a Team has won or the game should still be played.
- * TODO? (optionally) They can be chosen at the start of the game.
+ * They can be chosen at the start of the game.
  * It uses the correct Check to determine whether a Team has won and if so returns the Team.
  *
  * Created by flavia on 15.04.17.
  */
 public enum WinningCondition {
 	
-	LAST_TEAM_STANDING("A Team has won when it is the last Team with Characters left.");
-	
+	LAST_TEAM_STANDING(
+			"Last Team Standing",
+			"A Team has won when it is the last Team with Characters left."
+	);
 	
 	
 	/**
 	 * Creates the Winning Condition.
+	 * @param title {@link #title}
 	 * @param description {@link #description}.
 	 */
-	WinningCondition(String description) {
+	WinningCondition(String title, String description) {
+		this.title = title;
 		this.description = description;
 	}
 	
+	/**
+	 * The Title of this Winning Condition (== The return value of toString()).
+	 */
+	private final String title;
 	
+	/**
+	 * @return {@link #title}.
+	 */
+	public String getTitle() {
+		return title;
+	}
 	
 	/**
 	 * A description of this winning condition
 	 */
-	String description;
+	private final String description;
 	
 	/**
 	 * @return {@link #description}.
@@ -82,6 +96,6 @@ public enum WinningCondition {
 	 */
 	@Override
 	public String toString() {
-		return description;
+		return title;
 	}
 }

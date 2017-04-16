@@ -285,12 +285,12 @@ When the client attacks an other user the attack intensity is transmitted to the
 If the child has reached complete wetness the server, changes the high score of the attacking user and also sends all clients the old position and returns instead of the new position a "null".\\
 Client to Server:
 \begin{quote}
-  chatt <game\_name> <user\_name\_attacker> <user\_name\_attacked> <attacked\_child\_position: x,y> <attacker\_child\_position: x,y> <attack\_intensity>
+  attch <game\_name> <targeted\_child\_position: x,y> <attacker\_child\_position: x,y> <attack\_intensity>
 \end{quote}
 \noindent
 Server to Client:
 \begin{quote}
-  +OK chatt <game\_name> <user\_name\_attacker> <user\_name\_attacked> <attacked\_child\_position: x,y> <attacker\_child\_position: x,y> <wetness\_value>
+  +OK attch <game\_name> <targeted\_child\_position: x,y> <attacker\_child\_position: x,y> <attack\_intensity>
 \end{quote}
 %\noindent
 %If Child  completely wet, Server to Clients:

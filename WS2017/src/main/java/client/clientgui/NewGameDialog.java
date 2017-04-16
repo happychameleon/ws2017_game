@@ -3,8 +3,11 @@ package client.clientgui;
 import client.Client;
 import client.commands.ClientNewgmHandler;
 import game.GameMap;
+import game.engine.WinningCondition;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,13 +17,27 @@ import java.awt.event.KeyListener;
 /**
  * Created by flavia on 01.04.17.
  */
-public class NewGameDialog extends JDialog implements ActionListener, KeyListener {
+public class NewGameDialog extends JDialog implements ActionListener, KeyListener, ListSelectionListener {
 	
 	private JTextField gameNameTF = new JTextField("Name");
 	private JTextField maxPointsTF = new JTextField("MaxPoints");
 	
 	private DefaultListModel<GameMap> mapListModel = new DefaultListModel();
+	/**
+	 * A List with all the Maps to choose from.
+	 */
 	private JList<GameMap> mapList = new JList<>(mapListModel);
+	
+	private DefaultListModel<WinningCondition> winningConditionListModel = new DefaultListModel();
+	/**
+	 * A List with all the Winning Conditions to choose from.
+	 */
+	private JList<WinningCondition> winningConditionList = new JList<>(winningConditionListModel);
+	
+	/**
+	 * Displays the description of the selected Winning Condition from {@link #winningConditionList}.
+	 */
+	private JTextArea winningConditionDescriptionLabel = new JTextArea();
 	
 	private JButton createGameButton = new JButton("Create Game");
 	private JButton cancelGameCreationButton = new JButton("Cancel");
@@ -36,7 +53,7 @@ public class NewGameDialog extends JDialog implements ActionListener, KeyListene
 	public NewGameDialog(Frame owner) {
 		super(owner);
 		
-		JLabel gameNameLabel = new JLabel("gameName");
+		JLabel gameNameLabel = new JLabel("Game Name:");
 		gameNameTF = new JTextField("GameName");
 		JLabel maxPointsLabel = new JLabel("Max Points:");
 		maxPointsTF = new JTextField("100");
@@ -60,8 +77,13 @@ public class NewGameDialog extends JDialog implements ActionListener, KeyListene
 		gameButtonsPanel.add(createGameButton);
 		
 		mainBox.add(gameInputPanel);
+		
 		mainBox.add(new JLabel("Map:"));
 		mainBox.add(new JScrollPane(mapList));
+		mainBox.add(new JLabel("Winning Condition:"));
+		mainBox.add(new JScrollPane(winningConditionList));
+		mainBox.add(winningConditionDescriptionLabel);
+		
 		mainBox.add(gameButtonsPanel);
 		
 		this.add(mainBox);
@@ -83,6 +105,16 @@ public class NewGameDialog extends JDialog implements ActionListener, KeyListene
 			mapListModel.addElement(map);
 		mapList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		mapList.setSelectedIndex(0);
+		
+		for (WinningCondition winningCondition : WinningCondition.values())
+			winningConditionListModel.addElement(winningCondition);
+		winningConditionList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		winningConditionList.setSelectedIndex(0);
+		winningConditionList.addListSelectionListener(this);
+		updateWinningDescription();
+		
+		winningConditionDescriptionLabel.setEditable(false);
+		winningConditionDescriptionLabel.setLineWrap(true);
 		
 	}
 	
@@ -146,6 +178,10 @@ public class NewGameDialog extends JDialog implements ActionListener, KeyListene
 		ClientNewgmHandler.sendGameCreationMessage(maxPoints, gameName, mapListModel.getElementAt(mapList.getSelectedIndex()));
 	}
 	
+	private void updateWinningDescription() {
+		winningConditionDescriptionLabel.setText(winningConditionListModel.getElementAt(winningConditionList.getSelectedIndex()).getDescription());
+	}
+	
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -163,6 +199,15 @@ public class NewGameDialog extends JDialog implements ActionListener, KeyListene
 		}
 	}
 	
+	/**
+	 * Called whenever the value of the selection changes.
+	 *
+	 * @param e the event that characterizes the change.
+	 */
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+	
+	}
 	
 	
 	@Override

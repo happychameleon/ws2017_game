@@ -2,7 +2,6 @@ package client.commands;
 
 import client.Client;
 import game.ClientGameController;
-import game.GameController;
 import game.engine.Tile;
 
 /**
@@ -39,33 +38,6 @@ public class ClientChposHandler extends CommandHandler {
 		
 		gameController.getWindow().getMainGamePanel().repaintImage();
 	}
-	
-	/**
-	 * Reads the position from the string as 'x,y'
-	 * @param positionString the positionString formatted as x,y
-	 * @param gameController the gameController where the Tile is at.
-	 * @return The correct Tile.
-	 */
-	private Tile parsePosition(String positionString, GameController gameController) {
-		
-		String xString = "";
-		String yString = "";
-		int i = 0;
-		for (char c : positionString.toCharArray()) {
-			if (i == 0)
-				if (c == ',') i++;
-				else xString += c;
-			else
-				yString += c;
-		}
-		int x = Integer.parseInt(xString);
-		int y = Integer.parseInt(yString);
-		System.out.println("ClientChposHandler#parsePosition - x: " + x + " y: " + y);
-		return gameController.getWorld().getTileAt(x, y);
-	}
-	
-	
-    
     
 	
 	/**

@@ -347,5 +347,28 @@ public class World {
 			}
 		}
 	}
+	
+	/**
+	 * This Method carries out an Attack by the selected Character against the Character standing on the given Tile
+	 * @param attackingTile The Tile where the attacking Character stands on.
+	 * @param targetedTile The Tile where the targeted Character stands on.
+	 * @param attackIntensity The 'damage' this attack causes.
+	 */
+	public void attackCharacter(Tile attackingTile, Tile targetedTile, int attackIntensity) {
+		System.out.println("World#attackCharacter");
+		if (targetedTile.getCharacter() == null || attackingTile.getCharacter() == null) {
+			System.err.println("World#attackCharacter - character check went wrong.");
+		}
+		
+		Character targetedCharacter = targetedTile.getCharacter();
+		Character attackingCharacter = attackingTile.getCharacter();
+		
+		if (attackingCharacter.removeActionPoints(attackingCharacter.getWeapon().getActionPointPerShot()))
+			targetedCharacter.changeWetness(attackingCharacter, attackIntensity);
+		
+		else
+			System.err.println("World#attackCharacter - actionpoints check went wrong.");
+		
+	}
 	//endregion
 }

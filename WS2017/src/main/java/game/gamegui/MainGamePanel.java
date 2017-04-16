@@ -1,5 +1,7 @@
 package game.gamegui;
 
+import client.Client;
+import client.commands.ClientAttchHandler;
 import client.commands.ClientChposHandler;
 import game.engine.Character;
 import game.engine.Tile;
@@ -255,7 +257,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 						askServerToMoveCharacter(tileUnderMouse);
 						break;
 					case OWNED_WEAPON:
-						attackCharacter(tileUnderMouse);
+						askClientToAttackCharacter(tileUnderMouse);
 						break;
 					default:
 						break;
@@ -313,55 +315,77 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 	}
 	
 	/**
-	 * Calls the {@link ClientChposHandler#sendNewPositionToServer} command.
+	 * Calls the {@link ClientChposHandler#sendNewPositionToServer} command if it is possible for this user to move the selected Character.
 	 * @param destinationTile The destination Tile.
 	 */
 	private void askServerToMoveCharacter(Tile destinationTile) {
 		System.out.println("MainGamePanel#askServerToMoveCharacter");
-		if (destinationTile == null) return;
-		if (destinationTile.isWalkable(true) == false) return;
-		if (window.getWalkRangeTiles() == null || window.getWalkRangeTiles().keySet().contains(destinationTile) == false) return;
-		Character character = world.getSelectedTile().getCharacter();
-		if (character == null) return;
-		int distance = window.getWalkRangeTiles().get(destinationTile);
-		if (character.canRemoveActionPoints(distance * character.getMovementCostPerTile()) == false) return;
-		// Now we know we should be able to move.
+		if (destinationTile != null
+				&& world.getSelectedTile() != null
+				&& world.getSelectedTile().getCharacter() != null
+				&& window.getWalkRangeTiles() != null
+				&& window.getWalkRangeTiles().keySet().contains(destinationTile)
+				) {
+			
+			Character character = world.getSelectedTile().getCharacter();
+			int distance = window.getWalkRangeTiles().get(destinationTile);
+			
+			if (character.canRemoveActionPoints(distance * character.getMovementCostPerTile())
+					&& destinationTile.isWalkable(true)
+					&& character.getOwner().getUser() == Client.getThisUser()
+					&& character.getOwner().hasTurn()
+					) {
+				// Now we know we should be able to move.
+				
+				Tile oldTile = world.getSelectedTile().getCharacter().getTile();
+				
+				ClientChposHandler.sendNewPositionToServer(window.getClientGameController(), oldTile, destinationTile, window.getWalkRangeTiles().get(destinationTile));
+			}
+			
+		}
 		
-		Tile oldTile = world.getSelectedTile().getCharacter().getTile();
-		
-		ClientChposHandler.sendNewPositionToServer(window.getClientGameController(), oldTile, destinationTile, window.getWalkRangeTiles().get(destinationTile));
-		
-		window.setWalkRangeTiles(null);
-		world.setSelectedTile(null);
-	
 	}
 	
 	/**
-	 * This Method carries out an Attack by the selected Character against the Character standing on the given Tile
-	 * @param attackedTile The Tile where the possible targeted Character stands on.
+	 * Tells the server about an Attack from the Character on the selected Tile to the Character on the attackedTile.
+	 * Does not carry out the attack.
+	 * Conditions to attack:
+	 *  (1) A Tile has to be selected with a Character on it belonging to this User.
+	 *  (2) It is this User's turn.
+	 *  (3) The Character from (1) has to have a Weapon which is selected.
+	 *  (4) The Attacked Tile has to have an enemy Character on it and be in range of the Character from (1).
+	 *  (5) The Character from (1) has to have enough ActionPoints to shoot the Weapon.
+	 *
+	 * @param attackedTile The Tile where the possible attacked Character stands on (attackedTile.getCharacter() could be null)
 	 */
-	private void attackCharacter(Tile attackedTile) {
-		System.out.println("Window.attackCharacter");
-		if (attackedTile.getCharacter() != null
-				&& world.getSelectedTile() != null
-				&& world.getSelectedTile().getCharacter() != null
-				&& world.getSelectedTile().getCharacter().getWeapon() != null
-				&& world.getSelectionType() == SelectionType.OWNED_WEAPON) {
+	private void askClientToAttackCharacter(Tile attackedTile) {
+		System.out.println("MainGamePanel#askClientToAttackCharacter");
+		
+		if (attackedTile.getCharacter() != null //(4)
+				&& world.getSelectedTile() != null //(1)
+				&& world.getSelectedTile().getCharacter() != null //(1)
+				&& world.getSelectedTile().getCharacter().getOwner().getUser() == Client.getThisUser() //(1)
+				&& world.getSelectedTile().getCharacter().getOwner().hasTurn() //(2)
+				&& world.getSelectedTile().getCharacter().getWeapon() != null //(3)
+				&& world.getSelectionType() == SelectionType.OWNED_WEAPON) { //(3)
+			
 			Character targetedCharacter = attackedTile.getCharacter();
 			Character attackingCharacter = world.getSelectedTile().getCharacter();
 			System.out.println("Targeting");
-			if (attackingCharacter.getAllEnemyCharactersInRange().contains(targetedCharacter)) {
-				// The targeted Character is in range from the attacking Character
-				if (attackingCharacter.removeActionPoints(attackingCharacter.getWeapon().getActionPointPerShot())) {
-					targetedCharacter.changeWetness(attackingCharacter, attackingCharacter.getWeapon().getDamage());
-					System.out.println(attackingCharacter + " ATTACKED " + targetedCharacter + "!");
+			
+			if (attackingCharacter.getAllEnemyCharactersInRange().contains(targetedCharacter)) { //(4)
+				if (attackingCharacter.canRemoveActionPoints(attackingCharacter.getWeapon().getActionPointPerShot())) { //(5)
+					ClientAttchHandler.sendAttackToServer(window.getClientGameController(), targetedCharacter, attackingCharacter);
 				} else {
 					System.out.println("Not enough actionPoints for Attack! (ATTACKER: " + attackingCharacter + "; TARGET: " + targetedCharacter + ")");
+					// TODO? (optionally) play error sound.
 				}
 			} else {
-				System.out.println("Character not in Range! (ATTACKER: " + attackingCharacter + "; TARGET: " + targetedCharacter + ")");
+				System.out.println("Character not in Range! (ATTACKER: " + attackingCharacter + "; TARGET: " + targetedCharacter + "). Tile deselected.");
+				world.setSelectedTile(null);
 			}
 		}
+		
 	}
 	
 	

@@ -1,5 +1,7 @@
 package game.engine;
 
+import game.ClientGameController;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -351,6 +353,11 @@ public class Character {
 			if (this.removeActionPoints(distance * movementCostPerTile)) {
 				setTile(destinationTile);
 				System.out.println(this.toString() + " moved to " + destinationTile);
+				
+				if (world.getGameController() instanceof ClientGameController)
+					((ClientGameController) world.getGameController()).getWindow().setWalkRangeTiles(null);
+				world.setSelectedTile(null);
+				
 				return true;
 			} else {
 				System.err.println("Character#moveCharacterTo - Couldn't remove action Points. Check has been forgotten.");

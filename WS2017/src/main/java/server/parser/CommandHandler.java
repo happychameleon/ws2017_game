@@ -1,5 +1,7 @@
 package server.parser;
 
+import game.GameController;
+import game.engine.Tile;
 import server.CommandParser;
 
 /**
@@ -52,5 +54,29 @@ public abstract class CommandHandler {
 			argument = "";
 			return lastWord;
 		}
+	}
+	
+	
+	/**
+	 * Reads the position from the positionString as 'x,y'
+	 * @param positionString the positionString formatted as x,y
+	 * @return The correct Tile.
+	 */
+	protected Tile parsePosition(String positionString, GameController gameController) {
+		
+		String xString = "";
+		String yString = "";
+		int i = 0;
+		for (char c : positionString.toCharArray()) {
+			if (i == 0)
+				if (c == ',') i++;
+				else xString += c;
+			else
+				yString += c;
+		}
+		int x = Integer.parseInt(xString);
+		int y = Integer.parseInt(yString);
+		System.out.println("CommandHandler#parsePosition - x: " + x + " y: " + y);
+		return gameController.getWorld().getTileAt(x, y);
 	}
 }

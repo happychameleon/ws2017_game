@@ -24,7 +24,7 @@ public enum Command {
 	ready(new ReadyHandler()),
 	stgam(new StgamHandler()),
 	endtn(new EndtnHandler()),
-	chatt(new ChattHandler()),
+	chatt(new AttchHandler()),
 	chpos(new ChposHandler()),
 	chpow(new ChpowHandler()),
 	chwea(new ChweaHandler()),
