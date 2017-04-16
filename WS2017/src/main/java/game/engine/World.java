@@ -5,6 +5,7 @@ import game.GameController;
 import game.GameMap;
 import game.ServerGameController;
 import game.gamegui.SelectionType;
+import game.gamegui.Window;
 import serverclient.User;
 
 import java.util.ArrayList;
@@ -312,11 +313,14 @@ public class World {
 		characters.remove(character);
 		character.getTile().setCharacter(null);
 		
-		if (selectedTile == character.getTile()) {
-			selectedTile = null;
-			setSelectionType(SelectionType.NOTHING);
-			//TODO: remove highlighted tiles.
+		if (gameController instanceof ClientGameController) {
+			Window window = ((ClientGameController) gameController).getWindow();
+			if (selectedTile == character.getTile()) {
+				selectedTile = null;
+				setSelectionType(SelectionType.NOTHING);
+			}
 		}
+		
 		checkWinningCondition();
 	}
 	
@@ -363,12 +367,14 @@ public class World {
 		Character targetedCharacter = targetedTile.getCharacter();
 		Character attackingCharacter = attackingTile.getCharacter();
 		
-		if (attackingCharacter.removeActionPoints(attackingCharacter.getWeapon().getActionPointPerShot()))
+		if (attackingCharacter.removeActionPoints(attackingCharacter.getWeapon().getActionPointPerShot())) {
 			targetedCharacter.changeWetness(attackingCharacter, attackIntensity);
-		
-		else
+		} else {
 			System.err.println("World#attackCharacter - actionpoints check went wrong.");
+		}
 		
+		if (gameController instanceof ClientGameController)
+			((ClientGameController) gameController).getWindow().getMainGamePanel().repaintImage();
 	}
 	//endregion
 }

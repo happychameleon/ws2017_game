@@ -4,6 +4,7 @@ import game.engine.Player;
 import game.engine.Team;
 import game.engine.World;
 import server.Server;
+import server.parser.LeavgHandler;
 import server.parser.UhighHandler;
 import serverclient.User;
 
@@ -37,7 +38,7 @@ public class ServerGameController extends GameController {
 	 */
 	@Override
 	public void removeUser(User user) {
-		Server.writeToAllClients(String.format("leavg %s %s", gameName, user.getName()));
+		LeavgHandler.writeLeavgToClients(gameName, user.getName());
 		
 		super.removeUser(user);
 		

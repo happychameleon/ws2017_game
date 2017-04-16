@@ -60,7 +60,17 @@ public class Window extends JFrame implements WindowListener {
 		return walkRangeTiles;
 	}
 	
+	/**
+	 * Sets the {@link #walkRangeTiles} to the given HasMap. Updates all the graphics for the Tiles.
+	 * @param walkRangeTiles The new walkRangeTiles (can be null).
+	 */
 	public void setWalkRangeTiles(HashMap<Tile, Integer> walkRangeTiles) {
+		if (this.walkRangeTiles != null)
+			for (Tile tile : this.walkRangeTiles.keySet())
+				tile.setNeedsGraphicsUpdate();
+		if (walkRangeTiles != null)
+			for (Tile tile : walkRangeTiles.keySet())
+				tile.setNeedsGraphicsUpdate();
 		this.walkRangeTiles = walkRangeTiles;
 	}
 	
@@ -76,7 +86,17 @@ public class Window extends JFrame implements WindowListener {
 		return attackRangeTiles;
 	}
 	
+	/**
+	 * Sets the {@link #attackRangeTiles} to the given Set of Tiles. Updates all the graphics for the Tiles.
+	 * @param attackRangeTiles The new attackRangeTiles (can be null).
+	 */
 	public void setAttackRangeTiles(Set<Tile> attackRangeTiles) {
+		if (this.attackRangeTiles != null)
+			for (Tile tile : this.attackRangeTiles)
+				tile.setNeedsGraphicsUpdate();
+		if (attackRangeTiles != null)
+			for (Tile tile : attackRangeTiles)
+				tile.setNeedsGraphicsUpdate();
 		this.attackRangeTiles = attackRangeTiles;
 	}
 	

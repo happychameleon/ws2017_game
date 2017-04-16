@@ -1,6 +1,7 @@
 package game.engine;
 
 import game.ClientGameController;
+import game.gamegui.Window;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -138,6 +139,7 @@ public class Character {
 		if (wetness >= 100) {
 			KillCharacter(attackingCharacter);
 		}
+		tile.setNeedsGraphicsUpdate();
 	}
 	
 	
@@ -228,7 +230,7 @@ public class Character {
 	public boolean removeActionPoints (int actionPointsToRemove) {
 		if (canRemoveActionPoints(actionPointsToRemove)) {
 			this.actionPoints -= actionPointsToRemove;
-			System.out.println("Character.removeActionPoints - SUCCESS current actionPoints: " + actionPoints + "; actionPointsToRemove: " + actionPointsToRemove);
+			System.out.println("Character.removeActionPoints - SUCCESS current actionPoints: " + actionPoints + "; actionPoints removed: " + actionPointsToRemove);
 			return true;
 		} else {
 			return false;
@@ -354,9 +356,13 @@ public class Character {
 				setTile(destinationTile);
 				System.out.println(this.toString() + " moved to " + destinationTile);
 				
-				if (world.getGameController() instanceof ClientGameController)
-					((ClientGameController) world.getGameController()).getWindow().setWalkRangeTiles(null);
 				world.setSelectedTile(null);
+				if (world.getGameController() instanceof ClientGameController) {
+					Window window = ((ClientGameController) world.getGameController()).getWindow();
+					window.setWalkRangeTiles(null);
+					window.setAttackRangeTiles(null);
+					window.getMainGamePanel().repaintImage();
+				}
 				
 				return true;
 			} else {

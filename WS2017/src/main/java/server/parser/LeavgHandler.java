@@ -28,9 +28,18 @@ public class LeavgHandler extends CommandHandler {
 			gameController.removeUser(user);
 			return;
 		}
+		// The game wasn't found, meaning it is probably an ended game, only stored on the client for the lobby chat.
+		// Just send it to the Clients.
+		writeLeavgToClients(gameName, username);
 		
-		
-		System.err.println("leavg: Game Name doesn't exist: " + gameName);
 	}
 	
+	/**
+	 * Send a message to all Clients about the user who left the game.
+	 * @param gameName The name of the game which the user left.
+	 * @param username The name of the user who left.
+	 */
+	public static void writeLeavgToClients(String gameName, String username) {
+		Server.writeToAllClients(String.format("leavg %s %s", gameName, username));
+	}
 }

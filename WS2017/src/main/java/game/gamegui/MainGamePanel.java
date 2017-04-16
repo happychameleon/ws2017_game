@@ -257,7 +257,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 						askServerToMoveCharacter(tileUnderMouse);
 						break;
 					case OWNED_WEAPON:
-						askClientToAttackCharacter(tileUnderMouse);
+						askServerToAttackCharacter(tileUnderMouse);
 						break;
 					default:
 						break;
@@ -358,8 +358,8 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 	 *
 	 * @param attackedTile The Tile where the possible attacked Character stands on (attackedTile.getCharacter() could be null)
 	 */
-	private void askClientToAttackCharacter(Tile attackedTile) {
-		System.out.println("MainGamePanel#askClientToAttackCharacter");
+	private void askServerToAttackCharacter(Tile attackedTile) {
+		System.out.println("MainGamePanel#askServerToAttackCharacter");
 		
 		if (attackedTile.getCharacter() != null //(4)
 				&& world.getSelectedTile() != null //(1)

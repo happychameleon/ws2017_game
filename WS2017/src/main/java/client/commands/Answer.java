@@ -16,6 +16,7 @@ public enum Answer {
 	newgm(new ClientNewgmHandler()),
 	cgetg(new ClientCgetgHandler()),
 	chpos(new ClientChposHandler()),
+	attch(new ClientAttchHandler()),
 	endtn(new ClientEndtnHandler());
 	
 	/**

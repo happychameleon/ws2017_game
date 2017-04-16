@@ -31,6 +31,8 @@ public class Server {
 		return (ArrayList<ServerGameController>) gameList.clone();
 	}
 	
+	
+	
 	/**
 	 * A list of all the connected users.
 	 */
