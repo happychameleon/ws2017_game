@@ -19,7 +19,7 @@ Project of Group 4 for the CS108 Programming Project.
 
 mainClassName = "Main"
 
-defaultTasks 'mainTask'
+defaultTasks 'build-cs108'
 
 repositories {
     mavenCentral()
@@ -41,7 +41,7 @@ jar{
 }
 
 
-task mainTask {
+task 'build-cs108' {
     compileJava.execute()
     processResources.execute()
     classes.execute()
