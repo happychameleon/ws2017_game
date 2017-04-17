@@ -9,7 +9,7 @@ import serverclient.User;
  *
  * Created by flavia on 11.04.17.
  */
-public class ClientStgamHandler extends CommandHandler {
+public class ClientStgamHandler extends ClientCommandHandler {
 	
 	/**
 	 * Executes the command from the server.

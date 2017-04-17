@@ -12,7 +12,7 @@ import java.util.Arrays;
  *
  * Created by flavia on 26.03.17.
  */
-public class ClientChatmHandler extends CommandHandler {
+public class ClientChatmHandler extends ClientCommandHandler {
 	
 	
 	@Override

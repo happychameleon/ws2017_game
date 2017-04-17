@@ -10,7 +10,7 @@ import java.util.HashMap;
  * This class handles the
  * Created by m on 10/04/17.
  */
-public class ClientUhighHandler extends CommandHandler {
+public class ClientUhighHandler extends ClientCommandHandler {
 	
     @Override
     public void handleCommand() {

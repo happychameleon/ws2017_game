@@ -11,7 +11,7 @@ import game.engine.Tile;
  *
  * Created by m on 10/04/17.
  */
-public class ClientAttchHandler extends CommandHandler {
+public class ClientAttchHandler extends ClientCommandHandler {
     
     @Override
     public void handleCommand() {

@@ -5,7 +5,7 @@ package client.commands;
  *
  * Created by m on 3/23/17.
  */
-public class ClientCpingHandler extends CommandHandler {
+public class ClientCpingHandler extends ClientCommandHandler {
 	
 	/**
 	 * Handles the cping by sending cpong back.

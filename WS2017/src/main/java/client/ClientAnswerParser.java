@@ -1,9 +1,10 @@
 package client;
 
-import client.commands.Answer;
+import client.commands.ClientAnswer;
+import client.commands.ClientCommandHandler;
 
 /**
- * Gets the answer and after checking it for validity it sends the answer to the correct {@link client.commands.CommandHandler} (via {@link Answer}.
+ * Gets the answer and after checking it for validity it sends the answer to the correct {@link ClientCommandHandler} (via {@link ClientAnswer}.
  *
  * Created by flavia on 26.03.17.
  */
@@ -72,9 +73,9 @@ public class ClientAnswerParser {
 		if (keyword.isEmpty())
 			return;
 		
-		Answer answer;
+		ClientAnswer answer;
 		try {
-			answer = Enum.valueOf(Answer.class, keyword);
+			answer = Enum.valueOf(ClientAnswer.class, keyword);
 		} catch (IllegalArgumentException iae) {
 			if (Client.getMainWindow() != null) {
 				Client.getMainWindow().getMainChatPanel().displayError("Received answer does not exist!");

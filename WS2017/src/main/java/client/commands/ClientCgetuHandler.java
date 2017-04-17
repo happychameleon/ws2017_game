@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * Created by flavia on 26.03.17.
  */
-public class ClientCgetuHandler extends CommandHandler {
+public class ClientCgetuHandler extends ClientCommandHandler {
 	
 	
 	@Override

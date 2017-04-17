@@ -9,7 +9,7 @@ import serverclient.User;
  *
  * Created by flavia on 01.04.17.
  */
-public class ClientLeavgHandler extends CommandHandler {
+public class ClientLeavgHandler extends ClientCommandHandler {
 	
 	@Override
 	public void handleCommand() {

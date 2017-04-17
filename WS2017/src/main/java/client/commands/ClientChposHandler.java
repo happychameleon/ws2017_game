@@ -10,7 +10,7 @@ import game.engine.Tile;
  *
  * Created by m on 10/04/17.
  */
-public class ClientChposHandler extends CommandHandler {
+public class ClientChposHandler extends ClientCommandHandler {
     @Override
     public void handleCommand() {
     

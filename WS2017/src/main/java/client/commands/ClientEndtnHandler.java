@@ -9,7 +9,7 @@ import game.ClientGameController;
  *
  * Created by flavia on 15.04.17.
  */
-public class ClientEndtnHandler extends CommandHandler {
+public class ClientEndtnHandler extends ClientCommandHandler {
 	/**
 	 * UNUSED
 	 */

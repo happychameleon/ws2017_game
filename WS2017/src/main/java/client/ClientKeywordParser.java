@@ -1,6 +1,6 @@
 package client;
 
-import client.commands.Command;
+import client.commands.ClientCommand;
 
 /**
  * Compares keywords and if invalid returns an error
@@ -23,9 +23,9 @@ public class ClientKeywordParser {
 	 * This compares the command and if it is an existing command it creates the correct parser to execute the command.
 	 */
 	public void compareKeyword(){
-		Command command;
+		ClientCommand command;
 		try {
-			command = Enum.valueOf(Command.class, keyword);
+			command = Enum.valueOf(ClientCommand.class, keyword);
 		} catch (IllegalArgumentException iae) {
 			System.err.println("Received command does not exist! " + keyword + " " + argument);
 			return;

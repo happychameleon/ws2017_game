@@ -3,11 +3,11 @@ package client.commands;
 import client.ClientCommandParser;
 
 /**
- * Works like {@link Command}, but with the answers.
+ * Works like {@link ClientCommand}, but with the answers.
  *
  * Created by flavia on 26.03.17.
  */
-public enum Answer {
+public enum ClientAnswer {
 	
 	nuser(new ClientNuserHandler()),
 	cgetu(new ClientCgetuHandler()),
@@ -20,24 +20,24 @@ public enum Answer {
 	endtn(new ClientEndtnHandler());
 	
 	/**
-	 * The correct CommandHandler which processes the answer.
+	 * The correct ClientCommandHandler which processes the answer.
 	 */
-	private final CommandHandler commandHandler;
+	private final ClientCommandHandler clientCommandHandler;
 	
-	Answer(CommandHandler commandHandler) {
-		this.commandHandler = commandHandler;
+	ClientAnswer(ClientCommandHandler clientCommandHandler) {
+		this.clientCommandHandler = clientCommandHandler;
 	}
 	
 	/**
-	 * This triggers the {@link #commandHandler}'s handleAnswer method with the given parameters
-	 * @param commandParser The correct CommandHandler
+	 * This triggers the {@link #clientCommandHandler}'s handleAnswer method with the given parameters
+	 * @param commandParser The correct ClientCommandHandler
 	 * @param argument The argument from the answer
 	 * @param isOK If the answer is a positive (+OK) or negative (-ERR) answer.
 	 */
 	public void handleAnswer(ClientCommandParser commandParser, String argument, boolean isOK) {
-		commandHandler.setCommandParser(commandParser);
-		commandHandler.setArgument(argument);
-		commandHandler.handleAnswer(isOK);
+		clientCommandHandler.setCommandParser(commandParser);
+		clientCommandHandler.setArgument(argument);
+		clientCommandHandler.handleAnswer(isOK);
 	}
 	
 }

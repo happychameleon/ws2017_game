@@ -77,7 +77,7 @@ public abstract class CommandHandler {
 		}
 		int x = Integer.parseInt(xString);
 		int y = Integer.parseInt(yString);
-		System.out.println("CommandHandler#parsePosition - x: " + x + " y: " + y);
+		System.out.println("ClientCommandHandler#parsePosition - x: " + x + " y: " + y);
 		return gameController.getWorld().getTileAt(x, y);
 	}
 }
