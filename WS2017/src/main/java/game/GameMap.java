@@ -160,7 +160,7 @@ public class GameMap {
 						InputStream inputStream = new FileInputStream(mapFile);
 						mapNameInputStreamMap.put(mapName, inputStream);
 					}
-					
+				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -170,16 +170,15 @@ public class GameMap {
 		
 		for (String mapName : mapNameInputStreamMap.keySet()) {
 			
-			
 			// Now read in the map file's data.
 			try {
 				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(mapNameInputStreamMap.get(mapName)));
 				// Stores all the lines of the file in the Array List.
 				ArrayList<String> lines = new ArrayList<>();
 				String nextLine = bufferedReader.readLine();
-				System.out.println("GameMap#readInAllMaps - first line in " + mapName + ": " + nextLine);
 				while (nextLine != null) {
-					lines.add(nextLine);
+					if (nextLine.startsWith("//") == false && nextLine.isEmpty() == false) // Ignore commented out lines.
+						lines.add(nextLine);
 					nextLine = bufferedReader.readLine();
 				}
 				// Store the lines as char[][] and throws an error when they aren't all the same size.

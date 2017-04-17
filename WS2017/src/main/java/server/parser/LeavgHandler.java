@@ -28,8 +28,9 @@ public class LeavgHandler extends CommandHandler {
 			gameController.removeUser(user);
 			return;
 		}
-		// The game wasn't found, meaning it is probably an ended game, only stored on the client for the lobby chat.
-		// Just send it to the Clients.
+		
+		System.err.println("LeavgHandler#handleCommand - Game doesn't exist on server?");
+		
 		writeLeavgToClients(gameName, username);
 		
 	}

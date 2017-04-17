@@ -8,12 +8,17 @@ import server.parser.LeavgHandler;
 import server.parser.UhighHandler;
 import serverclient.User;
 
+import java.io.*;
 import java.util.HashMap;
 
 /**
  * Created by flavia on 11.04.17.
  */
 public class ServerGameController extends GameController {
+	
+	
+	private static File highscoreFile = new File("./highscore.txt");
+	
 	
 	
 	/**
@@ -27,7 +32,6 @@ public class ServerGameController extends GameController {
 	public ServerGameController(GameState gameState, int startingPoints, String gameName, HashMap<User, String> users, GameMap map) {
 		super(gameState, startingPoints, gameName, users, map);
 	}
-	
 	
 	
 	
@@ -86,9 +90,28 @@ public class ServerGameController extends GameController {
 	@Override
 	public void endGame(HashMap<String, Integer> playerScore, String winningTeamName) {
 		super.endGame(playerScore, winningTeamName);
-
-		// TODO: writes the highscore into a file.
 		
-		Server.removeGame(this);
+		// Write the highscore into a file.
+		try {
+			if (highscoreFile.exists() == false) {
+				highscoreFile.createNewFile();
+				System.out.println("ServerGameController#endGame - new highscoreFile created");
+			}
+			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(highscoreFile, true));
+			
+			bufferedWriter.write(winningTeamName + " ");
+			for (String playerName : playerScore.keySet()) {
+				bufferedWriter.write(String.format("%s %d ", playerName, playerScore.get(playerName)));
+			}
+			bufferedWriter.newLine();
+			bufferedWriter.flush();
+			bufferedWriter.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
+	
 }
