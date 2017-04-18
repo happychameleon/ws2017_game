@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Represents one Team consisting of one or more Players.
  *
- * TODO? Currently unused, maybe add possibility to play in same team. Currently there is one Team per Player.
+ * TODO(M4) Currently unused, maybe add possibility to play in same team. Currently there is one Team per Player.
  *
  * Created by flavia on 09.03.17.
  */

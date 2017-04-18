@@ -10,7 +10,7 @@ import java.util.jar.JarFile;
 /**
  * Holds the Data for preconstructed Maps read in from files.
  *
- * TODO? For future Milestones if there is enough time add special objects and powerups to maps.
+ * TODO(M4) For future Milestones if there is enough time add special objects and powerups to maps.
  *
  * Created by flavia on 12.04.17.
  */

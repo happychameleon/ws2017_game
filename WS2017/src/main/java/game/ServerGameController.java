@@ -99,6 +99,8 @@ public class ServerGameController extends GameController {
 			}
 			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(highscoreFile, true));
 			
+			
+			
 			bufferedWriter.write(winningTeamName + " ");
 			for (String playerName : playerScore.keySet()) {
 				bufferedWriter.write(String.format("%s %d ", playerName, playerScore.get(playerName)));

@@ -25,7 +25,7 @@ public enum SelectionType {
 	OWNED_WEAPON,
 	/**
 	 * The Weapon lying on the floor is selected.
-	 * TODO: weapon on floor not yet implemented.
+	 * TODO(M4) weapon on floor not yet implemented.
 	 */
 	FLOOR_WEAPON
 	

@@ -6,6 +6,7 @@ package server.parser;
 public class RmgamHandler extends CommandHandler{
     @Override
     public void handleCommand() {
+    
     }
     //Todo: create RmgamHandler
 }

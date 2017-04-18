@@ -18,6 +18,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
+ * Displays the Map with all the Tiles and everything on them.
+ * Also handles the input from the player and if necessary (gamestate should change) tells the Server about it.
+ * Doesn't change the gamestate itself directly from the input, but waits on the response from the Server.
+ * The response is handled in the appropriate {@link client.commands.ClientCommandHandler}.
+ *
  * Created by flavia on 13.04.17.
  */
 public class MainGamePanel extends JPanel implements MouseInputListener, KeyListener {
@@ -276,11 +281,10 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 	 * @return The Tile which is under the mouse coordinates.
 	 */
 	private Tile getTileForMouseCoordinates(int x, int y) {
-		// TODO: fix bug where on the y-axis the tile is chosen with a slight offset (about 3 screen-pixels)
 		x += (int) camera.getXPosition();
 		y += (int) camera.getYPosition();
 		
-		y -= pixelSize; // Fix for a tiny bug, where the y axis is slightly offset by one pixelSize. Reason not found.
+		y -= pixelSize; // Because the y axis is offset by one pixelSize.
 		
 		x /= (pixelSize * Tile.tileSizeInPixels);
 		y /= (pixelSize * Tile.tileSizeInPixels);
@@ -378,7 +382,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 					ClientAttchHandler.sendAttackToServer(window.getClientGameController(), targetedCharacter, attackingCharacter);
 				} else {
 					System.out.println("Not enough actionPoints for Attack! (ATTACKER: " + attackingCharacter + "; TARGET: " + targetedCharacter + ")");
-					// TODO? (optionally) play error sound.
+					// TODO(M4)? play error sound.
 				}
 			} else {
 				System.out.println("Character not in Range! (ATTACKER: " + attackingCharacter + "; TARGET: " + targetedCharacter + "). Tile deselected.");
