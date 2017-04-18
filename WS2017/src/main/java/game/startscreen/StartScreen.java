@@ -127,9 +127,8 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	}
 	
 	/**
-	 * This needs to be called whenever a user has canceled joining the game.
-	 * (when a user quits it is registered by the server automatically)
-	 * TODO: When the window is closed, this also has to be called!
+	 * This needs to be called whenever a user has canceled joining the game either with the cancel button or by closing the window.
+	 * When a user quits it is registered by the server automatically.
 	 */
 	protected void leaveGame() {
 		clientGameController.askToLeaveGame();

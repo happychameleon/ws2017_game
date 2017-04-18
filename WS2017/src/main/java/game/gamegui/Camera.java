@@ -12,7 +12,6 @@ public class Camera {
 	
 	/**
 	 * The mainGamePanel of which this class controls the camera.
-	 * (TODO) maybe the mainGamePanel can just give all the needed information in the methods and this can be deleted.
 	 */
 	private MainGamePanel mainGamePanel;
 	
