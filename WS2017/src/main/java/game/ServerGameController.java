@@ -1,5 +1,6 @@
 package game;
 
+import game.engine.CreateHighscoreXML;
 import game.engine.Player;
 import game.engine.Team;
 import game.engine.World;
@@ -92,13 +93,15 @@ public class ServerGameController extends GameController {
 		super.endGame(playerScore, winningTeamName);
 		
 		// Write the highscore into a file.
+		CreateHighscoreXML.createHighscoreXML(playerScore, winningTeamName);
+		
+		/*
 		try {
 			if (highscoreFile.exists() == false) {
 				highscoreFile.createNewFile();
 				System.out.println("ServerGameController#endGame - new highscoreFile created");
 			}
 			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(highscoreFile, true));
-			
 			
 			
 			bufferedWriter.write(winningTeamName + " ");
@@ -113,6 +116,7 @@ public class ServerGameController extends GameController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		*/
 		
 	}
 	
