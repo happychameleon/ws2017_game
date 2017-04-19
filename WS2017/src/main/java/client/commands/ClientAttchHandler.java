@@ -14,10 +14,7 @@ import game.engine.Tile;
 public class ClientAttchHandler extends CommandHandler {
     
     @Override
-    public void handleCommand() {
-    	
-        //Todo: create ClientAttchHandler
-    }
+    public void handleCommand() {}
     
     /**
      * Reads the attack Command's argument and carries out the attack.

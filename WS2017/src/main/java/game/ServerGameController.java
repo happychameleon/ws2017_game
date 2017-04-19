@@ -27,10 +27,7 @@ public class ServerGameController extends GameController {
 	public ServerGameController(GameState gameState, int startingPoints, String gameName, HashMap<User, String> users, GameMap map) {
 		super(gameState, startingPoints, gameName, users, map);
 	}
-	
-	
-	
-	
+
 	/**
 	 * Removes the user from this game on the server.
 	 * Informs the clients about the user leaving.
@@ -47,8 +44,7 @@ public class ServerGameController extends GameController {
 			Server.writeToAllClients(String.format("rmgam %s", gameName));
 		}
 	}
-	
-	
+
 	/**
 	 * Starts the game on the server. Called by a Client with the stgam command.
 	 */

@@ -37,6 +37,7 @@ public class Client {
 	private static boolean isLoggedIn = false;
 	
 	/**
+	 * Returns true if client is logged in false if not.
 	 * @return {@link #isLoggedIn}.
 	 */
 	public static boolean isLoggedIn() {
@@ -50,6 +51,7 @@ public class Client {
 	protected static String commandLineUsername = "";
 	
 	/**
+	 * Returns the username that was entered at the commandline.
 	 * @return {@link #commandLineUsername}.
 	 */
 	public static String getCommandLineUsername() {
@@ -73,12 +75,13 @@ public class Client {
 	}
 	
 	/**
-	 * All the logged in users.
+	 * An array with all the logged in users.
 	 * It's empty until this client has logged in.
 	 */
 	static ArrayList<ClientUser> users = new ArrayList<>();
 	
 	/**
+	 * Returns a shallow copy of all users that are connected to the same server.
 	 * @return A shallow copy of {@link #users}.
 	 */
 	public static ArrayList<ClientUser> getAllUsers() {
@@ -104,7 +107,6 @@ public class Client {
 	 * @param user The user to delete.
 	 */
 	public static void removeUser(ClientUser user) {
-		
 		users.remove(user);
 		mainChatWindow.removeUserFromUserlist(user);
 	}
@@ -115,7 +117,6 @@ public class Client {
 	 * @param username the username of the new user.
 	 */
 	public static void addNewUser(String username) {
-		
 		ClientUser newUser = new ClientUser(username);
 		users.add(newUser);
 		mainChatWindow.addUserToUserlist(newUser);
@@ -167,7 +168,7 @@ public class Client {
 	}
 	
 	/**
-	 * Reads in all the users from the cgetu command once we log in with a name.
+	 * Reads in all the users from the cgetu command once client logs in with a name.
 	 * @param usernames the given usernames.
 	 */
 	public static void readInAllUsernames(ArrayList<String> usernames) {
@@ -205,22 +206,14 @@ public class Client {
 	 * Sends a new message (command) to the server.
 	 * @param message the message text.
 	 */
-	public static void sendMessageToServer (String message) {
+	public static void sendMessageToServer(String message) {
 		try {
 			serverOutputStream.write((message + "\r\n").getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	public static void main(String[] args){
         try{
         	// default values
