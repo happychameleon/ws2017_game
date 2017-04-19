@@ -16,6 +16,8 @@ import java.util.HashMap;
 /**
  * Creates the XML file for the Highscores.
  *
+ * UNUSED Currently, intended for Milestone 4.
+ *
  * Created by Julischka Saravia on 11.04.2017.
  */
 public class CreateHighscoreXML {

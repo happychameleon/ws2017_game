@@ -8,39 +8,35 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
+ * Opens a Dialog Window displaying all the finished games with their score.
+ *
  * Created by flavia on 17.04.17.
  */
 public class HighscoreDialog extends Dialog implements WindowListener {
 	
 	/**
 	 * Displays a Dialog window informing the user about the highscores.
-	 * @param higschoreTeams List of HashMaps mapping each playername with their highscore. The Teamname is stored with a negative score.
+	 * @param higschoreStrings List of HashMaps mapping each playername with their highscore. The Teamname is stored with a negative score.
 	 */
-	public HighscoreDialog(ArrayList<HashMap<String, Integer>> higschoreTeams) {
+	public HighscoreDialog(ArrayList<ArrayList<String>> higschoreStrings) {
 		super(Client.getMainWindow().getMainFrame());
 		
+		// Get the highscore in a single String.
 		String highscoreInfoString = "";
-		
-		for (HashMap<String, Integer> playerScoreMap : higschoreTeams) {
+		for (ArrayList<String> singleHighscoreString: higschoreStrings) {
 			
-			String winningTeamName = "";
-			String playerScoreString = "";
+			String gameName = singleHighscoreString.remove(0);
+			String winningTeamName = singleHighscoreString.remove(0);
+			highscoreInfoString += "Game: " + gameName + "\n";
+			highscoreInfoString += "Winning Team: " + winningTeamName + "\n";
+			highscoreInfoString += "Player points:\n";
 			
-			for (String playerName : playerScoreMap.keySet()) {
-				int score = playerScoreMap.get(playerName);
-				if (score == -1) { // This is the teamname!
-					winningTeamName = playerName;
-					continue;
-				}
-				playerScoreString += playerName + ": ";
-				playerScoreString += playerScoreMap.get(playerName) + "\n";
+			for (String playerString : singleHighscoreString) {
+				highscoreInfoString += playerString + "\n";
 			}
 			
-			highscoreInfoString += "Winning Team: " + winningTeamName + "\n";
-			highscoreInfoString += "Winning Players:\n" + playerScoreString;
 			highscoreInfoString += "\n\n";
 		}
 		
