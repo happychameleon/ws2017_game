@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
  * Opens when the application was started without any command line arguments.
  * Here the User can choose to open either the server or the client.
  *
- * TODO? (optionally) Doesn't work atm.
+ * TODO(M4): (optionally) Doesn't work atm.
  *
  * Created by flavia on 16.04.17.
  */

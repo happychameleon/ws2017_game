@@ -5,7 +5,7 @@ import server.ServerUser;
 
 /**
  * Handles the uname command by checking if
- * - the name doesn't contain illegal characters (TODO: send error message back),
+ * - the name doesn't contain illegal characters,
  * - the name isn't the same as before (sends same username entered message back),
  * - the name isn't already taken (sends suggested name back)
  * and if the name is ok it changes the name and informs all clients about the name change or name assignment.
@@ -79,7 +79,7 @@ public class UnameHandler extends CommandHandler {
 		sendingUser.setName(newName);
 		
 		if (nameChange) {
-			commandParser.writeBackToClient("+OK uname you are " + newName); // TODO Meilenstein 3: change message to differ between uname changes and uname assignements.
+			commandParser.writeBackToClient("+OK uname you are " + newName);
 			commandParser.writeToAllOtherClients("+OK nuser " + oldName + " " + newName);
 		} else {
 			commandParser.writeBackToClient("+OK uname you are " + newName);

@@ -5,6 +5,7 @@ import game.engine.Team;
 import game.engine.World;
 import server.Server;
 import server.parser.LeavgHandler;
+import server.parser.RmgamHandler;
 import server.parser.UhighHandler;
 import serverclient.User;
 
@@ -48,7 +49,7 @@ public class ServerGameController extends GameController {
 		
 		if (getAllUsers().isEmpty()) {
 			Server.removeGame(this);
-			Server.writeToAllClients(String.format("rmgam %s", gameName));
+			RmgamHandler.sendRmgamMessageToAllClients(gameName);
 		}
 	}
 	

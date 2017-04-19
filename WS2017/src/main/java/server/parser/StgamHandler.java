@@ -25,12 +25,12 @@ public class StgamHandler extends CommandHandler {
 		
 		Server.writeToAllClients(String.format("stgam %s", wholeArgument));
 		
-		sendAllCharacterStartPositions(game);
+		// sendAllCharacterStartPositions(game);
 		
 	}
 	
 	/**
-	 * TODO: Sends all the starting positions of the characters to all the players.
+	 * TODO(M4) (optionally) Send the starting positions of the characters to all the players instead of reading them from the Map File
 	 * @param game The game which has just started.
 	 */
 	private void sendAllCharacterStartPositions(ServerGameController game) {
