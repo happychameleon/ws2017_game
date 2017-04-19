@@ -2,19 +2,19 @@ package client.clientgui;
 
 import client.Client;
 import client.ClientUser;
-import game.ClientGameRunningController;
-import game.startscreen.ClientGameStartController;
+import client.commands.ClientCgethHandler;
+import game.ClientGameController;
 import serverclient.User;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * The general Chat window where all users can chat with each other and name changes can be requested.
- * TODO Meilenstein 3: In future milestones there will also be the possibility to start a game with selected people and to privately chat
- * TODO: Separate this Chat Class into two classes, one for only the main MainChatWindow stuff and one for the whole window and keeping track of the game.
+ * It also holds the List of all games on the client side and displays them for the user to join or watch them.
  */
 public class MainChatWindow implements ActionListener, KeyListener, MouseListener {
 	
@@ -33,6 +33,13 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 * The main window
 	 */
 	JFrame mainFrame = new JFrame("Chat");
+	
+	/**
+	 * @return {@link #mainFrame}
+	 */
+	public JFrame getMainFrame() {
+		return mainFrame;
+	}
 	
 	/**
 	 * The input to change the username.
@@ -57,27 +64,27 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	}
 	
 	/**
-	 * The model for the {@link #openGameList}.
+	 * The model for the {@link #waitingGameList}.
 	 */
-	DefaultListModel<ClientGameStartController> openGameListModel = new DefaultListModel<>();
+	DefaultListModel<ClientGameController> waitingGameListModel = new DefaultListModel<>();
 	/**
 	 * All the currently open games where this client can join.
 	 */
-	JList<ClientGameStartController> openGameList = new JList<>(openGameListModel);
+	JList<ClientGameController> waitingGameList = new JList<>(waitingGameListModel);
 	
 	/**
-	 * Join the selected game from the {@link #openGameList}.
+	 * Join the selected game from the {@link #waitingGameList}.
 	 */
 	JButton joinGameButton = new JButton("Join Game");
 	
 	/**
 	 * The model for the {@link #runningGameList}.
 	 */
-	DefaultListModel<ClientGameRunningController> runningGameListModel = new DefaultListModel<>();
+	DefaultListModel<ClientGameController> runningGameListModel = new DefaultListModel<>();
 	/**
 	 * All the currently running games where this client can watch, but not join anymore.
 	 */
-	JList<ClientGameRunningController> runningGameList = new JList<>(runningGameListModel);
+	JList<ClientGameController> runningGameList = new JList<>(runningGameListModel);
 	
 	/**
 	 * This Button is used to open a window for the selected {@link #runningGameList} (where this client isn't a player) to watch it.
@@ -93,6 +100,11 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 * The Dialog Window for creating a new game.
 	 */
 	NewGameDialog newGameDialog;
+	
+	/**
+	 * Used to display the highscores for all the finished game.
+	 */
+	JButton viewHighscoreButton = new JButton("Show Highscores");
 	
 	
 	/**
@@ -111,6 +123,12 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 */
 	JButton whisperButton = new JButton("Open Chat");
 	//endregion
+	
+	
+	/**
+	 * All the games stored which have ended, but there's still a lobby open to chat.
+	 */
+	private HashSet<ClientGameController> endedGames = new HashSet<>();
 	
 	
 	//region Initializing and GUI-Layout
@@ -152,13 +170,14 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		Box gameCreationBox = Box.createVerticalBox();
 		gameCreationBox.add(newGameButton);
 		gameCreationBox.add(new JLabel("New Games:"));
-		JScrollPane openGameListScroller = new JScrollPane(openGameList);
+		JScrollPane openGameListScroller = new JScrollPane(waitingGameList);
 		gameCreationBox.add(openGameListScroller);
 		gameCreationBox.add(joinGameButton);
 		gameCreationBox.add(new JLabel("Games already playing:"));
 		JScrollPane runningGameListScroller = new JScrollPane(runningGameList);
 		gameCreationBox.add(runningGameListScroller);
 		gameCreationBox.add(watchGameButton);
+		gameCreationBox.add(viewHighscoreButton);
 		mainPanel.add(gameCreationBox, BorderLayout.LINE_START);
 		
 		// The right panel with the user list and the ability to create whisper chats
@@ -187,12 +206,13 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		
 		newGameButton.addActionListener(this);
 		joinGameButton.addActionListener(this);
-		openGameList.addMouseListener(this);
+		waitingGameList.addMouseListener(this);
 		watchGameButton.addActionListener(this);
 		runningGameList.addMouseListener(this);
+		viewHighscoreButton.addActionListener(this);
 		
-		openGameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		openGameList.setLayoutOrientation(JList.VERTICAL);
+		waitingGameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		waitingGameList.setLayoutOrientation(JList.VERTICAL);
 		runningGameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		runningGameList.setLayoutOrientation(JList.VERTICAL);
 		
@@ -210,41 +230,105 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	//region Methods
 	//region GameList Methods
 	/**
-	 * Adds a new game to the list of open games.
-	 * @param cgsc the new game.
+	 * Adds a new game to the list of games at the appropriate place according to tha game's state.
+	 * @param game the game to add.
 	 */
-	public void addNewGameToList(ClientGameStartController cgsc) {
-		openGameListModel.addElement(cgsc);
+	public void addGameToList(ClientGameController game) {
+		switch (game.getGameState()) {
+			case STARTING:
+				waitingGameListModel.addElement(game);
+				break;
+				
+			case RUNNING:
+				runningGameListModel.addElement(game);
+				break;
+				
+			case FINISHED:
+				endedGames.add(game);
+				break;
+		}
 	}
 	
-	/**
-	 * Adds a game to the list of running games.
-	 * @param cgc the running game.
-	 */
-	public void addRunningGameToList(ClientGameRunningController cgc) {
-		runningGameListModel.addElement(cgc);
-	}
 	
 	/**
 	 * Removes a deleted game.
-	 * @param cgsc the deleted game.
+	 * @param game the deleted game.
 	 */
-	public void removeGameFromList(ClientGameStartController cgsc) {
-		openGameListModel.removeElement(cgsc);
-		mainChatPanel.displayInfo("The game " + cgsc.getGameName() + " has been removed, because there were no players left.");
+	public void removeGameFromList(ClientGameController game) {
+		switch (game.getGameState()) {
+			case STARTING:
+				waitingGameListModel.removeElement(game);
+				break;
+				
+			case RUNNING:
+				runningGameListModel.removeElement(game);
+				break;
+				
+			case FINISHED:
+				endedGames.remove(game);
+				break;
+		}
+		
+		mainChatPanel.displayInfo("The game " + game.getGameName() + " has been removed, because there were no players left.");
 	}
 	
 	/**
-	 * Gets the Game with the specified name from the List of games.
-	 *
-	 * @return The ClientGameStartController or null if the name doesn't exist.
+	 * Gets the Game with the specified name from the List of open games.
+	 * @param gameName The name of the game.
+	 * @return The ClientGameController or null if the name doesn't exist.
 	 */
-	public ClientGameStartController getWaitingGameByName(String gameName) {
-		for (int i = 0; i < openGameListModel.getSize(); i++) {
-			if (openGameListModel.get(i).getGameName().equals(gameName)) {
-				return openGameListModel.get(i);
+	public ClientGameController getWaitingGameByName(String gameName) {
+		if (waitingGameListModel.isEmpty()) return null;
+		for (int i = 0; i < waitingGameListModel.getSize(); i++) {
+			if (waitingGameListModel.get(i).getGameName().equals(gameName)) {
+				return waitingGameListModel.get(i);
 			}
 		}
+		return null;
+	}
+	
+	/**
+	 * Gets the Game with the specified name from the List of running games.
+	 * @param gameName The name of the game.
+	 * @return The ClientGameController or null if the name doesn't exist.
+	 */
+	public ClientGameController getRunningGameByName(String gameName) {
+		if (runningGameListModel.isEmpty()) return null;
+		for (int i = 0; i < runningGameListModel.getSize(); i++) {
+			if (runningGameListModel.get(i).getGameName().equals(gameName)) {
+				return runningGameListModel.get(i);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Gets the Game with the specified name from {@link #endedGames}.
+	 * @param gameName The name of the game.
+	 * @return The ClientGameController or null if the name doesn't exist.
+	 */
+	public ClientGameController getEndedGameByName(String gameName) {
+		if (endedGames.isEmpty()) return null;
+		for (ClientGameController gameController : endedGames) {
+			if (gameController.getGameName().equals(gameName)) {
+				return gameController;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Gets the specified game.
+	 * @param gameName the given name.
+	 * @return the game with the given name if it exists, otherwise null.
+	 */
+	public ClientGameController getGameByName(String gameName) {
+		if (getRunningGameByName(gameName) != null)
+			return getRunningGameByName(gameName);
+		if (getWaitingGameByName(gameName) != null)
+			return getWaitingGameByName(gameName);
+		if (getEndedGameByName(gameName) != null)
+			return getEndedGameByName(gameName);
 		return null;
 	}
 	
@@ -256,23 +340,36 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	}
 	
 	/**
-	 * Calls the {@link ClientGameStartController#joinGame()} method of the game at the given position of the {@link #openGameList}.
-	 * @param index the given position at the openGameList.
+	 * Calls the {@link ClientGameController#askToJoinGame()} ()} method of the game at the given position of the {@link #waitingGameList}.
+	 * @param index the given position at the waitingGameList.
 	 */
 	private void joinGameAtIndex(int index) {
-		ClientGameStartController cgsc = openGameListModel.elementAt(index);
-		if (cgsc != null)
-			cgsc.joinGame();
+		ClientGameController game = waitingGameListModel.elementAt(index);
+		if (game != null)
+			game.askToJoinGame();
 	}
 	
 	/**
-	 * Calls the {@link ClientGameRunningController#watchGame()} method of the game at the given position of the {@link #runningGameList}.
+	 * Moves the game from the {@link #waitingGameList} to the {@link #runningGameList}.
+	 * @param gameController The game to move
+	 */
+	public void moveGameToRunning(ClientGameController gameController) {
+		if (waitingGameListModel.removeElement(gameController) == false) {
+			System.err.println("MainChatWindow#moveGameToRunning - Game to move not in waiting games!");
+			if (runningGameListModel.contains(gameController))
+				return;
+		}
+		runningGameListModel.addElement(gameController);
+	}
+	
+	/**
+	 * Calls the {@link ClientGameController#watchGame()} method of the game at the given position of the {@link #runningGameList}.
 	 * @param index the given position at the runningGameList.
 	 */
 	private void watchGameAtIndex(int index) {
-		ClientGameRunningController cgc = runningGameListModel.elementAt(index);
-		if (cgc != null)
-			cgc.watchGame();
+		ClientGameController game = runningGameListModel.elementAt(index);
+		if (game != null)
+			game.watchGame();
 	}
 	//endregion
 	
@@ -303,6 +400,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 * Opens a whisper chat tab with the selected user from {@link #userList}.
 	 *
 	 * @param user The user to chat with.
+	 * @return the ChatPanel which opened.
 	 */
 	public ChatPanel openWhisperChat(ClientUser user) {
 		// Check if there is already a tab open with that user.
@@ -416,13 +514,17 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 			openNewGameInputWindow();
 			
 		} else if (e.getSource() == joinGameButton) {
-			joinGameAtIndex(openGameList.getSelectedIndex());
+			joinGameAtIndex(waitingGameList.getSelectedIndex());
 			
 		} else if (e.getSource() == runningGameList) {
 			watchGameAtIndex(runningGameList.getSelectedIndex());
 			
 		} else if (e.getSource() == whisperButton) {
 			openWhisperChat(userListModel.elementAt(userList.getSelectedIndex()));
+			
+		} else if (e.getSource() == viewHighscoreButton) {
+			ClientCgethHandler.sendHighscoreRequest();
+			
 		}
 	}
 	
@@ -460,9 +562,9 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 				openWhisperChat(user);
 			}
 			
-		} else if (e.getSource() == openGameList) {
+		} else if (e.getSource() == waitingGameList) {
 			if (e.getClickCount() == 2) {
-				int index = openGameList.locationToIndex(e.getPoint());
+				int index = waitingGameList.locationToIndex(e.getPoint());
 				joinGameAtIndex(index);
 			}
 			

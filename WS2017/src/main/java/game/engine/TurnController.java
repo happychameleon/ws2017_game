@@ -1,5 +1,8 @@
 package game.engine;
 
+import client.commands.ClientEndtnHandler;
+import serverclient.User;
+
 import java.util.ArrayList;
 
 /**
@@ -13,12 +16,28 @@ public class TurnController {
 	/**
 	 * All the players Playing the game. The order of the Players in here represents the turn order
 	 * (players.get(0) is first, then players.get(1) etc.).
+	 * The players are sorted alphabetically by their names.
 	 * @see #getCurrentPlayer()
 	 */
 	private final ArrayList<Player> players;
 	
+	/**
+	 * @return {@link #players}.
+	 */
 	public ArrayList<Player> getPlayers() {
 		return players;
+	}
+	
+	/**
+	 * All the Teams in this game.
+	 */
+	private final ArrayList<Team> teams;
+	
+	/**
+	 * @return {@link #teams}.
+	 */
+	public ArrayList<Team> getTeams() {
+		return teams;
 	}
 	
 	/**
@@ -34,49 +53,104 @@ public class TurnController {
 	}
 	
 	/**
-	 * The index of the Player from {@link #players} which's turn it is.
+	 * The Player which's turn it is.
 	 */
-	private int currentPlayerIndex = 0;
+	private Player currentPlayer;
 	
 	/**
-	 * This returns the Player from {@link #players} at index {@link #currentPlayerIndex}.
-	 * @return The player which's turn it is.
+	 * @return {@link #currentPlayer}.
 	 */
 	public Player getCurrentPlayer() {
-		return players.get(currentPlayerIndex);
+		return currentPlayer;
 	}
 	//endregion
 	
 	
-	public TurnController(int playerCount, World world) {
+	public TurnController(ArrayList<User> users, World world) {
 		this.world = world;
 		
-		if (playerCount > 4) {
-			playerCount = 4;
-			System.out.println("Maximum 4 Players!");
+		if (users.size() > 4) {
+			System.err.println("TurnController#TurnController - There should never be more than 4 Players!");
+		} else if (users.size() < 1) {
+			System.err.println("TurnController#TurnController - There are no players?!");
 		}
 		
-		players = new ArrayList<>(playerCount);
-		
-		// TODO: Add the real Players instead of just generic ones.
-		for (int i = 0; i < playerCount; i++) {
-			Team newTeam = new Team("Team " + (i + 1));
-			Player newPlayer = new Player(newTeam, "Player " + (i + 1), world);
+		players = new ArrayList<>();
+		teams = new ArrayList<>();
+		for (int i = 0; i < users.size(); i++) {
+			User user = users.get(i);
+			Team newTeam = new Team("Team" + (players.size() + 1));
+			PlayerColor color = PlayerColor.values()[i];
+			Player newPlayer = new Player(newTeam, user, color, world);
 			players.add(newPlayer);
 			newTeam.addPlayerToTeam(newPlayer);
+			teams.add(newTeam);
+		}
+		currentPlayer = players.get(0);
+	}
+	
+	/**
+	 * This is called when the server informs the client that the current player's turn has ended.
+	 * After endTurn the next Player in {@link #players} has the turn.
+	 * When the next user who's turn it is has no characters left, the turn is immediately passed on.
+	 * It is also called, when a user who left had the turn.
+	 */
+	public void endTurn () {
+		getCurrentPlayer().endCurrentTurn();
+		if (players.indexOf(currentPlayer) == players.size() - 1) {
+			currentPlayer = players.get(0);
+		} else {
+			currentPlayer = players.get(players.indexOf(currentPlayer) + 1);
+		}
+		
+		world.printToGameLobby(getCurrentPlayer().getName() + " started their turn!");
+		
+		getCurrentPlayer().startNewTurn();
+		
+		if (world.getCurrentPlayer().hasCharactersLeft() == false && players.size() > 1) {
+			endTurn();
 		}
 	}
 	
-	
-	public void endTurn () {
-		getCurrentPlayer().endCurrentTurn();
-		currentPlayerIndex++;
-		if (players.size() <= currentPlayerIndex) { // == should also work, but just to be sure.
-			turnCount++;
-			currentPlayerIndex = 0;
+	/**
+	 * Sends a message to the server telling it about this client's ended turn.
+	 * Only possible, when this client is actually holding the turn.
+	 */
+	public void askServerToEndTurn() {
+		if (getCurrentPlayer().isThisClient()) {
+			ClientEndtnHandler.askServerToEndTurn(world.getGameController().getGameName());
 		}
-		System.out.println(getCurrentPlayer().getName() + " started their turn!");
-		getCurrentPlayer().startNewTurn();
+	}
+	
+	/**
+	 * Removes the player representing the given user from the list of players.
+	 * @param userToRemove The user to remove from the game.
+	 */
+	public void removePlayer(User userToRemove) {
+		System.out.println("TurnController#removePlayer");
+		// Remove the player
+		for (int i = 0; i < players.size(); i++) {
+			Player player = players.get(i);
+			if (player.getUser() == userToRemove) {
+				// Remove all this player's characters if there are any.
+				if (player.hasCharactersLeft()) {
+					for (Character character : world.getAllCharacterOfOwner(player)) {
+						System.out.println("TurnController#removePlayer - Character Removed.");
+						world.removeCharacter(character);
+					}
+				} else {
+					System.out.printf("TurnController#removePlayer - Player %s had no Characters left!%n", player.getName());
+				}
+				if (getCurrentPlayer() == player) {
+					// Give up the turn (both on the server and client side. Doesn't need to be synchronised, since leavg is already synchronised.
+					endTurn();
+				}
+				// Remove Player
+				player.getTeam().removePlayerFromTeam(player);
+				players.remove(player);
+				break;
+			}
+		}
 	}
 	
 	

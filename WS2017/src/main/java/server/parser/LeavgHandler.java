@@ -1,7 +1,6 @@
 package server.parser;
 
-import game.ServerGameRunningController;
-import game.startscreen.ServerGameStartController;
+import game.ServerGameController;
 import server.Server;
 import serverclient.User;
 
@@ -24,19 +23,24 @@ public class LeavgHandler extends CommandHandler {
 			return;
 		}
 		
-		ServerGameStartController waitingGame = Server.getWaitingGameByName(gameName);
-		if (waitingGame != null) {
-			waitingGame.removeUser(user);
+		ServerGameController gameController = Server.getGameByName(gameName);
+		if (gameController != null) {
+			gameController.removeUser(user);
 			return;
 		}
 		
-		ServerGameRunningController runningGame = Server.getRunningGameByName(gameName);
-		if (runningGame != null) {
-			runningGame.removeUser(user);
-			return;
-		}
+		System.err.println("LeavgHandler#handleCommand - Game doesn't exist on server?");
 		
-		System.err.println("leavg: Game Name doesn't exist: " + gameName);
+		writeLeavgToClients(gameName, username);
+		
 	}
 	
+	/**
+	 * Send a message to all Clients about the user who left the game.
+	 * @param gameName The name of the game which the user left.
+	 * @param username The name of the user who left.
+	 */
+	public static void writeLeavgToClients(String gameName, String username) {
+		Server.writeToAllClients(String.format("leavg %s %s", gameName, username));
+	}
 }

@@ -1,5 +1,8 @@
 package game.engine;
 
+import game.ClientGameController;
+import game.gamegui.Window;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -14,19 +17,31 @@ import java.util.Set;
 public class Character {
 
 	//region Data
+	/**
+	 * The World this Character is in.
+	 */
 	private World world;
 	
 	/**
 	 * The Player who controls this Character.
 	 */
-    private Player owner;
+    private final Player owner;
 	
+	/**
+	 * @return {@link #owner}.
+	 */
 	public Player getOwner() {
         return owner;
     }
 	
-    private BufferedImage sprite;
-    
+	/**
+	 * The Sprite for this Character.
+	 */
+	private BufferedImage sprite;
+	
+	/**
+	 * @return {@link #sprite}.
+	 */
 	public BufferedImage getSprite() {
 		return sprite;
 	}
@@ -34,11 +49,22 @@ public class Character {
 	/**
 	 * The movement Cost in {@link #actionPoints} per Tile moved.
 	 */
-	public static final int movementCostPerTile = 3;
+	private static final int movementCostPerTile = 3;
 	
+	/**
+	 * @return {@link #movementCostPerTile}.
+	 */
+	public static int getMovementCostPerTile() {
+		return movementCostPerTile;
+	}
+	
+	/**
+	 * The Tile on which this Character is.
+	 */
 	private Tile tile;
+	
     /**
-     * The Tile on which this Character is.
+     * @return {@link #tile}.
      */
     public Tile getTile() {
         return tile;
@@ -46,6 +72,7 @@ public class Character {
 	
 	/**
 	 * Sets the Character on the specified Tile, only if the Character hadn't had a Tile before.
+	 * @param startingTile The Tile where this Character should start on.
 	 * @return true if it was successful, false if the character already had a Tile.
 	 */
 	public boolean setStartingTile(Tile startingTile) {
@@ -61,7 +88,7 @@ public class Character {
 	 * This is only used by the Character themselves to move.
 	 */
 	private void setTile(Tile newTile) {
-    	if (newTile.isWalkable(true)) {
+    	if (newTile.isWalkable(true) == false) {
     		System.err.println("Character#setTile - Tile already occupied!");
     		return;
 	    }
@@ -76,8 +103,11 @@ public class Character {
 	 * The main Weapon held by this Character.
 	 */
 	private Weapon weapon;
-    
-    public Weapon getWeapon() { return weapon; }
+	
+	/**
+	 * @return {@link #weapon}.
+	 */
+	public Weapon getWeapon() { return weapon; }
 	
 	public void setWeapon(Weapon weapon) {
     	if (this.weapon != null) {
@@ -98,16 +128,18 @@ public class Character {
 	
 	/**
 	 * This adds or removes wetness and checks whether the Character is still in the game.
+	 * @param attackingCharacter The Character who attacked this Character.
 	 * @param wetnessChange By how much the wetness changes. Can be negative to remove wetness.
 	 */
-	public void changeWetness(int wetnessChange) {
+	public void changeWetness(Character attackingCharacter, int wetnessChange) {
 		wetness += wetnessChange;
 		if (wetness < 0) {
 			wetness = 0;
 		}
 		if (wetness >= 100) {
-			KillCharacter();
+			KillCharacter(attackingCharacter);
 		}
+		tile.setNeedsGraphicsUpdate();
 	}
 	
 	
@@ -148,31 +180,6 @@ public class Character {
 	}
 	
 	/**
-	 * Removes the given value from {@link #actionPoints} ONLY IF there are enough actionPoints left.
-	 * Called in an if statement before carrying out the action inside the if statement. In the else part optionally a
-	 * message can be displayed to the player (e.g. "not enough action points!").
-	 * @param actionPointsToRemove How much actionPoints the action cost.
-	 * @return <code>true</code> if the action could be carried out and the actionPoints were removed,
-	 * <code>false</code> if there weren't enough action points and the action could not be carried out.
-	 */
-	public boolean removeActionPoints (int actionPointsToRemove) {
-		if (actionPoints < actionPointsToRemove) {
-			System.out.println("Character.removeActionPoints - FAIL current actionPoints: " + actionPoints + "; actionPointsToRemove: " + actionPointsToRemove);
-			return false;
-		}
-		this.actionPoints -= actionPointsToRemove;
-		System.out.println("Character.removeActionPoints - SUCCESS current actionPoints: " + actionPoints + "; actionPointsToRemove: " + actionPointsToRemove);
-		return true;
-	}
-	
-	/**
-	 * Sets the current {@link #actionPoints} to the value of {@link #maximumActionPoints}.
-	 */
-	private void resetActionPoints() {
-		this.actionPoints = maximumActionPoints;
-	}
-	
-	/**
 	 * The name of this Character.
 	 */
 	private String name;
@@ -182,7 +189,15 @@ public class Character {
 	}
 	//endregion
 	
-	
+	/**
+	 * Creates the Character and reads in the Sprite.
+	 * The StartPosition has to be set after this with {@link #setStartingTile(Tile)}.
+	 *
+	 * @param world {@link #world}.
+	 * @param name {@link #name}.
+	 * @param owner {@link #owner}.
+	 * @param weapon {@link #weapon}.
+	 */
 	public Character(World world, String name, Player owner, Weapon weapon) {
 		this.world = world;
 		this.name = name;
@@ -190,20 +205,58 @@ public class Character {
         this.weapon = weapon;
         
         this.actionPoints = maximumActionPoints;
-        
-        if (tile != null && tile.getCharacter() != null) {
-            System.out.println("ERROR: new Character placed on a Tile where there is already one!");
-        } else {
-            tile.setCharacter(this);
-        }
 		
-        String imageString = "/images/characters/character__topDown_" + owner.getColor() + ".png";
+        String imageString = "/images/characters/character__topDown_" + owner.getColor().name().toLowerCase() + ".png";
 		
 		try {
 			sprite = ImageIO.read(getClass().getResource(imageString));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+	}
+	
+	
+	
+	//region Methods
+	/**
+	 * Removes the given value from {@link #actionPoints} ONLY IF there are enough actionPoints left.
+	 * Called in an if statement before carrying out the action inside the if statement. In the else part optionally a
+	 * message can be displayed to the player (e.g. "not enough action points!").
+	 * @param actionPointsToRemove How much actionPoints the action cost.
+	 * @return <code>true</code> if the action could be carried out and the actionPoints were removed,
+	 * <code>false</code> if there weren't enough action points and the action could not be carried out.
+	 */
+	public boolean removeActionPoints (int actionPointsToRemove) {
+		if (canRemoveActionPoints(actionPointsToRemove)) {
+			this.actionPoints -= actionPointsToRemove;
+			System.out.println("Character.removeActionPoints - SUCCESS current actionPoints: " + actionPoints + "; actionPoints removed: " + actionPointsToRemove);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Checks whether there are enough actionPoints to remove for an action without removing them.
+	 * If necessary to check the remaining ActionPoints without removing them, use this method. Otherwise use {@link #removeActionPoints(int)}
+	 * @param actionPointsToRemove How much action points would be needed.
+	 * @return <code>true</code> if the action could be carried out,
+	 * <code>false</code> if there aren't enough action points and the action could not be carried out.
+	 */
+	public boolean canRemoveActionPoints(int actionPointsToRemove) {
+		if (actionPoints < actionPointsToRemove) {
+			System.out.println("Character.canRemoveActionPoints - FAIL current actionPoints: " + actionPoints + "; actionPointsToRemove: " + actionPointsToRemove);
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Sets the current {@link #actionPoints} to the value of {@link #maximumActionPoints}.
+	 */
+	private void resetActionPoints() {
+		this.actionPoints = maximumActionPoints;
 	}
     
     /**
@@ -222,7 +275,7 @@ public class Character {
     	if (weapon != null)
 		    s += ", Weapon: " + weapon.toString();
     	if (owner != null)
-    		s+= ", Owner: " + owner.name;
+    		s+= ", Owner: " + owner.getName();
     	s += ", Wetness: " + wetness + "%";
     	return s;
     }
@@ -230,22 +283,31 @@ public class Character {
 	/**
 	 * UNDONE! This Method removes the Character from play and drops all their stuff on the ground.
 	 * It also checks the winning conditions and ends the game if necessary.
+	 * @param attackingCharacter The Character who killed this Character.
 	 */
-	public void KillCharacter() {
+	public void KillCharacter(Character attackingCharacter) {
 		if (tile != null) {
 			tile.setCharacter(null);
 		}
+    	// If more Lists with characters are implemented, remove them from there to!
+		Player killingPlayer = attackingCharacter.getOwner();
+		Player deadCharacterOwner = this.getOwner();
+		
+		System.out.println(this.toString() + " has been 'killed' by " + killingPlayer.getName() + "!");
+		
+		killingPlayer.addKilledCharacter(this.getName());
+		deadCharacterOwner.addDeadCharacter(this.getName());
+		
 		world.removeCharacter(this);
-    	// If more Lists with characters are implemented, remove them from there to! (E.g. Every Player will have a Character List.)
-		System.out.println(this.toString() + " has been \"killed\"!");
-		//TODO? Add to list of killed Characters for statistic or "kill" count or other info.
-    }
+		
+	}
 	
 	/**
 	 * Moves the Character by one Tile.
 	 * @param direction The direction (N==0; E==1; S==2; W==3) where to move.
 	 * @return Whether the move was successful <code>true</code> or not <code>false</code> (e.g. blocked by sth).
 	 */
+	@Deprecated
 	public boolean moveCharacter (int direction) {
 		if (direction > 3 || direction < 0) {
 			System.out.println("moveCharacter - ERROR: No valid direction");
@@ -289,21 +351,25 @@ public class Character {
 	 * @return <code>true</code> if successful, <code>false</code> otherwise.
 	 */
 	public boolean moveCharacterTo(Tile destinationTile, int distance) {
-		if (destinationTile == null) {
-			return false;
-		}
 		
-		if (destinationTile.isWalkable(true)) {
-			if (this.removeActionPoints(distance * movementCostPerTile)) { // TODO: Check for action points!
+			if (this.removeActionPoints(distance * movementCostPerTile)) {
 				setTile(destinationTile);
 				System.out.println(this.toString() + " moved to " + destinationTile);
+				
+				world.setSelectedTile(null);
+				if (world.getGameController() instanceof ClientGameController) {
+					Window window = ((ClientGameController) world.getGameController()).getWindow();
+					window.setWalkRangeTiles(null);
+					window.setAttackRangeTiles(null);
+					window.getMainGamePanel().repaintImage();
+				}
+				
 				return true;
 			} else {
+				System.err.println("Character#moveCharacterTo - Couldn't remove action Points. Check has been forgotten.");
 				return false;
 			}
-		} else {
-			return false;
-		}
+		
     }
 	
 	public HashSet<Character> getAllEnemyCharactersInRange () {
@@ -335,4 +401,6 @@ public class Character {
 	public void resetForNewTurn () {
 		resetActionPoints();
 	}
+	//endregion
+	
 }

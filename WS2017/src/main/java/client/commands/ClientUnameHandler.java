@@ -9,7 +9,7 @@ import client.Client;
  *
  * Created by flavia on 26.03.17.
  */
-public class ClientUnameHandler extends CommandHandler {
+public class ClientUnameHandler extends ClientCommandHandler {
 	
 	@Override
 	public void handleCommand() {

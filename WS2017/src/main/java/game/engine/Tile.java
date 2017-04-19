@@ -10,45 +10,74 @@ import java.util.HashMap;
 public class Tile {
 	
 	//region TileData
-	
+	/**
+	 * Whether the Tile Graphic needs an update because something changed.
+	 */
 	private boolean needsGraphicsUpdate;
 	
-	public boolean needsGraphicsUpdate() {
+	/**
+	 * @return {@link #needsGraphicsUpdate}
+	 */
+	public boolean getNeedsGraphicsUpdate() {
 		return needsGraphicsUpdate;
 	}
 	
+	/**
+	 * Sets {@link #needsGraphicsUpdate} to true.
+	 */
 	public void setNeedsGraphicsUpdate() {
 		this.needsGraphicsUpdate = true;
 	}
 	
+	/**
+	 * Sets {@link #needsGraphicsUpdate} to the given value.
+	 * @param b the given value.
+	 */
 	public void setNeedsGraphicsUpdate(boolean b) {
 		this.needsGraphicsUpdate = b;
 	}
 	
-	private final int x;
 	/**
-	 *  The X position on the game map.
+	 * The X position on the game map.
+	 */
+	private final int x;
+	
+	/**
+	 * @return {@link #x}
 	 */
 	public int getXPosition() {
 		return x;
 	}
 	
-	private final int y;
 	/**
-	 *  The Y position on the game map.
+	 * The Y position on the game map.
+	 */
+	private final int y;
+	
+	/**
+	 * @return {@link #y}
 	 */
 	public int getYPosition() {
 		return y;
 	}
 	
+	/**
+	 * The {@link TileType} of this Tile.
+	 */
 	private TileType tileType;
 	
+	/**
+	 * @return {@link #tileType}.
+	 */
 	public TileType getTileType() {
 		return tileType;
 	}
 	
+	/**
+	 * @return The correct Sprite for this Tile's {@link TileType}.
+	 */
 	public BufferedImage getSprite() {
-		return  tileType.getTileSprite();
+		return tileType.getTileSprite();
 	}
 	
 	/**
@@ -66,22 +95,27 @@ public class Tile {
      * Most Tiles are walkable. Others (e.g. Trees, Hedges, Walls etc.) aren't.
      * Whether they are walkable depends on the TileType (undone: and on whether something on the Tile is blocking it).
      * @param considerCharacters If <code>true</code> Tiles with a Character considered non-walkable.
+     * @return true if this Tile is walkable, otherwise false.
      */
     public boolean isWalkable(boolean considerCharacters) {
-    	//TODO: Add check for stuff blocking the Tile.
+    	//TODO? (optionaly) Add check for stuff blocking the Tile.
 	    if (considerCharacters && getCharacter() != null) {
 	    	return false;
 	    }
-    	return tileType.isWalkable();
+    	return tileType.getIsWalkable();
     }
-
+	
+	/**
+	 * All walkable tiles can be shot through,
+	 * most non-walkable Tiles can't be shot through (like Trees, Walls)
+	 * but some can (like Water).
+	 */
     private boolean canShootThrough = true;
-    /**
-     * All walkable tiles can be shot through,
-     * most non-walkable Tiles can't be shot through (like Trees, Walls)
-     * but some can (like Water).
-     */
-    public boolean canShootThrough() {
+	
+	/**
+	 * @return {@link #canShootThrough}
+	 */
+	public boolean getCanShootThrough() {
         return canShootThrough;
     }
 	
@@ -90,11 +124,24 @@ public class Tile {
 	 */
     private Character character;
 	
-	public Character getCharacter() { return character; }
+	/**
+	 * @return {@link #character}
+	 */
+	public Character getCharacter() {
+		return character;
+	}
 	
+	/**
+	 * Sets the character of this Tile.
+	 * @param character The new Character or null.
+	 */
 	public void setCharacter(Character character) {
 		this.character = character;
-		
+		if (character == null) {
+			System.out.println("Tile#setCharacter - Character on Tile " + this + " now: null");
+		} else {
+			System.out.println("Tile#setCharacter - Character on Tile " + this + " now: " + character);
+		}
 		this.setNeedsGraphicsUpdate();
 	}
 	//endregion
@@ -186,7 +233,7 @@ public class Tile {
             for (Tile n : t.getNeighbours(false)) {
                 if (n != null && (tilesInRange.containsKey(n) == false ||
                         tilesInRange.containsKey(n) && tilesInRange.get(n) > currentTileRange)) {
-                    if (withWalking && n.isWalkable(true) == false) //TODO: Should a Character be able to walk through Characters in the same Team?
+                    if (withWalking && n.isWalkable(true) == false)
                         continue;
                     tilesInRange.put(n, currentTileRange + 1);
                     tilesToCheck.add(n);
@@ -213,69 +260,5 @@ public class Tile {
 	}
 	//endregion
 	
-	
-//	//region Visualisation
-//	/**
-//	 * This method prepares the visualisation of this Tile.
-//	 */
-//	private void VisualisationStart() {
-//
-//    	currentPixels = new Color[tileSizeInPixels][tileSizeInPixels];
-//
-//		RecalculateCurrentPixels();
-//
-//	}
-//
-//	/**
-//	 * This is the size of one Tile in pixels for visualisation. It doesn't represent the pixels on the screen.
-//	 * These depend on the Zoom Level.
-//	 */
-//	public static final int tileSizeInPixels = 16;
-//
-//	/**
-//	 * This array represents the current Pixels of this Tile and how they should be displayed at the moment.
-//	 * It is recalculated every time something on this Tile changes.
-//	 */
-//	private Color[][] currentPixels;
-//
-//	public Color getCurrentPixelAt(int x, int y) {
-//		return currentPixels[x][y];
-//	}
-//
-//	/**
-//	 * This method updates the currentPixels.
-//	 * All the pixels for the base tile, item and Character are recalculated.
-//	 * It should be called every time something changed on the Tile.
-//	 */
-//	public void RecalculateCurrentPixels() {
-//		calculatePixelsBaseTile();
-//		calculatePixelsItem();
-//		calculatePixelsCharacter();
-//	}
-//
-//	private void calculatePixelsBaseTile() {
-//		for (int x = 0; x < tileSizeInPixels; x++) {
-//			for (int y = 0; y < tileSizeInPixels; y++) {
-//				currentPixels[x][y] = tileType.pixels[x][y];
-//			}
-//		}
-//	}
-//
-//	private void calculatePixelsItem() {
-//		//TODO: Item Visualisation.
-//	}
-//
-//	private void calculatePixelsCharacter() {
-//		if (character == null) {
-//			// There is no character on this Tile.
-//			return;
-//		}
-//		//TODO: Character visualisation.
-//	}
-//
-//
-//
-//
-//	//endregion
 	
 }

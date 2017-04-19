@@ -1,10 +1,11 @@
 package client.commands;
 
 import client.Client;
-import game.startscreen.ClientGameStartController;
+import game.ClientGameController;
+import game.GameMap;
+import game.GameState;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * This command is received when a client has opened a new game.
@@ -13,28 +14,44 @@ import java.util.HashSet;
  *
  * Created by flavia on 31.03.17.
  */
-public class ClientNewgmHandler extends CommandHandler {
+public class ClientNewgmHandler extends ClientCommandHandler {
 	
 	
 	@Override
 	public void handleCommand() {
-		int maxPoints = Integer.parseInt(argument.substring(0, argument.indexOf(" ")));
-		String gameName = argument.substring(argument.indexOf(" ") + 1, argument.length());
+		if (Client.isLoggedIn() == false)
+			return;
 		
-		ClientGameStartController newGame = new ClientGameStartController(new HashMap<>(), new HashSet<>(), gameName, maxPoints);
+		int maxPoints = Integer.parseInt(getAndRemoveNextArgumentWord());
+		String gameName = getAndRemoveNextArgumentWord();
+		String mapName = getAndRemoveNextArgumentWord();
+		System.out.printf("maxPoints: %d gameName: %s mapName: %s%n", maxPoints, gameName, mapName);
 		
-		Client.getMainChatWindow().addNewGameToList(newGame);
+		GameMap map = GameMap.getMapForName(mapName, true);
 		
-		Client.getMainChatWindow().getMainChatPanel().displayInfo("A new game called " + newGame.getGameName() + " has been created.");
+		ClientGameController newGame = new ClientGameController(GameState.STARTING, maxPoints, gameName, new HashMap<>(), map);
+		
+		Client.getMainWindow().addGameToList(newGame);
+		
+		Client.getMainWindow().getMainChatPanel().displayInfo("A new game called " + newGame.getGameName() + " has been created.");
 		
 	}
 	
 	@Override
 	public void handleAnswer(boolean isOK) {
 		if (isOK == false && argument.startsWith("game name taken")) {
-			Client.getMainChatWindow().getMainChatPanel().displayError("The name for the new Game already exists. Please choose a new one!");
+			Client.getMainWindow().getMainChatPanel().displayError("The name for the new Game already exists. Please choose a new one!");
 		}
 	}
 	
-	
+	/**
+	 * Sends the message to ask the server to create the game.
+	 * @param maxPoints The max points to choose the team from.
+	 * @param gameName The name of the game.
+	 * @param gameMap The map of the game.
+	 */
+	public static void sendGameCreationMessage(int maxPoints, String gameName, GameMap gameMap) {
+		Client.sendMessageToServer(String.format("newgm %d %s %s", maxPoints, gameName, gameMap.getName()));
+		
+	}
 }

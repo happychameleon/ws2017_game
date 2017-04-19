@@ -2,8 +2,7 @@ package client;
 
 import client.clientgui.Login;
 import client.clientgui.MainChatWindow;
-import game.ClientGameRunningController;
-import game.GameController;
+import game.ClientGameController;
 
 import java.io.*;
 import java.net.Socket;
@@ -22,11 +21,13 @@ public class Client {
 	
 	/**
 	 * The main chat window. Here every logged in client can read everything.
-	 * TODO Meilenstein 3: possibility for private chats (different windows).
 	 */
 	private static MainChatWindow mainChatWindow;
 	
-	public static MainChatWindow getMainChatWindow() {
+	/**
+	 * @return {@link #mainChatWindow}.
+	 */
+	public static MainChatWindow getMainWindow() {
 		return mainChatWindow;
 	}
 	
@@ -48,6 +49,9 @@ public class Client {
 	 */
 	protected static String commandLineUsername = "";
 	
+	/**
+	 * @return {@link #commandLineUsername}.
+	 */
 	public static String getCommandLineUsername() {
 		return commandLineUsername;
 	}
@@ -80,11 +84,6 @@ public class Client {
 	public static ArrayList<ClientUser> getAllUsers() {
 		return (ArrayList<ClientUser>) users.clone();
 	}
-	
-	/**
-	 * A list of all the running games.
-	 */
-	private static ArrayList<ClientGameRunningController> runningGameList = new ArrayList<>();
 	
 	/**
 	 * Gets the User for the specific username.
@@ -169,7 +168,7 @@ public class Client {
 	
 	/**
 	 * Reads in all the users from the cgetu command once we log in with a name.
-	 * @param usernames
+	 * @param usernames the given usernames.
 	 */
 	public static void readInAllUsernames(ArrayList<String> usernames) {
 		if (mainChatWindow != null) {
@@ -193,27 +192,13 @@ public class Client {
 	
 	/**
 	 * Returns the game with the given name if it exists, otherwise null.
+	 * Gets starting and running games.
 	 * @param gameName The name of the game.
-	 * @return the GameController or null.
+	 * @return the ClientGameController or null.
 	 */
-	public static GameController getGameByName(String gameName) {
-		for (int i = 0; i < runningGameList.size(); i++) {
-			if (runningGameList.get(i).getGameName().equals(gameName)) {
-				return runningGameList.get(i);
-			}
-		}
-		GameController waitingGame = mainChatWindow.getWaitingGameByName(gameName);
-		if (waitingGame != null) {
-			return waitingGame;
-		}
-		return null;
-	}
-	
-	/**
-	 * TODO: Gets the Game from the list of running Games(also todo).
-	 */
-	public static ClientGameRunningController getRunningGameByName(String gameName) {
-		return null;
+	public static ClientGameController getGameByName(String gameName) {
+		return mainChatWindow.getGameByName(gameName);
+		
 	}
 	
 	/**
@@ -229,14 +214,11 @@ public class Client {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	public static void main(String[] args){
+	/**
+	 * Starts the Client and tries to connect to the server.
+	 * @param args The command line arguments.
+	 */
+	public static void clientMain(String[] args){
         try{
         	// default values
         	String hostIP = "127.0.0.1";
@@ -257,13 +239,13 @@ public class Client {
 	        serverInputStream = serverSocket.getInputStream();
 	        serverOutputStream = serverSocket.getOutputStream();
 	        serverSocket.setSoTimeout(200);
-            ClientThread th = new ClientThread(serverSocket);
+	        ClientThread th = new ClientThread(serverSocket);
             th.start();
             startClient();
-            BufferedReader commandlineInput = new BufferedReader(new InputStreamReader(System.in));
+	        BufferedReader commandlineInput = new BufferedReader(new InputStreamReader(System.in));
             String line = "";
             while (true){
-                line = commandlineInput.readLine();
+	            line = commandlineInput.readLine();
                 serverOutputStream.write(line.getBytes());
                 serverOutputStream.write('\r');
                 serverOutputStream.write('\n');

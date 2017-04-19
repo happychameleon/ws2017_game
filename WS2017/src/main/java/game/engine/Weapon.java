@@ -27,16 +27,26 @@ public class Weapon {
 		return pointCost;
 	}
 	
+	/**
+	 * The range of the Weapon in Tiles
+	 */
 	private final int range;
+	
     /**
-     * The range of the Weapon in Tiles
+     * @return {@link #range}
      */
     public int getRange() {
         return range;
     }
-    
-    private final int damage;
 	
+	/**
+	 * The amount of wetness this weapon adds on hit.
+	 */
+	private final int damage;
+	
+	/**
+	 * @return {@link #damage}.
+	 */
 	public int getDamage() {
 		return damage;
 	}
@@ -44,6 +54,7 @@ public class Weapon {
 	/**
 	 * The radius of Tiles effected when the center Tile is shot by this Weapon.
 	 * Most Weapons have 0. Special Weapons like e.g. Water Balloons have a aOE > 0.
+	 * Currently unused. Every Weapon has aOE == 0.
 	 */
 	private int areaOfEffect = 0;
 	
@@ -72,25 +83,36 @@ public class Weapon {
 	 */
 	private static ArrayList<Weapon> weaponPrototypes;
 	
+	public static Weapon getWeaponForName(String weaponName) {
+		for (Weapon weapon : weaponPrototypes) {
+			if (weapon.getName().equals(weaponName))
+				return weapon;
+		}
+		return null;
+	}
+	
 	/**
 	 * Creates all the prototype weapons.
 	 */
-	private static void createWeaponPrototypes() {
+	public static void createWeaponPrototypes() {
+		if (weaponPrototypes != null) {
+			System.err.println("Weapon#createWeaponPrototypes - Already created!");
+			return;
+		}
 		weaponPrototypes = new ArrayList<>();
 		
-		//TODO: (maybe) instead of hardcoding the weapons here we could read them in from a file.
+		// TODO? (maybe) instead of hardcoding the weapons here we could read them in from a file.
 		Weapon.addWeaponPrototype("Medium Water Gun", 5, 4, 3, 25);
 		Weapon.addWeaponPrototype("Heavy Water Gun", 4, 2, 4, 60);
+		// TODO? add more weapons.
 		
-		//TODO: Add more weapons.
+		Weapon.addWeaponPrototype("Totaly OP Weapon", 2, 20, 2, 300);
 	}
 	
 	/**
 	 * @return A shallow copy of {@link #weaponPrototypes}.
 	 */
 	public static ArrayList<Weapon> getWeaponPrototypes() {
-		if (weaponPrototypes == null)
-			createWeaponPrototypes();
 		return (ArrayList<Weapon>) weaponPrototypes.clone();
 	}
 	
@@ -98,19 +120,18 @@ public class Weapon {
 	 * @return An Array with all the Weapons from {@link #weaponPrototypes}.
 	 */
 	public static Weapon[] getWeaponPrototypesArray() {
-		if (weaponPrototypes == null)
-			createWeaponPrototypes();
 		return weaponPrototypes.toArray(new Weapon[]{});
 	}
 	
 	/**
-	 * This adds a new prototype to {@link #weaponPrototypes}.
-	 * @param name
-	 * @param pointCost
-	 * @param damage
-	 * @param actionPointPerShot
-	 * @param areaOfEffect
-	 * @param range
+	 * This adds a new prototype to {@link #weaponPrototypes} to create Weapon Instances from.
+	 *
+	 * @param name {@link #name}.
+	 * @param pointCost {@link #pointCost}.
+	 * @param damage {@link #damage}.
+	 * @param actionPointPerShot {@link #actionPointPerShot}.
+	 * @param areaOfEffect {@link #areaOfEffect}.
+	 * @param range {@link #range}.
 	 */
 	public static void addWeaponPrototype(String name, int pointCost, int damage, int actionPointPerShot, int areaOfEffect, int range) {
 		//TODO: Add sprite to prototype.
@@ -120,11 +141,12 @@ public class Weapon {
 	
 	/**
 	 * {@link #addWeaponPrototype(String, int, int, int, int, int)} but with {@link #areaOfEffect} set to 0;
-	 * @param name The name of the weapon
-	 * @param pointCost
-	 * @param range
-	 * @param actionPointPerShot
-	 * @param damage
+	 *
+	 * @param name {@link #name}.
+	 * @param pointCost {@link #pointCost}.
+	 * @param range {@link #range}.
+	 * @param actionPointPerShot {@link #actionPointPerShot}.
+	 * @param damage {@link #damage}.
 	 */
 	public static void addWeaponPrototype(String name, int pointCost, int range, int actionPointPerShot, int damage) {
 		
@@ -133,8 +155,13 @@ public class Weapon {
 	
 	/**
 	 * This is only used to create Weapon prototypes via {@link #addWeaponPrototype}.
-	 * @param pointCost
-	 * @param range The range of the Weapon.
+	 *
+	 * @param name {@link #name}.
+	 * @param pointCost {@link #pointCost}.
+	 * @param range {@link #range}.
+	 * @param damage {@link #damage}.
+	 * @param actionPointPerShot {@link #actionPointPerShot}.
+	 * @param areaOfEffect {@link #areaOfEffect}.
 	 */
 	private Weapon(String name, int pointCost, int range, int damage, int actionPointPerShot, int areaOfEffect) {
 		this.pointCost = pointCost;
@@ -148,8 +175,7 @@ public class Weapon {
 	
 	/**
 	 * This creates a new Instance of a Weapon with the values copied from the given prototype from {@link #weaponPrototypes}.
-	 * @param weaponPrototype
-	 *
+	 * @param weaponPrototype The Weapon Prototype to create this Weapon Instance from.
 	 */
 	public Weapon(Weapon weaponPrototype) {
 		this.range = weaponPrototype.range;
@@ -173,4 +199,5 @@ public class Weapon {
 	public String getStartScreenString() {
 		return name + " (" + pointCost + "Pt)";
 	}
+	
 }

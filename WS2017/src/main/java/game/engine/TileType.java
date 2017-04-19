@@ -10,8 +10,8 @@ import java.io.IOException;
  */
 public enum TileType {
 	
-	GRASS ("grass.png", true),
-	WATER ("water.png", false);
+	GRASS ("grass.png", 'G', true),
+	WATER ("water.png", 'W', false);
 	
 	private BufferedImage tileSprite;
 	
@@ -20,27 +20,47 @@ public enum TileType {
 	}
 	
 	/**
+	 * The char representing this TileType in the map files.
+	 */
+	private final char charRepresentation;
+	
+	/**
 	 * Can a Character ever enter this tile?
 	 */
 	private final boolean isWalkable;
-	public boolean isWalkable() {
+	
+	/**
+	 * @return {@link #isWalkable}.
+	 */
+	public boolean getIsWalkable() {
 		return isWalkable;
 	}
 	
-	TileType(String tileFileName, boolean isWalkable) {
+	TileType(String tileFileName, char charRepresentation, boolean isWalkable) {
+		this.charRepresentation = charRepresentation;
 		
 		this.isWalkable = isWalkable;
 		
-		
 		try {
-			System.out.println("tileSprite initialised START!");
 			tileSprite = ImageIO.read(getClass().getResource("/images/tiles/" + tileFileName));
-			System.out.println("tileSprite initialised!");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 	}
 	
-	
+	/**
+	 * Gets the correct TileType for the char from the MapFile.
+	 * The default TileType is grass if the char doesn't mach any. Used for special Tiles like eg CharacterStartingTiles which are represented as numbers for the team.
+	 * @param c The char representing a TileType.
+	 * @return The TileType.
+	 */
+	public static TileType getTypeForChar(char c) {
+		for (TileType tileType : values()) {
+			if (tileType.charRepresentation == c) {
+				return tileType;
+			}
+		}
+		return GRASS;
+	}
 }

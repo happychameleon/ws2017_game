@@ -21,20 +21,37 @@ public enum Command {
 	newgm(new NewgmHandler()),
 	joing(new JoingHandler()),
 	leavg(new LeavgHandler()),
-	ready(new ReadyHandler());
+	ready(new ReadyHandler()),
+	stgam(new StgamHandler()),
+	endtn(new EndtnHandler()),
+	attch(new AttchHandler()),
+	chpos(new ChposHandler()),
+	chpow(new ChpowHandler()),
+	chwea(new ChweaHandler()),
+	rmgam(new RmgamHandler()),
+	uhigh(new UhighHandler()),
+	cgeth(new CgethHandler());
 	
 	/**
 	 * The correct CommandHandler which processes the command.
 	 */
 	private final CommandHandler commandHandler;
 	
+	/**
+	 * Creates the Command.
+	 * @param commandHandler The CommandHandler belonging to this Command.
+	 */
 	Command(CommandHandler commandHandler) {
 		this.commandHandler = commandHandler;
 	}
 	
+	
 	/**
 	 * First sets the commandParser and the argument and then handles the Command.
 	 * @see CommandHandler#handleCommand()
+	 *
+	 * @param commandParser The CommandParser to set.
+	 * @param argument The argument given with the command.
 	 */
 	public void handleArgument(CommandParser commandParser, String argument) {
 		commandHandler.setCommandParser(commandParser);

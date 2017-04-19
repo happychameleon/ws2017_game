@@ -1,17 +1,30 @@
 package client;
 
-import client.commands.Answer;
+import client.commands.ClientAnswer;
+import client.commands.ClientCommandHandler;
 
 /**
- * Gets the answer and after checking it for validity it sends the answer to the correct {@link client.commands.CommandHandler} (via {@link Answer}.
+ * Gets the answer and after checking it for validity it sends the answer to the correct {@link ClientCommandHandler} (via {@link ClientAnswer}.
  *
  * Created by flavia on 26.03.17.
  */
 public class ClientAnswerParser {
 	
 	private final ClientCommandParser commandParser;
+	
+	/**
+	 * Whether the answer was positive or negative.
+	 */
 	private final boolean isOK;
+	
+	/**
+	 * The command used this answer is intended for.
+	 */
 	private String keyword = "";
+	
+	/**
+	 * The argument to the answer. Could be empty.
+	 */
 	private String argument = "";
 	
 	
@@ -25,8 +38,8 @@ public class ClientAnswerParser {
 				break;
 			default:
 				isOK = false;
-				if (Client.getMainChatWindow() != null) {
-					Client.getMainChatWindow().getMainChatPanel().displayError("Answer wrongly formatted!");
+				if (Client.getMainWindow() != null) {
+					Client.getMainWindow().getMainChatPanel().displayError("Answer wrongly formatted!");
 				}
 				break;
 		}
@@ -60,12 +73,12 @@ public class ClientAnswerParser {
 		if (keyword.isEmpty())
 			return;
 		
-		Answer answer;
+		ClientAnswer answer;
 		try {
-			answer = Enum.valueOf(Answer.class, keyword);
+			answer = Enum.valueOf(ClientAnswer.class, keyword);
 		} catch (IllegalArgumentException iae) {
-			if (Client.getMainChatWindow() != null) {
-				Client.getMainChatWindow().getMainChatPanel().displayError("Received answer does not exist!");
+			if (Client.getMainWindow() != null) {
+				Client.getMainWindow().getMainChatPanel().displayError("Received answer does not exist!");
 			} else {
 				System.err.println("Received answer does not exist!");
 			}

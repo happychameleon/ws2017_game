@@ -2,17 +2,20 @@ package client.commands;
 
 import client.Client;
 import client.ClientUser;
-import game.startscreen.ClientGameStartController;
+import game.ClientGameController;
 
 /**
  * Informs the ClientGameStartController from the given game about the given user which has chosen their team.
  *
  * Created by flavia on 03.04.17.
  */
-public class ClientReadyHandler extends CommandHandler {
+public class ClientReadyHandler extends ClientCommandHandler {
 	
 	@Override
 	public void handleCommand() {
+		if (Client.isLoggedIn() == false)
+			return;
+		
 		String username = getAndRemoveNextArgumentWord();
 		String gameName = getAndRemoveNextArgumentWord();
 		String characterString = getCharacterString();
@@ -22,7 +25,7 @@ public class ClientReadyHandler extends CommandHandler {
 			return;
 		}
 		
-		ClientGameStartController waitingGameByName = Client.getMainChatWindow().getWaitingGameByName(gameName);
+		ClientGameController waitingGameByName = Client.getMainWindow().getWaitingGameByName(gameName);
 		if (waitingGameByName == null) {
 			System.err.println("ReadyHandler#handleCommand - No game found with name: " + gameName);
 			return;
@@ -34,7 +37,7 @@ public class ClientReadyHandler extends CommandHandler {
 			return;
 		}
 		
-		waitingGameByName.moveUserToWaiting(user, characterString);
+		waitingGameByName.setUserAsWaiting(user, characterString);
 		
 		
 	}
