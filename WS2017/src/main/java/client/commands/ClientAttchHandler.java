@@ -11,10 +11,12 @@ import game.engine.Tile;
  *
  * Created by m on 10/04/17.
  */
-public class ClientAttchHandler extends CommandHandler {
+public class ClientAttchHandler extends ClientCommandHandler {
     
     @Override
-    public void handleCommand() {}
+    public void handleCommand() {
+    	
+    }
     
     /**
      * Reads the attack Command's argument and carries out the attack.

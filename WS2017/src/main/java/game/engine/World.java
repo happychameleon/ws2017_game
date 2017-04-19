@@ -55,7 +55,7 @@ public class World {
      * The Tile which was selected last with a left mouse click.
      * When a Character is on the selectedTile, the movement Range is shown.
      *
-     * TODO: IMPORTANT Move selection to the gamegui package!
+     * TODO(M4) Move selection to the gamegui package!
      */
     private Tile selectedTile;
 	

@@ -3,11 +3,11 @@ package client.commands;
 import client.ClientCommandParser;
 
 /**
- * The different command keywords. They all have their CommandHandler stored to send the argument to process.
+ * The different command keywords. They all have their ClientCommandHandler stored to send the argument to process.
  *
  * Created by flavia on 26.03.17.
  */
-public enum Command {
+public enum ClientCommand {
 	
 	cping(new ClientCpingHandler()),
 	cquit(new ClientCquitHandler()),
@@ -24,24 +24,24 @@ public enum Command {
 	uhigh(new ClientUhighHandler());
 	
 	/**
-	 * The correct CommandHandler which processes the command.
+	 * The correct ClientCommandHandler which processes the command.
 	 */
-	private final CommandHandler commandHandler;
+	private final ClientCommandHandler clientCommandHandler;
 	
-	Command(CommandHandler commandHandler) {
-		this.commandHandler = commandHandler;
+	ClientCommand(ClientCommandHandler clientCommandHandler) {
+		this.clientCommandHandler = clientCommandHandler;
 	}
 	
 	/**
 	 * First sets the commandParser and the argument and then handles the Command.
-	 * @see CommandHandler#handleCommand()
+	 * @see ClientCommandHandler#handleCommand()
 	 *
 	 * @param commandParser The ClientCommandParser to set.
 	 * @param argument The argument given with the command.
 	 */
 	public void handleCommand(ClientCommandParser commandParser, String argument) {
-		commandHandler.setCommandParser(commandParser);
-		commandHandler.setArgument(argument);
-		commandHandler.handleCommand();
+		clientCommandHandler.setCommandParser(commandParser);
+		clientCommandHandler.setArgument(argument);
+		clientCommandHandler.handleCommand();
 	}
 }

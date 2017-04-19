@@ -9,7 +9,7 @@ import game.engine.Tile;
  *
  * Created by flavia on 26.03.17.
  */
-public abstract class CommandHandler {
+public abstract class ClientCommandHandler {
 	
 	/**
 	 * The argument of this Command/Answer
@@ -65,6 +65,7 @@ public abstract class CommandHandler {
 	/**
 	 * Reads the position from the positionString as 'x,y'
 	 * @param positionString the positionString formatted as x,y
+	 * @param gameController the gameController in which the Tile is in.
 	 * @return The correct Tile.
 	 */
 	protected Tile parsePosition(String positionString, GameController gameController) {
@@ -81,7 +82,7 @@ public abstract class CommandHandler {
 		}
 		int x = Integer.parseInt(xString);
 		int y = Integer.parseInt(yString);
-		System.out.println("CommandHandler#parsePosition - x: " + x + " y: " + y);
+		System.out.println("ClientCommandHandler#parsePosition - x: " + x + " y: " + y);
 		return gameController.getWorld().getTileAt(x, y);
 	}
 	

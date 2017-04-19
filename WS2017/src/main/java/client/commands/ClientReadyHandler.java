@@ -9,7 +9,7 @@ import game.ClientGameController;
  *
  * Created by flavia on 03.04.17.
  */
-public class ClientReadyHandler extends CommandHandler {
+public class ClientReadyHandler extends ClientCommandHandler {
 	
 	@Override
 	public void handleCommand() {

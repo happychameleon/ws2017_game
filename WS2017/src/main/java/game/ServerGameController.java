@@ -1,5 +1,6 @@
 package game;
 
+import game.engine.CreateHighscoreXML;
 import game.engine.Player;
 import game.engine.Team;
 import game.engine.World;
@@ -8,12 +9,17 @@ import server.parser.LeavgHandler;
 import server.parser.UhighHandler;
 import serverclient.User;
 
+import java.io.*;
 import java.util.HashMap;
 
 /**
  * Created by flavia on 11.04.17.
  */
 public class ServerGameController extends GameController {
+	
+	
+	private static File highscoreFile = new File("./highscore.txt");
+	
 	
 	
 	/**
@@ -27,7 +33,9 @@ public class ServerGameController extends GameController {
 	public ServerGameController(GameState gameState, int startingPoints, String gameName, HashMap<User, String> users, GameMap map) {
 		super(gameState, startingPoints, gameName, users, map);
 	}
-
+	
+	
+	
 	/**
 	 * Removes the user from this game on the server.
 	 * Informs the clients about the user leaving.
@@ -44,7 +52,8 @@ public class ServerGameController extends GameController {
 			Server.writeToAllClients(String.format("rmgam %s", gameName));
 		}
 	}
-
+	
+	
 	/**
 	 * Starts the game on the server. Called by a Client with the stgam command.
 	 */
@@ -82,9 +91,33 @@ public class ServerGameController extends GameController {
 	@Override
 	public void endGame(HashMap<String, Integer> playerScore, String winningTeamName) {
 		super.endGame(playerScore, winningTeamName);
-
-		// TODO: writes the highscore into a file.
 		
-		Server.removeGame(this);
+		// Write the highscore into a file.
+		CreateHighscoreXML.createHighscoreXML(playerScore, winningTeamName);
+		
+		/*
+		try {
+			if (highscoreFile.exists() == false) {
+				highscoreFile.createNewFile();
+				System.out.println("ServerGameController#endGame - new highscoreFile created");
+			}
+			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(highscoreFile, true));
+			
+			
+			bufferedWriter.write(winningTeamName + " ");
+			for (String playerName : playerScore.keySet()) {
+				bufferedWriter.write(String.format("%s %d ", playerName, playerScore.get(playerName)));
+			}
+			bufferedWriter.newLine();
+			bufferedWriter.flush();
+			bufferedWriter.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		*/
+		
 	}
+	
 }

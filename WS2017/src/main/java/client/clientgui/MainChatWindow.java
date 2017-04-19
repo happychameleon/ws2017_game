@@ -2,6 +2,7 @@ package client.clientgui;
 
 import client.Client;
 import client.ClientUser;
+import client.commands.ClientCgethHandler;
 import game.ClientGameController;
 import serverclient.User;
 
@@ -32,6 +33,13 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 * The main window
 	 */
 	JFrame mainFrame = new JFrame("Chat");
+	
+	/**
+	 * @return {@link #mainFrame}
+	 */
+	public JFrame getMainFrame() {
+		return mainFrame;
+	}
 	
 	/**
 	 * The input to change the username.
@@ -270,6 +278,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 * @return The ClientGameController or null if the name doesn't exist.
 	 */
 	public ClientGameController getWaitingGameByName(String gameName) {
+		if (waitingGameListModel.isEmpty()) return null;
 		for (int i = 0; i < waitingGameListModel.getSize(); i++) {
 			if (waitingGameListModel.get(i).getGameName().equals(gameName)) {
 				return waitingGameListModel.get(i);
@@ -284,6 +293,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 * @return The ClientGameController or null if the name doesn't exist.
 	 */
 	public ClientGameController getRunningGameByName(String gameName) {
+		if (runningGameListModel.isEmpty()) return null;
 		for (int i = 0; i < runningGameListModel.getSize(); i++) {
 			if (runningGameListModel.get(i).getGameName().equals(gameName)) {
 				return runningGameListModel.get(i);
@@ -298,6 +308,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 * @return The ClientGameController or null if the name doesn't exist.
 	 */
 	public ClientGameController getEndedGameByName(String gameName) {
+		if (endedGames.isEmpty()) return null;
 		for (ClientGameController gameController : endedGames) {
 			if (gameController.getGameName().equals(gameName)) {
 				return gameController;
@@ -512,7 +523,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 			openWhisperChat(userListModel.elementAt(userList.getSelectedIndex()));
 			
 		} else if (e.getSource() == viewHighscoreButton) {
-			// TODO: Send request to server to get all highscores (cgeth?).
+			ClientCgethHandler.sendHighscoreRequest();
 			
 		}
 	}

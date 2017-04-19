@@ -14,7 +14,7 @@ import java.util.HashMap;
  *
  * Created by flavia on 02.04.17.
  */
-public class ClientCgetgHandler extends CommandHandler {
+public class ClientCgetgHandler extends ClientCommandHandler {
 	
 	@Override
 	public void handleCommand() {

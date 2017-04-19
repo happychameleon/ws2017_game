@@ -98,7 +98,6 @@ public class Tile {
      * @return true if this Tile is walkable, otherwise false.
      */
     public boolean isWalkable(boolean considerCharacters) {
-    	//TODO? (optionaly) Add check for stuff blocking the Tile.
 	    if (considerCharacters && getCharacter() != null) {
 	    	return false;
 	    }

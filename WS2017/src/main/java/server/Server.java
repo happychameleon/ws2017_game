@@ -6,10 +6,7 @@ import server.parser.CquitHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.ArrayList;
 
 /**
@@ -20,9 +17,8 @@ import java.util.ArrayList;
 public class Server {
 	
 	/**
-	 * The games which are just opened and are waiting to be started.
-	 * Users can still join them (if there are still places available, max 4)
-	 * They start when there are at least 2 users and all users are ready.
+	 * A list of all the games which have users logged in (or none if it has just been created).
+	 * It is removed here if the last user left the game.
 	 */
 	private static ArrayList<ServerGameController> gameList = new ArrayList<>();
 	
@@ -167,11 +163,26 @@ public class Server {
 	 */
 	public static void writeToAllClients(String output) {
 		for (ServerUser user : getAllUsers()) {
+			/*if (user.getSocket().isClosed()) {
+				System.out.println("Server#writeToAllClients - user.getSocket().isClosed()");
+				continue;
+			}
+			if (user.getSocket().isOutputShutdown()) {
+				System.out.println("Server#writeToAllClients - user.getSocket().isOutputShutdown()");
+				continue;
+			}
+			if (user.getSocket().isConnected() == false) {
+				System.out.println("Server#writeToAllClients - user.getSocket().isConnected() == false");
+				continue;
+			}*/
 			try {
 				OutputStream outputStream = user.getSocket().getOutputStream();
-				outputStream.write((output + "\r\n").getBytes());
-			} catch (IOException e) {
-				e.printStackTrace();
+				if (outputStream != null) outputStream.write((output + "\r\n").getBytes());
+				else System.out.println("Server#writeToAllClients - outputStream == null");
+			} catch (SocketException se) {
+				se.printStackTrace();
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
 			}
 		}
 	}
@@ -179,7 +190,7 @@ public class Server {
 	
 	
 
-    public static void main(String[] args){
+    public static void serverMain(String[] args){
 	    int connectedGameClient = 1;
 	    int port = 1030;
 	    if (args.length > 1) {

@@ -10,7 +10,7 @@ import java.util.jar.JarFile;
 /**
  * Holds the Data for preconstructed Maps read in from files.
  *
- * TODO? For future Milestones if there is enough time add special objects and powerups to maps.
+ * TODO(M4) For future Milestones if there is enough time add special objects and powerups to maps.
  *
  * Created by flavia on 12.04.17.
  */
@@ -118,7 +118,9 @@ public class GameMap {
 	
 	/**
 	 * Reads in all the gameMaps and stores them in {@link #gameMaps} at the start of the game.
-	 * With help from http://stackoverflow.com/questions/11012819/how-can-i-get-a-resource-folder-from-inside-my-jar-file
+	 * With help from:
+	 * http://cs.dvc.edu/HowTo_ReadJars.html
+	 * http://stackoverflow.com/questions/11012819/how-can-i-get-a-resource-folder-from-inside-my-jar-file
 	 */
 	public static void readInAllMaps() {
 		gameMaps = new ArrayList<>();
@@ -152,41 +154,29 @@ public class GameMap {
 			} else { // Run with IDE
 				File mapsFolder = new File("src/main/resources/maps");
 				System.out.println("GameMap#readInAllMaps - Run with IDE");
+				if (mapsFolder.exists() == false) {
+					System.err.println("GameMap#readInAllMaps - No Maps Folder found!");
+					createDefaultMaps(mapsFolder);
+				}
+				if (mapsFolder.listFiles() == null || mapsFolder.listFiles().length == 0) {
+					System.err.println("GameMap#readInAllMaps - Maps Folder empty");
+					createDefaultMaps(mapsFolder);
+				}
 				for (File mapFile : mapsFolder.listFiles())
 					if (mapFile.getName().endsWith(".txt")) {
 						String mapName = mapFile.getName().substring(mapFile.getName().lastIndexOf("/") + 1, mapFile.getName().lastIndexOf("."));
 						InputStream inputStream = new FileInputStream(mapFile);
 						mapNameInputStreamMap.put(mapName, inputStream);
 					}
-					
+				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		/*InputStream[] inputStreams = new InputStream[3];
-		inputStreams[0] = ClassLoader.getSystemResourceAsStream("maps/SmallTestMap.txt");
-		inputStreams[1] = ClassLoader.getSystemResourceAsStream("maps/SmalLakes.txt");
-		inputStreams[2] = ClassLoader.getSystemResourceAsStream("maps/BigLake.txt");
-		BufferedReader bR = new BufferedReader(new InputStreamReader(inputStreams[1]));
-		try {
-			System.out.println(bR.readLine());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		URL mapFolderURL = ClassLoader.getSystemClassLoader().getResource("maps");
-		try {
-			mapsFolder = new File(mapFolderURL.toURI());
-			System.out.println("mapsFolder path: " + mapsFolder.getPath());
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}*/
-		
 		
 		
 		for (String mapName : mapNameInputStreamMap.keySet()) {
-			
 			
 			// Now read in the map file's data.
 			try {
@@ -194,9 +184,9 @@ public class GameMap {
 				// Stores all the lines of the file in the Array List.
 				ArrayList<String> lines = new ArrayList<>();
 				String nextLine = bufferedReader.readLine();
-				System.out.println("GameMap#readInAllMaps - first line in " + mapName + ": " + nextLine);
 				while (nextLine != null) {
-					lines.add(nextLine);
+					if (nextLine.startsWith("//") == false && nextLine.isEmpty() == false) // Ignore commented out lines.
+						lines.add(nextLine);
 					nextLine = bufferedReader.readLine();
 				}
 				// Store the lines as char[][] and throws an error when they aren't all the same size.
@@ -231,8 +221,44 @@ public class GameMap {
 			}
 	}
 	
-	private static void createDefaultMaps() {
-	
+	/**
+	 * Creates a default map in case the folder doesn't exist or is empty.
+	 * @param mapsFolder The folder in which the maps should be.
+	 */
+	private static void createDefaultMaps(File mapsFolder) {
+		try {
+			if (mapsFolder.exists() == false) {
+				mapsFolder.mkdirs();
+			}
+			File defaultMap = new File(mapsFolder.getAbsolutePath() + "/defaultMap.txt");
+			defaultMap.createNewFile();
+			
+			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(defaultMap));
+			// Write the default map.
+			bufferedWriter.write("111GGG222");
+			bufferedWriter.newLine();
+			bufferedWriter.write("1GGGGGGG2");
+			bufferedWriter.newLine();
+			bufferedWriter.write("1GGGGGGG2");
+			bufferedWriter.newLine();
+			bufferedWriter.write("GGGGWGGGG");
+			bufferedWriter.newLine();
+			bufferedWriter.write("GWGWWWGWG");
+			bufferedWriter.newLine();
+			bufferedWriter.write("GGGGWGGGG");
+			bufferedWriter.newLine();
+			bufferedWriter.write("3GGGGGGG4");
+			bufferedWriter.newLine();
+			bufferedWriter.write("3GGGGGGG4");
+			bufferedWriter.newLine();
+			bufferedWriter.write("333GGG444");
+			
+			bufferedWriter.flush();
+			bufferedWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	//endregion
 	

@@ -101,10 +101,10 @@ public class Weapon {
 		}
 		weaponPrototypes = new ArrayList<>();
 		
-		// TODO? (maybe) instead of hardcoding the weapons here we could read them in from a file.
+		// TODO(M4)? instead of hardcoding the weapons here we could read them in from a file.
 		Weapon.addWeaponPrototype("Medium Water Gun", 5, 4, 3, 25);
 		Weapon.addWeaponPrototype("Heavy Water Gun", 4, 2, 4, 60);
-		// TODO? add more weapons.
+		// TODO(M4) add more weapons.
 		
 		Weapon.addWeaponPrototype("Totaly OP Weapon", 2, 20, 2, 300);
 	}
@@ -134,7 +134,7 @@ public class Weapon {
 	 * @param range {@link #range}.
 	 */
 	public static void addWeaponPrototype(String name, int pointCost, int damage, int actionPointPerShot, int areaOfEffect, int range) {
-		//TODO: Add sprite to prototype.
+		//TODO(M4) Add sprite to prototype.
 		Weapon prototype = new Weapon(name, pointCost, range, damage, actionPointPerShot, areaOfEffect);
 		weaponPrototypes.add(prototype);
 	}

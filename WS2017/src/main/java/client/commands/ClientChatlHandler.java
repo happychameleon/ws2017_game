@@ -27,9 +27,14 @@ public class ClientChatlHandler extends ClientChatmHandler {
 				return;
 			}
 			
-			ChatMessage chatMessage = getChatMessageFromArgument();
-			
-			game.getGameLobby().getLobbyChat().addNewMessage(chatMessage);
+			if (game.getAllUsers().contains(Client.getThisUser())) {
+				if (game.getGameLobby() == null) {
+					System.err.println("ClientChatlHandler#handleCommand - Game with this user in it has no lobby open?");
+					return;
+				}
+				ChatMessage chatMessage = getChatMessageFromArgument();
+				game.getGameLobby().getLobbyChat().addNewMessage(chatMessage);
+			}
 		}
 	}
 	

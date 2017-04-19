@@ -1,3 +1,4 @@
+// Small 9x9 map, mainly used for testing.
 111GGG222
 1GGGGGGG2
 1GGGGGGG2

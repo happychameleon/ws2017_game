@@ -8,7 +8,7 @@ import game.ClientGameController;
  *
  * Created by flavia on 31.03.17.
  */
-public class ClientRmgamHandler extends CommandHandler {
+public class ClientRmgamHandler extends ClientCommandHandler {
 	
 	
 	@Override
