@@ -65,6 +65,14 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	private Box pageEndBox;
 	
 	/**
+	 * The maximum amount of Children which are possible on the game's map.
+	 */
+	private int getMaxChildren() {
+		return clientGameController.getGameMap().getStartPositionCount();
+	}
+	
+	
+	/**
 	 * Opens the Start Screen to choose the team.
 	 * @param clientGameController The gameController this belongs to.
 	 * @param startingPoints The max amount of points to choose the team from.
@@ -80,7 +88,10 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 		
 		this.setLayout(new BorderLayout());
 		
-		this.add(newChildButton, BorderLayout.PAGE_START);
+		Box pageStartBox = Box.createVerticalBox();
+		pageStartBox.add(newChildButton);
+		pageStartBox.add(new JLabel("Max amount of Children: " + getMaxChildren()));
+		this.add(pageStartBox, BorderLayout.PAGE_START);
 		newChildButton.addActionListener(this);
 		
 		this.add(childrenPanels, BorderLayout.CENTER);
@@ -127,6 +138,18 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	}
 	
 	/**
+	 * @return The amount of {@link ChildPanel}s added to {@link #childrenPanels}.
+	 */
+	private int getChildPanelCount() {
+		int count = 0;
+		if (childrenPanels.getComponents().length > 0)
+			for (Component component : childrenPanels.getComponents())
+				if (component instanceof ChildPanel)
+					count++;
+		return count;
+	}
+	
+	/**
 	 * This needs to be called whenever a user has canceled joining the game either with the cancel button or by closing the window.
 	 * When a user quits it is registered by the server automatically.
 	 */
@@ -144,9 +167,11 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	}
 	
 	/**
-	 * Adds a new Child to the {@link #childrenPanels} and recalculates the points.
+	 * Adds a new Child to the {@link #childrenPanels} and recalculates the points IF there aren't already enough children.
 	 */
 	private void addNewChild() {
+		if (getChildPanelCount() >= getMaxChildren())
+			return;
 		JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
 		childrenPanels.add(new ChildPanel(this, separator));
 		childrenPanels.add(separator);

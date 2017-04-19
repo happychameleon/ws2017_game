@@ -56,6 +56,22 @@ public class GameMap {
 	public int getHeight() {
 		return tiles.length;
 	}
+	
+	/**
+	 * Returns how many starting position there are on the map.
+	 * The starting Position have to be the same amount for each Player, otherwise it only returns the count of starting positions for the first Player.
+	 * @return How many starting position there are on the map.
+	 */
+	public int getStartPositionCount() {
+		int count = 0;
+		for (int i = 0; i < getHeight(); i++) {
+			for (int j = 0; j < getWidth(); j++) {
+				if (tiles[j][i] == '1')
+					count++;
+			}
+		}
+		return count;
+	}
 	//endregion
 	
 	
