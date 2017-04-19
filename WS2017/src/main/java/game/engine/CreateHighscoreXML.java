@@ -16,11 +16,17 @@ import java.util.HashMap;
 /**
  * Creates the XML file for the Highscores.
  *
+ * UNUSED Currently, intended for Milestone 4.
+ *
  * Created by Julischka Saravia on 11.04.2017.
  */
 public class CreateHighscoreXML {
-	
-	
+
+	/**
+	 * Receives parameters from the class serverGameController and writes them on the XML file
+	 * @param playerScore HashMap with usernames and scores
+	 * @param winningTeamName name of the winning team
+	 */
 	public static void createHighscoreXML(HashMap<String, Integer> playerScore, String winningTeamName) {
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -39,7 +45,7 @@ public class CreateHighscoreXML {
 				String score = String.valueOf(playerScore.get(playerName));
 				
 				/**
-				 * Creates the first child of the root element called username
+				 * Creates child called username of the root element
 				 */
 				Element username = doc.createElement("username");
 				rootElement.appendChild(username);
@@ -50,16 +56,23 @@ public class CreateHighscoreXML {
 				Attr attr = doc.createAttribute("name");
 				attr.setValue(playerName);
 				username.setAttributeNode(attr);
+
+				/**
+				 * Creates the 1st child of the username element called team. Team saved as TextNode.
+				 */
+				Element team = doc.createElement("team");
+				team.appendChild(doc.createTextNode(winningTeamName));
+				username.appendChild(team);
 				
 				/**
-				 * Creates the 1st child of the username element called highscore. Points saved as TextNode.
+				 * Creates new child of the username element called highscore. Points saved as TextNode.
 				 */
 				Element highscore = doc.createElement("highscore");
 				highscore.appendChild(doc.createTextNode(score));
 				username.appendChild(highscore);
 				
 				/**
-				 * Creates the second child of the username element called date. date saved as TextNode.
+				 * Creates new child of the username element called date. date saved as TextNode.
 				 */
 				Element date = doc.createElement("date");
 				date.appendChild(doc.createTextNode("01.01.1111"));

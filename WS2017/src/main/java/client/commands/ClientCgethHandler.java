@@ -3,7 +3,6 @@ package client.commands;
 import client.Client;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by flavia on 17.04.17.
@@ -34,43 +33,59 @@ public class ClientCgethHandler extends ClientCommandHandler {
 		if (isOK) {
 			System.out.println("ClientCgethHandler#handleAnswer - argument: " + argument);
 			
-			ArrayList<HashMap<String, Integer>> highscoreTeams = getHigscoreTeamList();
+			ArrayList<ArrayList<String>> highscoreTeams = getHigscoreTeamList();
 			
 			new HighscoreDialog(highscoreTeams);
 		}
 	}
 	
 	/**
-	 * @return A list of HashMaps mapping each playername with their highscore. The Teamname is stored with a negative score.
+	 * @return An ArrayList which contains an ArrayList of Strings for all the highscore relevant Data.
+	 * The inner Arraylist contains at index
+	 * 0: The game name
+	 * 1: The winning Team name.
+	 * 2...: The users who won.
 	 */
-	private ArrayList<HashMap<String,Integer>> getHigscoreTeamList() {
-		ArrayList<HashMap<String, Integer>> highscoreTeams = new ArrayList<>();
+	private ArrayList<ArrayList<String>> getHigscoreTeamList() {
+		ArrayList<ArrayList<String>> highscoreStrings = new ArrayList<>();
+		
 		while (argument.isEmpty() == false) {
+			ArrayList <String> singleHigscoreString = new ArrayList<>();
+			
 			String highscoreString = getAndRemoveNextHighscoreString();
-			String winningTeam = highscoreString.substring(0, highscoreString.indexOf(" "));
-			HashMap playerScoreMap = new HashMap();
-			playerScoreMap.put(winningTeam, -1); // The winning Team name gets added with negative points to distinguish.
-			highscoreTeams.add(playerScoreMap);
+			
+			String gameName = highscoreString.substring(0, highscoreString.indexOf(" "));
 			highscoreString = highscoreString.substring(highscoreString.indexOf(" ") + 1);
+			
+			String winningTeam = highscoreString.substring(0, highscoreString.indexOf(" "));
+			highscoreString = highscoreString.substring(highscoreString.indexOf(" ") + 1);
+			
+			singleHigscoreString.add(gameName);
+			singleHigscoreString.add(winningTeam);
+			
 			while (highscoreString.isEmpty() == false) {
 				String username = highscoreString.substring(0, highscoreString.indexOf(" "));
 				highscoreString = highscoreString.substring(highscoreString.indexOf(" ") + 1);
-				int points;
+				String points;
 				if (highscoreString.contains(" ")) {
-					points = Integer.parseInt(highscoreString.substring(0, highscoreString.indexOf(" ")));
+					points = highscoreString.substring(0, highscoreString.indexOf(" "));
 					highscoreString = highscoreString.substring(highscoreString.indexOf(" ") + 1);
 				} else {
-					points = Integer.parseInt(highscoreString);
-					playerScoreMap.put(username, points);
-					System.out.println("ClientCgethHandler#handleAnswer - highscore added: " + winningTeam + " " + username + " " + points);
-					break;
+					points = highscoreString; // If it's the last user.
+					highscoreString = "";
 				}
+				String playerString = String.format("%s %s", username, points);
+				singleHigscoreString.add(playerString);
 			}
+			highscoreStrings.add(singleHigscoreString);
 		}
-		return highscoreTeams;
+		return highscoreStrings;
 	}
 	
-	
+	/**
+	 * Similar wo {@link #getAndRemoveNextArgumentWord()}.
+	 * @return The next String in the Argument between two '.
+	 */
 	private String getAndRemoveNextHighscoreString() {
 		if (argument.charAt(0) != '\'' && argument.charAt(1) != '\'') {
 			System.err.println("highscoreString wrongly formated.");
