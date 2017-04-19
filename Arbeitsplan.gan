@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="WSS2017" company="Programmier-Projekt" webLink="http://p9.cs.unibas.ch/cs108/2017/TrAcF5LQYn.html" view-date="2017-02-06" view-index="0" gantt-divider-location="353" resource-divider-location="300" version="2.8.2" locale="de">
+<?xml version="1.0" encoding="UTF-8"?><project name="WSS2017" company="Programmier-Projekt" webLink="http://p9.cs.unibas.ch/cs108/2017/TrAcF5LQYn.html" view-date="2017-03-20" view-index="0" gantt-divider-location="414" resource-divider-location="300" version="2.8.2" locale="de">
     <description><![CDATA[This is the timetable with responsiblilities for our Project]]></description>
     <view zooming-state="default:7" id="gantt-chart">
-        <field id="tpd3" name="Vorgang" width="190" order="0"/>
-        <field id="tpd4" name="Anfang" width="72" order="1"/>
-        <field id="tpd5" name="Ende" width="72" order="2"/>
-        <option id="color.recent"><![CDATA[#33ccff #660000 #000000 #660099 #0066ff #3399ff #ff3333 #ff00ff #f4f4f4 #00cc00]]></option>
+        <field id="tpd3" name="Vorgang" width="229" order="0"/>
+        <field id="tpd4" name="Anfang" width="75" order="1"/>
+        <field id="tpd5" name="Ende" width="91" order="2"/>
+        <option id="color.recent"><![CDATA[#660099 #0066ff #3399ff #00cc00 #ff3333 #33ccff #660000 #000000 #ff00ff #f4f4f4]]></option>
     </view>
     <view id="resource-table">
         <field id="0" name="Ressource" width="296" order="0"/>
@@ -86,11 +86,11 @@
         <task id="81" name="Produkt:" color="#000000" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
             <depend id="169" type="2" difference="0" hardness="Strong"/>
             <task id="83" name="Broadcast" color="#3399ff" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true"/>
-            <task id="90" name="Build script" color="#00cc00" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
+            <task id="90" name="Build script" color="#00cc00" meeting="false" start="2017-03-27" duration="7" complete="0" expand="true">
                 <notes><![CDATA[The build script produces an executable jar as well as the javadoc]]></notes>
             </task>
             <task id="97" name="Command line" color="#00cc00" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true"/>
-            <task id="110" name="Game state on server" color="#0066ff" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true"/>
+            <task id="110" name="Game state on server" color="#0066ff" meeting="false" start="2017-04-05" duration="14" complete="0" expand="true"/>
             <task id="129" name="Network protocol" color="#3399ff" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true">
                 <notes><![CDATA[Network protocol is completely defined and documented in source code]]></notes>
             </task>
@@ -98,10 +98,10 @@
                 <notes><![CDATA[The definition of the network protocol is complete]]></notes>
             </task>
             <task id="102" name="Game list" color="#3399ff" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true"/>
-            <task id="117" name="High score" color="#33ccff" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true"/>
-            <task id="125" name="Player List" color="#3399ff" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true"/>
+            <task id="117" name="High score" color="#33ccff" meeting="false" start="2017-04-10" duration="9" complete="0" expand="true"/>
+            <task id="125" name="Player List" color="#00cc00" meeting="false" start="2017-03-27" duration="9" complete="0" expand="true"/>
             <task id="134" name="Technologies and libraries" color="#660099" meeting="false" start="2017-03-27" duration="22" complete="0" expand="true"/>
-            <task id="138" name="Whisper chat" color="#660000" meeting="false" start="2017-03-27" duration="23" complete="0" expand="true"/>
+            <task id="138" name="Whisper chat" color="#660000" meeting="false" start="2017-03-27" duration="10" complete="0" expand="true"/>
             <task id="104" name="Game logic" color="#8cb6ce" meeting="false" start="2017-03-27" duration="19" complete="0" expand="true">
                 <task id="105" name="Panel" color="#ff3333" meeting="false" start="2017-03-27" duration="19" complete="0" expand="true"/>
                 <task id="107" name="Game start screen" color="#33ccff" meeting="false" start="2017-03-27" duration="19" complete="0" expand="true"/>
@@ -125,41 +125,64 @@
         <task id="172" name="Meilenstein 3.2" color="#8cb6ce" meeting="true" start="2017-04-24" duration="0" complete="0" expand="true">
             <notes><![CDATA[Playing working prototype in Üungsstunde]]></notes>
         </task>
-        <task id="204" name="Produkt:" color="#000000" meeting="false" start="2017-04-24" duration="13" complete="0" expand="true">
-            <depend id="213" type="2" difference="0" hardness="Strong"/>
-            <task id="207" name="Game GUI" meeting="false" start="2017-04-24" duration="13" complete="0" expand="true"/>
-            <task id="208" name="Working Rules" meeting="false" start="2017-04-24" duration="13" complete="0" expand="true"/>
-            <task id="209" name="Winner determined" meeting="false" start="2017-04-24" duration="13" complete="0" expand="true"/>
-            <task id="210" name="Unit-Test working" color="#8cb6ce" meeting="false" start="2017-04-24" duration="13" complete="0" expand="true"/>
+        <task id="204" name="Produkt:" color="#000000" meeting="false" start="2017-04-25" duration="12" complete="8" expand="true">
+            <depend id="213" type="2" difference="0" hardness="Rubber"/>
+            <task id="207" name="Game GUI" color="#ff3333" meeting="false" start="2017-04-25" duration="6" complete="0" expand="true">
+                <notes><![CDATA[The game is represented graphically]]></notes>
+            </task>
+            <task id="348" name="Game GUI lvl 3" color="#8cb6ce" meeting="false" start="2017-05-01" duration="4" complete="0" expand="true">
+                <notes><![CDATA[The game is fully playable from the UI]]></notes>
+            </task>
+            <task id="208" name="Working Rules" color="#00cc00" meeting="false" start="2017-04-25" duration="7" complete="0" expand="true"/>
+            <task id="209" name="Winner determined" color="#8cb6ce" meeting="false" start="2017-04-28" duration="7" complete="50" expand="true"/>
+            <task id="210" name="Unit-Test lvl 1" color="#0066ff" meeting="false" start="2017-04-25" duration="9" complete="0" expand="true">
+                <notes><![CDATA[Unit-Test is present and working]]></notes>
+            </task>
+            <task id="350" name="Unit-Test lvl 2" color="#0066ff" meeting="false" start="2017-05-01" duration="6" complete="0" expand="true">
+                <notes><![CDATA[Unit-Test sufficient]]></notes>
+            </task>
+            <task id="352" name="Unit-Test lvl 3" color="#00cc00" meeting="false" start="2017-05-06" duration="1" complete="0" expand="true">
+                <notes><![CDATA[Unit-Test is executed by build script]]></notes>
+            </task>
         </task>
-        <task id="211" name="Präsentation:" color="#000000" meeting="false" start="2017-05-04" duration="4" complete="0" expand="true">
-            <depend id="213" type="2" difference="0" hardness="Strong"/>
-            <task id="212" name="Play Game" meeting="false" start="2017-05-04" duration="4" complete="0" expand="true"/>
-            <task id="345" name="Meilenstein kontrollieren" meeting="false" start="2017-05-04" duration="4" complete="0" expand="true"/>
+        <task id="211" name="Präsentation:" color="#000000" meeting="false" start="2017-05-04" duration="3" complete="0" expand="true">
+            <depend id="213" type="2" difference="0" hardness="Rubber"/>
+            <task id="212" name="Play Game" color="#660099" meeting="false" start="2017-05-04" duration="2" complete="0" expand="true"/>
+            <task id="345" name="Meilenstein kontrollieren" color="#660099" meeting="false" start="2017-05-05" duration="2" complete="0" expand="true"/>
         </task>
         <task id="213" name="Meilenstein 4" color="#8cb6ce" meeting="true" start="2017-05-08" duration="0" complete="0" expand="true"/>
-        <task id="318" name="Source code" color="#8cb6ce" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true"/>
+        <task id="318" name="Source code" color="#660099" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true"/>
         <task id="214" name="Product:" color="#000000" meeting="false" start="2017-05-09" duration="13" complete="0" expand="true">
-            <depend id="228" type="2" difference="0" hardness="Strong"/>
-            <task id="215" name="Architecture documented" color="#8cb6ce" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true"/>
-            <task id="216" name="Build script works" color="#8cb6ce" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true"/>
-            <task id="217" name="Command Line Parameters" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true"/>
-            <task id="218" name="Game Manual" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true"/>
-            <task id="219" name="Quality Assurance documented" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true"/>
+            <depend id="373" type="2" difference="0" hardness="Strong"/>
+            <task id="215" name="Architecture documented" color="#8cb6ce" meeting="false" start="2017-05-12" duration="7" complete="0" expand="true">
+                <notes><![CDATA[Have documentation outlining the overall program architecture]]></notes>
+            </task>
+            <task id="216" name="Build script works" color="#8cb6ce" meeting="false" start="2017-05-13" duration="5" complete="0" expand="true"/>
+            <task id="217" name="Command Line Parameters" meeting="false" start="2017-05-12" duration="6" complete="0" expand="true"/>
+            <task id="218" name="Game Manual lvl 2" color="#ff3333" meeting="false" start="2017-05-13" duration="6" complete="0" expand="true">
+                <notes><![CDATA[There is a manual which describes how the game is to be played
+]]></notes>
+            </task>
+            <task id="219" name="QA lvl 2" color="#8cb6ce" meeting="false" start="2017-05-09" duration="11" complete="0" expand="true">
+                <notes><![CDATA[Have a comprehensive documentation on your QM goals, methods and results]]></notes>
+            </task>
             <task id="322" name="Screenshot" meeting="false" start="2017-05-21" duration="1" complete="0" expand="true"/>
+            <task id="374" name="Bonus Punkte" color="#8cb6ce" meeting="false" start="2017-05-11" duration="8" complete="0" expand="true"/>
+            <task id="369" name="Play game" color="#660099" meeting="false" start="2017-05-18" duration="3" complete="0" expand="true"/>
         </task>
-        <task id="220" name="Präsentation:" color="#000000" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true">
-            <depend id="228" type="2" difference="0" hardness="Strong"/>
-            <task id="221" name="Game outline" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true"/>
-            <task id="320" name="Manual" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true"/>
-            <task id="223" name="Logo" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true"/>
-            <task id="224" name="QA" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true"/>
-            <task id="225" name="Game präsentieren" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true"/>
-            <task id="226" name="What have we learned?" meeting="false" start="2017-05-12" duration="10" complete="0" expand="true"/>
-        </task>
-        <task id="227" name="Bonus Punkte" color="#8cb6ce" meeting="false" start="2017-05-09" duration="13" complete="0" expand="true"/>
-        <task id="228" name="Meilenstein 5.1" color="#8cb6ce" meeting="true" start="2017-05-22" duration="0" complete="0" expand="true">
+        <task id="373" name="Meilenstein 5.1" color="#8cb6ce" meeting="true" start="2017-05-22" duration="0" complete="0" expand="true"/>
+        <task id="220" name="Präsentation:" color="#000000" meeting="false" start="2017-05-23" duration="7" complete="0" expand="true">
             <depend id="337" type="2" difference="0" hardness="Rubber"/>
+            <task id="221" name="Game outline" meeting="false" start="2017-05-23" duration="7" complete="0" expand="true"/>
+            <task id="320" name="Manual lvl 3" color="#ff3333" meeting="false" start="2017-05-23" duration="7" complete="0" expand="true">
+                <notes><![CDATA[Overview of documentation and manual]]></notes>
+            </task>
+            <task id="223" name="Logo" color="#3399ff" meeting="false" start="2017-05-23" duration="4" complete="0" expand="true"/>
+            <task id="224" name="QA lvl  3" color="#8cb6ce" meeting="false" start="2017-05-23" duration="7" complete="0" expand="true">
+                <notes><![CDATA[Results of Quality Assurence measures and lessons learned from them]]></notes>
+            </task>
+            <task id="225" name="Play Game" color="#660099" meeting="false" start="2017-05-26" duration="4" complete="0" expand="true"/>
+            <task id="226" name="What have we learned?" meeting="false" start="2017-05-25" duration="5" complete="0" expand="true"/>
         </task>
         <task id="337" name="Meilenstein 5.2" color="#8cb6ce" meeting="true" start="2017-05-31" duration="0" complete="0" expand="true"/>
         <task id="229" name="Update Blog" color="#33ccff" meeting="false" start="2017-02-27" duration="83" complete="0" expand="true"/>
