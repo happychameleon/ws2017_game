@@ -10,6 +10,8 @@ import java.net.*;
 import java.util.ArrayList;
 
 /**
+ * Starts a server that listens and waits for a client to connect and starts a new GameClientThread
+ * every time a client connects. It also contains the shared games between clients.
  * Created by m on 3/9/17.
  */
 public class Server {
@@ -21,6 +23,7 @@ public class Server {
 	private static ArrayList<ServerGameController> gameList = new ArrayList<>();
 	
 	/**
+	 * Returns a shallow copy of all Games that have been created.
 	 * @return A shallow copy of {@link #gameList}.
 	 */
 	public static ArrayList<ServerGameController> getAllGames() {
@@ -35,6 +38,7 @@ public class Server {
 	private static ArrayList <ServerUser> userList = new ArrayList<>();
 	
 	/**
+	 * Returns all users currently connected to the server.
 	 * @return A shallow clone of the {@link #userList}.
 	 */
 	public static ArrayList<ServerUser> getAllUsers() {
@@ -42,6 +46,7 @@ public class Server {
 	}
 	
 	/**
+	 * Adds a user to the list of all the users connected to the server.
 	 * @see #userList
 	 */
 	static boolean addUserToList(ServerUser user) {
@@ -210,7 +215,4 @@ public class Server {
             System.exit(1);
         }
     }
-	
-	
 }
-

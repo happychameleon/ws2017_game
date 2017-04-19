@@ -5,6 +5,7 @@ import game.engine.Team;
 import game.engine.World;
 import server.Server;
 import server.parser.LeavgHandler;
+import server.parser.RmgamHandler;
 import server.parser.UhighHandler;
 import serverclient.User;
 
@@ -48,7 +49,7 @@ public class ServerGameController extends GameController {
 		
 		if (getAllUsers().isEmpty()) {
 			Server.removeGame(this);
-			Server.writeToAllClients(String.format("rmgam %s", gameName));
+			RmgamHandler.sendRmgamMessageToAllClients(gameName);
 		}
 	}
 	
@@ -74,7 +75,7 @@ public class ServerGameController extends GameController {
 		System.out.println("ServerGameController#teamHasWon");
 		
 		HashMap<String, Integer> playerScore = new HashMap<>();
-		for (Player player : winningTeam.getMembers()) {
+		for (Player player : world.getTurnController().getPlayers()) {
 			int score = player.getKillCount();
 			playerScore.put(player.getName(), score);
 		}
@@ -92,6 +93,7 @@ public class ServerGameController extends GameController {
 		super.endGame(playerScore, winningTeamName);
 		
 		// Write the highscore into a file.
+		
 		try {
 			if (highscoreFile.exists() == false) {
 				highscoreFile.createNewFile();
@@ -99,6 +101,7 @@ public class ServerGameController extends GameController {
 			}
 			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(highscoreFile, true));
 			
+			bufferedWriter.write(gameName + " ");
 			bufferedWriter.write(winningTeamName + " ");
 			for (String playerName : playerScore.keySet()) {
 				bufferedWriter.write(String.format("%s %d ", playerName, playerScore.get(playerName)));
@@ -111,6 +114,7 @@ public class ServerGameController extends GameController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		
 	}
 	

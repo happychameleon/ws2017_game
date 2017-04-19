@@ -37,6 +37,7 @@ public class Client {
 	private static boolean isLoggedIn = false;
 	
 	/**
+	 * Returns true if client is logged in false if not.
 	 * @return {@link #isLoggedIn}.
 	 */
 	public static boolean isLoggedIn() {
@@ -50,6 +51,7 @@ public class Client {
 	protected static String commandLineUsername = "";
 	
 	/**
+	 * Returns the username that was entered at the commandline.
 	 * @return {@link #commandLineUsername}.
 	 */
 	public static String getCommandLineUsername() {
@@ -79,6 +81,7 @@ public class Client {
 	static ArrayList<ClientUser> users = new ArrayList<>();
 	
 	/**
+	 * Returns a shallow copy of all users that are connected to the same server.
 	 * @return A shallow copy of {@link #users}.
 	 */
 	public static ArrayList<ClientUser> getAllUsers() {

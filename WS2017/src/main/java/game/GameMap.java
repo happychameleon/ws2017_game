@@ -10,7 +10,7 @@ import java.util.jar.JarFile;
 /**
  * Holds the Data for preconstructed Maps read in from files.
  *
- * TODO? For future Milestones if there is enough time add special objects and powerups to maps.
+ * TODO(M4) For future Milestones if there is enough time add special objects and powerups to maps.
  *
  * Created by flavia on 12.04.17.
  */
@@ -55,6 +55,22 @@ public class GameMap {
 	 */
 	public int getHeight() {
 		return tiles.length;
+	}
+	
+	/**
+	 * Returns how many starting position there are on the map.
+	 * The starting Position have to be the same amount for each Player, otherwise it only returns the count of starting positions for the first Player.
+	 * @return How many starting position there are on the map.
+	 */
+	public int getStartPositionCount() {
+		int count = 0;
+		for (int i = 0; i < getHeight(); i++) {
+			for (int j = 0; j < getWidth(); j++) {
+				if (tiles[j][i] == '1')
+					count++;
+			}
+		}
+		return count;
 	}
 	//endregion
 	
@@ -154,6 +170,14 @@ public class GameMap {
 			} else { // Run with IDE
 				File mapsFolder = new File("src/main/resources/maps");
 				System.out.println("GameMap#readInAllMaps - Run with IDE");
+				if (mapsFolder.exists() == false) {
+					System.err.println("GameMap#readInAllMaps - No Maps Folder found!");
+					createDefaultMaps(mapsFolder);
+				}
+				if (mapsFolder.listFiles() == null || mapsFolder.listFiles().length == 0) {
+					System.err.println("GameMap#readInAllMaps - Maps Folder empty");
+					createDefaultMaps(mapsFolder);
+				}
 				for (File mapFile : mapsFolder.listFiles())
 					if (mapFile.getName().endsWith(".txt")) {
 						String mapName = mapFile.getName().substring(mapFile.getName().lastIndexOf("/") + 1, mapFile.getName().lastIndexOf("."));
@@ -213,8 +237,44 @@ public class GameMap {
 			}
 	}
 	
-	private static void createDefaultMaps() {
-	
+	/**
+	 * Creates a default map in case the folder doesn't exist or is empty.
+	 * @param mapsFolder The folder in which the maps should be.
+	 */
+	private static void createDefaultMaps(File mapsFolder) {
+		try {
+			if (mapsFolder.exists() == false) {
+				mapsFolder.mkdirs();
+			}
+			File defaultMap = new File(mapsFolder.getAbsolutePath() + "/defaultMap.txt");
+			defaultMap.createNewFile();
+			
+			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(defaultMap));
+			// Write the default map.
+			bufferedWriter.write("111GGG222");
+			bufferedWriter.newLine();
+			bufferedWriter.write("1GGGGGGG2");
+			bufferedWriter.newLine();
+			bufferedWriter.write("1GGGGGGG2");
+			bufferedWriter.newLine();
+			bufferedWriter.write("GGGGWGGGG");
+			bufferedWriter.newLine();
+			bufferedWriter.write("GWGWWWGWG");
+			bufferedWriter.newLine();
+			bufferedWriter.write("GGGGWGGGG");
+			bufferedWriter.newLine();
+			bufferedWriter.write("3GGGGGGG4");
+			bufferedWriter.newLine();
+			bufferedWriter.write("3GGGGGGG4");
+			bufferedWriter.newLine();
+			bufferedWriter.write("333GGG444");
+			
+			bufferedWriter.flush();
+			bufferedWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	//endregion
 	

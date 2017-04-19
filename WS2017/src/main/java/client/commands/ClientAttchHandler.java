@@ -16,7 +16,6 @@ public class ClientAttchHandler extends ClientCommandHandler {
     @Override
     public void handleCommand() {
     	
-        //Todo: create ClientAttchHandler
     }
     
     /**

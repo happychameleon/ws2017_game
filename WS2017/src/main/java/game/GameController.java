@@ -176,7 +176,6 @@ public abstract class GameController {
 		}
 		users.remove(user);
 		
-		// TODO: What should happen when a user leaves a running game?
 	}
 	
 	/**
@@ -206,7 +205,6 @@ public abstract class GameController {
 				return s.toString();
 				
 			case FINISHED:
-				// TODO: Finished game name.
 				return gameName;
 			
 			default:

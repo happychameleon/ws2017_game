@@ -140,7 +140,7 @@ public class ClientGameController extends GameController {
 	 */
 	public void sendStartGame() {
 		if (getAllChoosingUsers().isEmpty()) {
-			if (getAllUsers().size() >= 1) { // TODO: set back to 2, 1 is only for testing!
+			if (getAllUsers().size() >= 2) {
 				if (gameState == GameState.STARTING) {
 					ClientStgamHandler.sendStartGame(gameName);
 					
@@ -215,7 +215,7 @@ public class ClientGameController extends GameController {
 	
 	//region Game Watching
 	/**
-	 * TODO: Ability to watch a game.
+	 * TODO(M5) Ability to watch a game.
 	 */
 	public void watchGame() {
 		ClientUser thisUser = Client.getThisUser();
@@ -248,8 +248,8 @@ public class ClientGameController extends GameController {
 			window.dispose();
 		}
 		
-		if (users.containsKey(Client.getThisUser())) { // TODO: (M5) Also check for watching users and display it to them.
-			// TODO: Display an info panel with the highscore.
+		if (users.containsKey(Client.getThisUser())) { // TODO(M5): Also check for watching users and display it to them.
+			// TODO(M4): Display the highscore a bit more beautifully in a new Dialog or sth like that. But for now the lobby is ok.
 			gameLobby.getLobbyChat().displayInfo("Team " + winningTeamName + " has won!");
 			for (String username : playerScore.keySet()) {
 				gameLobby.getLobbyChat().displayInfo(String.format("Player %s has scored %d points", username, playerScore.get(username)));

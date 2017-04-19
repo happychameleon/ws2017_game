@@ -47,7 +47,7 @@ public class Main {
 	}
 	
 	/**
-	 * Does all the methods which need to run at the start of the application.
+	 * Calls all methods which need to run at the start of the application.
 	 */
 	private static void doStartMethods() {
 		

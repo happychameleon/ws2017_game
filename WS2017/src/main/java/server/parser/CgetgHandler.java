@@ -68,7 +68,7 @@ public class CgetgHandler extends CommandHandler {
 		if (users.isEmpty() == false) {
 			users = users.substring(1); // To remove the first space char.
 		}
-		commandParser.writeBackToClient(String.format("+OK cgetg running %s %d %s %s", sgc.getGameName(), sgc.getStartingPoints(), sgc.getGameMap().getName(), users));//TODO send the running game answer.
+		commandParser.writeBackToClient(String.format("+OK cgetg running %s %d %s %s", sgc.getGameName(), sgc.getStartingPoints(), sgc.getGameMap().getName(), users));
 	}
 	
 }

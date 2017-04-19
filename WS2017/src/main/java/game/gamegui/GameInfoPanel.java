@@ -17,7 +17,7 @@ public class GameInfoPanel extends JPanel {
 	public GameInfoPanel(World world, Window window) {
 		this.world = world;
 		
-		setMinimumSize(new Dimension(0, 100));
+		setMinimumSize(new Dimension(15, 100));
 		
 	}
 }
