@@ -13,10 +13,10 @@ import java.awt.image.BufferedImage;
  * Created by m on 26/04/17.
  */
 public class TestCharacter {
-    private World world;
-    private BufferedImage sprite;
-    private Tile tile;
-    private Weapon weapon;
+    //private World world;
+    //private BufferedImage sprite;
+    //private Tile tile;
+    //private Weapon weapon;
 
     private int wetness = 0;
     private int actionPoints;
