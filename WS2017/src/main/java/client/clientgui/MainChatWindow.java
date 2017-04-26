@@ -238,11 +238,11 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 			case STARTING:
 				waitingGameListModel.addElement(game);
 				break;
-				
+			
 			case RUNNING:
 				runningGameListModel.addElement(game);
 				break;
-				
+			
 			case FINISHED:
 				endedGames.add(game);
 				break;
@@ -259,11 +259,11 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 			case STARTING:
 				waitingGameListModel.removeElement(game);
 				break;
-				
+			
 			case RUNNING:
 				runningGameListModel.removeElement(game);
 				break;
-				
+			
 			case FINISHED:
 				endedGames.remove(game);
 				break;
@@ -514,10 +514,10 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 			openNewGameInputWindow();
 			
 		} else if (e.getSource() == joinGameButton) {
-			joinGameAtIndex(waitingGameList.getSelectedIndex());
+			startJoiningGame(waitingGameList.getSelectedIndex());
 			
-		} else if (e.getSource() == runningGameList) {
-			watchGameAtIndex(runningGameList.getSelectedIndex());
+		} else if (e.getSource() == watchGameButton) {
+			startWatchingGame(runningGameList.getSelectedIndex());
 			
 		} else if (e.getSource() == whisperButton) {
 			openWhisperChat(userListModel.elementAt(userList.getSelectedIndex()));
@@ -526,6 +526,32 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 			ClientCgethHandler.sendHighscoreRequest();
 			
 		}
+	}
+	
+	/**
+	 * Joins the game if one is selected or opens the newGameInputWindow.
+	 */
+	private void startJoiningGame(int index) {
+		if (index < 0)
+			if (waitingGameListModel.isEmpty())
+				openNewGameInputWindow();
+			else
+				getMainChatPanel().displayError("Please select a game to join!");
+		else
+			joinGameAtIndex(0);
+	}
+	
+	/**
+	 * Start watching game if one is selected.
+	 */
+	private void startWatchingGame(int index) {
+		if (index < 0)
+			if (runningGameListModel.isEmpty())
+				getMainChatPanel().displayError("There is no game you can watch!");
+			else
+				getMainChatPanel().displayError("Please select a game to watch!");
+		else
+			watchGameAtIndex(index);
 	}
 	
 	/**
@@ -565,13 +591,13 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		} else if (e.getSource() == waitingGameList) {
 			if (e.getClickCount() == 2) {
 				int index = waitingGameList.locationToIndex(e.getPoint());
-				joinGameAtIndex(index);
+				startJoiningGame(index);
 			}
 			
 		} else if (e.getSource() == runningGameList) {
 			if (e.getClickCount() == 2) {
 				int index = runningGameList.locationToIndex(e.getPoint());
-				watchGameAtIndex(index);
+				startWatchingGame(index);
 			}
 			
 		}
