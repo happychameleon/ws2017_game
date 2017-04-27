@@ -53,10 +53,18 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 	 */
 	protected final String chatCommand;
 	
-	
-	JTextField chatInputTextField = new JTextField(15);
-	JButton sendChatButton = new JButton("Send");
-	JTextArea chatTextArea = new JTextArea(30, 50);
+	/**
+	 * Where the user can write the text messages.
+	 */
+	protected JTextField chatInputTextField = new JTextField(15);
+	/**
+	 * Where the user can send the message
+	 */
+	private JButton sendChatButton = new JButton("Send");
+	/**
+	 * Where the Chat messages are displayed.
+	 */
+	private JTextArea chatTextArea = new JTextArea(30, 50);
 	
 	
 	/**
@@ -109,6 +117,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 		
 		messages.add(chatMessage);
 		lastMessageIsInfo = false;
+		// TODO(M5): Play a sound.
 	}
 	
 	/**
@@ -118,6 +127,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 	 */
 	public void addChatUser(ClientUser user) {
 		chatUsers.add(user);
+		// TODO(M5): Play a sound.
 	}
 	
 	/**

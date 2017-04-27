@@ -129,6 +129,35 @@ public abstract class GameController {
 	public World getWorld() {
 		return world;
 	}
+	
+	/**
+	 * A list of all the users currently watching the game.
+	 * Is null when the game hasn't started.
+	 */
+	protected ArrayList<User> watchingUsers;
+	
+	/**
+	 * @return A shallow copy of {@link #watchingUsers}.
+	 */
+	public ArrayList<User> getWatchingUsers() {
+		return (ArrayList<User>) watchingUsers.clone();
+	}
+	
+	/**
+	 * Adds the user to {@link #watchingUsers}.
+	 * @param user The user to add.
+	 */
+	public void addWatchingUser(User user) {
+		watchingUsers.add(user);
+	}
+	
+	/**
+	 * Removes the user from {@link #watchingUsers}.
+	 * @param user The user to remove.
+	 */
+	public void removeWatchingUser(User user) {
+		watchingUsers.remove(user);
+	}
 	//endregion
 	
 	/**
@@ -231,6 +260,7 @@ public abstract class GameController {
 	 */
 	public void startGame() {
 		gameState = GameState.RUNNING;
+		watchingUsers = new ArrayList<>();
 	}
 	
 	/**

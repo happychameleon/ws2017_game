@@ -382,7 +382,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 					ClientAttchHandler.sendAttackToServer(window.getClientGameController(), targetedCharacter, attackingCharacter);
 				} else {
 					System.out.println("Not enough actionPoints for Attack! (ATTACKER: " + attackingCharacter + "; TARGET: " + targetedCharacter + ")");
-					// TODO(M4)? play error sound.
+					// TODO(M5)? play error sound.
 				}
 			} else {
 				System.out.println("Character not in Range! (ATTACKER: " + attackingCharacter + "; TARGET: " + targetedCharacter + "). Tile deselected.");
