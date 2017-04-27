@@ -137,9 +137,9 @@ public class Tile {
 	public void setCharacter(Character character) {
 		this.character = character;
 		if (character == null) {
-			System.out.println("Tile#setCharacter - Character on Tile " + this + " now: null");
+			//System.out.println("Tile#setCharacter - Character on Tile " + this + " now: null");
 		} else {
-			System.out.println("Tile#setCharacter - Character on Tile " + this + " now: " + character);
+			//System.out.println("Tile#setCharacter - Character on Tile " + this + " now: " + character);
 		}
 		this.setNeedsGraphicsUpdate();
 	}

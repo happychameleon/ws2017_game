@@ -59,4 +59,14 @@ public class ClientReadyHandler extends ClientCommandHandler {
 		return argument.substring(index);
 	}
 	
+	
+	/**
+	 * Informs the Server that this Client is ready and has chosen their Characters.
+	 * @param gameName The game in which the user is ready.
+	 * @param characterString The characterString of this user.
+	 */
+	public static void tellServerAboutReady(String gameName, String characterString) {
+		String message = String.format("ready %s %s %s", Client.getThisUser().getName(), gameName, characterString);
+		Client.sendMessageToServer(message);
+	}
 }

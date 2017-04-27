@@ -25,7 +25,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	private JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	
 	/**
-	 * The Panel where the everything is in.
+	 * The Panel where everything is in.
 	 */
 	JPanel mainPanel;
 	
@@ -89,7 +89,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	/**
 	 * This Button is used to open a window for the selected {@link #runningGameList} (where this client isn't a player) to watch it.
 	 */
-	JButton watchGameButton = new JButton("Watch Game (UNDONE)");
+	JButton watchGameButton = new JButton("Watch Game");
 	
 	/**
 	 * Opens the {@link NewGameDialog} to create a new Game.
@@ -269,7 +269,9 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 				break;
 		}
 		
-		mainChatPanel.displayInfo("The game " + game.getGameName() + " has been removed, because there were no players left.");
+		if (game.getAllUsers() == null || game.getAllUsers().size() == 0) {
+			mainChatPanel.displayInfo("The game " + game.getGameName() + " has been removed, because there were no players left.");
+		}
 	}
 	
 	/**
@@ -355,21 +357,23 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 */
 	public void moveGameToRunning(ClientGameController gameController) {
 		if (waitingGameListModel.removeElement(gameController) == false) {
-			System.err.println("MainChatWindow#moveGameToRunning - Game to move not in waiting games!");
-			if (runningGameListModel.contains(gameController))
+			if (runningGameListModel.contains(gameController)) {
 				return;
+			} else {
+				System.err.println("MainChatWindow#moveGameToRunning - Why isn't the game " + gameController.getGameName() + " already in running game list?");
+			}
 		}
 		runningGameListModel.addElement(gameController);
 	}
 	
 	/**
-	 * Calls the {@link ClientGameController#watchGame()} method of the game at the given position of the {@link #runningGameList}.
+	 * Calls the {@link ClientGameController#askToWatchGame()} method of the game at the given position of the {@link #runningGameList}.
 	 * @param index the given position at the runningGameList.
 	 */
 	private void watchGameAtIndex(int index) {
 		ClientGameController game = runningGameListModel.elementAt(index);
 		if (game != null)
-			game.watchGame();
+			game.askToWatchGame();
 	}
 	//endregion
 	

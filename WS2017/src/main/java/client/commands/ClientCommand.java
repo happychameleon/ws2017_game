@@ -21,7 +21,8 @@ public enum ClientCommand {
 	rmgam(new ClientRmgamHandler()),
 	ready(new ClientReadyHandler()),
 	stgam(new ClientStgamHandler()),
-	uhigh(new ClientUhighHandler());
+	uhigh(new ClientUhighHandler()),
+	wtchg(new ClientWtchgHandler());
 	
 	/**
 	 * The correct ClientCommandHandler which processes the command.
