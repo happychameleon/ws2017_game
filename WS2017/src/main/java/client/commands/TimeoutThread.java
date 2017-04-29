@@ -26,6 +26,7 @@ class TimeoutThread extends Thread{
         }
         System.out.println("-ERR Sever failed to send ping");
         try {
+            commandParser.getIn().close();
             commandParser.serverSocket.close();
             System.out.println("closing socket and closing client, TimeoutDelay: " + timeoutDelay);
         } catch (IOException e) {
