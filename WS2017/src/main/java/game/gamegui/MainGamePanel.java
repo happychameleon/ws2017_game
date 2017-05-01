@@ -370,7 +370,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 				&& world.getSelectedTile().hasCharacter() //(1)
 				&& world.getSelectedTile().getCharacter().getOwner().getUser() == Client.getThisUser() //(1)
 				&& world.getSelectedTile().getCharacter().getOwner().hasTurn() //(2)
-				&& world.getSelectedTile().getCharacter().getWeapon() != null //(3)
+				&& world.getSelectedTile().getCharacter().hasWeapon() //(3)
 				&& world.getSelectionType() == SelectionType.OWNED_WEAPON) { //(3)
 			
 			Character targetedCharacter = attackedTile.getCharacter();
@@ -437,7 +437,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 			case KeyEvent.VK_SPACE:
 				if (world.getSelectedTile() != null && world.getSelectedTile().hasCharacter()) {
 					if (world.getSelectionType() == SelectionType.CHARACTER
-							&& world.getSelectedTile().getCharacter().getWeapon() != null) {
+							&& world.getSelectedTile().getCharacter().hasWeapon()) {
 						window.selectWeapon();
 					}
 				} else {

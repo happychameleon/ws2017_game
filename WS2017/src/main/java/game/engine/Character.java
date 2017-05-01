@@ -109,6 +109,10 @@ public class Character {
 	 */
 	public Weapon getWeapon() { return weapon; }
 	
+	public boolean hasWeapon() {
+		return weapon != null;
+	}
+	
 	public void setWeapon(Weapon weapon) {
     	if (this.weapon != null) {
     		System.out.println("Character::setWeapon - ERROR: Character already has a weapon!");
