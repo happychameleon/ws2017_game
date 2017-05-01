@@ -303,7 +303,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		}
 		world.setSelectedTile(tileUnderMouse);
 		tileUnderMouse.setNeedsGraphicsUpdate();
-		if (tileUnderMouse.getCharacter() != null) {
+		if (tileUnderMouse.hasCharacter()) {
 			// We have selected a Character. Highlight their movement Range.
 			window.setWalkRangeTiles(tileUnderMouse.getAllTilesInRange(tileUnderMouse.getCharacter().getMoveRange(), true));
 			world.setSelectionType(SelectionType.CHARACTER);
@@ -326,7 +326,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		System.out.println("MainGamePanel#askServerToMoveCharacter");
 		if (destinationTile != null
 				&& world.getSelectedTile() != null
-				&& world.getSelectedTile().getCharacter() != null
+				&& world.getSelectedTile().hasCharacter()
 				&& window.getWalkRangeTiles() != null
 				&& window.getWalkRangeTiles().keySet().contains(destinationTile)
 				) {
@@ -365,9 +365,9 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 	private void askServerToAttackCharacter(Tile attackedTile) {
 		System.out.println("MainGamePanel#askServerToAttackCharacter");
 		
-		if (attackedTile.getCharacter() != null //(4)
+		if (attackedTile.hasCharacter() //(4)
 				&& world.getSelectedTile() != null //(1)
-				&& world.getSelectedTile().getCharacter() != null //(1)
+				&& world.getSelectedTile().hasCharacter() //(1)
 				&& world.getSelectedTile().getCharacter().getOwner().getUser() == Client.getThisUser() //(1)
 				&& world.getSelectedTile().getCharacter().getOwner().hasTurn() //(2)
 				&& world.getSelectedTile().getCharacter().getWeapon() != null //(3)
@@ -435,7 +435,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_SPACE:
-				if (world.getSelectedTile() != null && world.getSelectedTile().getCharacter() != null) {
+				if (world.getSelectedTile() != null && world.getSelectedTile().hasCharacter()) {
 					if (world.getSelectionType() == SelectionType.CHARACTER
 							&& world.getSelectedTile().getCharacter().getWeapon() != null) {
 						window.selectWeapon();

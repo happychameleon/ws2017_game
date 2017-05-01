@@ -303,6 +303,7 @@ public class Character {
 	}
 	
 	/**
+	 * Use {@link #moveCharacterTo} instead.
 	 * Moves the Character by one Tile.
 	 * @param direction The direction (N==0; E==1; S==2; W==3) where to move.
 	 * @return Whether the move was successful <code>true</code> or not <code>false</code> (e.g. blocked by sth).
@@ -372,6 +373,9 @@ public class Character {
 		
     }
 	
+	/**
+	 * @return A Set of all EnemyCharacters which are in shooting range of this Characters current Weapon. Can be null if this Character has no weapon.
+	 */
 	public HashSet<Character> getAllEnemyCharactersInRange () {
 		if (weapon == null) {
 			System.err.println("Character#getAllCharactersInRange - Character has no Weapon!");
@@ -379,7 +383,7 @@ public class Character {
 		}
 		HashSet<Character> charactersInRange = new HashSet<>();
 		for (Tile tile : tile.getAllTilesInRange(weapon.getRange(), false).keySet()) {
-			if (tile.getCharacter() != null
+			if (tile.hasCharacter()
 					&& this.isOnSameTeamAs(tile.getCharacter()) == false) {
 				charactersInRange.add(tile.getCharacter());
 			}

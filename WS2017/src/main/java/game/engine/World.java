@@ -388,7 +388,7 @@ public class World {
 	 */
 	public void attackCharacter(Tile attackingTile, Tile targetedTile, int attackIntensity) {
 		System.out.println("World#attackCharacter");
-		if (targetedTile.getCharacter() == null || attackingTile.getCharacter() == null) {
+		if (targetedTile.hasCharacter() == false || attackingTile.hasCharacter() == false) {
 			System.err.println("World#attackCharacter - character check went wrong.");
 		}
 		
