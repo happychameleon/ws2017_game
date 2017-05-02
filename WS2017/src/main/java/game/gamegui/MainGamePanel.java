@@ -303,7 +303,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		}
 		world.setSelectedTile(tileUnderMouse);
 		tileUnderMouse.setNeedsGraphicsUpdate();
-		if (tileUnderMouse.getCharacter() != null && tileUnderMouse.getCharacter().getOwner().hasTurn()) {
+		if (tileUnderMouse.getCharacter() != null) {
 			// We have selected a Character. Highlight their movement Range.
 			window.setWalkRangeTiles(tileUnderMouse.getAllTilesInRange(tileUnderMouse.getCharacter().getMoveRange(), true));
 			world.setSelectionType(SelectionType.CHARACTER);
@@ -430,6 +430,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 	//region Keyboard
 	@Override
 	public void keyPressed(KeyEvent e) {
+		
 		updateGraphicsForUnselection();
 		
 		switch (e.getKeyCode()) {

@@ -1,6 +1,7 @@
 package unitTestGameEngine;
 
 import game.engine.World;
+import org.junit.Test;
 
 /**
  * Unit test for TurnController
@@ -8,5 +9,21 @@ import game.engine.World;
  * Created by m on 26/04/17.
  */
 public class TestTurnController {
-    //private final World world;
+    private World world;
+
+    //test to check
+    @Test
+    public void testTurnController(){};
+
+    //test to check EndTurn
+    @Test
+    public void testEndTurn(){};
+
+    //test to check askServerToEndTurn
+    @Test
+    public void testAskServerToEndTurn(){};
+
+    //test to check removePlayer
+    @Test
+    public void testRemovePlayer(){};
 }

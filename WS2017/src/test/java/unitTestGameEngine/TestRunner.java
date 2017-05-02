@@ -9,18 +9,16 @@ import org.junit.runner.notification.Failure;
  */
 public class TestRunner {
     public static void main(String[] args){
-        //Result result = JUnitCore.runClasses(TestCharacter.class);
-
-        //for (Failure failure : result.getFailures()){
-        //    System.out.println(failure.toString());
-        //}
-        //System.out.println(result.wasSuccessful());
-
-        Result result = JUnitCore.runClasses(TestTurnController.class);
-
+        Result result = JUnitCore.runClasses(TestCharacter.class);
         for (Failure failure : result.getFailures()){
             System.out.println(failure.toString());
         }
         System.out.println(result.wasSuccessful());
+
+        Result result1 = JUnitCore.runClasses(TestTurnController.class);
+        for (Failure failure : result1.getFailures()){
+            System.out.println(failure.toString());
+        }
+        System.out.println(result1.wasSuccessful());
     }
 }
