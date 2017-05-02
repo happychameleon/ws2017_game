@@ -148,7 +148,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		previewImage = toCompatibleImage(previewImage);
 		
 		repaint();
-		window.getGameInfoPanel().repaint();
+		window.getGameInfoPanel().updatevalue();
 	}
 	
 	/**
