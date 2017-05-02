@@ -38,7 +38,8 @@ class PingThread extends Thread{
         Server.removeUserFromList(commandParser.getReceivingUser());
         try {
             // Sending empty byte[] to tell the input stream to quit.
-            commandParser.getIn().read(new byte[] {});
+            //commandParser.getSocket().getInputStream().read(new byte[] {});
+            commandParser.getIn().close();
             commandParser.getSocket().close();
         } catch (IOException e) {
             e.printStackTrace();
