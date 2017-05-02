@@ -105,10 +105,13 @@ public class GameLobby extends JPanel implements ActionListener, WindowListener 
 	
 	
 	/**
-	 * Removes the user from the list of users
-	 * @param user the user to remove
+	 * Removes the user from the list of users and notifies the Client in the lobby chat.
+	 * Does nothing if the user wasn't in the list of users.
+	 * @param user The user to remove.
 	 */
 	public void removeUser(ClientUser user) {
+		if (userListModel.contains(user) == false)
+			return;
 		userListModel.removeElement(user);
 		if (user == Client.getThisUser()) {
 			window.dispose();

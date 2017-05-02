@@ -74,11 +74,15 @@ public abstract class ClientCommandHandler {
 		String yString = "";
 		int i = 0;
 		for (char c : positionString.toCharArray()) {
-			if (i == 0)
-				if (c == ',') i++;
-				else xString += c;
-			else
+			if (i == 0) {
+				if (c == ',') {
+					i++;
+				} else {
+					xString += c;
+				}
+			} else {
 				yString += c;
+			}
 		}
 		int x = Integer.parseInt(xString);
 		int y = Integer.parseInt(yString);

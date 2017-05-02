@@ -98,7 +98,7 @@ public class Tile {
      * @return true if this Tile is walkable, otherwise false.
      */
     public boolean isWalkable(boolean considerCharacters) {
-	    if (considerCharacters && getCharacter() != null) {
+	    if (considerCharacters && hasCharacter()) {
 	    	return false;
 	    }
     	return tileType.getIsWalkable();
@@ -124,10 +124,17 @@ public class Tile {
     private Character character;
 	
 	/**
-	 * @return {@link #character}
+	 * @return {@link #character}. Can be null (check
 	 */
 	public Character getCharacter() {
 		return character;
+	}
+	
+	/**
+	 * @return <code>true</code> if there is a Character on thi Tile, otherwise <code>false</code>.
+	 */
+	public boolean hasCharacter() {
+		return character != null;
 	}
 	
 	/**
@@ -137,9 +144,9 @@ public class Tile {
 	public void setCharacter(Character character) {
 		this.character = character;
 		if (character == null) {
-			System.out.println("Tile#setCharacter - Character on Tile " + this + " now: null");
+			//System.out.println("Tile#setCharacter - Character on Tile " + this + " now: null");
 		} else {
-			System.out.println("Tile#setCharacter - Character on Tile " + this + " now: " + character);
+			//System.out.println("Tile#setCharacter - Character on Tile " + this + " now: " + character);
 		}
 		this.setNeedsGraphicsUpdate();
 	}

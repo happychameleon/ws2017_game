@@ -63,7 +63,7 @@ public class UnameHandler extends CommandHandler {
 	/**
 	 * This sets the username of the ServerUser who entered this command to the given username.
 	 * If the user didn't already have a name it newly assigns one, otherwise it overwrites the old one.
-	 * @param argument
+	 * @param argument the New Name
 	 */
 	private void addUsernameToServer(String argument) {
 		ServerUser sendingUser = commandParser.getReceivingUser();

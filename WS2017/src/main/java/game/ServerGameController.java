@@ -1,5 +1,6 @@
 package game;
 
+import game.engine.Character;
 import game.engine.Player;
 import game.engine.Team;
 import game.engine.World;
@@ -64,6 +65,28 @@ public class ServerGameController extends GameController {
 		world = new World(gameMap, this);
 	}
 	
+	/**
+	 * Creates the String representing all the Children for Player.
+	 * Used when the game is already playing.
+	 *
+	 * Format used:
+	 * [child1name child1weaponname child1position child2name child2weaponname child2position]
+	 *
+	 * @param player The player of which the Character String should be returned.
+	 * @return the Characterstring for the given Player.
+	 */
+	public String getAllChildrenAsString(Player player) {
+		String characters = "[";
+		for (Character child : world.getAllCharacterOfOwner(player)) {
+			String name = child.getName();
+			String weaponName = child.getWeapon().getName();
+			String position = child.getTile().getXPosition() + "," + child.getTile().getYPosition();
+			characters += String.format("%s '%s' %s ", name, weaponName, position);
+		}
+		characters = characters.trim(); // To remove last space
+		characters += "]";
+		return characters;
+	}
 	
 	/**
 	 * Called by {@link World#checkWinningCondition} when there is a Team which has won.
