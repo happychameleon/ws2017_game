@@ -230,7 +230,7 @@ public abstract class GameController {
 				return String.format("%s (%s %dPts)", gameName, gameMap.getName(), startingPoints);
 			
 			case RUNNING:
-				StringBuffer s = new StringBuffer(gameName);
+				StringBuilder s = new StringBuilder(gameName);
 				s.append(" (");
 				// Add all users.
 				for (User user : getAllUsers()) {

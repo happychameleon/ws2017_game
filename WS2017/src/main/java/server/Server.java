@@ -148,11 +148,7 @@ public class Server {
 	 * @return true if the newGameName is unique, false otherwise.
 	 */
 	public static boolean isGameNameUnique(String newGameName) {
-		if (getGameByName(newGameName) == null) {
-			return true;
-		} else {
-			return false;
-		}
+		return getGameByName(newGameName) == null;
 	}
 	
 	
