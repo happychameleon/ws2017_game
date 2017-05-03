@@ -12,7 +12,7 @@ import org.junit.Test;
 import static org.junit.Assert.fail;
 
 
-public class TestGameMap {
+public class GameMapTest {
     private GameMap gameMap;
 
     @Before

@@ -8,7 +8,7 @@ import org.junit.Test;
  *
  * Created by m on 26/04/17.
  */
-public class TestTurnController {
+public class TurnControllerTest {
     private World world;
 
     //test to check

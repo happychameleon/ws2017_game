@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
  *
  * Created by m on 26/04/17.
  */
-public class TestCharacter {
+public class CharacterTest {
     //private World world;
     //private BufferedImage sprite;
     //private Tile tile;

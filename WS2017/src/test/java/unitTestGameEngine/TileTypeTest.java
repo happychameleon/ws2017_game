@@ -1,8 +1,9 @@
 package unitTestGameEngine;
 
 /**
- * Unit Test for World
+ * Unit test for TurnController
+ *
  * Created by m on 26/04/17.
  */
-public class TestWorld {
+public class TileTypeTest {
 }

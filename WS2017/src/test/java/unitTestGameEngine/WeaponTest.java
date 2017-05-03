@@ -1,9 +1,9 @@
 package unitTestGameEngine;
 
 /**
- * Unit test for TurnController
+ * Unit Test for Weapon
  *
  * Created by m on 26/04/17.
  */
-public class TestTileType {
+public class WeaponTest {
 }
