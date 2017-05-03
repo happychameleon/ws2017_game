@@ -29,6 +29,9 @@ public class ClientEndtnHandler extends ClientCommandHandler {
 			ClientGameController gameController = Client.getGameByName(gameName);
 			ClientUser user = Client.getUserByName(username);
 			
+			assert gameController != null;
+			assert user != null;
+			
 			if (gameController.getWorld().getTurnController().getCurrentPlayer().getUser() != user) {
 				System.err.println("ClientEndtnHandler#handleAnswer - it's not user's turn, but server didn't get that.");
 				return;

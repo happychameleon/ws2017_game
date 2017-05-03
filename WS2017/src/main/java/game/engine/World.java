@@ -1,9 +1,6 @@
 package game.engine;
 
-import game.ClientGameController;
-import game.GameController;
-import game.GameMap;
-import game.ServerGameController;
+import game.*;
 import game.gamegui.SelectionType;
 import game.gamegui.Window;
 
@@ -53,8 +50,6 @@ public class World {
 	/**
 	 * The Tile which was selected last with a left mouse click.
 	 * When a Character is on the selectedTile, the movement Range is shown.
-	 *
-	 * TODO(M4) Move selection to the gamegui package!
 	 */
 	private Tile selectedTile;
 	
@@ -66,10 +61,14 @@ public class World {
 	}
 	
 	/**
+	 * Set's the selected Tile to the given Tile.
+	 * If the given selectedTile is <code>null</code>, {@link #selectionType} is set to NOTHING.
 	 * @param selectedTile The newly {@link #selectedTile}.
 	 */
 	public void setSelectedTile (Tile selectedTile) {
 		this.selectedTile = selectedTile;
+		if (selectedTile == null)
+			selectionType = SelectionType.NOTHING;
 	}
 	
 	/**
@@ -355,8 +354,10 @@ public class World {
 	/**
 	 * Checks whether the WinningConditions are met and if so carries them out.
 	 * Only done on the Server. The Clients then get informed by the Server.
+	 *
+	 * @return <code>true</code> when the game has ended, otherwise <code>false</code>.
 	 */
-	public void checkWinningCondition() {
+	public boolean checkWinningCondition() {
 		if (gameController instanceof ServerGameController) {
 			System.out.println("World#checkWinningCondition - On Server");
 			
@@ -364,8 +365,10 @@ public class World {
 			
 			if (winningTeam != null) {
 				((ServerGameController) gameController).teamHasWon(winningTeam);
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	/**

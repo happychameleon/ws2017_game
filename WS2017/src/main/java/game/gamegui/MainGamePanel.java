@@ -97,8 +97,10 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		for (int i = 0; i < 10; i++) {
 			try {
 				characterWetnessSprites[i] = ImageIO.read(getClass().getResource("/images/characters/character__topDown_wetness" + i + "0.png"));
-			} catch (IOException e) {
+			} catch (IOException | IllegalArgumentException e) {
+				characterWetnessSprites = null;
 				e.printStackTrace();
+				break;
 			}
 		}
 		
@@ -148,7 +150,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		previewImage = toCompatibleImage(previewImage);
 		
 		repaint();
-		window.getGameInfoPanel().repaint();
+		window.getGameInfoPanel().updatevalue();
 	}
 	
 	/**
@@ -172,11 +174,13 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		if (character != null) {
 			// Draw the Character on the Tile and show it's wetness.
 			g.drawImage(character.getSprite(), leftX, topY, tileSize, tileSize, null);
-			int imageIndex = character.getWetness()/10;
-			if (imageIndex > 9)
-				imageIndex = 9;
-			BufferedImage wetnessSprite = characterWetnessSprites[imageIndex];
-			g.drawImage(wetnessSprite, leftX, topY, tileSize, tileSize, null);
+			if (characterWetnessSprites != null) {
+				int imageIndex = character.getWetness() / 10;
+				if (imageIndex > 9)
+					imageIndex = 9;
+				BufferedImage wetnessSprite = characterWetnessSprites[imageIndex];
+				g.drawImage(wetnessSprite, leftX, topY, tileSize, tileSize, null);
+			}
 		}
 		
 		if (world.getSelectedTile() == tile) {
@@ -447,7 +451,6 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 				repaintImage();
 				break;
 			case KeyEvent.VK_ENTER:
-				world.setSelectionType(SelectionType.NOTHING);
 				world.setSelectedTile(null);
 				world.endTurn();
 				repaintImage();
