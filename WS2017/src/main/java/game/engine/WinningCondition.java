@@ -62,7 +62,8 @@ public enum WinningCondition {
 			case LAST_TEAM_STANDING:
 				return lastTeamStanding(world);
 			default:
-				return null;
+				System.err.println("WinningCondition#checkForWinningCondition - we forgot to add the winning condition here after adding a new one.");
+				return lastTeamStanding(world);
 		}
 	}
 	
