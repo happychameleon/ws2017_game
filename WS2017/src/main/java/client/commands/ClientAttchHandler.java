@@ -3,6 +3,7 @@ package client.commands;
 
 import client.Client;
 import game.ClientGameController;
+import game.GameState;
 import game.engine.Character;
 import game.engine.Tile;
 
@@ -27,6 +28,9 @@ public class ClientAttchHandler extends ClientCommandHandler {
     public void handleAnswer(boolean isOK) {
 	    String gameName = getAndRemoveNextArgumentWord();
 	    ClientGameController gameController = Client.getGameByName(gameName);
+	    
+	    if (gameController.getGameState() != GameState.RUNNING)
+	    	return;
 	
 	    String targetedChildPosition = getAndRemoveNextArgumentWord();
 	    String attackerChildPosition = getAndRemoveNextArgumentWord();
