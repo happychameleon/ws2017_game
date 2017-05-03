@@ -1,6 +1,7 @@
 package game.engine;
 
 import client.commands.ClientEndtnHandler;
+import game.GameState;
 import serverclient.User;
 
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public class TurnController {
 		
 		getCurrentPlayer().startNewTurn();
 		
-		if (world.getCurrentPlayer().hasCharactersLeft() == false && players.size() > 1) {
+		if (world.getCurrentPlayer().hasCharactersLeft() == false && players.size() > 1 && world.getGameController().getGameState() == GameState.RUNNING) {
 			endTurn();
 		}
 	}
