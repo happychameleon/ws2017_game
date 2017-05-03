@@ -159,7 +159,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		mainPanel = new JPanel(new BorderLayout(20, 10));
 		
 		// The middle contains the tabbedPane with the Main Chat and future Whisper Chats
-		mainChatPanel = new ChatPanel(Client.getAllUsers(), "chatm");
+		mainChatPanel = new ChatPanel(Client.getAllUsers(), "chatm", "chatMessage");
 		mainChatPanel.setPreferredSize(new Dimension(500, 700));
 		tabbedPane.addTab("Main Chat", mainChatPanel);
 		JPanel middlePanel = new JPanel(new BorderLayout(20, 10));
@@ -414,7 +414,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		}
 		ArrayList<ClientUser> whisperUsers = new ArrayList<>();
 		whisperUsers.add(user);
-		ChatPanel whisperTab = new ChatPanel(whisperUsers, "chatw");
+		ChatPanel whisperTab = new ChatPanel(whisperUsers, "chatw", "whisperMessage");
 		tabbedPane.addTab(user.getName(), whisperTab);
 		tabbedPane.setSelectedComponent(whisperTab);
 		return whisperTab;

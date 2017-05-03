@@ -3,12 +3,15 @@ package client.clientgui;
 import client.Client;
 import client.ClientUser;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -68,11 +71,18 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 	
 	
 	/**
+	 * The sound to play when a message arrives.
+	 */
+	protected Clip chatMessageSoundClip;
+	
+	
+	/**
 	 * Creates a Chat Panel where users can Chat.
 	 * @param chatUsers The Users in this Chat.
 	 * @param chatCommand The command to send the chat message with (eg chatm or chatw).
+	 * @param messageSoundName The name of the .wav file in the sound folder to play when a message arrives. {@link #chatMessageSoundClip}.
 	 */
-	public ChatPanel(ArrayList<ClientUser> chatUsers, String chatCommand) {
+	public ChatPanel(ArrayList<ClientUser> chatUsers, String chatCommand, String messageSoundName) {
 		this.chatUsers = chatUsers;
 		this.chatCommand = chatCommand;
 		
@@ -96,6 +106,19 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 		// Format (optionally)
 		//chatInputTextField.setFont(new Font("Courier New", Font.ITALIC, 30));
 		
+		// Load message Sound
+		try {
+			URL url = this.getClass().getClassLoader().getResource("sound/" + messageSoundName + ".wav");
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
+			chatMessageSoundClip = AudioSystem.getClip();
+			chatMessageSoundClip.open(audioInputStream);
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -117,7 +140,9 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 		
 		messages.add(chatMessage);
 		lastMessageIsInfo = false;
-		// TODO(M5): Play a sound.
+		
+		//if (chatMessage.getSender() != Client.getThisUser())
+		playSound(chatMessageSoundClip);
 	}
 	
 	/**
@@ -170,6 +195,8 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 		infoMessage += ">>>" + info + "\n\n";
 		chatTextArea.append(infoMessage);
 		lastMessageIsInfo = true;
+		
+		//playSound(chatMessageSoundClip); // TODO different info sound.
 	}
 	
 	/**
@@ -181,7 +208,17 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 		displayInfo("ERROR: " + errorMessage);
 	}
 	
-	
+	/**
+	 * Plays the given sound.
+	 * @param sound The Clip to play.
+	 */
+	private void playSound(Clip sound) {
+		System.out.println("ChatPanel#playSound");
+		if (sound.isRunning())
+			sound.stop();
+		sound.setFramePosition(0);
+		sound.start();
+	}
 	
 	/**
 	 * Invoked when an action occurs.
