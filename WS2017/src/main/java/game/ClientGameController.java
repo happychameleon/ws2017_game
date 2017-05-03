@@ -269,17 +269,5 @@ public class ClientGameController extends GameController {
 	}
 	
 	//endregion
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

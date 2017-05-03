@@ -106,8 +106,8 @@ public class ClientCommandParser {
     /**
      * Takes the InputStreamReader from the server and buffers it in the command StringBuffer till the
      * function reads the terminating signal for a command.
-     * @param in
-     * @param c
+     * @param in InputStreamReader for input from server.
+     * @param c first character from InputStream represented in integer form.
      */
 	private void inputTranslate(InputStreamReader in, int c){
         int terminate = 0;
