@@ -35,7 +35,7 @@ public class CreateHighscoreXML {
 			
 			
 			/**
-			 * Creates the root element called user
+			 * Creates the root element called user.
 			 */
 			Element rootElement = doc.createElement("user");
 			doc.appendChild(rootElement);
@@ -45,13 +45,13 @@ public class CreateHighscoreXML {
 				String score = String.valueOf(playerScore.get(playerName));
 				
 				/**
-				 * Creates child called username of the root element
+				 * Creates child called username of the root element.
 				 */
 				Element username = doc.createElement("username");
 				rootElement.appendChild(username);
 				
 				/**
-				 * Gives the element username the player name as an attribute
+				 * Gives the element username the player name as an attribute.
 				 */
 				Attr attr = doc.createAttribute("name");
 				attr.setValue(playerName);

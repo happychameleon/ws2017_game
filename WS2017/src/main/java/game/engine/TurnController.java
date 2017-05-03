@@ -2,7 +2,6 @@ package game.engine;
 
 import client.commands.ClientEndtnHandler;
 import serverclient.User;
-
 import java.util.ArrayList;
 
 /**

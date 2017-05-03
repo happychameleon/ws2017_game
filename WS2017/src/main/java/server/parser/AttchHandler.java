@@ -27,8 +27,9 @@ public class AttchHandler extends CommandHandler {
         
         Tile attackingTile = parsePosition(attackerChildPosition, gameController);
         Tile targetedTile = parsePosition(targetedChildPosition, gameController);
-        
-        gameController.getWorld().attackCharacter(attackingTile, targetedTile, attackIntensity);
+	
+	    assert gameController != null;
+	    gameController.getWorld().attackCharacter(attackingTile, targetedTile, attackIntensity);
         
         Server.writeToAllClients(String.format("+OK attch %s", wholeArgument));
     }

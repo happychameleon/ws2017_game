@@ -129,6 +129,45 @@ public abstract class GameController {
 	public World getWorld() {
 		return world;
 	}
+	
+	/**
+	 * A list of all the users currently watching the game.
+	 * Is null when the game hasn't started.
+	 */
+	protected ArrayList<User> watchingUsers;
+	
+	/**
+	 * @return A shallow copy of {@link #watchingUsers}.
+	 */
+	public ArrayList<User> getWatchingUsers() {
+		return (ArrayList<User>) watchingUsers.clone();
+	}
+	
+	/**
+	 * Adds the user to {@link #watchingUsers}.
+	 * @param user The user to add.
+	 */
+	public void addWatchingUser(User user) {
+		if (watchingUsers == null) {
+			watchingUsers = new ArrayList<>();
+		}
+		watchingUsers.add(user);
+	}
+	
+	/**
+	 * Removes the user from {@link #watchingUsers}.
+	 * @param user The user to remove.
+	 */
+	public void removeWatchingUser(User user) {
+		watchingUsers.remove(user);
+	}
+	
+	/**
+	 * @return How many users are currently watching (not playing) the game.
+	 */
+	public int getWatchingUserCount() {
+		return watchingUsers.size();
+	}
 	//endregion
 	
 	/**
@@ -189,9 +228,9 @@ public abstract class GameController {
 		switch (gameState) {
 			case STARTING:
 				return String.format("%s (%s %dPts)", gameName, gameMap.getName(), startingPoints);
-				
+			
 			case RUNNING:
-				StringBuffer s = new StringBuffer(gameName);
+				StringBuilder s = new StringBuilder(gameName);
 				s.append(" (");
 				// Add all users.
 				for (User user : getAllUsers()) {
@@ -203,7 +242,7 @@ public abstract class GameController {
 					s.deleteCharAt(s.length() - 1);
 				s.append(")");
 				return s.toString();
-				
+			
 			case FINISHED:
 				return gameName;
 			
@@ -216,13 +255,14 @@ public abstract class GameController {
 	//endregion
 	
 	//region Game Start Methods
-	
 	/**
 	 * Gets the characterString for the given User.
+	 * Used ONLY when starting the game.
+	 *
 	 * @param user The given user.
 	 * @return The characterString
 	 */
-	public String getCharacterStringForUser(User user) {
+	public String getStartingCharacterStringForUser(User user) {
 		return users.get(user);
 	}
 	
@@ -231,6 +271,8 @@ public abstract class GameController {
 	 */
 	public void startGame() {
 		gameState = GameState.RUNNING;
+		if (watchingUsers == null)
+			watchingUsers = new ArrayList<>();
 	}
 	
 	/**

@@ -23,7 +23,7 @@ public class ChposHandler extends CommandHandler {
 	
 	    int distance = Integer.parseInt(getAndRemoveNextArgumentWord());
 	
-	    if (oldPosition.getCharacter() == null) {
+	    if (oldPosition.hasCharacter() == false) {
 		    System.err.println("ChposHandler#handleCommand - NO CHARACTER ON TILE!");
 	    }
 	    

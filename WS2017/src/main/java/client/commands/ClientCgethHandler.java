@@ -97,7 +97,7 @@ public class ClientCgethHandler extends ClientCommandHandler {
 		appostropheIndex = argument.indexOf("'");
 		String highscoreString = argument.substring(0, appostropheIndex);
 		argument = argument.substring(appostropheIndex + 1);
-		if (argument != null && argument.isEmpty() == false)
+		if (argument.isEmpty() == false)
 			argument = argument.substring(1);
 		return highscoreString;
 	}

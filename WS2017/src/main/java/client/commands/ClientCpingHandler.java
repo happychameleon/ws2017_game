@@ -12,19 +12,11 @@ public class ClientCpingHandler extends ClientCommandHandler {
 	 */
 	@Override
 	public void handleCommand() {
-		//System.out.println();
 		commandParser.getClientCpongSender();
-		
-		// Just for testing:
-		//System.out.println("Current users:");
-		//for (ClientUser user : Client.getAllUsers()) {
-		//	System.out.println(" " + user.getName());
-		//}
 	}
 	
 	@Override
 	public void handleAnswer(boolean isOK) {
 		// NOT CURRENTLY USED
 	}
-	
 }
