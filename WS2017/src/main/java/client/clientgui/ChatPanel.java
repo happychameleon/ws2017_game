@@ -210,6 +210,10 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 	
 	/**
 	 * Plays the given sound.
+	 *
+	 * Sound with help from:
+	 * https://www3.ntu.edu.sg/home/ehchua/programming/java/J8c_PlayingSound.html
+	 *
 	 * @param sound The Clip to play.
 	 */
 	private void playSound(Clip sound) {
