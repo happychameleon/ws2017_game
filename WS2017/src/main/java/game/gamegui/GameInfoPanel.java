@@ -1,11 +1,11 @@
 package game.gamegui;
 
 import game.engine.World;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -17,11 +17,13 @@ import java.io.IOException;
 public class GameInfoPanel extends JPanel {
 
 	private final World world;
-
+	private final Window window;
+	
 	public GameInfoPanel(World world, Window window) {
 
 		this.world = world;
-
+		this.window = window;
+		
 		setMinimumSize(new Dimension(15, 100));
 
 		JLabel wetness = new JLabel();
@@ -47,7 +49,8 @@ public class GameInfoPanel extends JPanel {
 		}
 
 	}
-
+	
+	
 	public void updatevalue() {
 		
 		this.removeAll();
