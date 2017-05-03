@@ -13,26 +13,27 @@ import static org.junit.Assert.fail;
 
 
 public class GameMapTest {
-    private GameMap gameMap;
+    private GameMap mapTest1;
+    private GameMap mapTest2;
 
     @Before
     public void loadMap() {
         GameMap.readInAllMaps();
-        gameMap = GameMap.getMapForName("BigLake", false);
-        //gameMap = GameMap.getAllMaps().get(0);// name angeben für bestimme karte getMapforName
+        mapTest1 = GameMap.getMapForName("BigLake", false);
+        mapTest2 = GameMap.getMapForName("SmallLakes", false);
     }
 
     @Test
     public void mapExists() {
-        System.out.println(gameMap.getName());
-        Assert.assertTrue(gameMap.getName() != null);
+        System.out.println(mapTest1.getName());
+        Assert.assertTrue(mapTest1.getName() != null);
 
     }
 
     @Test
     public void testGetStartPositionCount() {
-        int startpositions = gameMap.getStartPositionCount();
-        if (gameMap.getName().equals("BigLake")) {
+        int startpositions = mapTest1.getStartPositionCount();
+        if (mapTest1.getName().equals("BigLake")) {
             if (startpositions != 9) {
                 fail();
             }
