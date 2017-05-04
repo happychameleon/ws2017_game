@@ -150,7 +150,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		previewImage = toCompatibleImage(previewImage);
 		
 		repaint();
-		window.getGameInfoPanel().updatevalue();
+		
 	}
 	
 	/**
@@ -259,6 +259,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 			case MouseEvent.BUTTON1:
 				selectTile(tileUnderMouse);
 				repaintImage();
+				window.getGameInfoPanel().updatevalue();
 				break;
 			case MouseEvent.BUTTON3:
 				switch (world.getSelectionType()) {
@@ -454,6 +455,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 				world.setSelectedTile(null);
 				world.endTurn();
 				repaintImage();
+				window.getGameInfoPanel().updatevalue();
 				break;
 			case KeyEvent.VK_LEFT: case KeyEvent.VK_A:
 				camera.moveLeft();
