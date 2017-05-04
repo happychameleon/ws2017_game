@@ -1,52 +1,89 @@
 package unitTestGameEngine;
 
+import client.ClientUser;
+import game.ClientGameController;
+import game.GameMap;
 import game.GameState;
 import org.junit.Before;
 import org.junit.Test;
 import serverclient.User;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 /**
  * Created by m on 03/05/17.
  */
 public class ClientGameControllerTest {
+    private GameState gameState;
+    private int startingPoints;
+    private char[][] tiles;
+    private String testGameName;
+    private GameMap mapTest;
+    private ClientGameController clientGameController;
 
     @Before
     public void setup(){
-        GameState gameState;
-        int startingPoints;
-        String gameName;
-        HashMap<User, String>
-    }
-    @Test
-    public void getGameLobby() throws Exception {
+        GameMap.readInAllMaps();
+
+        gameState = GameState.STARTING;
+        startingPoints = 10;
+        testGameName = "TestGame";
+        //User user = new User("max");
+        HashMap<User, String> users = new HashMap<>();
+        //users.put(user,"max");
+        mapTest = GameMap.getMapForName("SmallTestMap",false);
+
+        clientGameController = new ClientGameController(gameState,startingPoints,testGameName,users, mapTest);
     }
 
     @Test
-    public void removeGameLobby() throws Exception {
+    public void testRemoveGameLobby() throws Exception {
     }
 
     @Test
-    public void getWindow() throws Exception {
+    public void testGetStartScreen() throws Exception {
     }
 
     @Test
-    public void getStartScreen() throws Exception {
+    public void testStartGameForWatching() throws Exception {
     }
 
     @Test
-    public void startGameForWatching() throws Exception {
+    public void testAskToJoinGame() throws Exception {
     }
 
     @Test
-    public void askToJoinGame() throws Exception {
+    public void testAddUserToGame() throws Exception {
+        ArrayList<User> users = new ArrayList<User>();
+        ClientUser user0 = new ClientUser("test0");
+        ClientUser user1 = new ClientUser("test1");
+        users.add(user0);
+        users.add(user1);
+        clientGameController.addUserToGame(user0);
+        clientGameController.addUserToGame(user1);
+
+        System.out.println(clientGameController.getStartingCharacterStringForUser(user0));
+        //clientGameController.thisClientIsReady(clientGameController.getStartingCharacterStringForUser(user0));
+
+        assertThat(clientGameController.getAllUsers(), equalTo(users));
     }
 
     @Test
-    public void addUserToGame() throws Exception {
+    public void testAllWaitingClients() throws Exception {
+        ArrayList<User> users = new ArrayList<User>();
+        ClientUser user0 = new ClientUser("test0");
+        ClientUser user1 = new ClientUser("test1");
+        users.add(user0);
+        users.add(user1);
+        clientGameController.addUserToGame(user0);
+        clientGameController.addUserToGame(user1);
+
+        assertThat(clientGameController.getAllWaitingUsers(), not(users));
     }
 
     @Test
