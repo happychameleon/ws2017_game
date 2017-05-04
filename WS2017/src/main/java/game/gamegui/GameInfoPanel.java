@@ -54,47 +54,18 @@ public class GameInfoPanel extends JPanel {
 
 		if (world.getSelectionType() == SelectionType.CHARACTER) {
 			wetness = new JLabel("Wetness: " + String.valueOf(world.getSelectedTile().getCharacter().getWetness()));
-			weapon = new JLabel(
-					"Weapon: " + String.valueOf(world.getSelectedTile().getCharacter().getWeapon().getName()));
+			weapon = new JLabel("Weapon: " + String.valueOf(world.getSelectedTile().getCharacter().getWeapon().getName()));
 			this.add(wetness, BorderLayout.LINE_START);
 			this.add(weapon, BorderLayout.LINE_END);
 
-			if (weaponname.equals("Medium Water Gun")) {
 				try {
-					weaponPic = ImageIO.read(getClass().getResource("/images/weapons/pistoleklein.png"));
+					weaponPic = ImageIO.read(getClass().getResource("/images/weapons/"+world.getSelectedTile().getCharacter().getWeapon().getName()+ ".png"));
 					weaponPicLabel = new JLabel(new ImageIcon(weaponPic));
 					this.add(weaponPicLabel, BorderLayout.CENTER);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}
-			if (weaponname.equals("Heavy Water Gun")) {
-				try {
-					weaponPic = ImageIO.read(getClass().getResource("/images/weapons/pistolegross.png"));
-					weaponPicLabel = new JLabel(new ImageIcon(weaponPic));
-					this.add(weaponPicLabel, BorderLayout.CENTER);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if (weaponname.equals("waterbomb")) {
-				try {
-					weaponPic = ImageIO.read(getClass().getResource("/images/weapons/wasserball.png"));
-					weaponPicLabel = new JLabel(new ImageIcon(weaponPic));
-					this.add(weaponPicLabel, BorderLayout.CENTER);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if (weaponname.equals("watertrap")) {
-				try {
-					weaponPic = ImageIO.read(getClass().getResource("/images/weapons/Wasserloch.png"));
-					weaponPicLabel = new JLabel(new ImageIcon(weaponPic));
-					this.add(weaponPicLabel, BorderLayout.CENTER);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-		} else {
+			} else {
 			forinfo = new JLabel("(Click on a Character for informations)");
 			this.add(forinfo, BorderLayout.CENTER);
 		}
@@ -107,4 +78,4 @@ public class GameInfoPanel extends JPanel {
 	}
 
 }
-}
+
