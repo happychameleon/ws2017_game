@@ -124,10 +124,15 @@ public abstract class GameController {
 	protected World world;
 	
 	/**
-	 * @return {@link #world}.
+	 * @return The {@link #world} if the game is running, otherwise <code>null</code>.
 	 */
 	public World getWorld() {
-		return world;
+		if (gameState == GameState.RUNNING) {
+			return world;
+		} else {
+			return null;
+		}
+		
 	}
 	
 	/**
@@ -210,7 +215,7 @@ public abstract class GameController {
 	 * @param user The user to remove.
 	 */
 	public void removeUser(User user) {
-		if (world != null) {
+		if (getWorld() != null) {
 			world.getTurnController().removePlayer(user);
 		}
 		users.remove(user);
