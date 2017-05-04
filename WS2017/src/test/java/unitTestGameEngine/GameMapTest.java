@@ -13,14 +13,16 @@ import org.junit.Test;
 
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class GameMapTest {
-    private GameMap mapTest1;
-    private GameMap mapTest2;
-    private String testMapName;
+    private GameMap testMap1;
+    private GameMap testMap2;
+    private String newMapName;
     private char[][] tiles;
-    private GameMap testMap;
+    private GameMap newMap;
+    private ArrayList<GameMap> compareList;
 
     @Before
     /**
@@ -29,47 +31,48 @@ public class GameMapTest {
      */
     public void loadMapObjects() {
         GameMap.readInAllMaps();
-        mapTest1 = GameMap.getMapForName("BigLake", false);
-        mapTest2 = GameMap.getMapForName("SmallLakes", false);
-        testMapName = "newMap";
+        testMap1 = GameMap.getMapForName("BigLake", false);
+        testMap2 = GameMap.getMapForName("SmallLakes", false);
+        newMapName = "newMap";
         tiles = new char[][]{{'1', '1', 'G', '2'}, {'G', 'w', 'w', '2'}, {'3', 'W', 'W', 'G'}, {'3', 'G', '4', '4'}};
-        testMap = new GameMap(testMapName, tiles);
+        newMap = new GameMap(newMapName, tiles);
+        compareList = GameMap.getAllMaps();
     }
 
     @Test
     /**
-     * Tests if the maps we get are existing.
+     * Tests if the maps we get in loadMapObjects() are existing.
      */
     public void mapExists() {
-        System.out.println(mapTest1.getName());
-        Assert.assertTrue(mapTest1.getName() != null);
+        System.out.println(testMap1.getName());
+        Assert.assertTrue(testMap1.getName() != null);
 
-        System.out.println(mapTest2.getName());
-        Assert.assertTrue(mapTest2.getName() != null);
+        System.out.println(testMap2.getName());
+        Assert.assertTrue(testMap2.getName() != null);
     }
 
     @Test
     /**
-     * Tests if the StartPositions were in read correctly for our existing maps and our new Map.
+     * Tests if the StartPositions were read correctly for existing maps and new map.
      */
     public void testGetStartPositionCount() {
-        int startpositionsBL = mapTest1.getStartPositionCount();
-        int startpositionsSL = mapTest2.getStartPositionCount();
-        int startpositionsTM = testMap.getStartPositionCount();
+        int startpositionsBL = testMap1.getStartPositionCount();
+        int startpositionsSL = testMap2.getStartPositionCount();
+        int startpositionsTM = newMap.getStartPositionCount();
 
-        if (mapTest1.getName().equals("BigLake")) {
+        if (testMap1.getName().equals("BigLake")) {
             if (startpositionsBL != 9) {
                 fail();
             }
         }
 
-        if (mapTest2.getName().equals("SmallLakes")) {
+        if (testMap2.getName().equals("SmallLakes")) {
             if (startpositionsSL != 7) {
                 fail();
             }
         }
 
-        if (testMap.getName().equals("newMap")) {
+        if (newMap.getName().equals("newMap")) {
             if (startpositionsTM != 2) {
                 fail();
             }
@@ -78,13 +81,13 @@ public class GameMapTest {
 
     @Test
     public void testGetName() {
-        System.out.println(testMap.getName());
-        Assert.assertTrue(testMap.getName() == testMapName);
+        System.out.println(newMap.getName());
+        Assert.assertTrue(newMap.getName() == newMapName);
     }
 
     @Test
     public void testGetTilesAsChars() {
-        char[][] mapTest = testMap.getTilesAsChars();
+        char[][] mapTest = newMap.getTilesAsChars();
 
         Assert.assertTrue(Arrays.equals(mapTest, tiles));
     }
@@ -92,7 +95,7 @@ public class GameMapTest {
     @Test
     public void testGetWidth() {
         int testWidth = 4;
-        int width = testMap.getWidth();
+        int width = newMap.getWidth();
 
         Assert.assertTrue(testWidth == width);
     }
@@ -100,21 +103,33 @@ public class GameMapTest {
     @Test
     public void getHeight() {
         int testHeight = 4;
-        int height = testMap.getHeight();
+        int height = newMap.getHeight();
 
         Assert.assertTrue(testHeight == height);
     }
 
     @Test
+    /**
+     * Test if the methods creates the same ArrayList again when called.
+     */
     public void getAllMaps() {
+        ArrayList<GameMap> testList = GameMap.getAllMaps();
 
+        if (testList.size() != compareList.size()) {
+            fail();
+        } else {
+            for (int start = 1; start < testList.size(); start++) {
+                if (testList.get(start) != compareList.get(start)) {
+                    fail();
+                }
+            }
+        }
     }
 
     @Test
     public void getMapForName() {
-    }
+        GameMap testMap = GameMap.getMapForName("BigLake", false);
 
-    @Test
-    public void readInAllMaps() {
+        Assert.assertTrue(testMap.getName().equals("BigLake"));
     }
 }
