@@ -33,9 +33,7 @@ public class ClientGameControllerTest {
         gameState = GameState.STARTING;
         startingPoints = 10;
         testGameName = "TestGame";
-        //User user = new User("max");
         HashMap<User, String> users = new HashMap<>();
-        //users.put(user,"max");
         mapTest = GameMap.getMapForName("SmallTestMap",false);
 
         clientGameController = new ClientGameController(gameState,startingPoints,testGameName,users, mapTest);

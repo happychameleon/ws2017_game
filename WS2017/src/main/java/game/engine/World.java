@@ -238,7 +238,7 @@ public class World {
 			startPosition = characterString.substring(0, spaceIndex);
 			characterString = characterString.substring(spaceIndex);
 			
-			Character character = new Character(this, characterName, player, Weapon.getWeaponForName(weaponName));
+			Character character = new Character(this, characterName, player, new Weapon(Weapon.getWeaponForName(weaponName)));
 			characters.add(character);
 			character.setStartingTile(getCorrectStartingTileForCharacter(character, startPosition));
 			

@@ -1,6 +1,8 @@
 package game.gamegui;
 
+import client.Client;
 import game.ClientGameController;
+import game.engine.Player;
 import game.engine.Tile;
 import game.engine.Weapon;
 import game.engine.World;
@@ -166,6 +168,18 @@ public class Window extends JFrame implements WindowListener {
 		for (Tile tile : attackRangeTiles) {
 			tile.setNeedsGraphicsUpdate();
 		}
+	}
+	
+	
+	/**
+	 * @return The player which represent's this User in the game. Could be null if this User isn't playing the game.
+	 */
+	public Player getThisUsersPlayer() {
+		for (Player player : world.getTurnController().getPlayers()) {
+			if (player.getUser() == Client.getThisUser())
+				return player;
+		}
+		return null;
 	}
 	
 	
