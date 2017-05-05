@@ -1,9 +1,13 @@
 package game.gamegui;
 
+//import game.engine.Player;
 import game.engine.World;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import client.Client;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -17,66 +21,61 @@ import java.io.IOException;
 public class GameInfoPanel extends JPanel {
 
 	private final World world;
-	private final Window window;
-	
+
+	private String weaponname;
+	private JLabel forinfo;
+	private JLabel wetness;
+	private JLabel weapon;
+	private JLabel weaponPicLabel;
+	private JLabel color;
+	private JLabel turn;
+
+	private BufferedImage weaponPic;
+
 	public GameInfoPanel(World world, Window window) {
 
 		this.world = world;
-		this.window = window;
-		
+
 		setMinimumSize(new Dimension(15, 100));
+		this.setLayout(new BorderLayout());
 
-		JLabel wetness = new JLabel();
-		JLabel weapon = new JLabel();
-		if (world.getSelectionType() == SelectionType.CHARACTER) {
-			wetness = new JLabel("Wetness: " + String.valueOf(world.getSelectedTile().getCharacter().getWetness()));
-			weapon = new JLabel("Weapon: " + String.valueOf(world.getSelectedTile().getCharacter().getWeapon()));
-			this.add(wetness);
-			this.add(weapon);
-		}
-		JLabel color = new JLabel("Your Color is: " + String.valueOf(world.getCurrentPlayer().getColor()));
-		this.add(color);
-		JLabel turn = new JLabel(String.valueOf(world.getCurrentPlayer().getName()) + "'s turn");
-		this.add(turn);
-
-		BufferedImage weaponPic;
-		try {
-			weaponPic = ImageIO.read(getClass().getResource("/images/tiles/attackRangeSprite.png"));
-			JLabel weaponPicLabel = new JLabel(new ImageIcon(weaponPic));
-			this.add(weaponPicLabel);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		forinfo = new JLabel("(Click on a Character for informations)");
+		this.add(forinfo, BorderLayout.CENTER);
+		color = new JLabel("Your Color is: " + String.valueOf(window.getThisUsersPlayer().getColor()));
+		this.add(color, BorderLayout.SOUTH);
+		turn = new JLabel(String.valueOf(world.getCurrentPlayer().getName()) + "'s turn");
+		this.add(turn, BorderLayout.NORTH);
 
 	}
-	
-	
+
 	public void updatevalue() {
-		
+
 		this.removeAll();
-		
-		JLabel wetness = new JLabel();
-		JLabel weapon = new JLabel();
+
 		if (world.getSelectionType() == SelectionType.CHARACTER) {
 			wetness = new JLabel("Wetness: " + String.valueOf(world.getSelectedTile().getCharacter().getWetness()));
-			weapon = new JLabel("Weapon: " + String.valueOf(world.getSelectedTile().getCharacter().getWeapon()));
-			this.add(wetness);
-			this.add(weapon);
-		}
-		JLabel color = new JLabel("Your Color is: " + String.valueOf(world.getCurrentPlayer().getColor()));
-		this.add(color);
-		JLabel turn = new JLabel(String.valueOf(world.getCurrentPlayer().getName()) + "'s turn");
-		this.add(turn);
+			weapon = new JLabel("Weapon: " + String.valueOf(world.getSelectedTile().getCharacter().getWeapon().getName()));
+			this.add(wetness, BorderLayout.LINE_START);
+			this.add(weapon, BorderLayout.LINE_END);
 
-		BufferedImage weaponPic;
-		try {
-			weaponPic = ImageIO.read(getClass().getResource("/images/tiles/attackRangeSprite.png"));
-			JLabel weaponPicLabel = new JLabel(new ImageIcon(weaponPic));
-			this.add(weaponPicLabel);
-		} catch (IOException e) {
-			e.printStackTrace();
+				try {
+					weaponPic = ImageIO.read(getClass().getResource("/images/weapons/"+world.getSelectedTile().getCharacter().getWeapon().getName()+ ".png"));
+					weaponPicLabel = new JLabel(new ImageIcon(weaponPic));
+					this.add(weaponPicLabel, BorderLayout.CENTER);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+			forinfo = new JLabel("(Click on a Character for informations)");
+			this.add(forinfo, BorderLayout.CENTER);
 		}
+		this.add(color, BorderLayout.SOUTH);
+		turn = new JLabel(String.valueOf(world.getCurrentPlayer().getName()) + "'s turn");
+		this.add(turn, BorderLayout.NORTH);
 
+		this.validate();
+		this.repaint();
 	}
 
 }
+
