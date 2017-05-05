@@ -21,7 +21,6 @@ public class WeaponTest {
             return;
         }
         Weapon.createWeaponPrototypes();
-        newWeapon = new Weapon("testgun", 1, 2, 3, 4, 0);
         testWeapon1 = Weapon.getWeaponPrototypes().get(0);
         testWeapon2 = Weapon.getWeaponPrototypes().get(1);
         setUpIsDone = true;
