@@ -19,6 +19,11 @@ public class ClientUnameHandler extends ClientCommandHandler {
 	@Override
 	public void handleAnswer(boolean isOK) {
 		if (isOK && argument.startsWith("you are ")) {
+			try {
+				Thread.sleep(20); // so the panel get's created properly first.
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			String username = argument.substring(8);
 			Client.setUsername(username);
 		} else if (isOK == false && argument.equals("same username entered")) {

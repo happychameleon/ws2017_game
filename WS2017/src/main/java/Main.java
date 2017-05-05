@@ -23,15 +23,23 @@ public class Main {
 			
 		} else {
 			
-			// To remove the ':' character to be able to enter the command line argument as supposed.
-			for (int i = 0; i < args.length; i++) {
-				if (args[i].contains(":"))
-					args[i] = args[i].replace(":", "");
-			}
+			
 			
 			if (args[0].equals("server")) {
 				Server.serverMain(args);
 			} else if (args[0].equals("client")) {
+				
+				if (args.length > 1 && args[1].contains(":")) {
+					String[] argsCopy = new String[args.length + 1];
+					argsCopy[0] = args[0];
+					argsCopy[1] = args[1].substring(0, args[1].indexOf(":"));
+					argsCopy[2] = args[1].substring(args[1].indexOf(":") + 1);
+					for (int i = 2; i < args.length; i++) {
+						argsCopy[i + 1] = args[i];
+					}
+					args = argsCopy;
+				}
+				
 				Client.clientMain(args);
 			} else {
 				System.err.println("Please start the application with one of the following arguments:\n" +
