@@ -73,6 +73,10 @@ public class Login implements ActionListener, KeyListener {
 		} catch (SecurityException | NullPointerException | IllegalArgumentException e) {
 			systemUserName = "";
 		}
+		
+		userFrame.pack();
+		userFrame.setVisible(true);
+		
 		// Then set the text.
 		if (Client.getCommandLineUsername().isEmpty() == false) {
 			// Set the username from the command line if one is given.
@@ -84,9 +88,6 @@ public class Login implements ActionListener, KeyListener {
 			// Achievement whoami (The client suggest a nickname based on the system username)
 			userNameText.setText(systemUserName);
 		}
-		
-		userFrame.pack();
-		userFrame.setVisible(true);
 		
 	}
 	
