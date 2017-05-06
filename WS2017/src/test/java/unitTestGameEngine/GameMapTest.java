@@ -37,6 +37,7 @@ public class GameMapTest {
         tiles = new char[][]{{'1', '1', 'G', '2'}, {'G', 'w', 'w', '2'}, {'3', 'W', 'W', 'G'}, {'3', 'G', '4', '4'}};
         newMap = new GameMap(newMapName, tiles);
         compareList = GameMap.getAllMaps();
+        System.out.println(compareList);
     }
 
     @Test
@@ -49,6 +50,9 @@ public class GameMapTest {
 
         System.out.println(testMap2.getName());
         Assert.assertTrue(testMap2.getName() != null);
+
+        System.out.println(newMap.getName());
+        Assert.assertTrue(newMap.getName() != null);
     }
 
     @Test
@@ -81,6 +85,12 @@ public class GameMapTest {
 
     @Test
     public void testGetName() {
+        System.out.println(testMap1.getName());
+        Assert.assertTrue(testMap1.getName().equals("BigLake"));
+
+        System.out.println(testMap2.getName());
+        Assert.assertTrue(testMap2.getName().equals("SmallLakes"));
+
         System.out.println(newMap.getName());
         Assert.assertTrue(newMap.getName() == newMapName);
     }
@@ -127,9 +137,15 @@ public class GameMapTest {
     }
 
     @Test
+    /**
+     * Tests if getMapForName is working for the ArrayList gameMaps of the class GameMap.
+     * The newMap map doesn't exist in this ArrayList. The method would return null.
+     */
     public void getMapForName() {
-        GameMap testMap = GameMap.getMapForName("BigLake", false);
+        GameMap testMap1 = GameMap.getMapForName("BigLake", false);
+        GameMap testMap2 = GameMap.getMapForName("SmallLakes", false);
 
-        Assert.assertTrue(testMap.getName().equals("BigLake"));
+        Assert.assertTrue(testMap1.getName().equals("BigLake"));
+        Assert.assertTrue(testMap2.getName().equals("SmallLakes"));
     }
 }
