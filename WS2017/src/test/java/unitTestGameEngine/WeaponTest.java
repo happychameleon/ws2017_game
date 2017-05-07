@@ -28,11 +28,17 @@ public class WeaponTest {
         if (setUpIsDone) {
             compareArray = Weapon.getWeaponPrototypesArray();
             compareArrayL = Weapon.getWeaponPrototypes();
+            testWeapon1 = Weapon.getWeaponForName("Medium Water Gun");
+            testWeapon2 = Weapon.getWeaponForName("Heavy Water Gun");
+            newWeapon = Weapon.getWeaponForName("testgun");
             return;
         }
 
         Weapon.createWeaponPrototypes();
         Weapon.addWeaponPrototype("testgun", 2, 3, 4, 5);
+        testWeapon1 = Weapon.getWeaponForName("Medium Water Gun");
+        testWeapon2 = Weapon.getWeaponForName("Heavy Water Gun");
+        newWeapon = Weapon.getWeaponForName("testgun");
         compareArray = Weapon.getWeaponPrototypesArray();
         compareArrayL = Weapon.getWeaponPrototypes();
         System.out.println(compareArrayL);
@@ -44,9 +50,6 @@ public class WeaponTest {
      * Compares the String we get with getName() with the expected String.
      */
     public void testGetName() {
-        testWeapon1 = Weapon.getWeaponForName("Medium Water Gun");
-        testWeapon2 = Weapon.getWeaponForName("Heavy Water Gun");
-        newWeapon = Weapon.getWeaponForName("testgun");
         String nameWeap1 = testWeapon1.getName();
         String nameWeap2 = testWeapon2.getName();
         String nameNewWeap = newWeapon.getName();
@@ -59,9 +62,6 @@ public class WeaponTest {
 
     @Test
     public void testGetPointCost() {
-        testWeapon1 = Weapon.getWeaponForName("Medium Water Gun");
-        testWeapon2 = Weapon.getWeaponForName("Heavy Water Gun");
-        newWeapon = Weapon.getWeaponForName("testgun");
         int pointWeap1 = testWeapon1.getPointCost();
         int pointWeap2 = testWeapon2.getPointCost();
         int pointNewWeap = newWeapon.getPointCost();
@@ -73,9 +73,6 @@ public class WeaponTest {
 
     @Test
     public void testGetRange() {
-        testWeapon1 = Weapon.getWeaponForName("Medium Water Gun");
-        testWeapon2 = Weapon.getWeaponForName("Heavy Water Gun");
-        newWeapon = Weapon.getWeaponForName("testgun");
         int rangeWeap1 = testWeapon1.getRange();
         int rangeWeap2 = testWeapon2.getRange();
         int rangeNewWeap = newWeapon.getRange();
@@ -87,9 +84,6 @@ public class WeaponTest {
 
     @Test
     public void testGetDamage() {
-        testWeapon1 = Weapon.getWeaponForName("Medium Water Gun");
-        testWeapon2 = Weapon.getWeaponForName("Heavy Water Gun");
-        newWeapon = Weapon.getWeaponForName("testgun");
         int damWeap1 = testWeapon1.getDamage();
         int damWeap2 = testWeapon2.getDamage();
         int damNewWeap = newWeapon.getDamage();
@@ -101,9 +95,6 @@ public class WeaponTest {
 
     @Test
     public void testGetAreaOfEffect() {
-        testWeapon1 = Weapon.getWeaponForName("Medium Water Gun");
-        testWeapon2 = Weapon.getWeaponForName("Heavy Water Gun");
-        newWeapon = Weapon.getWeaponForName("testgun");
         int aOEWeap1 = testWeapon1.getAreaOfEffect();
         int aOEWeap2 = testWeapon2.getAreaOfEffect();
         int aOENewWeap = newWeapon.getAreaOfEffect();
@@ -115,9 +106,6 @@ public class WeaponTest {
 
     @Test
     public void testGetActionPointPerShot() {
-        testWeapon1 = Weapon.getWeaponForName("Medium Water Gun");
-        testWeapon2 = Weapon.getWeaponForName("Heavy Water Gun");
-        newWeapon = Weapon.getWeaponForName("testgun");
         int aPPSWeap1 = testWeapon1.getActionPointPerShot();
         int aPPSWeap2 = testWeapon2.getActionPointPerShot();
         int aPPSNewWeap = newWeapon.getActionPointPerShot();
@@ -156,9 +144,6 @@ public class WeaponTest {
      * Tests if the method gives us the same ArrayList again.
      */
     public void testGetWeaponPrototypes() {
-        testWeapon1 = Weapon.getWeaponForName("Medium Water Gun");
-        testWeapon2 = Weapon.getWeaponForName("Heavy Water Gun");
-        newWeapon = Weapon.getWeaponForName("testgun");
         ArrayList<Weapon> testArrayL = Weapon.getWeaponPrototypes();
 
         Assert.assertThat(testArrayL, equalTo(compareArrayL));
@@ -167,9 +152,6 @@ public class WeaponTest {
 
     @Test
     public void testGetWeaponPrototypesArray() {
-        testWeapon1 = Weapon.getWeaponForName("Medium Water Gun");
-        testWeapon2 = Weapon.getWeaponForName("Heavy Water Gun");
-        newWeapon = Weapon.getWeaponForName("testgun");
         Weapon[] testArray = Weapon.getWeaponPrototypesArray();
 
         Assert.assertThat(testArray, equalTo(compareArray));
@@ -206,9 +188,6 @@ public class WeaponTest {
 
     @Test
     public void testGetStartScreenString() {
-        testWeapon1 = Weapon.getWeaponForName("Medium Water Gun");
-        testWeapon2 = Weapon.getWeaponForName("Heavy Water Gun");
-        newWeapon = Weapon.getWeaponForName("testgun");
         String stringWeap1 = testWeapon1.getStartScreenString();
         String stringWeap2 = testWeapon2.getStartScreenString();
         String stringnewWeap = newWeapon.getStartScreenString();
