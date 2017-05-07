@@ -33,10 +33,6 @@ public class WorldTest {
     private ClientUser testUser1;
     private Player testPlayer0;
     private Player testPlayer1;
-    private Character testCharacter0;
-    private Character testCharacter1;
-    private Character testCharacter2;
-    private Character testCharacter3;
     private Weapon weapon;
 
     private GameMap gameMap;
@@ -62,8 +58,6 @@ public class WorldTest {
         testPlayer0 = new Player(testTeam0, testUser0, RED, testWorld);
         testTeam0.addPlayerToTeam(testPlayer0);
         characters.add("[nim 'Medium Water Gun' 1,4 go 'Medium Water Gun' 3,4]");
-        //testCharacter0 = new Character(testWorld,"nim",testPlayer0,weapon);
-        //testCharacter1 = new Character(testWorld,"go",testPlayer0,weapon);
 
         testTeam1 = new Team("swiftTeam");
         testUser1 = new ClientUser("swift");
