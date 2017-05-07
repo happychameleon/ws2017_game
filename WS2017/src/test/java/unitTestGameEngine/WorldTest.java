@@ -6,6 +6,8 @@ import game.GameMap;
 import game.GameState;
 import game.engine.*;
 import game.engine.Character;
+import game.gamegui.SelectionType;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import serverclient.User;
@@ -14,6 +16,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static game.engine.PlayerColor.RED;
+import static game.gamegui.SelectionType.NOTHING;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 
 /**
  * Unit Test for World
@@ -28,7 +33,11 @@ public class WorldTest {
     private ClientUser testUser1;
     private Player testPlayer0;
     private Player testPlayer1;
-    private Character testCharacter;
+    private Character testCharacter0;
+    private Character testCharacter1;
+    private Character testCharacter2;
+    private Character testCharacter3;
+    private Weapon weapon;
 
     private GameMap gameMap;
     private ClientGameController clientGameController;
@@ -45,11 +54,16 @@ public class WorldTest {
         GameMap.readInAllMaps();
         Weapon.createWeaponPrototypes();
 
+        weapon = Weapon.getWeaponForName("Medium Water Gun");
+
+
         testTeam0 = new Team("adaTeam");
         testUser0 = new User("ada");
         testPlayer0 = new Player(testTeam0, testUser0, RED, testWorld);
         testTeam0.addPlayerToTeam(testPlayer0);
         characters.add("[nim 'Medium Water Gun' 1,4 go 'Medium Water Gun' 3,4]");
+        //testCharacter0 = new Character(testWorld,"nim",testPlayer0,weapon);
+        //testCharacter1 = new Character(testWorld,"go",testPlayer0,weapon);
 
         testTeam1 = new Team("swiftTeam");
         testUser1 = new ClientUser("swift");
@@ -60,32 +74,47 @@ public class WorldTest {
         testUsers.add(testUser0);
         testUsers.add(testUser1);
 
-
-
         gameState = GameState.STARTING;
         startingPoints = 10;
         testGameName = "TestGame";
         HashMap<User, String> users = new HashMap<>();
-        gameMap = GameMap.getMapForName("SmallTestMap",false);
-        clientGameController = new ClientGameController(gameState,startingPoints,testGameName,users, gameMap);
+        users.put(testUser0,"[nim 'Medium Water Gun' 1,4 go 'Medium Water Gun' 3,4]");
+        users.put(testUser1,"[fortran 'Medium Water Gun' 1,2 rust 'Medium Water Gun' 3,2]");
 
-        clientGameController.addUserToGame(testUser0);
-        clientGameController.addUserToGame(testUser1);
+        gameMap = GameMap.getMapForName("SmallTestMap",false);
+        System.out.println(users.get(testUser0));
+        clientGameController = new ClientGameController(gameState,startingPoints,testGameName,users, gameMap);
 
         testWorld = new World(gameMap,clientGameController, characters);
     }
 
     @Test
-    public void testNoTileSelected(){}
+    /**
+     * Tests that no tiles selected is correctly represented.
+     */
+    public void testNoTileSelected(){
+        Assert.assertThat(testWorld.getSelectedTile(), equalTo(null));
+        Assert.assertThat(testWorld.getSelectionType(), equalTo(NOTHING));
+    }
 
     @Test
+    /**
+     * Tests that a tile can be selected properly
+     */
     public void testATileSelected(){
-        //testWorld.setSelectedTile();
-        //testWorld.getSelectionType
-        //setSelectionType
+        Tile testTile = new Tile(testWorld, 2,2,TileType.GRASS);
+        testWorld.setSelectedTile(testTile);
 
+        Assert.assertThat(testWorld.getSelectedTile(), equalTo(testTile));
     }
     @Test
-    public void testSelectionType(){}
+    /**
+     * Tests that setting selectionType is done properly.
+     */
+    public void testSelectionType(){
+        SelectionType selectionType = SelectionType.TILE;
+        testWorld.setSelectionType(selectionType);
 
+        Assert.assertThat(testWorld.getSelectionType(), equalTo(selectionType));
+    }
 }
