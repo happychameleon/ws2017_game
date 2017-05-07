@@ -39,6 +39,10 @@ public class TeamTest {
     }
 
     @Test
+    /**
+     * Tests getMembers by checking the index of the existing Player in the
+     * new ArrayList<Player>.
+     */
     public void testGetMembers() {
         ArrayList<Player> testMemL = testTeam.getMembers();
         int testIndex = testMemL.indexOf(testPlayer);
@@ -48,6 +52,10 @@ public class TeamTest {
     }
 
     @Test
+    /**
+     * Tests addPlayerToTeam by testing if the added Player exists in the ArrayList
+     * of testTeam.
+     */
     public void testAddPlayerToTeam() {
         testTeam.addPlayerToTeam(testplayer1);
         boolean addWorked = testTeam.getMembers().contains(testplayer1);
