@@ -42,22 +42,8 @@ jar{
 
 
 task 'build-cs108' {
-    compileJava.execute()
-    processResources.execute()
-    classes.execute()
-    jar.execute()
-    startScripts.execute()
-    distTar.execute()
-    distZip.execute()
-    assemble.execute()
-    compileTestJava.execute()
-    processTestResources.execute()
-    testClasses.execute()
-    //test.execute()
-    check.execute()
-    build.execute()
-
-    javadoc.execute()
+    dependsOn build
+    dependsOn javadoc
 }
 
 

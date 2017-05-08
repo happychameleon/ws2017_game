@@ -1,7 +1,7 @@
 package client;
 
 /**
- * ClientThread is called by client and creates a new ClientCommandParser
+ * ClientThread is called by client and creates a new ClientCommandParser.
  *
  * Created by m on 04/04/17.
  */
