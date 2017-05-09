@@ -35,7 +35,7 @@ public class AttchHandler extends CommandHandler {
 	    if (gameController.getGameState() != GameState.RUNNING)
 	    	return; // The Attack has ended the game, no need to send it.
         
-        Server.writeToAllClients(String.format("+OK attch %s", wholeArgument));
+        commandParser.writeToAllGamingClients(String.format("+OK attch %s", wholeArgument), gameController);
     }
 	
 }

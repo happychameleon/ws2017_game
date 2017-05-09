@@ -13,12 +13,13 @@ import java.io.IOException;
  * This is used below the main game panel to display info about the selected
  * Tile and the game in general.
  *
- * Created by flavia on 13.04.17.
+ * Created by patrick on 13.04.17.
  */
 public class GameInfoPanel extends JPanel {
 
 	private final World world;
-
+	private final Window window;
+	
 	private String weaponname;
 	private JLabel forinfo;
 	private JLabel wetness;
@@ -32,14 +33,17 @@ public class GameInfoPanel extends JPanel {
 	public GameInfoPanel(World world, Window window) {
 
 		this.world = world;
-
+		this.window = window;
+		
 		setMinimumSize(new Dimension(15, 100));
 		this.setLayout(new BorderLayout());
 
 		forinfo = new JLabel("(Click on a Character for informations)");
 		this.add(forinfo, BorderLayout.CENTER);
-		color = new JLabel("Your Color is: " + String.valueOf(window.getThisUsersPlayer().getColor()));
-		this.add(color, BorderLayout.SOUTH);
+		if (window.getThisUsersPlayer() != null) { // If the user is only watching this would otherwise get a NullPointerException because window.getThisUsersPlayer() would then return null.
+			color = new JLabel("Your Color is: " + String.valueOf(window.getThisUsersPlayer().getColor()));
+			this.add(color, BorderLayout.SOUTH);
+		}
 		turn = new JLabel(String.valueOf(world.getCurrentPlayer().getName()) + "'s turn");
 		this.add(turn, BorderLayout.NORTH);
 
@@ -66,7 +70,9 @@ public class GameInfoPanel extends JPanel {
 			forinfo = new JLabel("(Click on a Character for informations)");
 			this.add(forinfo, BorderLayout.CENTER);
 		}
-		this.add(color, BorderLayout.SOUTH);
+		if (window.getThisUsersPlayer() != null) {
+			this.add(color, BorderLayout.SOUTH);
+		}
 		turn = new JLabel(String.valueOf(world.getCurrentPlayer().getName()) + "'s turn");
 		this.add(turn, BorderLayout.NORTH);
 

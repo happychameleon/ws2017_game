@@ -1,10 +1,14 @@
 package server;
 
 
+import game.ServerGameController;
+import serverclient.User;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * CommandParser parses the bytestream sent by a client and parses commands from it and separates
@@ -250,4 +254,21 @@ public class CommandParser {
 		}
 	}
 	
+	/**
+	 * Writes a message to all Clients playing and watching the specified game.
+	 * @param message The message to send.
+	 * @param gameController The game the Clients are from.
+	 */
+	public void writeToAllGamingClients(String message, ServerGameController gameController) {
+		ArrayList<User> usersToSend = new ArrayList<>();
+		usersToSend.addAll(gameController.getAllUsers());
+		usersToSend.addAll(gameController.getWatchingUsers());
+		for (User u : usersToSend) {
+			try {
+				writeToSpecificClient(message, (ServerUser) u);
+			} catch (ClassCastException e) {
+				e.printStackTrace(); //just to be sure
+			}
+		}
+	}
 }
