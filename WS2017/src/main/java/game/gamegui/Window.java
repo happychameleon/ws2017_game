@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -167,6 +168,31 @@ public class Window extends JFrame implements WindowListener {
 		attackRangeTiles = world.getSelectedTile().getAllTilesInRange(selectedWeapon.getRange(), false).keySet();
 		for (Tile tile : attackRangeTiles) {
 			tile.setNeedsGraphicsUpdate();
+		}
+	}
+	
+	/**
+	 * Displays the directions in which the Character can push another Character.
+	 */
+	protected void selectPushing() {
+		try {
+			if (world.getSelectionType() == SelectionType.CHARACTER
+					&& world.getSelectedTile().hasCharacter()) {
+				mainGamePanel.setPushingSelected(true);
+				attackRangeTiles = new HashSet<>();
+				
+				for (Tile tile : world.getSelectedTile().getNeighbours(false)) {
+					if (tile != null
+							&& tile.isWalkable(false)
+							&& (tile.hasCharacter() == false || tile.getCharacter().isOnSameTeamAs(world.getSelectedTile().getCharacter()) == false)
+							) {
+						attackRangeTiles.add(tile);
+					}
+				}
+				world.setSelectionType(SelectionType.OWNED_WEAPON);
+			}
+		} catch (NullPointerException e) {
+			e.printStackTrace();
 		}
 	}
 	

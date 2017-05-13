@@ -4,6 +4,7 @@ import client.Client;
 import client.commands.ClientAttchHandler;
 import client.commands.ClientChposHandler;
 import game.engine.Character;
+import game.engine.Direction;
 import game.engine.Tile;
 import game.engine.World;
 
@@ -46,6 +47,27 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 	 * How big one Pixel in the Game is in Pixels on the Screen.
 	 */
 	private static int pixelSize = 3;
+	
+	/**
+	 * Whether the Player selected pushing and can choose the direction for the push for the selected Character.
+	 */
+	private boolean pushingSelected;
+	
+	/**
+	 * @return {@link #pushingSelected}.
+	 */
+	public boolean isPushingSelected() {
+		return pushingSelected;
+	}
+	
+	/**
+	 * Sets {@link #pushingSelected}.
+	 * @param pushingSelected true or false.
+	 */
+	protected void setPushingSelected(boolean pushingSelected) {
+		this.pushingSelected = pushingSelected;
+	}
+	
 	/**
 	 *
 	 * @return {@link #pixelSize}.
@@ -239,6 +261,10 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		
 		updateGraphicsForUnselection();
 		
+		if (pushingSelected) {
+			pushingSelected = false;
+		}
+		
 		switch (e.getButton()) {
 			case MouseEvent.BUTTON1:
 				selectTile(tileUnderMouse);
@@ -341,6 +367,26 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 	}
 	
 	/**
+	 * Tells the server that the selected Character should push another Character into the Water standing in the given direction.
+	 */
+	private void askServerToPushCharacter(Direction direction) {
+		System.out.println("MainGamePanel#askServerToPushCharacter");
+		try {
+			if (world.getSelectionType() == SelectionType.CHARACTER
+					&& world.getSelectedTile().getCharacter().getOwner().getUser() == Client.getThisUser()
+					&& world.getTurnController().getCurrentPlayer().getUser() == Client.getThisUser()
+					&& direction.getTileInDirectionOf(world.getSelectedTile()).hasCharacter()
+					&& direction.getTileInDirectionOf(world.getSelectedTile()).getCharacter().isOnSameTeamAs(world.getSelectedTile().getCharacter()) == false
+					&& world.getSelectedTile().getCharacter().canRemoveActionPoints(Character.getCostToPush())) {
+				System.out.println("MainGamePanel#askServerToPushCharacter - Telling Server (TODO)");
+				//TODO: PUSHING
+			}
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Tells the server about an Attack from the Character on the selected Tile to the Character on the attackedTile.
 	 * Does not carry out the attack.
 	 * Conditions to attack:
@@ -423,6 +469,31 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		
 		updateGraphicsForUnselection();
 		
+		if (pushingSelected) {
+			System.out.println("MainGamePanel#keyPressed - Pushing Selected");
+			pushingSelected = false;
+			switch (e.getKeyCode()) {
+				case KeyEvent.VK_A:
+					askServerToPushCharacter(Direction.WEST);
+					repaintImage();
+					return;
+				case KeyEvent.VK_D:
+					askServerToPushCharacter(Direction.EAST);
+					repaintImage();
+					return;
+				case KeyEvent.VK_W:
+					askServerToPushCharacter(Direction.NORTH);
+					repaintImage();
+					return;
+				case KeyEvent.VK_S:
+					askServerToPushCharacter(Direction.SOUTH);
+					repaintImage();
+					return;
+				default:
+					break;
+			}
+		}
+		
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_SPACE:
 				if (world.getSelectedTile() != null && world.getSelectedTile().hasCharacter()) {
@@ -435,12 +506,14 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 				}
 				repaintImage();
 				break;
+				
 			case KeyEvent.VK_ENTER:
 				world.setSelectedTile(null);
 				world.endTurn();
 				repaintImage();
 				window.getGameInfoPanel().updatevalue();
 				break;
+			
 			case KeyEvent.VK_LEFT: case KeyEvent.VK_A:
 				camera.moveLeft();
 				repaintImage();
@@ -457,6 +530,13 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 				camera.moveDown();
 				repaintImage();
 				break;
+			
+			case KeyEvent.VK_P:
+				System.out.println("MainGamePanel#keyPressed - P");
+				window.selectPushing();
+				repaintImage();
+				break;
+				
 			default:
 				System.out.println("Key Typed: " + e.getKeyCode());
 				break;

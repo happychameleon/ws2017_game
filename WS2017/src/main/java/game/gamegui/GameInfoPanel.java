@@ -16,7 +16,7 @@ import java.io.IOException;
  * Created by patrick on 13.04.17.
  */
 public class GameInfoPanel extends JPanel {
-
+	
 	private final World world;
 	private final Window window;
 	
@@ -27,17 +27,17 @@ public class GameInfoPanel extends JPanel {
 	private JLabel weaponPicLabel;
 	private JLabel color;
 	private JLabel turn;
-
+	
 	private BufferedImage weaponPic;
-
+	
 	public GameInfoPanel(World world, Window window) {
-
+		
 		this.world = world;
 		this.window = window;
 		
 		setMinimumSize(new Dimension(15, 100));
 		this.setLayout(new BorderLayout());
-
+		
 		forinfo = new JLabel("(Click on a Character for informations)");
 		this.add(forinfo, BorderLayout.CENTER);
 		if (window.getThisUsersPlayer() != null) { // If the user is only watching this would otherwise get a NullPointerException because window.getThisUsersPlayer() would then return null.
@@ -46,27 +46,33 @@ public class GameInfoPanel extends JPanel {
 		}
 		turn = new JLabel(String.valueOf(world.getCurrentPlayer().getName()) + "'s turn");
 		this.add(turn, BorderLayout.NORTH);
-
+		
 	}
-
+	
+	/**
+	 * TODO Write Javadoc!
+	 */
 	public void updatevalue() {
-
+		
 		this.removeAll();
-
+		
+		// TODO: Add either key description, which Key does what or buttons for the actions (or both).
+		// TODO: Actions to add: Selecting Character (LMB), Walking (RMB), Selecting Weapon (Space), Shooting (RMB), End Turn (Enter).
+		
 		if (world.getSelectionType() == SelectionType.CHARACTER) {
 			wetness = new JLabel("Wetness: " + String.valueOf(world.getSelectedTile().getCharacter().getWetness()));
 			weapon = new JLabel("Weapon: " + String.valueOf(world.getSelectedTile().getCharacter().getWeapon().getName()));
 			this.add(wetness, BorderLayout.LINE_START);
 			this.add(weapon, BorderLayout.LINE_END);
-
-				try {
-					weaponPic = ImageIO.read(getClass().getResource("/images/weapons/"+world.getSelectedTile().getCharacter().getWeapon().getName()+ ".png"));
-					weaponPicLabel = new JLabel(new ImageIcon(weaponPic));
-					this.add(weaponPicLabel, BorderLayout.CENTER);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} else {
+			
+			try {
+				weaponPic = ImageIO.read(getClass().getResource("/images/weapons/"+world.getSelectedTile().getCharacter().getWeapon().getName()+ ".png"));
+				weaponPicLabel = new JLabel(new ImageIcon(weaponPic));
+				this.add(weaponPicLabel, BorderLayout.CENTER);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
 			forinfo = new JLabel("(Click on a Character for informations)");
 			this.add(forinfo, BorderLayout.CENTER);
 		}
@@ -75,10 +81,10 @@ public class GameInfoPanel extends JPanel {
 		}
 		turn = new JLabel(String.valueOf(world.getCurrentPlayer().getName()) + "'s turn");
 		this.add(turn, BorderLayout.NORTH);
-
+		
 		this.validate();
 		this.repaint();
 	}
-
+	
 }
 

@@ -15,7 +15,7 @@ import java.util.Set;
  * Created by flavia on 02.03.17.
  */
 public class Character {
-
+	
 	//region Data
 	/**
 	 * The World this Character is in.
@@ -56,6 +56,18 @@ public class Character {
 	 */
 	public static int getMovementCostPerTile() {
 		return movementCostPerTile;
+	}
+	
+	/**
+	 * The Cost to push another Character into the water.
+	 */
+	private static final int costToPush = 4;
+	
+	/**
+	 * @return {@link #costToPush}.
+	 */
+	public static int getCostToPush() {
+		return costToPush;
 	}
 	
 	/**

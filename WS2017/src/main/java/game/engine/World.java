@@ -304,11 +304,9 @@ public class World {
 	 */
 	public Tile getTileAt(int x, int y) {
 		if (x < 0 || x >= getMapWidth()) {
-			//System.out.println("ERROR: Requested Tile out of GameMap range!");
 			return null;
 		}
 		if (y < 0 || y >= getMapHeight()) {
-			//System.out.println("ERROR: Requested Tile out of GameMap range!");
 			return null;
 		}
 		return tiles[x][y];

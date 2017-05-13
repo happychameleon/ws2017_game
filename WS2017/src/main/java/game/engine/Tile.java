@@ -90,6 +90,13 @@ public class Tile {
      * The world this Tile belongs to.
      */
 	private World world;
+	
+	/**
+	 * @return {@link #world}.
+	 */
+	public World getWorld() {
+		return world;
+	}
 
     /**
      * Most Tiles are walkable. Others (e.g. Trees, Hedges, Walls etc.) aren't.
@@ -251,9 +258,7 @@ public class Tile {
         	System.out.println("ERROR: Tiles In Range is empty but starting Tile wasn't! Is Character stuck?");
         	return null;
         }
-	
-	    System.out.println("tilesInRange: " + tilesInRange);
-        
+	    
         return tilesInRange;
     }
 	
