@@ -20,16 +20,16 @@ public class GameInfoPanel extends JPanel {
 	private final World world;
 	private final Window window;
 	
-	private String weaponname;
-	private JLabel forinfo;
+	private JLabel forinfo1;
+	private JLabel forinfo2;
 	private JLabel wetness;
 	private JLabel weapon;
 	private JLabel weaponPicLabel;
-	private JLabel color;
 	private JLabel turn;
-
+	private JLabel actionPoints;
+	private Color color;
 	private BufferedImage weaponPic;
-
+	
 	public GameInfoPanel(World world, Window window) {
 
 		this.world = world;
@@ -38,15 +38,17 @@ public class GameInfoPanel extends JPanel {
 		setMinimumSize(new Dimension(15, 100));
 		this.setLayout(new BorderLayout());
 
-		forinfo = new JLabel("(Click on a Character for informations)");
-		this.add(forinfo, BorderLayout.CENTER);
+		forinfo1 = new JLabel(" ");
+		forinfo2 = new JLabel("(Click on a Character for informations)");
+		this.add(forinfo1,BorderLayout.CENTER);
+		this.add(forinfo2,BorderLayout.SOUTH);
 		if (window.getThisUsersPlayer() != null) { // If the user is only watching this would otherwise get a NullPointerException because window.getThisUsersPlayer() would then return null.
-			color = new JLabel("Your Color is: " + String.valueOf(window.getThisUsersPlayer().getColor()));
-			this.add(color, BorderLayout.SOUTH);
+			color =  window.getThisUsersPlayer().getColor().getAWTColor();
+			System.out.println(color);
+			this.setBackground(color);
 		}
 		turn = new JLabel(String.valueOf(world.getCurrentPlayer().getName()) + "'s turn");
-		this.add(turn, BorderLayout.NORTH);
-
+		this.add(turn,BorderLayout.NORTH);
 	}
 
 	public void updatevalue() {
@@ -56,8 +58,10 @@ public class GameInfoPanel extends JPanel {
 		if (world.getSelectionType() == SelectionType.CHARACTER) {
 			wetness = new JLabel("Wetness: " + String.valueOf(world.getSelectedTile().getCharacter().getWetness()));
 			weapon = new JLabel("Weapon: " + String.valueOf(world.getSelectedTile().getCharacter().getWeapon().getName()));
+			actionPoints = new JLabel("Action Points: " + String.valueOf(world.getSelectedTile().getCharacter().getActionPoints()));
 			this.add(wetness, BorderLayout.LINE_START);
 			this.add(weapon, BorderLayout.LINE_END);
+			this.add(actionPoints, BorderLayout.SOUTH);
 
 				try {
 					weaponPic = ImageIO.read(getClass().getResource("/images/weapons/"+world.getSelectedTile().getCharacter().getWeapon().getName()+ ".png"));
@@ -67,11 +71,11 @@ public class GameInfoPanel extends JPanel {
 					e.printStackTrace();
 				}
 			} else {
-			forinfo = new JLabel("(Click on a Character for informations)");
-			this.add(forinfo, BorderLayout.CENTER);
+			forinfo2 = new JLabel("(Click on a Character for informations)");
+			this.add(forinfo2, BorderLayout.CENTER);
 		}
 		if (window.getThisUsersPlayer() != null) {
-			this.add(color, BorderLayout.SOUTH);
+			this.setBackground(color);
 		}
 		turn = new JLabel(String.valueOf(world.getCurrentPlayer().getName()) + "'s turn");
 		this.add(turn, BorderLayout.NORTH);
