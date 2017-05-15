@@ -258,9 +258,13 @@ public class ClientGameController extends GameController {
 		
 		if (users.containsKey(Client.getThisUser())) { // TODO(M5): Also check for watching users and display it to them.
 			// TODO(M4): Display the highscore a bit more beautifully in a new Dialog or sth like that. But for now the lobby is ok.
-			gameLobby.getLobbyChat().displayInfo("Team " + winningTeamName + " has won!");
-			for (String username : playerScore.keySet()) {
-				gameLobby.getLobbyChat().displayInfo(String.format("Player %s has scored %d points", username, playerScore.get(username)));
+			try {
+				gameLobby.getLobbyChat().displayInfo("Team " + winningTeamName + " has won!");
+				for (String username : playerScore.keySet()) {
+					gameLobby.getLobbyChat().displayInfo(String.format("Player %s has scored %d points", username, playerScore.get(username)));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		
