@@ -1,5 +1,4 @@
 package unitTestGameEngine;
-//package game.engine;
 
 import client.ClientUser;
 import game.ClientGameController;
@@ -25,10 +24,8 @@ import static org.hamcrest.CoreMatchers.*;
  */
 public class WinningConditionTest {
     private World testWorld;
-    private Team testTeam;
     private User testUser;
     private ClientUser testUser1;
-    private Player testPlayer;
     private Character testCharacter;
     private GameMap gameMap;
     private ClientGameController clientGameController;
@@ -45,10 +42,7 @@ public class WinningConditionTest {
         GameMap.readInAllMaps();
         Weapon.createWeaponPrototypes();
 
-        testTeam = new Team("testTeam");
         testUser = new User("testUser");
-        testPlayer = new Player(testTeam, testUser, RED, testWorld);
-        testTeam.addPlayerToTeam(testPlayer);
         characters.add("[Bob 'Medium Water Gun' 1,4]");
 
         testUsers.add(testUser);
@@ -69,6 +63,8 @@ public class WinningConditionTest {
     public void testCheckForWinningCondition() {
         Team winningTeam = winningCondition.checkForWinningCondition(testWorld);
 
-        //Assert.assertThat(winningTeam, equalTo(testTeam));
+        Team onlyTeam = testWorld.getTurnController().getTeams().get(0);
+
+        Assert.assertThat(winningTeam, equalTo(onlyTeam));
     }
 }
