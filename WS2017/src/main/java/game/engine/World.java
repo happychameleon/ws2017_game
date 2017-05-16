@@ -69,10 +69,6 @@ public class World {
 		this.selectedTile = selectedTile;
 		if (selectedTile == null)
 			selectionType = SelectionType.NOTHING;
-		
-		if (getGameController() instanceof ClientGameController) {
-			((ClientGameController) getGameController()).getWindow().getMainGamePanel().repaintImage();
-		}
 	}
 	
 	/**
