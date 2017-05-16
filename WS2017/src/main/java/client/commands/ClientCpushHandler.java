@@ -38,7 +38,7 @@ public class ClientCpushHandler extends ClientCommandHandler {
 	
 	/**
 	 * Tells the Server about the Character who pushed the other.
-	 * String is formated as 'cpush <gamename> <attackerPosition> <pushedPosition>'.
+	 * String is formated as 'cpush gamename attackerPosition pushedPosition'.
 	 * @param gameController The game in which the push happens.
 	 * @param attackerTile Where the pushing Character stands.
 	 * @param pushedTile Where the Character to be pushed stands.
