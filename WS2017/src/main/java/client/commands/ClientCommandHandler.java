@@ -66,7 +66,7 @@ public abstract class ClientCommandHandler {
 	 * Reads the position from the positionString as 'x,y'
 	 * @param positionString the positionString formatted as x,y
 	 * @param gameController the gameController in which the Tile is in.
-	 * @return The correct Tile.
+	 * @return The correct Tile. Can be null if the game has finished.
 	 */
 	protected Tile parsePosition(String positionString, GameController gameController) {
 		
@@ -87,7 +87,12 @@ public abstract class ClientCommandHandler {
 		int x = Integer.parseInt(xString);
 		int y = Integer.parseInt(yString);
 		System.out.println("ClientCommandHandler#parsePosition - x: " + x + " y: " + y);
-		return gameController.getWorld().getTileAt(x, y);
+		try {
+			return gameController.getWorld().getTileAt(x, y);
+		} catch (NullPointerException e) {
+			e.printStackTrace(); // Probably because the push ended the game.
+			return null;
+		}
 	}
 	
 }

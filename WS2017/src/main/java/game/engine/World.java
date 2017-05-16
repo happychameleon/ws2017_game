@@ -69,6 +69,10 @@ public class World {
 		this.selectedTile = selectedTile;
 		if (selectedTile == null)
 			selectionType = SelectionType.NOTHING;
+		
+		if (getGameController() instanceof ClientGameController) {
+			((ClientGameController) getGameController()).getWindow().getMainGamePanel().repaintImage();
+		}
 	}
 	
 	/**
@@ -345,7 +349,9 @@ public class World {
 				setSelectionType(SelectionType.NOTHING);
 			}
 		}
-		
+		if (getGameController() instanceof ClientGameController) {
+			((ClientGameController) getGameController()).getWindow().getMainGamePanel().repaintImage();
+		}
 		checkWinningCondition();
 	}
 	
@@ -418,6 +424,10 @@ public class World {
 		Character attacker = attackerTile.getCharacter();
 		Character pushedCharacter = pushedTile.getCharacter();
 		
+		if (attacker.removeActionPoints(attacker.getCostToPush()) == false) {
+			System.err.println("World#pushCharacter - not enough action points. Shouldn't have sent command to server.");
+		}
+		
 		if (pushDirection.getTileInDirectionOf(pushedTile).getTileType() == TileType.WATER) {
 			pushedCharacter.KillCharacter(attacker);
 			if (getGameController().getGameState() != GameState.RUNNING) // In case the Killing of the Character ended the Game.
@@ -431,6 +441,10 @@ public class World {
 		
 		// TODO: Should the attacker move or stand still?
 		attacker.moveCharacter(pushDirection);
+		
+		if (getGameController() instanceof ClientGameController) {
+			((ClientGameController) getGameController()).getWindow().getMainGamePanel().repaintImage();
+		}
 	}
 	//endregion
 }

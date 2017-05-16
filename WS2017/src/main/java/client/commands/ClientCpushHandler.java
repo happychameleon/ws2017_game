@@ -3,6 +3,7 @@ package client.commands;
 import client.Client;
 import game.ClientGameController;
 import game.GameController;
+import game.GameState;
 import game.engine.Tile;
 
 /**
@@ -26,6 +27,11 @@ public class ClientCpushHandler extends ClientCommandHandler {
 	public void handleAnswer(boolean isOK) {
 		String gameName = getAndRemoveNextArgumentWord();
 		ClientGameController gameController = Client.getGameByName(gameName);
+		
+		if (gameController.getGameState() != GameState.RUNNING) {
+			System.out.println("ClientCpushHandler#handleAnswer - game has ended.");
+			return;
+		}
 		
 		Tile attackerTile = parsePosition(getAndRemoveNextArgumentWord(), gameController);
 		Tile pushedTile = parsePosition(getAndRemoveNextArgumentWord(), gameController);

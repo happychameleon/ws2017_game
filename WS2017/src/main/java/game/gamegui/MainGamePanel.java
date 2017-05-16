@@ -152,8 +152,8 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 			for (int y = 0; y < world.getMapHeight(); y++) {
 				Tile tile = world.getTileAt(x, y);
 				//if (tile.getNeedsGraphicsUpdate()) {
-					paintOneTile(g2d, tile); // Update this Tile, if something has changed on it.
-					//tile.setNeedsGraphicsUpdate(false);
+				paintOneTile(g2d, tile); // Update this Tile, if something has changed on it.
+				//tile.setNeedsGraphicsUpdate(false);
 				//}
 			}
 		}
@@ -161,7 +161,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		previewImage = toCompatibleImage(previewImage);
 		
 		repaint();
-		
+		window.getGameInfoPanel().updatevalue();
 	}
 	
 	/**
@@ -371,17 +371,36 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 	private void askServerToPushCharacter(Direction direction) {
 		System.out.println("MainGamePanel#askServerToPushCharacter");
 		try {
-			if (world.getSelectionType() == SelectionType.CHARACTER
-					&& world.getSelectedTile().getCharacter().getOwner().getUser() == Client.getThisUser()
-					&& world.getTurnController().getCurrentPlayer().getUser() == Client.getThisUser()
-					&& direction.getTileInDirectionOf(world.getSelectedTile()).hasCharacter()
-					&& direction.getTileInDirectionOf(world.getSelectedTile()).getCharacter().isOnSameTeamAs(world.getSelectedTile().getCharacter()) == false
-					&& world.getSelectedTile().getCharacter().canRemoveActionPoints(Character.getCostToPush())
-					&& (direction.getTileInDirectionOf(direction.getTileInDirectionOf(world.getSelectedTile())).getTileType() == TileType.WATER || direction.getTileInDirectionOf(direction.getTileInDirectionOf(world.getSelectedTile())).isWalkable(true))) {
-				System.out.println("MainGamePanel#askServerToPushCharacter - Telling Server (TODO)");
-				//TODO: PUSHING
-				ClientCpushHandler.sendPushToServer(world.getGameController(), world.getSelectedTile(), direction.getTileInDirectionOf(world.getSelectedTile()));
+			if (world.getSelectedTile().getCharacter().getOwner().getUser() == Client.getThisUser()) {
+				if (world.getTurnController().getCurrentPlayer().getUser() == Client.getThisUser()) {
+					if (direction.getTileInDirectionOf(world.getSelectedTile()).hasCharacter()) {
+						if (direction.getTileInDirectionOf(world.getSelectedTile()).getCharacter().isOnSameTeamAs(world.getSelectedTile().getCharacter()) == false) {
+							if (world.getSelectedTile().getCharacter().canRemoveActionPoints(Character.getCostToPush())) {
+								if (direction.getTileInDirectionOf(direction.getTileInDirectionOf(world.getSelectedTile())).getTileType() == TileType.WATER || direction.getTileInDirectionOf(direction.getTileInDirectionOf(world.getSelectedTile())).isWalkable(true)) {
+									System.out.println("MainGamePanel#askServerToPushCharacter - Telling Server");
+									ClientCpushHandler.sendPushToServer(world.getGameController(), world.getSelectedTile(), direction.getTileInDirectionOf(world.getSelectedTile()));
+								} else {
+									System.out.println("MainGamePanel#askServerToPushCharacter - failed 7");
+								}
+							} else {
+								System.out.println("MainGamePanel#askServerToPushCharacter - failed 6");
+							}
+						} else {
+							System.out.println("MainGamePanel#askServerToPushCharacter - failed 5");
+						}
+						
+					} else {
+						System.out.println("MainGamePanel#askServerToPushCharacter - failed 4");
+					}
+					
+				} else {
+					System.out.println("MainGamePanel#askServerToPushCharacter - failed 3");
+				}
+				
+			} else {
+				System.out.println("MainGamePanel#askServerToPushCharacter - failed 2");
 			}
+			
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
@@ -471,22 +490,22 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		updateGraphicsForUnselection();
 		
 		if (pushingSelected) {
-			System.out.println("MainGamePanel#keyPressed - Pushing Selected");
+			System.out.println("MainGamePanel#keyPressed - Pushing is Selected");
 			pushingSelected = false;
 			switch (e.getKeyCode()) {
-				case KeyEvent.VK_A:
+				case KeyEvent.VK_LEFT: case KeyEvent.VK_A:
 					askServerToPushCharacter(Direction.WEST);
 					repaintImage();
 					return;
-				case KeyEvent.VK_D:
+				case KeyEvent.VK_RIGHT: case KeyEvent.VK_D:
 					askServerToPushCharacter(Direction.EAST);
 					repaintImage();
 					return;
-				case KeyEvent.VK_W:
+				case KeyEvent.VK_UP: case KeyEvent.VK_W:
 					askServerToPushCharacter(Direction.NORTH);
 					repaintImage();
 					return;
-				case KeyEvent.VK_S:
+				case KeyEvent.VK_DOWN: case KeyEvent.VK_S:
 					askServerToPushCharacter(Direction.SOUTH);
 					repaintImage();
 					return;
@@ -507,7 +526,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 				}
 				repaintImage();
 				break;
-				
+			
 			case KeyEvent.VK_ENTER:
 				world.setSelectedTile(null);
 				world.endTurn();
@@ -537,7 +556,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 				window.selectPushing();
 				repaintImage();
 				break;
-				
+			
 			default:
 				System.out.println("Key Typed: " + e.getKeyCode());
 				break;
