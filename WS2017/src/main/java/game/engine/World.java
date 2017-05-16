@@ -420,23 +420,24 @@ public class World {
 		Character attacker = attackerTile.getCharacter();
 		Character pushedCharacter = pushedTile.getCharacter();
 		
-		if (attacker.removeActionPoints(attacker.getCostToPush()) == false) {
+		if (attacker.canRemoveActionPoints(attacker.getCostToPush()) == false) {
 			System.err.println("World#pushCharacter - not enough action points. Shouldn't have sent command to server.");
 		}
 		
 		if (pushDirection.getTileInDirectionOf(pushedTile).getTileType() == TileType.WATER) {
+			attacker.removeActionPoints(attacker.getCostToPush());
 			pushedCharacter.KillCharacter(attacker);
 			if (getGameController().getGameState() != GameState.RUNNING) // In case the Killing of the Character ended the Game.
 				return;
 		} else {
-			if (pushedCharacter.moveCharacter(pushDirection) == false) {
+			if (pushedCharacter.moveCharacter(pushDirection, true) == false) {
 				System.err.println("World#pushCharacter - moving the pushed Character impossible!");
 				return;
 			}
 		}
 		
 		// TODO: Should the attacker move or stand still?
-		attacker.moveCharacter(pushDirection);
+		attacker.moveCharacter(pushDirection, false);
 		
 		if (getGameController() instanceof ClientGameController) {
 			((ClientGameController) getGameController()).getWindow().getMainGamePanel().repaintImage();
