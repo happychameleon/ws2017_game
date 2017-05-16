@@ -31,4 +31,18 @@ public enum Direction {
 		return world.getTileAt(originTile.getXPosition() + x, originTile.getYPosition() + y);
 	}
 	
+	/**
+	 * Returns the direction from the start Tile to the end Tile IF they are adjacent (NESW) otherwise null.
+	 * @param startTile The startTile.
+	 * @param endTile The endTile.
+	 * @return The direction from the start Tile to the end Tile or null.
+	 */
+	public static Direction getDirectionOfTile (Tile startTile, Tile endTile) {
+		for (Direction direction : values()) {
+			if (direction.getTileInDirectionOf(startTile) == endTile)
+				return direction;
+		}
+		return null;
+	}
+	
 }

@@ -319,45 +319,18 @@ public class Character {
 	}
 	
 	/**
-	 * Use {@link #moveCharacterTo} instead.
 	 * Moves the Character by one Tile.
-	 * @param direction The direction (N==0; E==1; S==2; W==3) where to move.
+	 * @param direction The direction where to move.
 	 * @return Whether the move was successful <code>true</code> or not <code>false</code> (e.g. blocked by sth).
 	 */
-	@Deprecated
-	public boolean moveCharacter (int direction) {
-		if (direction > 3 || direction < 0) {
-			System.out.println("moveCharacter - ERROR: No valid direction");
-			return false;
+	public boolean moveCharacter (Direction direction) {
+		Tile newTile = direction.getTileInDirectionOf(tile);
+		
+		if (newTile != null && newTile.isWalkable(true) ) {
+			setTile(newTile);
+			return true;
 		}
-		switch (direction) {
-			case 0:
-				if (tile.getNorthTile() != null && tile.getNorthTile().isWalkable(true)) {
-					setTile(tile.getNorthTile());
-					return true;
-				}
-				break;
-			case 1:
-				if (tile.getEastTile() != null && tile.getEastTile().isWalkable(true)) {
-					setTile(tile.getEastTile());
-					return true;
-				}
-				break;
-			case 2:
-				if (tile.getSouthTile() != null && tile.getSouthTile().isWalkable(true)) {
-					setTile(tile.getSouthTile());
-					return true;
-				}
-				break;
-			case 3:
-				if (tile.getWestTile() != null && tile.getWestTile().isWalkable(true)) {
-					setTile(tile.getWestTile());
-					return true;
-				}
-				break;
-			default:
-				break;
-		}
+		
 		return false;
     }
 	

@@ -405,5 +405,32 @@ public class World {
 		if (gameController instanceof ClientGameController)
 			((ClientGameController) gameController).getWindow().getMainGamePanel().repaintImage();
 	}
+	
+	/**
+	 * Carries out pushing from the Character on the attackerTile to the Character on the pushedTile.
+	 * @param attackerTile The Tile with the attacker on it.
+	 * @param pushedTile The Tile with the to be pushed Character on it.
+	 */
+	public void pushCharacter(Tile attackerTile, Tile pushedTile) {
+		Direction pushDirection = Direction.getDirectionOfTile(attackerTile, pushedTile);
+		assert pushDirection != null;
+		
+		Character attacker = attackerTile.getCharacter();
+		Character pushedCharacter = pushedTile.getCharacter();
+		
+		if (pushDirection.getTileInDirectionOf(pushedTile).getTileType() == TileType.WATER) {
+			pushedCharacter.KillCharacter(attacker);
+			if (getGameController().getGameState() != GameState.RUNNING) // In case the Killing of the Character ended the Game.
+				return;
+		} else {
+			if (pushedCharacter.moveCharacter(pushDirection) == false) {
+				System.err.println("World#pushCharacter - moving the pushed Character impossible!");
+				return;
+			}
+		}
+		
+		// TODO: Should the attacker move or stand still?
+		attacker.moveCharacter(pushDirection);
+	}
 	//endregion
 }

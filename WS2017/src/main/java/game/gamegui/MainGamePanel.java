@@ -3,10 +3,9 @@ package game.gamegui;
 import client.Client;
 import client.commands.ClientAttchHandler;
 import client.commands.ClientChposHandler;
+import client.commands.ClientCpushHandler;
+import game.engine.*;
 import game.engine.Character;
-import game.engine.Direction;
-import game.engine.Tile;
-import game.engine.World;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -377,9 +376,11 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 					&& world.getTurnController().getCurrentPlayer().getUser() == Client.getThisUser()
 					&& direction.getTileInDirectionOf(world.getSelectedTile()).hasCharacter()
 					&& direction.getTileInDirectionOf(world.getSelectedTile()).getCharacter().isOnSameTeamAs(world.getSelectedTile().getCharacter()) == false
-					&& world.getSelectedTile().getCharacter().canRemoveActionPoints(Character.getCostToPush())) {
+					&& world.getSelectedTile().getCharacter().canRemoveActionPoints(Character.getCostToPush())
+					&& (direction.getTileInDirectionOf(direction.getTileInDirectionOf(world.getSelectedTile())).getTileType() == TileType.WATER || direction.getTileInDirectionOf(direction.getTileInDirectionOf(world.getSelectedTile())).isWalkable(true))) {
 				System.out.println("MainGamePanel#askServerToPushCharacter - Telling Server (TODO)");
 				//TODO: PUSHING
+				ClientCpushHandler.sendPushToServer(world.getGameController(), world.getSelectedTile(), direction.getTileInDirectionOf(world.getSelectedTile()));
 			}
 		} catch (NullPointerException e) {
 			e.printStackTrace();
