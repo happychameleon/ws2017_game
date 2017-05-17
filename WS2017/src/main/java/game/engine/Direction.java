@@ -5,9 +5,9 @@ package game.engine;
  */
 public enum Direction {
 	
-	NORTH   (0, 1),
+	NORTH   (0, -1),
 	EAST    (1, 0),
-	SOUTH   (0, -1),
+	SOUTH   (0, 1),
 	WEST    (-1, 0);
 	
 	
@@ -29,6 +29,20 @@ public enum Direction {
 	public Tile getTileInDirectionOf(Tile originTile) {
 		World world = originTile.getWorld();
 		return world.getTileAt(originTile.getXPosition() + x, originTile.getYPosition() + y);
+	}
+	
+	/**
+	 * Returns the direction from the start Tile to the end Tile IF they are adjacent (NESW) otherwise null.
+	 * @param startTile The startTile.
+	 * @param endTile The endTile.
+	 * @return The direction from the start Tile to the end Tile or null.
+	 */
+	public static Direction getDirectionOfTile (Tile startTile, Tile endTile) {
+		for (Direction direction : values()) {
+			if (direction.getTileInDirectionOf(startTile) == endTile)
+				return direction;
+		}
+		return null;
 	}
 	
 }

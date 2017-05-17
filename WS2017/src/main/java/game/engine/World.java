@@ -345,7 +345,9 @@ public class World {
 				setSelectionType(SelectionType.NOTHING);
 			}
 		}
-		
+		if (getGameController() instanceof ClientGameController) {
+			((ClientGameController) getGameController()).getWindow().getMainGamePanel().repaintImage();
+		}
 		checkWinningCondition();
 	}
 	
@@ -404,6 +406,42 @@ public class World {
 		
 		if (gameController instanceof ClientGameController)
 			((ClientGameController) gameController).getWindow().getMainGamePanel().repaintImage();
+	}
+	
+	/**
+	 * Carries out pushing from the Character on the attackerTile to the Character on the pushedTile.
+	 * @param attackerTile The Tile with the attacker on it.
+	 * @param pushedTile The Tile with the to be pushed Character on it.
+	 */
+	public void pushCharacter(Tile attackerTile, Tile pushedTile) {
+		Direction pushDirection = Direction.getDirectionOfTile(attackerTile, pushedTile);
+		assert pushDirection != null;
+		
+		Character attacker = attackerTile.getCharacter();
+		Character pushedCharacter = pushedTile.getCharacter();
+		
+		if (attacker.canRemoveActionPoints(attacker.getCostToPush()) == false) {
+			System.err.println("World#pushCharacter - not enough action points. Shouldn't have sent command to server.");
+		}
+		
+		if (pushDirection.getTileInDirectionOf(pushedTile).getTileType() == TileType.WATER) {
+			attacker.removeActionPoints(attacker.getCostToPush());
+			pushedCharacter.KillCharacter(attacker);
+			if (getGameController().getGameState() != GameState.RUNNING) // In case the Killing of the Character ended the Game.
+				return;
+		} else {
+			if (pushedCharacter.moveCharacter(pushDirection, true) == false) {
+				System.err.println("World#pushCharacter - moving the pushed Character impossible!");
+				return;
+			}
+		}
+		
+		// TODO: Should the attacker move or stand still?
+		attacker.moveCharacter(pushDirection, false);
+		
+		if (getGameController() instanceof ClientGameController) {
+			((ClientGameController) getGameController()).getWindow().getMainGamePanel().repaintImage();
+		}
 	}
 	//endregion
 }

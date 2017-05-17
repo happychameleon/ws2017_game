@@ -31,6 +31,9 @@ public class TileTest {
     }
 
     @Test
+    /**
+     * Tests setNeedsGraphicUpdate() with out parameter, has to return true.
+     */
     public void testSetNeedsGraphicsUpdate() {
         testTile.setNeedsGraphicsUpdate();
         boolean testNeedsUpdate = testTile.getNeedsGraphicsUpdate();
@@ -39,6 +42,9 @@ public class TileTest {
     }
 
     @Test
+    /**
+     * Tests setNeedsGraphicUpdate with boolean parameter, has to return the parameter.
+     */
     public void testSetNeedsGraphicsUpdate1() {
         testTile.setNeedsGraphicsUpdate(false);
         boolean testNeedsUpdate1 = testTile.getNeedsGraphicsUpdate();
@@ -77,6 +83,10 @@ public class TileTest {
     }
 
     @Test
+    /**
+     * There are no characters set therefore return boolean should be the same for
+     * both method parameters. We are testing a GRASS type, the return boolean has to be true.
+     */
     public void testIsWalkable() {
         boolean testWable = testTile.isWalkable(true);
         boolean testWable1 = testTile.isWalkable(false);
@@ -94,18 +104,22 @@ public class TileTest {
     }
 
     @Test
+    /**
+     * There are no characters set
+     */
     public void testGetCharacter() {
         Character testGetChar = testTile.getCharacter();
 
         Assert.assertThat(testGetChar, equalTo(null));
-
     }
 
     @Test
+    /**
+     * There are no characters set
+     */
     public void testHasCharacter() {
         Boolean testHasChar = testTile.hasCharacter();
 
         Assert.assertThat(testHasChar, equalTo(false));
-
     }
 }
