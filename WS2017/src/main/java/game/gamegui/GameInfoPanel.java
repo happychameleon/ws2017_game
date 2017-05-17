@@ -1,6 +1,5 @@
 package game.gamegui;
 
-//import game.engine.Player;
 import game.engine.World;
 
 import javax.imageio.ImageIO;
@@ -17,83 +16,102 @@ import java.io.IOException;
  */
 public class GameInfoPanel extends JPanel {
 	
+	/**
+	 * The world of this panel.
+	 */
 	private final World world;
+	
+	/**
+	 * The window the panel is in.
+	 */
 	private final Window window;
 	
-	private JLabel forinfo1;
-	private JLabel forinfo2;
+	/**
+	 * This label indicate that no character was chosen.
+	 */
+	private JLabel forinfo;
+	
 	private JLabel wetness;
 	private JLabel weapon;
 	private JLabel weaponPicLabel;
 	private JLabel turn;
-
 	private JLabel actionPoints;
+	
+	/**
+	 * The user's color.
+	 */
 	private Color color;
+	
 	private BufferedImage weaponPic;
 	
+	/**
+	 * Creates a new <code>JPanel</code> with a grid layout.
+	 * @param world of this panel.
+	 * @param window The window this is in.
+	 */
 	public GameInfoPanel(World world, Window window) {
-		
+
 		this.world = world;
 		this.window = window;
 		
 		setMinimumSize(new Dimension(15, 100));
-		this.setLayout(new BorderLayout());
-        
-		forinfo1 = new JLabel(" ");
-		forinfo2 = new JLabel("(Click on a Character for informations)");
-		this.add(forinfo1,BorderLayout.CENTER);
-		this.add(forinfo2,BorderLayout.SOUTH);
-        
-		if (window.getThisUsersPlayer() != null) { // If the user is only watching this would otherwise get a NullPointerException because window.getThisUsersPlayer() would then return null.
+		this.setLayout(new GridLayout(4,2));
+		
+		// If the user is only watching this would otherwise get a NullPointerException because window.getThisUsersPlayer() would then return null.
+		if (window.getThisUsersPlayer() != null) { 
 			color =  window.getThisUsersPlayer().getColor().getAWTColor();
-			System.out.println(color);
 			this.setBackground(color);
 		}
 		turn = new JLabel(String.valueOf(world.getCurrentPlayer().getName()) + "'s turn");
-		this.add(turn, BorderLayout.NORTH);
+		forinfo = new JLabel("(Click on a Character for informations)");
+		this.add(forinfo);
+		this.add(turn);
 
 	}
 	
 	/**
-	 * TODO Write Javadoc!
+	 * This method update the values of
+	 * the panel if another Tile is selected.
 	 */
 	public void updatevalue() {
-		
-		this.removeAll();
 		
 		// TODO: Add either key description, which Key does what or buttons for the actions (or both).
 		// TODO: Actions to add: Selecting Character (LMB), Walking (RMB), Selecting Weapon (Space), Shooting (RMB), End Turn (Enter).
 		
-		if (world.getSelectionType() == SelectionType.CHARACTER) {
+		// Remove the old values and labels.
+		this.removeAll();
+		
+		// If the tile selected  contains no character this would otherwise get a NullPointerException because world.getSelectedTile().getCharacter() would then return null.
+		if (world.getSelectionType() == SelectionType.CHARACTER) { 
 			wetness = new JLabel("Wetness: " + String.valueOf(world.getSelectedTile().getCharacter().getWetness()));
 			weapon = new JLabel("Weapon: " + String.valueOf(world.getSelectedTile().getCharacter().getWeapon().getName()));
 			actionPoints = new JLabel("Action Points: " + String.valueOf(world.getSelectedTile().getCharacter().getActionPoints()));
-			this.add(wetness, BorderLayout.LINE_START);
-			this.add(weapon, BorderLayout.LINE_END);
-
-			this.add(actionPoints, BorderLayout.SOUTH);
+			this.add(wetness);
+			this.add(weapon);
+			this.add(actionPoints);
 
 				try {
 					weaponPic = ImageIO.read(getClass().getResource("/images/weapons/"+world.getSelectedTile().getCharacter().getWeapon().getName()+ ".png"));
 					weaponPicLabel = new JLabel(new ImageIcon(weaponPic));
-					this.add(weaponPicLabel, BorderLayout.CENTER);
+					weaponPicLabel.setOpaque(true);
+					this.add(weaponPicLabel);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			} else {
-			forinfo2 = new JLabel("(Click on a Character for informations)");
-			this.add(forinfo2, BorderLayout.CENTER);
-
+			forinfo = new JLabel("(Click on a Character for informations)");
+			this.add(forinfo);
 		}
 		if (window.getThisUsersPlayer() != null) {
 			this.setBackground(color);
 		}
 		turn = new JLabel(String.valueOf(world.getCurrentPlayer().getName()) + "'s turn");
-		this.add(turn, BorderLayout.NORTH);
+		this.add(turn);
 		
+		// display the modifications.
 		this.validate();
 		this.repaint();
 	}
-	
+
 }
 
