@@ -90,15 +90,22 @@ public class Tile {
      * The world this Tile belongs to.
      */
 	private World world;
+	
+	/**
+	 * @return {@link #world}.
+	 */
+	public World getWorld() {
+		return world;
+	}
 
     /**
      * Most Tiles are walkable. Others (e.g. Trees, Hedges, Walls etc.) aren't.
      * Whether they are walkable depends on the TileType (undone: and on whether something on the Tile is blocking it).
-     * @param considerCharacters If <code>true</code> Tiles with a Character considered non-walkable.
+     * @param considerCharactersAsBlocking If <code>true</code> Tiles with a Character considered non-walkable.
      * @return true if this Tile is walkable, otherwise false.
      */
-    public boolean isWalkable(boolean considerCharacters) {
-	    if (considerCharacters && hasCharacter()) {
+    public boolean isWalkable(boolean considerCharactersAsBlocking) {
+	    if (considerCharactersAsBlocking && hasCharacter()) {
 	    	return false;
 	    }
     	return tileType.getIsWalkable();
@@ -251,9 +258,7 @@ public class Tile {
         	System.out.println("ERROR: Tiles In Range is empty but starting Tile wasn't! Is Character stuck?");
         	return null;
         }
-	
-	    System.out.println("tilesInRange: " + tilesInRange);
-        
+	    
         return tilesInRange;
     }
 	

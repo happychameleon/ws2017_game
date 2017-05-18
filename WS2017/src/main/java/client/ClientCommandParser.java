@@ -1,6 +1,6 @@
 package client;
 
-import client.commands.ClientPongSender;
+import client.commands.ClientCpingHandler;
 
 import java.io.*;
 import java.net.Socket;
@@ -26,7 +26,7 @@ public class ClientCommandParser {
     private String keyword = "";
     private String argument = "";
 
-    private ClientPongSender cpongSender = new ClientPongSender(this);
+    private ClientCpingHandler cpongSender = new ClientCpingHandler();
 
     /**
      * Constructor for ClientCommandParser creates an inputstreamreader and outputstream from the serversocket.

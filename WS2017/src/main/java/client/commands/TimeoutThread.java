@@ -4,7 +4,7 @@ import client.ClientCommandParser;
 import java.io.IOException;
 
 /**
- * TimeoutThread is started by the class ClientPongSender when ping is received.
+ * TimeoutThread is started by the class ClientCpingHandler when ping is received.
  * If the thread is not interrupted in time by another ping the client closes its
  * socket and shuts down.
  *
