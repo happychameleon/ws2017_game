@@ -1,13 +1,16 @@
 package unitTestGameEngine;
 
+import game.ClientGameController;
+import game.GameMap;
+import game.GameState;
 import game.engine.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import serverclient.User;
 
-import game.engine.Character;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import static game.engine.PlayerColor.RED;
 import static org.hamcrest.CoreMatchers.*;
@@ -16,20 +19,42 @@ import static org.hamcrest.CoreMatchers.*;
  * Created by m on 26/04/17.
  */
 public class PlayerTest {
+    private static boolean setUpNotDone = true;
+
+    private GameMap gameMap;
+    private ClientGameController clientGameController;
+    private ArrayList<String> characters = new ArrayList<>();
+    private GameState gameState;
+    private int startingPoints;
+    private String testGameName;
+
     private World testWorld;
     private Team testTeam;
     private User testUser;
     private Player testPlayer;
-    private Character testCharacter;
-    private Weapon testWeapon;
 
     @Before
     public void setUp() {
-        testTeam = new Team("testTeam");
-        testUser = new User("userName");
+        if (setUpNotDone) {
+            GameMap.readInAllMaps();
+            Weapon.createWeaponPrototypes();
+            setUpNotDone = false;
+        }
+
+        gameState = GameState.STARTING;
+        startingPoints = 10;
+
+        testUser = new User("testUser");
+        characters.add("[Bob 'Medium Water Gun' 1,4]");
+        testGameName = "testGame";
+        HashMap<User, String> users = new HashMap<>();
+        gameMap = GameMap.getMapForName("SmallLakes", false);
+        clientGameController = new ClientGameController(gameState, startingPoints, testGameName, users, gameMap);
+        clientGameController.addUserToGame(testUser);
+        testWorld = new World(gameMap, clientGameController, characters);
+        testTeam = testWorld.getTurnController().getTeams().get(0);
         testPlayer = new Player(testTeam, testUser, RED, testWorld);
-        testCharacter = new Character(testWorld, "Bob", testPlayer, testWeapon);
-        testTeam.addPlayerToTeam(testPlayer);
+
         testPlayer.addKilledCharacter("Justus");
         testPlayer.addDeadCharacter("Peter");
     }
@@ -103,5 +128,26 @@ public class PlayerTest {
         int addDead = testPlayer.getDeathCount();
 
         Assert.assertThat(addDead, is(deadBefore + 1));
+    }
+
+    /**
+     * Tests if the CurrentPlayer has the turn and is our only Player in the world.
+     */
+    @Test
+    public void testHasTurn() {
+        Player thisHasTurn = testWorld.getCurrentPlayer();
+        boolean hasTurn = testWorld.getCurrentPlayer().hasTurn();
+        boolean samePlayer = thisHasTurn.getName() == testPlayer.getName();
+
+        Assert.assertThat(samePlayer, equalTo(hasTurn));
+    }
+
+    @Test
+    public void testHasCharactersLeft() {
+        boolean hasCharacters = testWorld.getTurnController().getTeams().get(0).getMembers().get(0).hasCharactersLeft();
+        boolean hasCharactersTest = testPlayer.getTeam().getMembers().get(0).hasCharactersLeft();
+        boolean testHasChar = hasCharacters && hasCharactersTest;
+
+        Assert.assertThat(testHasChar, equalTo(true));
     }
 }
