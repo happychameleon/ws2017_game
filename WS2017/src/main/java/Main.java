@@ -53,9 +53,10 @@ public class Main {
 	private static void printCommandLineParameters() {
 		System.out.println("Please start the application with one of the following arguments:\n" +
 				"'server <port>'\n" +
+				"'client <server_ip>:<port> <username>'\n" +
+				"'client <server_ip>:<port>'\n" +
 				"'client <server_ip> <port> <username>'\n" +
 				"'client <server_ip> <port>'\n" +
-				"'client <server_ip>:<port>'\n" +
 				"'client <port>'\t - shortcut for 'client 127.0.0.1 <port>'\n" +
 				"'client'\t - shortcut for 'client 127.0.0.1 1030'\n" +
 				"'server'\t - shortcut for 'server 1030'\n" +
