@@ -1,0 +1,27 @@
+Program Architecture
+
+Chats and Main Window
+
+We created our own ChatPanel Class which can be used as different kinds of Chats in different Windows. When created the chat command is defined (chatm, chatl or chatw) so it can be used for the three different chat-types there are in our game:
+- the Main Chat with all the logged-in users,
+- the Lobby Chat of which one exists per game and
+- the Whisper Chat with which users can privately chat.
+The Main Window is one of the biggest Classes which holds the List of all the Games on the Client Side (directly in the JList in which they are displayed) and the users. This way we avoid possible bugs where a game is shown which doesn't exist anymore.
+All the interaction is read in from the window. It is not directly processed but sent to the server and every client relevant to the information (i.e. the two clients in a whisper chat) including the one which received the user input get the update from the server and only then it is processed.
+
+Lobby
+
+When a client joins a game the lobby window is automatically opened in which all the players in this game can chat with each other. Additionally another window is created where the client can choose the Children. The Children are handled as JPanels which hold JComponents to customize the Child. When pressing the okay button the window class transforms the information about the children in a string and gives it to the GameController.
+
+GameController
+
+The GameController holds the General Information about the game including which users are playing or in which state (WAITING, RUNNING or FINISHED) the game is in. The actual information is stored in the World.
+
+GameGUI and Game Engine
+
+We separated the all the classes for the game into two packages: engine and gamegui. The gamegui classes are run on the server and synchronously on every client. The gamgui was solely for displaying the current gamestate in the engine package and for the user input (mouse and key listeners). Therefore the gamegui classes were only used on the client side. The users input is sent from the gamegui classes directly to the server, which updates it's own gamestate in the game engine and then sends the input onto the clients.
+
+
+
+
+Package Structure:
