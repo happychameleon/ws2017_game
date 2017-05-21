@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class GameMapTest {
+    private static boolean setupNotDone = true;
     private GameMap testMap1;
     private GameMap testMap2;
     private String newMapName;
@@ -30,14 +31,17 @@ public class GameMapTest {
      * Creates new Map we want to test the methods to in read and add new Maps to the game
      */
     public void loadMapObjects() {
-        GameMap.readInAllMaps();
+        if (setupNotDone) {
+            GameMap.readInAllMaps();
+            setupNotDone = false;
+        }
+
         testMap1 = GameMap.getMapForName("BigLake", false);
         testMap2 = GameMap.getMapForName("SmallLakes", false);
         newMapName = "newMap";
         tiles = new char[][]{{'1', '1', 'G', '2'}, {'G', 'w', 'w', '2'}, {'3', 'W', 'W', 'G'}, {'3', 'G', '4', '4'}};
         newMap = new GameMap(newMapName, tiles);
         compareList = GameMap.getAllMaps();
-        System.out.println(compareList);
     }
 
     @Test
@@ -85,13 +89,10 @@ public class GameMapTest {
 
     @Test
     public void testGetName() {
-        System.out.println(testMap1.getName());
         Assert.assertTrue(testMap1.getName().equals("BigLake"));
 
-        System.out.println(testMap2.getName());
         Assert.assertTrue(testMap2.getName().equals("SmallLakes"));
 
-        System.out.println(newMap.getName());
         Assert.assertTrue(newMap.getName() == newMapName);
     }
 
