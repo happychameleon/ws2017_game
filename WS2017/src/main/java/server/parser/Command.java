@@ -30,7 +30,9 @@ public enum Command {
 	chwea(new ChweaHandler()),
 	rmgam(new RmgamHandler()),
 	uhigh(new UhighHandler()),
-	cgeth(new CgethHandler());
+	cgeth(new CgethHandler()),
+	wtchg(new WtchgHandler()),
+	cpush(new CpushHandler());
 	
 	/**
 	 * The correct CommandHandler which processes the command.

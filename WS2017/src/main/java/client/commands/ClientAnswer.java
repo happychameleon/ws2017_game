@@ -18,7 +18,9 @@ public enum ClientAnswer {
 	chpos(new ClientChposHandler()),
 	attch(new ClientAttchHandler()),
 	endtn(new ClientEndtnHandler()),
-	cgeth(new ClientCgethHandler());
+	cgeth(new ClientCgethHandler()),
+	wtchg(new ClientWtchgHandler()),
+	cpush(new ClientCpushHandler());
 	
 	/**
 	 * The correct ClientCommandHandler which processes the answer.

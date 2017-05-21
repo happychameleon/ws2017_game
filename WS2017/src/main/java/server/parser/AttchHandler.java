@@ -1,5 +1,6 @@
 package server.parser;
 
+import game.GameState;
 import game.ServerGameController;
 import game.engine.Tile;
 import server.Server;
@@ -27,10 +28,14 @@ public class AttchHandler extends CommandHandler {
         
         Tile attackingTile = parsePosition(attackerChildPosition, gameController);
         Tile targetedTile = parsePosition(targetedChildPosition, gameController);
+	
+	    assert gameController != null;
+	    gameController.getWorld().attackCharacter(attackingTile, targetedTile, attackIntensity);
+	    
+	    if (gameController.getGameState() != GameState.RUNNING)
+	    	return; // The Attack has ended the game, no need to send it.
         
-        gameController.getWorld().attackCharacter(attackingTile, targetedTile, attackIntensity);
-        
-        Server.writeToAllClients(String.format("+OK attch %s", wholeArgument));
+        commandParser.writeToAllGamingClients(String.format("+OK attch %s", wholeArgument), gameController);
     }
 	
 }

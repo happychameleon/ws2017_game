@@ -27,6 +27,11 @@ public class ClientChposHandler extends ClientCommandHandler {
 		String gameName = getAndRemoveNextArgumentWord();
 		ClientGameController gameController = Client.getGameByName(gameName);
 		
+		if (gameController.getAllUsers().contains(Client.getThisUser()) == false
+				&& gameController.getWatchingUsers().contains(Client.getThisUser()) == false) {
+			return; // We are not interested in this game.
+		}
+		
 		String username = getAndRemoveNextArgumentWord(); // Currently unused.
 		
 		Tile oldPosition = parsePosition(getAndRemoveNextArgumentWord(), gameController);

@@ -3,9 +3,9 @@ package game.gamegui;
 import client.Client;
 import client.commands.ClientAttchHandler;
 import client.commands.ClientChposHandler;
+import client.commands.ClientCpushHandler;
+import game.engine.*;
 import game.engine.Character;
-import game.engine.Tile;
-import game.engine.World;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -46,6 +46,27 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 	 * How big one Pixel in the Game is in Pixels on the Screen.
 	 */
 	private static int pixelSize = 3;
+	
+	/**
+	 * Whether the Player selected pushing and can choose the direction for the push for the selected Character.
+	 */
+	private boolean pushingSelected;
+	
+	/**
+	 * @return {@link #pushingSelected}.
+	 */
+	public boolean isPushingSelected() {
+		return pushingSelected;
+	}
+	
+	/**
+	 * Sets {@link #pushingSelected}.
+	 * @param pushingSelected true or false.
+	 */
+	protected void setPushingSelected(boolean pushingSelected) {
+		this.pushingSelected = pushingSelected;
+	}
+	
 	/**
 	 *
 	 * @return {@link #pixelSize}.
@@ -72,7 +93,6 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 	private BufferedImage walkRangeSprite;
 	private BufferedImage selectedTileSprite;
 	
-	private BufferedImage[] characterWetnessSprites = new BufferedImage[10];
 	
 	
 	
@@ -94,13 +114,6 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 			e.printStackTrace();
 		}
 		
-		for (int i = 0; i < 10; i++) {
-			try {
-				characterWetnessSprites[i] = ImageIO.read(getClass().getResource("/images/characters/character__topDown_wetness" + i + "0.png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 		
 		addMouseListener(this);
 		addKeyListener(this);
@@ -138,16 +151,17 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		for (int x = 0; x < world.getMapWidth(); x++) {
 			for (int y = 0; y < world.getMapHeight(); y++) {
 				Tile tile = world.getTileAt(x, y);
-				if (tile.getNeedsGraphicsUpdate()) {
-					paintOneTile(g2d, tile); // Update this Tile, if something has changed on it.
-					tile.setNeedsGraphicsUpdate(false);
-				}
+				//if (tile.getNeedsGraphicsUpdate()) {
+				paintOneTile(g2d, tile); // Update this Tile, if something has changed on it.
+				//tile.setNeedsGraphicsUpdate(false);
+				//}
 			}
 		}
 		
 		previewImage = toCompatibleImage(previewImage);
 		
 		repaint();
+		window.getGameInfoPanel().updatevalue();
 	}
 	
 	/**
@@ -171,11 +185,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		if (character != null) {
 			// Draw the Character on the Tile and show it's wetness.
 			g.drawImage(character.getSprite(), leftX, topY, tileSize, tileSize, null);
-			int imageIndex = character.getWetness()/10;
-			if (imageIndex > 9)
-				imageIndex = 9;
-			BufferedImage wetnessSprite = characterWetnessSprites[imageIndex];
-			g.drawImage(wetnessSprite, leftX, topY, tileSize, tileSize, null);
+			
 		}
 		
 		if (world.getSelectedTile() == tile) {
@@ -250,10 +260,15 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		
 		updateGraphicsForUnselection();
 		
+		if (pushingSelected) {
+			pushingSelected = false;
+		}
+		
 		switch (e.getButton()) {
 			case MouseEvent.BUTTON1:
 				selectTile(tileUnderMouse);
 				repaintImage();
+				window.getGameInfoPanel().updatevalue();
 				break;
 			case MouseEvent.BUTTON3:
 				switch (world.getSelectionType()) {
@@ -303,7 +318,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		}
 		world.setSelectedTile(tileUnderMouse);
 		tileUnderMouse.setNeedsGraphicsUpdate();
-		if (tileUnderMouse.getCharacter() != null && tileUnderMouse.getCharacter().getOwner().hasTurn()) {
+		if (tileUnderMouse.hasCharacter()) {
 			// We have selected a Character. Highlight their movement Range.
 			window.setWalkRangeTiles(tileUnderMouse.getAllTilesInRange(tileUnderMouse.getCharacter().getMoveRange(), true));
 			world.setSelectionType(SelectionType.CHARACTER);
@@ -326,7 +341,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 		System.out.println("MainGamePanel#askServerToMoveCharacter");
 		if (destinationTile != null
 				&& world.getSelectedTile() != null
-				&& world.getSelectedTile().getCharacter() != null
+				&& world.getSelectedTile().hasCharacter()
 				&& window.getWalkRangeTiles() != null
 				&& window.getWalkRangeTiles().keySet().contains(destinationTile)
 				) {
@@ -351,6 +366,47 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 	}
 	
 	/**
+	 * Tells the server that the selected Character should push another Character into the Water standing in the given direction.
+	 */
+	private void askServerToPushCharacter(Direction direction) {
+		System.out.println("MainGamePanel#askServerToPushCharacter");
+		try {
+			if (world.getSelectedTile().getCharacter().getOwner().getUser() == Client.getThisUser()) {
+				if (world.getTurnController().getCurrentPlayer().getUser() == Client.getThisUser()) {
+					if (direction.getTileInDirectionOf(world.getSelectedTile()).hasCharacter()) {
+						if (direction.getTileInDirectionOf(world.getSelectedTile()).getCharacter().isOnSameTeamAs(world.getSelectedTile().getCharacter()) == false) {
+							if (world.getSelectedTile().getCharacter().canRemoveActionPoints(Character.getCostToPush())) {
+								if (direction.getTileInDirectionOf(direction.getTileInDirectionOf(world.getSelectedTile())).getTileType() == TileType.WATER || direction.getTileInDirectionOf(direction.getTileInDirectionOf(world.getSelectedTile())).isWalkable(true)) {
+									System.out.println("MainGamePanel#askServerToPushCharacter - Telling Server");
+									ClientCpushHandler.sendPushToServer(world.getGameController(), world.getSelectedTile(), direction.getTileInDirectionOf(world.getSelectedTile()));
+								} else {
+									System.out.println("MainGamePanel#askServerToPushCharacter - failed 7");
+								}
+							} else {
+								System.out.println("MainGamePanel#askServerToPushCharacter - failed 6");
+							}
+						} else {
+							System.out.println("MainGamePanel#askServerToPushCharacter - failed 5");
+						}
+						
+					} else {
+						System.out.println("MainGamePanel#askServerToPushCharacter - failed 4");
+					}
+					
+				} else {
+					System.out.println("MainGamePanel#askServerToPushCharacter - failed 3");
+				}
+				
+			} else {
+				System.out.println("MainGamePanel#askServerToPushCharacter - failed 2");
+			}
+			
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Tells the server about an Attack from the Character on the selected Tile to the Character on the attackedTile.
 	 * Does not carry out the attack.
 	 * Conditions to attack:
@@ -365,12 +421,12 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 	private void askServerToAttackCharacter(Tile attackedTile) {
 		System.out.println("MainGamePanel#askServerToAttackCharacter");
 		
-		if (attackedTile.getCharacter() != null //(4)
+		if (attackedTile.hasCharacter() //(4)
 				&& world.getSelectedTile() != null //(1)
-				&& world.getSelectedTile().getCharacter() != null //(1)
+				&& world.getSelectedTile().hasCharacter() //(1)
 				&& world.getSelectedTile().getCharacter().getOwner().getUser() == Client.getThisUser() //(1)
 				&& world.getSelectedTile().getCharacter().getOwner().hasTurn() //(2)
-				&& world.getSelectedTile().getCharacter().getWeapon() != null //(3)
+				&& world.getSelectedTile().getCharacter().hasWeapon() //(3)
 				&& world.getSelectionType() == SelectionType.OWNED_WEAPON) { //(3)
 			
 			Character targetedCharacter = attackedTile.getCharacter();
@@ -382,7 +438,7 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 					ClientAttchHandler.sendAttackToServer(window.getClientGameController(), targetedCharacter, attackingCharacter);
 				} else {
 					System.out.println("Not enough actionPoints for Attack! (ATTACKER: " + attackingCharacter + "; TARGET: " + targetedCharacter + ")");
-					// TODO(M4)? play error sound.
+					// TODO(M5)? play error sound.
 				}
 			} else {
 				System.out.println("Character not in Range! (ATTACKER: " + attackingCharacter + "; TARGET: " + targetedCharacter + "). Tile deselected.");
@@ -430,13 +486,39 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 	//region Keyboard
 	@Override
 	public void keyPressed(KeyEvent e) {
+		
 		updateGraphicsForUnselection();
+		
+		if (pushingSelected) {
+			System.out.println("MainGamePanel#keyPressed - Pushing is Selected");
+			pushingSelected = false;
+			switch (e.getKeyCode()) {
+				case KeyEvent.VK_LEFT: case KeyEvent.VK_A:
+					askServerToPushCharacter(Direction.WEST);
+					repaintImage();
+					return;
+				case KeyEvent.VK_RIGHT: case KeyEvent.VK_D:
+					askServerToPushCharacter(Direction.EAST);
+					repaintImage();
+					return;
+				case KeyEvent.VK_UP: case KeyEvent.VK_W:
+					askServerToPushCharacter(Direction.NORTH);
+					repaintImage();
+					return;
+				case KeyEvent.VK_DOWN: case KeyEvent.VK_S:
+					askServerToPushCharacter(Direction.SOUTH);
+					repaintImage();
+					return;
+				default:
+					break;
+			}
+		}
 		
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_SPACE:
-				if (world.getSelectedTile() != null && world.getSelectedTile().getCharacter() != null) {
+				if (world.getSelectedTile() != null && world.getSelectedTile().hasCharacter()) {
 					if (world.getSelectionType() == SelectionType.CHARACTER
-							&& world.getSelectedTile().getCharacter().getWeapon() != null) {
+							&& world.getSelectedTile().getCharacter().hasWeapon()) {
 						window.selectWeapon();
 					}
 				} else {
@@ -444,12 +526,14 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 				}
 				repaintImage();
 				break;
+			
 			case KeyEvent.VK_ENTER:
-				world.setSelectionType(SelectionType.NOTHING);
 				world.setSelectedTile(null);
 				world.endTurn();
 				repaintImage();
+				window.getGameInfoPanel().updatevalue();
 				break;
+			
 			case KeyEvent.VK_LEFT: case KeyEvent.VK_A:
 				camera.moveLeft();
 				repaintImage();
@@ -466,6 +550,13 @@ public class MainGamePanel extends JPanel implements MouseInputListener, KeyList
 				camera.moveDown();
 				repaintImage();
 				break;
+			
+			case KeyEvent.VK_P:
+				System.out.println("MainGamePanel#keyPressed - P");
+				window.selectPushing();
+				repaintImage();
+				break;
+			
 			default:
 				System.out.println("Key Typed: " + e.getKeyCode());
 				break;

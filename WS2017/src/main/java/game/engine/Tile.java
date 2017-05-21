@@ -90,15 +90,22 @@ public class Tile {
      * The world this Tile belongs to.
      */
 	private World world;
+	
+	/**
+	 * @return {@link #world}.
+	 */
+	public World getWorld() {
+		return world;
+	}
 
     /**
      * Most Tiles are walkable. Others (e.g. Trees, Hedges, Walls etc.) aren't.
      * Whether they are walkable depends on the TileType (undone: and on whether something on the Tile is blocking it).
-     * @param considerCharacters If <code>true</code> Tiles with a Character considered non-walkable.
+     * @param considerCharactersAsBlocking If <code>true</code> Tiles with a Character considered non-walkable.
      * @return true if this Tile is walkable, otherwise false.
      */
-    public boolean isWalkable(boolean considerCharacters) {
-	    if (considerCharacters && getCharacter() != null) {
+    public boolean isWalkable(boolean considerCharactersAsBlocking) {
+	    if (considerCharactersAsBlocking && hasCharacter()) {
 	    	return false;
 	    }
     	return tileType.getIsWalkable();
@@ -124,10 +131,17 @@ public class Tile {
     private Character character;
 	
 	/**
-	 * @return {@link #character}
+	 * @return {@link #character}. Can be null (check
 	 */
 	public Character getCharacter() {
 		return character;
+	}
+	
+	/**
+	 * @return <code>true</code> if there is a Character on thi Tile, otherwise <code>false</code>.
+	 */
+	public boolean hasCharacter() {
+		return character != null;
 	}
 	
 	/**
@@ -137,9 +151,9 @@ public class Tile {
 	public void setCharacter(Character character) {
 		this.character = character;
 		if (character == null) {
-			System.out.println("Tile#setCharacter - Character on Tile " + this + " now: null");
+			//System.out.println("Tile#setCharacter - Character on Tile " + this + " now: null");
 		} else {
-			System.out.println("Tile#setCharacter - Character on Tile " + this + " now: " + character);
+			//System.out.println("Tile#setCharacter - Character on Tile " + this + " now: " + character);
 		}
 		this.setNeedsGraphicsUpdate();
 	}
@@ -244,9 +258,7 @@ public class Tile {
         	System.out.println("ERROR: Tiles In Range is empty but starting Tile wasn't! Is Character stuck?");
         	return null;
         }
-	
-	    System.out.println("tilesInRange: " + tilesInRange);
-        
+	    
         return tilesInRange;
     }
 	

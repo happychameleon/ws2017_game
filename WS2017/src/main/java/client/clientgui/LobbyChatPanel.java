@@ -24,7 +24,7 @@ public class LobbyChatPanel extends ChatPanel {
 	 * @param game The name of the game this lobby is for.
 	 */
 	public LobbyChatPanel(ArrayList<ClientUser> chatUsers, String chatCommand, GameController game) {
-		super(chatUsers, chatCommand);
+		super(chatUsers, chatCommand, "lobbyMessage");
 		this.game = game;
 	}
 	

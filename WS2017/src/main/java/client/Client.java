@@ -58,7 +58,7 @@ public class Client {
 		return commandLineUsername;
 	}
 	
-	private static InputStream serverInputStream;
+	private static InputStreamReader serverInputStream;
 	private static OutputStream serverOutputStream;
 	private static Socket serverSocket;
 	
@@ -210,7 +210,7 @@ public class Client {
 	 */
 	public static void sendMessageToServer (String message) {
 		try {
-			serverOutputStream.write((message + "\r\n").getBytes());
+			serverOutputStream.write((message + "\r\n").getBytes("UTF-8"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -239,17 +239,17 @@ public class Client {
 	        
 	        System.out.println("Trying to connect to server with ip " + hostIP + " on port " + port);
 	        serverSocket = new Socket(hostIP, port);//starts a new socket that connects to server hosted locally
-	        serverInputStream = serverSocket.getInputStream();
+	        serverInputStream = new InputStreamReader(serverSocket.getInputStream(), "UTF-8");
 	        serverOutputStream = serverSocket.getOutputStream();
 	        serverSocket.setSoTimeout(200);
 	        ClientThread th = new ClientThread(serverSocket);
             th.start();
             startClient();
-	        BufferedReader commandlineInput = new BufferedReader(new InputStreamReader(System.in));
+	        BufferedReader commandlineInput = new BufferedReader(new InputStreamReader(System.in,"UTF-8"));
             String line = "";
             while (true){
 	            line = commandlineInput.readLine();
-                serverOutputStream.write(line.getBytes());
+                serverOutputStream.write(line.getBytes("UTF-8"));
                 serverOutputStream.write('\r');
                 serverOutputStream.write('\n');
                 if(line.equalsIgnoreCase("cquit"))break;

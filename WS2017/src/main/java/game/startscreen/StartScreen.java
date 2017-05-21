@@ -222,7 +222,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 	
 	/**
 	 * Creates the String representing all the Children
-	 * [<child1name> <child1weaponname> <child2name> <child2weaponname>]
+	 * [child1name 'child1weaponname' child1position child2name 'child2weaponname' child2position]
 	 */
 	private String getAllChildrenAsString() {
 		String characters = "[";
@@ -231,7 +231,7 @@ public class StartScreen extends JPanel implements ActionListener, WindowListene
 				ChildPanel childPanel = ((ChildPanel) component);
 				String name = childPanel.getCharacterName();
 				String weaponName = childPanel.getCharacterWeapon().getName();
-				characters += name + " '" + weaponName + "' ";
+				characters += String.format("%s '%s' X,Y ", name, weaponName);
 			}
 		}
 		characters = characters.trim(); // To remove last space

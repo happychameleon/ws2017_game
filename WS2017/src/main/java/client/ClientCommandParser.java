@@ -1,11 +1,8 @@
 package client;
 
-import client.commands.ClientPongSender;
+import client.commands.ClientCpingHandler;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InterruptedIOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -16,7 +13,12 @@ import java.net.Socket;
  */
 public class ClientCommandParser {
     public Socket serverSocket;
-    InputStream in;
+    InputStreamReader in;
+
+    public InputStreamReader getIn() {
+        return in;
+    }
+
     OutputStream out;
     boolean stopreaquest;
 
@@ -24,10 +26,10 @@ public class ClientCommandParser {
     private String keyword = "";
     private String argument = "";
 
-    private ClientPongSender cpongSender = new ClientPongSender(this);
+    private ClientCpingHandler cpongSender = new ClientCpingHandler();
 
     /**
-     * Constructor for ClientCommandParser creates an inputstream and outputstream from the serversocket.
+     * Constructor for ClientCommandParser creates an inputstreamreader and outputstream from the serversocket.
      * @param serverSocket The ServerSocket from which the input and output stream are taken.
      * @param stopRequest The StopRequest.
      */
@@ -35,7 +37,7 @@ public class ClientCommandParser {
         this.serverSocket = serverSocket;
 
         try {
-            in = serverSocket.getInputStream();
+            in = new InputStreamReader(serverSocket.getInputStream(), "UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -102,12 +104,12 @@ public class ClientCommandParser {
     }
 
     /**
-     * Takes the InputStream from the server and buffers it in the command StringBuffer till the
+     * Takes the InputStreamReader from the server and buffers it in the command StringBuffer till the
      * function reads the terminating signal for a command.
-     * @param in
-     * @param c
+     * @param in InputStreamReader for input from server.
+     * @param c first character from InputStream represented in integer form.
      */
-	private void inputTranslate(InputStream in, int c){
+	private void inputTranslate(InputStreamReader in, int c){
         int terminate = 0;
         try {
             while (true){

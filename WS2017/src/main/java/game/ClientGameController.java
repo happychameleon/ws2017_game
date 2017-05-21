@@ -2,15 +2,14 @@ package game;
 
 import client.Client;
 import client.ClientUser;
-import client.commands.ClientJoingHandler;
-import client.commands.ClientLeavgHandler;
-import client.commands.ClientStgamHandler;
+import client.commands.*;
 import game.engine.World;
 import game.gamegui.Window;
 import game.startscreen.GameLobby;
 import game.startscreen.StartScreen;
 import serverclient.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -65,7 +64,17 @@ public class ClientGameController extends GameController {
 	}
 	//endregion
 	
+	//region watching
 	
+	/**
+	 * Starts a game which is already running on the server on this client.
+	 * @param characterStrings The characters in the game for each player.
+	 */
+	public void startGameForWatching(ArrayList<String> characterStrings) {
+		world = new World(gameMap, this, characterStrings);
+		window = new Window(this, world, gameName);
+	}
+	//endregion
 	
 	/**
 	 * Creates the Game Controller in the given state.
@@ -118,8 +127,7 @@ public class ClientGameController extends GameController {
 	public void thisClientIsReady(String characterString) {
 		System.out.println("ClientGameStartController#thisClientIsReady");
 		
-		String message = String.format("ready %s %s %s", Client.getThisUser().getName(), gameName, characterString);
-		Client.sendMessageToServer(message);
+		ClientReadyHandler.tellServerAboutReady(gameName, characterString);
 	}
 	
 	/**
@@ -167,7 +175,7 @@ public class ClientGameController extends GameController {
 		super.startGame();
 		
 		if (users.keySet().contains(Client.getThisUser())) {
-			world = new World(gameMap, this);
+			world = new World(gameMap, this, null);
 			
 			window = new Window(this, world, gameName);
 			
@@ -217,13 +225,13 @@ public class ClientGameController extends GameController {
 	/**
 	 * TODO(M5) Ability to watch a game.
 	 */
-	public void watchGame() {
+	public void askToWatchGame() {
 		ClientUser thisUser = Client.getThisUser();
 		if (users.containsKey(thisUser)) {
 			Client.getMainWindow().getMainChatPanel().displayInfo("You're already playing this game. You can't watch and play the same game.");
 			return;
 		}
-		
+		ClientWtchgHandler.askToWatchGame(this);
 	}
 	//endregion
 	
@@ -250,26 +258,20 @@ public class ClientGameController extends GameController {
 		
 		if (users.containsKey(Client.getThisUser())) { // TODO(M5): Also check for watching users and display it to them.
 			// TODO(M4): Display the highscore a bit more beautifully in a new Dialog or sth like that. But for now the lobby is ok.
-			gameLobby.getLobbyChat().displayInfo("Team " + winningTeamName + " has won!");
-			for (String username : playerScore.keySet()) {
-				gameLobby.getLobbyChat().displayInfo(String.format("Player %s has scored %d points", username, playerScore.get(username)));
+			try {
+				gameLobby.getLobbyChat().displayInfo("Team " + winningTeamName + " has won!");
+				for (String username : playerScore.keySet()) {
+					gameLobby.getLobbyChat().displayInfo(String.format("Player %s has scored %d points", username, playerScore.get(username)));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
+		
+		Client.getMainWindow().getMainChatPanel().displayInfo("The game " + getGameName() + " has ended! " + winningTeamName + " has won.");
 		
 	}
 	
 	//endregion
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

@@ -1,10 +1,14 @@
 package server;
 
 
+import game.ServerGameController;
+import serverclient.User;
+
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * CommandParser parses the bytestream sent by a client and parses commands from it and separates
@@ -21,11 +25,11 @@ public class CommandParser {
 	private final ServerUser receivingUser;
 	
 	/**
-	 * The {@link InputStream} of this {@link #receivingUser}
+	 * The {@link InputStreamReader} of this {@link #receivingUser}
 	 */
-	private InputStream in;
+	private InputStreamReader in;
 	
-	public InputStream getIn() {
+	public InputStreamReader getIn() {
 		return in;
 	}
 	
@@ -66,7 +70,7 @@ public class CommandParser {
      */
     public CommandParser(Socket socket, ServerUser user){
         try {
-            in = socket.getInputStream();
+            in = new InputStreamReader(socket.getInputStream(), "UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -147,7 +151,7 @@ public class CommandParser {
 	/**
 	 * Puts input in a {@link StringBuffer} until the termination signal (\r \n) is reached.
 	 */
-    private void inputTranslate(InputStream in, int c){
+    private void inputTranslate(InputStreamReader in, int c){
         int terminate = 0;
         try {
             while (true){
@@ -198,7 +202,7 @@ public class CommandParser {
 	 */
     public void writeBackToClient(String output){
         try {
-            out.write((output + "\r\n").getBytes());
+            out.write((output + "\r\n").getBytes("UTF-8"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -226,7 +230,7 @@ public class CommandParser {
 		
 		try {
 			OutputStream outputStream = user.getSocket().getOutputStream();
-			outputStream.write((output + "\r\n").getBytes());
+			outputStream.write((output + "\r\n").getBytes("UTF-8"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -243,11 +247,28 @@ public class CommandParser {
 			}
 			try {
 				OutputStream outputStream = user.getSocket().getOutputStream();
-				outputStream.write((output + "\r\n").getBytes());
+				outputStream.write((output + "\r\n").getBytes("UTF-8"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 	
+	/**
+	 * Writes a message to all Clients playing and watching the specified game.
+	 * @param message The message to send.
+	 * @param gameController The game the Clients are from.
+	 */
+	public void writeToAllGamingClients(String message, ServerGameController gameController) {
+		ArrayList<User> usersToSend = new ArrayList<>();
+		usersToSend.addAll(gameController.getAllUsers());
+		usersToSend.addAll(gameController.getWatchingUsers());
+		for (User u : usersToSend) {
+			try {
+				writeToSpecificClient(message, (ServerUser) u);
+			} catch (ClassCastException e) {
+				e.printStackTrace(); //just to be sure
+			}
+		}
+	}
 }

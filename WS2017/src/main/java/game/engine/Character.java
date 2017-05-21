@@ -15,7 +15,7 @@ import java.util.Set;
  * Created by flavia on 02.03.17.
  */
 public class Character {
-
+	
 	//region Data
 	/**
 	 * The World this Character is in.
@@ -25,14 +25,14 @@ public class Character {
 	/**
 	 * The Player who controls this Character.
 	 */
-    private final Player owner;
+	private final Player owner;
 	
 	/**
 	 * @return {@link #owner}.
 	 */
 	public Player getOwner() {
-        return owner;
-    }
+		return owner;
+	}
 	
 	/**
 	 * The Sprite for this Character.
@@ -59,16 +59,28 @@ public class Character {
 	}
 	
 	/**
+	 * The Cost to push another Character into the water.
+	 */
+	private static final int costToPush = 4;
+	
+	/**
+	 * @return {@link #costToPush}.
+	 */
+	public static int getCostToPush() {
+		return costToPush;
+	}
+	
+	/**
 	 * The Tile on which this Character is.
 	 */
 	private Tile tile;
 	
-    /**
-     * @return {@link #tile}.
-     */
-    public Tile getTile() {
-        return tile;
-    }
+	/**
+	 * @return {@link #tile}.
+	 */
+	public Tile getTile() {
+		return tile;
+	}
 	
 	/**
 	 * Sets the Character on the specified Tile, only if the Character hadn't had a Tile before.
@@ -76,25 +88,25 @@ public class Character {
 	 * @return true if it was successful, false if the character already had a Tile.
 	 */
 	public boolean setStartingTile(Tile startingTile) {
-    	if (this.tile == null) {
-    		setTile(startingTile);
-    		return true;
-	    }
+		if (this.tile == null) {
+			setTile(startingTile);
+			return true;
+		}
 		System.err.println("Character#setStartingTile - Character already had a Tile!");
 		return false;
-    }
+	}
 	
 	/**
 	 * This is only used by the Character themselves to move.
 	 */
 	private void setTile(Tile newTile) {
-    	if (newTile.isWalkable(true) == false) {
-    		System.err.println("Character#setTile - Tile already occupied!");
-    		return;
-	    }
-	    if (this.tile != null) {
-		    this.tile.setCharacter(null);
-	    }
+		if (newTile.isWalkable(true) == false) {
+			System.err.println("Character#setTile - Tile already occupied!");
+			return;
+		}
+		if (this.tile != null) {
+			this.tile.setCharacter(null);
+		}
 		this.tile = newTile;
 		newTile.setCharacter(this);
 	}
@@ -109,10 +121,14 @@ public class Character {
 	 */
 	public Weapon getWeapon() { return weapon; }
 	
+	public boolean hasWeapon() {
+		return weapon != null;
+	}
+	
 	public void setWeapon(Weapon weapon) {
-    	if (this.weapon != null) {
-    		System.out.println("Character::setWeapon - ERROR: Character already has a weapon!");
-	    }
+		if (this.weapon != null) {
+			System.out.println("Character::setWeapon - ERROR: Character already has a weapon!");
+		}
 		this.weapon = weapon;
 	}
 	
@@ -202,11 +218,11 @@ public class Character {
 		this.world = world;
 		this.name = name;
 		this.owner = owner;
-        this.weapon = weapon;
-        
-        this.actionPoints = maximumActionPoints;
+		this.weapon = weapon;
 		
-        String imageString = "/images/characters/character__topDown_" + owner.getColor().name().toLowerCase() + ".png";
+		this.actionPoints = maximumActionPoints;
+		
+		String imageString = "/images/characters/character__topDown_" + owner.getColor().name().toLowerCase() + ".png";
 		
 		try {
 			sprite = ImageIO.read(getClass().getResource(imageString));
@@ -258,27 +274,27 @@ public class Character {
 	private void resetActionPoints() {
 		this.actionPoints = maximumActionPoints;
 	}
-    
-    /**
-     *
-     * @return The Attack range calculated with {@link Tile#getAllTilesInRange(int, boolean)} from this Character's Weapon's range. Can be null!
-     */
-    public Set<Tile> getAttackRangeInTiles() {
-        return this.tile.getAllTilesInRange(weapon.getRange(), false).keySet();
-    }
-    
-    @Override
-    public String toString() {
-    	String s = "Character " + name;
-    	if (tile != null)
-    	    s += ", Position: " + tile.toString();
-    	if (weapon != null)
-		    s += ", Weapon: " + weapon.toString();
-    	if (owner != null)
-    		s+= ", Owner: " + owner.getName();
-    	s += ", Wetness: " + wetness + "%";
-    	return s;
-    }
+	
+	/**
+	 *
+	 * @return The Attack range calculated with {@link Tile#getAllTilesInRange(int, boolean)} from this Character's Weapon's range. Can be null!
+	 */
+	public Set<Tile> getAttackRangeInTiles() {
+		return this.tile.getAllTilesInRange(weapon.getRange(), false).keySet();
+	}
+	
+	@Override
+	public String toString() {
+		String s = "Character " + name;
+		if (tile != null)
+			s += ", Position: " + tile.toString();
+		if (weapon != null)
+			s += ", Weapon: " + weapon.toString();
+		if (owner != null)
+			s+= ", Owner: " + owner.getName();
+		s += ", Wetness: " + wetness + "%";
+		return s;
+	}
 	
 	/**
 	 * UNDONE! This Method removes the Character from play and drops all their stuff on the ground.
@@ -289,7 +305,7 @@ public class Character {
 		if (tile != null) {
 			tile.setCharacter(null);
 		}
-    	// If more Lists with characters are implemented, remove them from there to!
+		// If more Lists with characters are implemented, remove them from there to!
 		Player killingPlayer = attackingCharacter.getOwner();
 		Player deadCharacterOwner = this.getOwner();
 		
@@ -304,45 +320,26 @@ public class Character {
 	
 	/**
 	 * Moves the Character by one Tile.
-	 * @param direction The direction (N==0; E==1; S==2; W==3) where to move.
-	 * @return Whether the move was successful <code>true</code> or not <code>false</code> (e.g. blocked by sth).
+	 * @param direction The direction where to move.
+	 * @param shouldRemoveActionPoints Whether moving the Character should remove actionPoints (false i.e. when the attacker moves after a push).
+	 * @return Whether the move was successful <code>true</code> or not <code>false</code> (i.e. blocked by sth).
 	 */
-	@Deprecated
-	public boolean moveCharacter (int direction) {
-		if (direction > 3 || direction < 0) {
-			System.out.println("moveCharacter - ERROR: No valid direction");
+	public boolean moveCharacter(Direction direction, boolean shouldRemoveActionPoints) {
+		Tile newTile = direction.getTileInDirectionOf(tile);
+		
+		if (shouldRemoveActionPoints == false || this.removeActionPoints(movementCostPerTile)) {
+			
+			if (newTile != null && newTile.isWalkable(true) ) {
+				setTile(newTile);
+				return true;
+			}
+			
+		} else {
 			return false;
 		}
-		switch (direction) {
-			case 0:
-				if (tile.getNorthTile() != null && tile.getNorthTile().isWalkable(true)) {
-					setTile(tile.getNorthTile());
-					return true;
-				}
-				break;
-			case 1:
-				if (tile.getEastTile() != null && tile.getEastTile().isWalkable(true)) {
-					setTile(tile.getEastTile());
-					return true;
-				}
-				break;
-			case 2:
-				if (tile.getSouthTile() != null && tile.getSouthTile().isWalkable(true)) {
-					setTile(tile.getSouthTile());
-					return true;
-				}
-				break;
-			case 3:
-				if (tile.getWestTile() != null && tile.getWestTile().isWalkable(true)) {
-					setTile(tile.getWestTile());
-					return true;
-				}
-				break;
-			default:
-				break;
-		}
+		
 		return false;
-    }
+	}
 	
 	/**
 	 * Moves the Character to the specific Tile if it is walkable.
@@ -352,26 +349,29 @@ public class Character {
 	 */
 	public boolean moveCharacterTo(Tile destinationTile, int distance) {
 		
-			if (this.removeActionPoints(distance * movementCostPerTile)) {
-				setTile(destinationTile);
-				System.out.println(this.toString() + " moved to " + destinationTile);
-				
-				world.setSelectedTile(null);
-				if (world.getGameController() instanceof ClientGameController) {
-					Window window = ((ClientGameController) world.getGameController()).getWindow();
-					window.setWalkRangeTiles(null);
-					window.setAttackRangeTiles(null);
-					window.getMainGamePanel().repaintImage();
-				}
-				
-				return true;
-			} else {
-				System.err.println("Character#moveCharacterTo - Couldn't remove action Points. Check has been forgotten.");
-				return false;
+		if (this.removeActionPoints(distance * movementCostPerTile)) {
+			setTile(destinationTile);
+			System.out.println(this.toString() + " moved to " + destinationTile);
+			
+			world.setSelectedTile(null);
+			if (world.getGameController() instanceof ClientGameController) {
+				Window window = ((ClientGameController) world.getGameController()).getWindow();
+				window.setWalkRangeTiles(null);
+				window.setAttackRangeTiles(null);
+				window.getMainGamePanel().repaintImage();
 			}
+			
+			return true;
+		} else {
+			System.err.println("Character#moveCharacterTo - Couldn't remove action Points. Check has been forgotten.");
+			return false;
+		}
 		
-    }
+	}
 	
+	/**
+	 * @return A Set of all EnemyCharacters which are in shooting range of this Characters current Weapon. Can be null if this Character has no weapon.
+	 */
 	public HashSet<Character> getAllEnemyCharactersInRange () {
 		if (weapon == null) {
 			System.err.println("Character#getAllCharactersInRange - Character has no Weapon!");
@@ -379,7 +379,7 @@ public class Character {
 		}
 		HashSet<Character> charactersInRange = new HashSet<>();
 		for (Tile tile : tile.getAllTilesInRange(weapon.getRange(), false).keySet()) {
-			if (tile.getCharacter() != null
+			if (tile.hasCharacter()
 					&& this.isOnSameTeamAs(tile.getCharacter()) == false) {
 				charactersInRange.add(tile.getCharacter());
 			}

@@ -38,6 +38,7 @@ public class EndtnHandler extends CommandHandler {
 		
 		turnController.endTurn();
 		
-		Server.writeToAllClients(String.format("+OK endtn %s", wholeArgument));
+		commandParser.writeToAllGamingClients(String.format("+OK endtn %s", wholeArgument), gameController);
+		
 	}
 }

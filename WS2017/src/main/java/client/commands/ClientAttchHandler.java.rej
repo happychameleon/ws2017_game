@@ -1,0 +1,9 @@
+diff a/WS2017/src/main/java/client/commands/ClientAttchHandler.java b/WS2017/src/main/java/client/commands/ClientAttchHandler.java	(rejected hunks)
+@@ -3,7 +3,6 @@
+ 
+ import client.Client;
+ import game.ClientGameController;
+-import game.GameState;
+ import game.engine.Character;
+ import game.engine.Tile;
+ 

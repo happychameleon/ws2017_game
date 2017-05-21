@@ -1,12 +1,8 @@
 package game.engine;
 
-import game.ClientGameController;
-import game.GameController;
-import game.GameMap;
-import game.ServerGameController;
+import game.*;
 import game.gamegui.SelectionType;
 import game.gamegui.Window;
-import serverclient.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,46 +28,48 @@ public class World {
 	}
 	
 	/**
-     * All the Tiles on the current Map. Tile (0/0) is at the top left corner!
-     * Get a specific Tile with {@link #getTileAt(int, int)}.
-     */
-    private Tile[][] tiles;
+	 * All the Tiles on the current Map. Tile (0/0) is at the top left corner!
+	 * Get a specific Tile with {@link #getTileAt(int, int)}.
+	 */
+	private Tile[][] tiles;
 	
 	/**
-     * @return The map width in Tiles.
-     */
-    public int getMapWidth() {
-        return tiles.length;
-    }
-    
-    /**
-     * @return The map height in Tiles.
-     */
-    public int getMapHeight() {
-        return tiles[0].length;
-    }
-    
-    /**
-     * The Tile which was selected last with a left mouse click.
-     * When a Character is on the selectedTile, the movement Range is shown.
-     *
-     * TODO(M4) Move selection to the gamegui package!
-     */
-    private Tile selectedTile;
+	 * @return The map width in Tiles.
+	 */
+	public int getMapWidth() {
+		return tiles.length;
+	}
+	
+	/**
+	 * @return The map height in Tiles.
+	 */
+	public int getMapHeight() {
+		return tiles[0].length;
+	}
+	
+	/**
+	 * The Tile which was selected last with a left mouse click.
+	 * When a Character is on the selectedTile, the movement Range is shown.
+	 */
+	private Tile selectedTile;
 	
 	/**
 	 * @return The currently {@link #selectedTile}.
 	 */
 	public Tile getSelectedTile() {
-        return selectedTile;
-    }
+		return selectedTile;
+	}
 	
 	/**
+	 * Set's the selected Tile to the given Tile.
+	 * If the given selectedTile is <code>null</code>, {@link #selectionType} is set to NOTHING.
 	 * @param selectedTile The newly {@link #selectedTile}.
 	 */
 	public void setSelectedTile (Tile selectedTile) {
-        this.selectedTile = selectedTile;
-    }
+		this.selectedTile = selectedTile;
+		if (selectedTile == null)
+			selectionType = SelectionType.NOTHING;
+	}
 	
 	/**
 	 * This defines what exactly on the Tile is selected. (e.g. the Tile itself, the Character on it,
@@ -141,7 +139,7 @@ public class World {
 	 * @param gameController The ServerGameController.
 	 */
 	public World(GameMap gameMap, ServerGameController gameController) {
-		this(gameMap.getHeight(), gameMap.getWidth(), gameMap.getTilesAsChars(), gameController);
+		this(gameMap.getHeight(), gameMap.getWidth(), gameMap.getTilesAsChars(), gameController, null);
 		
 	}
 	
@@ -150,9 +148,10 @@ public class World {
 	 * Used to easily build things differently on the Server and the Client in the future.
 	 * @param gameMap The map to build the Tiles from.
 	 * @param gameController The ClientGameController.
+	 * @param characterStrings see characterString description at {@link #World(int, int, char[][], GameController, ArrayList)}
 	 */
-	public World(GameMap gameMap, ClientGameController gameController) {
-		this(gameMap.getHeight(), gameMap.getWidth(), gameMap.getTilesAsChars(), gameController);
+	public World(GameMap gameMap, ClientGameController gameController, ArrayList<String> characterStrings) {
+		this(gameMap.getHeight(), gameMap.getWidth(), gameMap.getTilesAsChars(), gameController, characterStrings);
 		
 	}
 	
@@ -162,31 +161,35 @@ public class World {
 	 * @param width {@link #getMapWidth}
 	 * @param tileChars the char[][] to create the Tiles from.
 	 * @param gameController the {@link GameController} of this game.
+	 * @param characterStrings If the world is only created for a watching user and is already running on the server, the characterStrings holds the info for all the already existing characters. Otherwise null.
 	 */
-	private World(int height, int width, char[][] tileChars, GameController gameController) {
+	private World(int height, int width, char[][] tileChars, GameController gameController, ArrayList<String> characterStrings) {
 		this.gameController = gameController;
 		
-        tiles = new Tile[width][height];
-        // Generate all the Tiles from the given map's tileChars.
-        for (int x = 0; x < width; x++) {
-	        for (int y = 0; y < height; y++) {
-	        	
-		        TileType tileType = TileType.getTypeForChar(tileChars[y][x]);
-		        tiles[x][y] = new Tile(this, x, y, tileType);
-		        
-	        }
-        }
+		tiles = new Tile[width][height];
+		// Generate all the Tiles from the given map's tileChars.
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				
+				TileType tileType = TileType.getTypeForChar(tileChars[y][x]);
+				tiles[x][y] = new Tile(this, x, y, tileType);
+				
+			}
+		}
 		
-        turnController = new TurnController(gameController.getAllUsers(), this);
+		turnController = new TurnController(gameController.getAllUsers(), this);
 		
-		System.out.println("World#World - getting all starting tiles");
 		getAllStartingTiles();
 		
-		System.out.println("World#World - reading in characters");
 		characters = new ArrayList<>();
-		for (Player player : turnController.getPlayers()) {
-			User user = player.getUser();
-			String characterString = gameController.getCharacterStringForUser(user);
+		for (int i = 0; i < turnController.getPlayers().size(); i++) {
+			Player player = turnController.getPlayers().get(i);
+			String characterString = "";
+			if (characterStrings == null) {
+				characterString = gameController.getStartingCharacterStringForUser(player.getUser());
+			} else {
+				characterString = characterStrings.get(i);
+			}
 			ArrayList<Character> newCharacters = parseCharacterString(characterString, player);
 			for (Character character : newCharacters) {
 				characters.add(character);
@@ -209,20 +212,35 @@ public class World {
 		
 		String characterName;
 		String weaponName;
+		String startPosition;
 		while (true) {
+			System.out.println();
+			System.out.println("World#parseCharacterString - characterString: " + characterString);
 			int spaceIndex = characterString.indexOf(" ");
 			characterName = characterString.substring(0, spaceIndex);
 			characterString = characterString.substring(spaceIndex + 2);
 			int apostropheIndex = characterString.indexOf("'");
 			weaponName = characterString.substring(0, apostropheIndex);
-			characterString = characterString.substring(apostropheIndex + 1);
+			characterString = characterString.substring(apostropheIndex + 2);
 			if (Weapon.getWeaponForName(weaponName) == null) {
 				System.err.println("World#parseCharacterString - weaponname wrong");
 				return null;
 			}
-			Character character = new Character(this, characterName, player, Weapon.getWeaponForName(weaponName));
+			if (characterString.contains(" ")) {
+				spaceIndex = characterString.indexOf(" ");
+			} else {
+				if (characterString.contains("]")) {
+					spaceIndex = characterString.indexOf("]");
+				} else {
+					spaceIndex = characterString.length();
+				}
+			}
+			startPosition = characterString.substring(0, spaceIndex);
+			characterString = characterString.substring(spaceIndex);
+			
+			Character character = new Character(this, characterName, player, new Weapon(Weapon.getWeaponForName(weaponName)));
 			characters.add(character);
-			character.setStartingTile(getCorrectStartingTileForCharacter(character));
+			character.setStartingTile(getCorrectStartingTileForCharacter(character, startPosition));
 			
 			if (characterString.isEmpty() || characterString.equals("]")) {
 				break;
@@ -234,17 +252,26 @@ public class World {
 	}
 	
 	/**
-	 * This returns the correct Tile for a character
+	 * This returns the correct starting Tile for a character on either the server or client side.
 	 * @param character The Character.
+	 * @param startPosition The startPosition for the Character as a string.
+	 *                         If it is X,Y instead of actual numbers, the startposition has to be calculated on the server.
 	 * @return The Tile for this Character.
 	 */
-	private Tile getCorrectStartingTileForCharacter(Character character) {
-		ArrayList<Tile> playerStartingTiles = startingTiles.get(character.getOwner());
-		int i = 0;
-		while (playerStartingTiles.get(i).isWalkable(true) == false) {
-			i++;
+	private Tile getCorrectStartingTileForCharacter(Character character, String startPosition) {
+		System.out.println("World#getCorrectStartingTileForCharacter - startPosition: " + startPosition);
+		if (startPosition.equals("X,Y")) {
+			ArrayList<Tile> playerStartingTiles = startingTiles.get(character.getOwner());
+			int i = 0;
+			while (playerStartingTiles.get(i).isWalkable(true) == false) {
+				i++;
+			}
+			return playerStartingTiles.get(i);
+		} else {
+			int x = Integer.parseInt(startPosition.substring(0, startPosition.indexOf(",")));
+			int y = Integer.parseInt(startPosition.substring(startPosition.indexOf(",") + 1));
+			return getTileAt(x, y);
 		}
-		return playerStartingTiles.get(i);
 	}
 	
 	/**
@@ -276,16 +303,14 @@ public class World {
 	 * @return The Tile or <code>null</code> if the coordinates are out of range.
 	 */
 	public Tile getTileAt(int x, int y) {
-        if (x < 0 || x >= getMapWidth()) {
-            //System.out.println("ERROR: Requested Tile out of GameMap range!");
-            return null;
-        }
-        if (y < 0 || y >= getMapHeight()) {
-            //System.out.println("ERROR: Requested Tile out of GameMap range!");
-            return null;
-        }
-        return tiles[x][y];
-    }
+		if (x < 0 || x >= getMapWidth()) {
+			return null;
+		}
+		if (y < 0 || y >= getMapHeight()) {
+			return null;
+		}
+		return tiles[x][y];
+	}
 	
 	/**
 	 * Returns an ArrayList of all the Characters of the given Player.
@@ -296,10 +321,10 @@ public class World {
 		ArrayList<Character> charactersOfOwner = new ArrayList<>();
 		for (Character character : characters) {
 			if (character.getOwner() == owner)
-		    	charactersOfOwner.add(character);
-	    }
+				charactersOfOwner.add(character);
+		}
 		return charactersOfOwner;
-    }
+	}
 	
 	/**
 	 * Removes the given character for either being killed or when a user leaves the game.
@@ -320,15 +345,19 @@ public class World {
 				setSelectionType(SelectionType.NOTHING);
 			}
 		}
-		
+		if (getGameController() instanceof ClientGameController) {
+			((ClientGameController) getGameController()).getWindow().getMainGamePanel().repaintImage();
+		}
 		checkWinningCondition();
 	}
 	
 	/**
 	 * Checks whether the WinningConditions are met and if so carries them out.
 	 * Only done on the Server. The Clients then get informed by the Server.
+	 *
+	 * @return <code>true</code> when the game has ended, otherwise <code>false</code>.
 	 */
-	public void checkWinningCondition() {
+	public boolean checkWinningCondition() {
 		if (gameController instanceof ServerGameController) {
 			System.out.println("World#checkWinningCondition - On Server");
 			
@@ -336,8 +365,10 @@ public class World {
 			
 			if (winningTeam != null) {
 				((ServerGameController) gameController).teamHasWon(winningTeam);
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	/**
@@ -360,7 +391,7 @@ public class World {
 	 */
 	public void attackCharacter(Tile attackingTile, Tile targetedTile, int attackIntensity) {
 		System.out.println("World#attackCharacter");
-		if (targetedTile.getCharacter() == null || attackingTile.getCharacter() == null) {
+		if (targetedTile.hasCharacter() == false || attackingTile.hasCharacter() == false) {
 			System.err.println("World#attackCharacter - character check went wrong.");
 		}
 		
@@ -375,6 +406,42 @@ public class World {
 		
 		if (gameController instanceof ClientGameController)
 			((ClientGameController) gameController).getWindow().getMainGamePanel().repaintImage();
+	}
+	
+	/**
+	 * Carries out pushing from the Character on the attackerTile to the Character on the pushedTile.
+	 * @param attackerTile The Tile with the attacker on it.
+	 * @param pushedTile The Tile with the to be pushed Character on it.
+	 */
+	public void pushCharacter(Tile attackerTile, Tile pushedTile) {
+		Direction pushDirection = Direction.getDirectionOfTile(attackerTile, pushedTile);
+		assert pushDirection != null;
+		
+		Character attacker = attackerTile.getCharacter();
+		Character pushedCharacter = pushedTile.getCharacter();
+		
+		if (attacker.canRemoveActionPoints(attacker.getCostToPush()) == false) {
+			System.err.println("World#pushCharacter - not enough action points. Shouldn't have sent command to server.");
+		}
+		
+		if (pushDirection.getTileInDirectionOf(pushedTile).getTileType() == TileType.WATER) {
+			attacker.removeActionPoints(attacker.getCostToPush());
+			pushedCharacter.KillCharacter(attacker);
+			if (getGameController().getGameState() != GameState.RUNNING) // In case the Killing of the Character ended the Game.
+				return;
+		} else {
+			if (pushedCharacter.moveCharacter(pushDirection, true) == false) {
+				System.err.println("World#pushCharacter - moving the pushed Character impossible!");
+				return;
+			}
+		}
+		
+		// TODO: Should the attacker move or stand still?
+		attacker.moveCharacter(pushDirection, false);
+		
+		if (getGameController() instanceof ClientGameController) {
+			((ClientGameController) getGameController()).getWindow().getMainGamePanel().repaintImage();
+		}
 	}
 	//endregion
 }

@@ -1,97 +1,19 @@
-Things the Protocol needs to do that are mille stone requirments:
+map commands
 
-m2
+The client can eather request a predefinde map or a random map from the server with the nemap command. There are a maximum of four people that can be in one game. the player number represents them W repesents water G represents grass.
 
-	"Protocol is properly 
-	encoded, decoded and 
-	Validated"
+client to server:
 
-	"Players can change their 
-	Nicknames"
+nemap game_name maprequest
 
-	"Client to client chat is 
-	Working"
+if the map does not exist on the server the server returns an error to the client.
 
-	"Arbitrarily many clients 
-	Can log on to the server"
+server to client:
 
-	"The server handles a client 
-	Logout in a meaningful way"
+-ERR nemap game_name 'requested game does not exist'
 
-	"Ping is regularly sent from 
-	server to client and 
-	Processed meaningfully"
+if the map does exist on the server or a random map is requested, the server returns a nemap answer with the new map.
+The new game map is sent to all clients connected with the server.
 
-	"Ping is regularly sent from 
-	client to server and 
-	Processed meaningfully"
-
-	"The human-readable network 
-	protocol is defined and 
-	documented in source code"
-
-	"The human-readable network 
-	protocol is defined in 
-	Dedicated document"
-
-	"Network protocol is 
-	being used and validated 
-	Correctly"
-
-	"The server assures that 
-	duplicates in a consistent 
-	manner by assigning 
-	Appropriate names 
-	player nicknames as 
-	Unique and changes"
-
-	"The client suggest a 
-	nickname based on the 
-	System username"
-
-m3
-
-	"Broadcast to all clients 
-	across all games and 
-	Lobbies is working"
-
-	"Command line parameters 
-	are parsed correctly: 
-	(client <hostadress>: <port> 
-	(<username>) | server <port>)"
-
-	?
-	"There is a way to list both 
-	open, ongoing as well as 
-	Finished games"
-	
-	"Game state is kept on 
-	Server"
-
-	"There is a high score list 
-	which is stored persistently 
-	And updated when needed"
-
-	"Overview of the network 
-	Communication"
-	
-	"There is a way to list all 
-	player currently connected 
-	To the server"
-
-	"Whisper-chat between two 
-	Clients is working"
-
-m4
-
-	"The winner and the winstate 
-	Is correctly determined"
-
-m5
-
-	"Username can be specified 
-	via the command line 
-	(e.g.: java -jar some.jar 
-	Client server:port 
-	Username)"
++OK nemap game_name 111GGG222,1GGGGGGG2,1GGGGGGG2,.4.GW.4.G,GWG.3.WGWG,.4.GW.4.G,3.7.G4,3.7.G4,333GGG444
 

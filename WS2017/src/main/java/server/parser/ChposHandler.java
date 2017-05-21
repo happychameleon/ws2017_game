@@ -1,6 +1,6 @@
 package server.parser;
 
-import game.GameController;
+import game.ServerGameController;
 import game.engine.Tile;
 import server.Server;
 
@@ -14,7 +14,7 @@ public class ChposHandler extends CommandHandler {
     	String wholeArgument = argument;
 	
 	    String gameName = getAndRemoveNextArgumentWord();
-	    GameController gameController = Server.getGameByName(gameName);
+	    ServerGameController gameController = Server.getGameByName(gameName);
 	
 	    String username = getAndRemoveNextArgumentWord();
 	
@@ -23,13 +23,14 @@ public class ChposHandler extends CommandHandler {
 	
 	    int distance = Integer.parseInt(getAndRemoveNextArgumentWord());
 	
-	    if (oldPosition.getCharacter() == null) {
+	    if (oldPosition.hasCharacter() == false) {
 		    System.err.println("ChposHandler#handleCommand - NO CHARACTER ON TILE!");
 	    }
 	    
 	    oldPosition.getCharacter().moveCharacterTo(newPosition, distance);
-     
-	    Server.writeToAllClients(String.format("+OK chpos %s", wholeArgument));
+	
+	    commandParser.writeToAllGamingClients(String.format("+OK chpos %s", wholeArgument), gameController);
+	    
     }
 	
 }

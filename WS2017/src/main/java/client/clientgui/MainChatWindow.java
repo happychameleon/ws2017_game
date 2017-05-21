@@ -25,7 +25,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	private JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	
 	/**
-	 * The Panel where the everything is in.
+	 * The Panel where everything is in.
 	 */
 	JPanel mainPanel;
 	
@@ -89,7 +89,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	/**
 	 * This Button is used to open a window for the selected {@link #runningGameList} (where this client isn't a player) to watch it.
 	 */
-	JButton watchGameButton = new JButton("Watch Game (UNDONE)");
+	JButton watchGameButton = new JButton("Watch Game");
 	
 	/**
 	 * Opens the {@link NewGameDialog} to create a new Game.
@@ -159,7 +159,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		mainPanel = new JPanel(new BorderLayout(20, 10));
 		
 		// The middle contains the tabbedPane with the Main Chat and future Whisper Chats
-		mainChatPanel = new ChatPanel(Client.getAllUsers(), "chatm");
+		mainChatPanel = new ChatPanel(Client.getAllUsers(), "chatm", "chatMessage");
 		mainChatPanel.setPreferredSize(new Dimension(500, 700));
 		tabbedPane.addTab("Main Chat", mainChatPanel);
 		JPanel middlePanel = new JPanel(new BorderLayout(20, 10));
@@ -238,11 +238,11 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 			case STARTING:
 				waitingGameListModel.addElement(game);
 				break;
-				
+			
 			case RUNNING:
 				runningGameListModel.addElement(game);
 				break;
-				
+			
 			case FINISHED:
 				endedGames.add(game);
 				break;
@@ -259,17 +259,19 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 			case STARTING:
 				waitingGameListModel.removeElement(game);
 				break;
-				
+			
 			case RUNNING:
 				runningGameListModel.removeElement(game);
 				break;
-				
+			
 			case FINISHED:
 				endedGames.remove(game);
 				break;
 		}
 		
-		mainChatPanel.displayInfo("The game " + game.getGameName() + " has been removed, because there were no players left.");
+		if (game.getAllUsers() == null || game.getAllUsers().size() == 0) {
+			mainChatPanel.displayInfo("The game " + game.getGameName() + " has been removed, because there were no players left.");
+		}
 	}
 	
 	/**
@@ -355,21 +357,23 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 	 */
 	public void moveGameToRunning(ClientGameController gameController) {
 		if (waitingGameListModel.removeElement(gameController) == false) {
-			System.err.println("MainChatWindow#moveGameToRunning - Game to move not in waiting games!");
-			if (runningGameListModel.contains(gameController))
+			if (runningGameListModel.contains(gameController)) {
 				return;
+			} else {
+				System.err.println("MainChatWindow#moveGameToRunning - Why isn't the game " + gameController.getGameName() + " already in running game list?");
+			}
 		}
 		runningGameListModel.addElement(gameController);
 	}
 	
 	/**
-	 * Calls the {@link ClientGameController#watchGame()} method of the game at the given position of the {@link #runningGameList}.
+	 * Calls the {@link ClientGameController#askToWatchGame()} method of the game at the given position of the {@link #runningGameList}.
 	 * @param index the given position at the runningGameList.
 	 */
 	private void watchGameAtIndex(int index) {
 		ClientGameController game = runningGameListModel.elementAt(index);
 		if (game != null)
-			game.watchGame();
+			game.askToWatchGame();
 	}
 	//endregion
 	
@@ -410,7 +414,7 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		}
 		ArrayList<ClientUser> whisperUsers = new ArrayList<>();
 		whisperUsers.add(user);
-		ChatPanel whisperTab = new ChatPanel(whisperUsers, "chatw");
+		ChatPanel whisperTab = new ChatPanel(whisperUsers, "chatw", "whisperMessage");
 		tabbedPane.addTab(user.getName(), whisperTab);
 		tabbedPane.setSelectedComponent(whisperTab);
 		return whisperTab;
@@ -514,10 +518,10 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 			openNewGameInputWindow();
 			
 		} else if (e.getSource() == joinGameButton) {
-			joinGameAtIndex(waitingGameList.getSelectedIndex());
+			startJoiningGame(waitingGameList.getSelectedIndex());
 			
-		} else if (e.getSource() == runningGameList) {
-			watchGameAtIndex(runningGameList.getSelectedIndex());
+		} else if (e.getSource() == watchGameButton) {
+			startWatchingGame(runningGameList.getSelectedIndex());
 			
 		} else if (e.getSource() == whisperButton) {
 			openWhisperChat(userListModel.elementAt(userList.getSelectedIndex()));
@@ -526,6 +530,32 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 			ClientCgethHandler.sendHighscoreRequest();
 			
 		}
+	}
+	
+	/**
+	 * Joins the game if one is selected or opens the newGameInputWindow.
+	 */
+	private void startJoiningGame(int index) {
+		if (index < 0)
+			if (waitingGameListModel.isEmpty())
+				openNewGameInputWindow();
+			else
+				getMainChatPanel().displayError("Please select a game to join!");
+		else
+			joinGameAtIndex(0);
+	}
+	
+	/**
+	 * Start watching game if one is selected.
+	 */
+	private void startWatchingGame(int index) {
+		if (index < 0)
+			if (runningGameListModel.isEmpty())
+				getMainChatPanel().displayError("There is no game you can watch!");
+			else
+				getMainChatPanel().displayError("Please select a game to watch!");
+		else
+			watchGameAtIndex(index);
 	}
 	
 	/**
@@ -565,13 +595,13 @@ public class MainChatWindow implements ActionListener, KeyListener, MouseListene
 		} else if (e.getSource() == waitingGameList) {
 			if (e.getClickCount() == 2) {
 				int index = waitingGameList.locationToIndex(e.getPoint());
-				joinGameAtIndex(index);
+				startJoiningGame(index);
 			}
 			
 		} else if (e.getSource() == runningGameList) {
 			if (e.getClickCount() == 2) {
 				int index = runningGameList.locationToIndex(e.getPoint());
-				watchGameAtIndex(index);
+				startWatchingGame(index);
 			}
 			
 		}

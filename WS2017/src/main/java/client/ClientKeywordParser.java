@@ -31,11 +31,6 @@ public class ClientKeywordParser {
 			return;
 		}
 		
-		if (command == null) {
-			System.err.println("Received command does not exist! " + keyword + " " + argument);
-			return;
-		}
-		
 		command.handleCommand(commandParser, argument);
 		
 	}
