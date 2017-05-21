@@ -1,7 +1,7 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc} 
 \usepackage{graphicx} 
-\usepackage[left=2cm,top=2cm,right=1cm,bottom=1.5cm]{geometry}
+\usepackage[left=2cm,top=2cm,right=2cm,bottom=1.5cm]{geometry}
 \usepackage{amsmath} %for mathThe WS\_2017 Game \\
 \usepackage{fancyhdr}
 \usepackage{listings} %for code
@@ -30,7 +30,7 @@
 \end{abstract}  
   \clearpage
 	\section{Quick over view of the Game Program}
-	  WS\_2017 is a round based game that consists of a clients and a server which communicate through the WS\_2017 protocol.
+	  WS\_2017 is a round based game that consists of a clients and a server which communicate through the WS\_2017 protocol. The protocol is inspired by the designe of the POP3 protocol and uses commands that consist of a keyword and arguments.
 		\subsection{}
 		\subsection{}
 		\subsection{}
@@ -41,10 +41,8 @@
 		\subsection{} 
 	\clearpage
 	\section{Server side}
+		\subsection{Sequence of Events}
+		When a server instance is first spun up, a main thread is crated that in turn spins up a new thread for every incoming TCP connection. These individual threads handle the processing and validation of the protocol between their clients. All the Structures that Need to be accessed by all clients are in the main thread, this includes... . 
 		\subsection{}
 		\subsection{}
-		\subsection{}
-	\clearpage
-	\section{Communication between Sever and Client}
-		\subsection{Protocol}
 \end{document}
