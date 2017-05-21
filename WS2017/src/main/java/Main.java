@@ -14,6 +14,13 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
+		if (args.length > 0 &&
+				(args[0].contains("help") || args[0].contains("info"))) {
+			// Used to help when a user doesn't know how to start the application.
+			printCommandLineParameters();
+			return;
+		}
+		
 		doStartMethods();
 		
 		if (args.length == 0) {
