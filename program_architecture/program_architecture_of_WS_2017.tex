@@ -6,6 +6,7 @@
 \usepackage{fancyhdr}
 \usepackage{listings} %for code
 \usepackage{hyperref}
+\usepackage{float}
 
 \pagestyle{fancy}
 
@@ -26,15 +27,12 @@
   \tableofcontents
   
 \begin{abstract}
-  This article describes the Program Architecture of the WS\_2017 Game, starting with a quick overview of all the pieces of software(components ?) involved. In the next three sections it goes in to grater detail about how the Client and Server side are constructed and how they communicate. There are some schematics that try to create a visual overview of some of the (components ?) 
+  This article describes the Program Architecture of the WS\_2017 Game, starting with a quick overview of all the  software components of Game. In the next three sections it goes in to grater detail about how the Client and Server side are constructed and how they communicate.
 \end{abstract}  
   \clearpage
 	\section{Quick over view of the Game Program}
-	  WS\_2017 is a round based game that consists of a clients and a server which communicate through the WS\_2017 protocol. The protocol is inspired by the designe of the POP3 protocol and uses commands that consist of a keyword and arguments.
-		\subsection{}
-		\subsection{}
-		\subsection{}
-	\clearpage
+	  WS\_2017 is a round based game that consists of a clients and a server which communicate through the WS\_2017 protocol. The protocol is inspired by the design of the POP3 protocol and uses commands that consist of a keyword and arguments.
+
 	\section{Client side}
 		\subsection{Chats and Main Window}
 We created our own ChatPanel Class which can be used as different kinds of Chats in different Windows. When created the chat command is defined (chatm, chatl or chatw) so it can be used for the three different chat-types there are in our game:
@@ -46,16 +44,23 @@ All the interaction is read in from the window. It is not directly processed but
 
 		\subsection{Lobby}
 		When a client joins a game the lobby window is automatically opened in which all the players in this game can chat with each other. Additionally another window is created where the client can choose the Children. The Children are handled as JPanels which hold JComponents to customize the Child. When pressing the okay button the window class transforms the information about the children in a string and gives it to the GameController via server.
-		\subsection{} 
-	\clearpage
-	\section{Server side}
-		\subsection{Sequence of Events}
-		When a server instance is first spun up, a main thread is crated that in turn spins up a new thread for every incoming TCP connection. These individual threads handle the processing and validation of the protocol between their clients. All the Structures that Need to be accessed by all clients are in the main thread, this includes... . 
 		\subsection{}
+	\section{Server side}
+		\subsection{Game State and Connection Handling}
+		When a server instance is first spun up, a main thread is crated that in turn spins up a new thread for every incoming TCP connection. All the Structures that Need to be accessed by all clients are in the main thread, this includes ArrayLists, one containing all currently running games and another all connected Users.
+		\subsection{Protocol Validation and Processing}
+		The individual threads of each client handle the processing and validation of the protocol. In the CommandParser commands that are received from the client are received by the server are checked for correct formating and then split in keyword and argument and then the CommandParser class calls the KeywordParser class that then in turn calls the relevent Command Handler. The Command Handler executes the  
 		\subsection{}
 	\section{Game}
 		\subsection{GameController}
 		The GameController holds the General Information about the game including which users are playing or in which state (WAITING, RUNNING or FINISHED) the game is in. The actual information is stored in the World.
 		\subsection{GameGUI and Game Engine}
 		We separated the all the classes for the game into two packages: engine and gamegui. The gamegui classes are run on the server and synchronously on every client. The gamgui was solely for displaying the current gamestate in the engine package and for the user input (mouse and key listeners). Therefore the gamegui classes were only used on the client side. The users input is sent from the gamegui classes directly to the server, which updates it's own gamestate in the game engine and then sends the input onto the clients.
+		\section{Package Hierarchy}  
+    \begin{figure}[H]
+    	\begin{center}
+    		\includegraphics[width=140mm]{packages-hierarchie.png}
+    		\caption{Overview of the package hierarchy used in the game}
+    	\end{center}
+    \end{figure}    
 \end{document}
