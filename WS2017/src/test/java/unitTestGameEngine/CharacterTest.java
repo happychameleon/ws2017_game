@@ -93,6 +93,23 @@ public class CharacterTest {
 
     @Test
     /**
+     * Tests whether removing more actionpoints then can be removed returns false.
+     */
+    public  void  testCanRemoveActionPoints(){
+        Assert.assertThat(character.canRemoveActionPoints(12),equalTo(false));
+    }
+
+    @Test
+    /**
+     * Test whether it is possible to remove actionpoints.
+     */
+    public void testRemoveActionPoints(){
+        character.removeActionPoints(6);
+        Assert.assertThat(character.getActionPoints(),is(4));
+    }
+
+    @Test
+    /**
      * Tests whether actionPoints are reset properly after each turn.
      */
     public void testRestForNewTurn(){

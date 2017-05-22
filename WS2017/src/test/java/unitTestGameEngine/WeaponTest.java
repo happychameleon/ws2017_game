@@ -174,7 +174,7 @@ public class WeaponTest {
 
     @Test
     /**
-     * Tests if Prototype is added and if the constructor set areaOfEllect the value 0.
+     * Tests if Prototype is added and if the constructor set areaOfEffect the value 0.
      */
     public void testAddWeaponPrototype1() {
         Weapon.addWeaponPrototype("testAdd1", 3, 5, 2, 4);
