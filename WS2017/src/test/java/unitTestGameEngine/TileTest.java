@@ -120,6 +120,13 @@ public class TileTest {
     }
 
     @Test
+    public void testGetWorld() {
+        World testGetWorld = testTile.getWorld();
+
+        Assert.assertThat(testGetWorld, equalTo(testWorld));
+    }
+
+    @Test
     /**
      * Tests isWalkable() for a tile with character. Without consider the character as blocking it should be walkable.
      * With consideration it should be false. They can't be the same value.
