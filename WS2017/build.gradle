@@ -32,7 +32,7 @@ dependencies {
 
 jar{
     baseName = 'pp04-WS2017'
-    version = '0.2.0'
+    version = '1.0'
 
     manifest {
         attributes 'Main-Class': mainClassName // with , could more attributes be added.
