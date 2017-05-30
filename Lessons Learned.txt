@@ -1,0 +1,5 @@
+Lessons Learned
+
+- Starting early with programming the game was really useful to have less stress later on and concentrate on the specific achievements.
+- It would really help to create a better overview over how exactly the game should work and more detailed planning in general before programming. But on the other hand we didn't really have much experience with bigger projects so before this it wouldn't have been possible to plan much more without the experience we gained from this project.
+- UI Prototyping with apps or websites or even just drawing it with pen and paper helps a lot for programming it afterwards. We should have used that more often and earlier on.
