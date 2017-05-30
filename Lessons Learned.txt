@@ -3,3 +3,8 @@ Lessons Learned
 - Starting early with programming the game was really useful to have less stress later on and concentrate on the specific achievements.
 - It would really help to create a better overview over how exactly the game should work and more detailed planning in general before programming. But on the other hand we didn't really have much experience with bigger projects so before this it wouldn't have been possible to plan much more without the experience we gained from this project.
 - UI Prototyping with apps or websites or even just drawing it with pen and paper helps a lot for programming it afterwards. We should have used that more often and earlier on.
+
+
+- Komunication in der groupe war sehr wichtig damit wir nicht dinge doopelt programmierten und es half auch sehr immer fragen zu koennen was jemand sich beim programmieren eines bestimmten teiles gedacht hatte.
+- Heufige kleine Commits machten es einfach sicher zu gehen das keine aenderunge gepusched wurden die dinge kaput machten.
+- Bei grossen aenderungen hat es sich auch als sehr hilfreich erwiesen eine neu branch zu machen, damit der Master immer fuer alle richtig funktionierte.
